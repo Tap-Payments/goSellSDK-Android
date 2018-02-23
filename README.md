@@ -31,4 +31,6 @@ Basic usage
 
 **Step 3.** Now you can call API methods with this instance, providing necessary parameters and **`APIRequestCallback<>`** class, instantiated with corresponding response type.
 
+Also see `company.tap.gosellapi.MainActivity` class for usage examples.
+
 [1]:https://www.tap.company/developers/
