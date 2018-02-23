@@ -1,7 +1,6 @@
 # goSellSDK-Android
 Android SDK to use [goSell API][1].
 
-
 Install
 --------
 Add it in your **root** `build.gradle` at the end of repositories:
@@ -22,7 +21,6 @@ Step 2. Add the dependency
 
 Basic usage
 -------------
-
 **Step 1.** Grab credentials from your dashboard:<br>
 1. **`secretKey`** - to authorize your requests.
 2. **`encryptionKey`** - to protect sensitive card details.
@@ -32,5 +30,12 @@ Basic usage
 **Step 3.** Now you can call API methods with this instance, providing necessary parameters and **`APIRequestCallback<>`** class, instantiated with corresponding response type.
 
 Also see `company.tap.gosellapi.MainActivity` class for usage examples.
+
+Documentation
+-------------
+Documentation is available at [github-pages][2].<br>
+Also documented sources are attached to the library.
+
+[2]:https://tap-payments.github.io/goSellSDK-Android/
 
 [1]:https://www.tap.company/developers/
