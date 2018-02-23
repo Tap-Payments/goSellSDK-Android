@@ -29,6 +29,6 @@ Basic usage
 
 **Step 2.** Obtain an instance of **`GoSellAPI`** class via **`getInstance(secretKey)`** method.
 
-**Step 3.** Now you can call API methods with this instance, providing necessary parameters and **`APIRequestCallback<>`** class, instantiated with response type.
+**Step 3.** Now you can call API methods with this instance, providing necessary parameters and **`APIRequestCallback<>`** class, instantiated with corresponding response type.
 
 [1]:https://www.tap.company/developers/
