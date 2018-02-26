@@ -20,6 +20,10 @@ final class BaseCallback<K extends BaseResponse> implements Callback<K> {
     private static final String UNABLE_TO_FETCH_ERROR_INFO = "Unable to fetch error information";
     private APIRequestCallback<K> requestCallback;
 
+    BaseCallback(APIRequestCallback<K> requestCallback) {
+        this.requestCallback = requestCallback;
+    }
+
     @Override
     public void onResponse(@NonNull Call<K> call, @NonNull Response<K> response) {
         if (response.isSuccessful()) {
@@ -28,22 +32,18 @@ final class BaseCallback<K extends BaseResponse> implements Callback<K> {
             ResponseBody errorBody = response.errorBody();
             if (errorBody != null) {
                 try {
-                    requestCallback.onFailure(response.code(), errorBody.string());
+                    requestCallback.onFailure(new GoSellError(response.code(), errorBody.string(), null));
                 } catch (IOException e) {
-                    requestCallback.onFailure(e);
+                    requestCallback.onFailure(new GoSellError(GoSellError.ERROR_CODE_UNAVAILABLE, null, e));
                 }
             } else {
-                requestCallback.onFailure(response.code(), UNABLE_TO_FETCH_ERROR_INFO);
+                requestCallback.onFailure(new GoSellError(response.code(), UNABLE_TO_FETCH_ERROR_INFO, null));
             }
         }
     }
 
     @Override
     public void onFailure(@NonNull Call<K> call, @NonNull Throwable t) {
-        requestCallback.onFailure(t);
-    }
-
-    BaseCallback(APIRequestCallback<K> requestCallback) {
-        this.requestCallback = requestCallback;
+        requestCallback.onFailure(new GoSellError(GoSellError.ERROR_CODE_UNAVAILABLE, null, t));
     }
 }
