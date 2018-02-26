@@ -62,4 +62,14 @@ public final class Redirect {
     public String getPost_url() {
         return post_url;
     }
+
+    @Override
+    public String toString() {
+        return "Redirect{" +
+                "status='" + status + '\'' +
+                ", url='" + url + '\'' +
+                ", return_url='" + return_url + '\'' +
+                ", post_url='" + post_url + '\'' +
+                '}';
+    }
 }

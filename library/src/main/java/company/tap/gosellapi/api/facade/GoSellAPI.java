@@ -11,7 +11,7 @@ import company.tap.gosellapi.api.responses.CardResponse;
 /**
  * Facade class to use Android SDK
  * <br>
- * This is a singleton class, use it by {@link #getInstance(String secretKey)} method.
+ * This is a singleton class, use it by {@link #getInstance(String authToken)} method.
  */
 public final class GoSellAPI {
     private APIService apiHelper;
@@ -26,11 +26,11 @@ public final class GoSellAPI {
 
     /**
      * Use this method to get instance of {@link GoSellAPI}
-     * @param secretKey A secret key from your dashboard
+     * @param authToken An authorization token from your dashboard
      * @return {@link GoSellAPI} instance to perform requests
      */
-    public static GoSellAPI getInstance(String secretKey) {
-        RetrofitHelper.setAuthenticationKey(secretKey);
+    public static GoSellAPI getInstance(String authToken) {
+        RetrofitHelper.setAuthenticationKey(authToken);
         return SingletonHolder.INSTANCE;
     }
 

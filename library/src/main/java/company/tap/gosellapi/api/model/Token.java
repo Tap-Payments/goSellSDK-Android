@@ -122,4 +122,20 @@ public final class Token implements BaseResponse {
     public String getName() {
         return name;
     }
+
+    @Override
+    public String toString() {
+        return "Token{" +
+                "id='" + id + '\'' +
+                ", object='" + object + '\'' +
+                ", card=" + card +
+                ", client_ip='" + client_ip + '\'' +
+                ", created=" + created +
+                ", livemode=" + livemode +
+                ", type='" + type + '\'' +
+                ", used=" + used +
+                ", currency='" + currency + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
