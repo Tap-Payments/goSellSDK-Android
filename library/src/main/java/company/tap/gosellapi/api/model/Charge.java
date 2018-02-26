@@ -239,4 +239,30 @@ public final class Charge implements BaseResponse{
     public Redirect getRedirect() {
         return redirect;
     }
+
+    @Override
+    public String toString() {
+        return "Charge{" +
+                "id='" + id + '\'' +
+                ", object_type='" + object_type + '\'' +
+                ", amount=" + amount +
+                ", amount_refunded=" + amount_refunded +
+                ", created=" + created +
+                ", currency='" + currency + '\'' +
+                ", description='" + description + '\'' +
+                ", failure_code='" + failure_code + '\'' +
+                ", failure_message='" + failure_message + '\'' +
+                ", livemode=" + livemode +
+                ", metadata=" + metadata +
+                ", paid=" + paid +
+                ", receipt_email='" + receipt_email + '\'' +
+                ", receipt_sms='" + receipt_sms + '\'' +
+                ", receipt_number='" + receipt_number + '\'' +
+                ", refunded=" + refunded +
+                ", source=" + source +
+                ", statement_descriptor='" + statement_descriptor + '\'' +
+                ", status='" + status + '\'' +
+                ", redirect=" + redirect +
+                '}';
+    }
 }

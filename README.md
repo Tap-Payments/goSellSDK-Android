@@ -22,14 +22,14 @@ Step 2. Add the dependency
 Basic usage
 -------------
 **Step 1.** Grab credentials from your dashboard:<br>
-1. **`secretKey`** - to authorize your requests.
+1. **`authToken`** - to authorize your requests.
 2. **`encryptionKey`** - to protect sensitive card details.
 
-**Step 2.** Obtain an instance of **`GoSellAPI`** class via **`getInstance(secretKey)`** method.
+**Step 2.** Obtain an instance of **`GoSellAPI`** class via **`getInstance(authToken)`** method.
 
 **Step 3.** Now you can call API methods with this instance, providing necessary parameters and **`APIRequestCallback<>`** class, instantiated with corresponding response type.
 
-Also see `company.tap.gosellapi.MainActivity` class for usage examples.
+Also see `company.tap.gosellapi.TestActivity` class for usage examples.
 
 Documentation
 -------------

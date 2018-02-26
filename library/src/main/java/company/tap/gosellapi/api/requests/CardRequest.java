@@ -25,6 +25,8 @@ public class CardRequest {
          * @param number The card number, as a string without any separators.
          * @param exp_month Two digit number representing the card's expiration month.
          * @param exp_year Two or four digit number representing the card's expiration year.
+         * @param cvc Card's security code.
+         * @param encryptionKey Encryption key to protect card data.
          */
         public Builder(String number, String exp_month, String exp_year, String cvc, String encryptionKey) {
             card = new CardRequest(number, exp_month, exp_year, cvc);
