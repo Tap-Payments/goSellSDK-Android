@@ -267,30 +267,30 @@ public final class CardResponse implements BaseResponse{
 
     @Override
     public String toString() {
-        return "CardResponse{" +
-                "id='" + id + '\'' +
-                ", object='" + object + '\'' +
-                ", address_city='" + address_city + '\'' +
-                ", address_country='" + address_country + '\'' +
-                ", address_line1='" + address_line1 + '\'' +
-                ", address_line1_check='" + address_line1_check + '\'' +
-                ", address_line2='" + address_line2 + '\'' +
-                ", address_state='" + address_state + '\'' +
-                ", address_zip='" + address_zip + '\'' +
-                ", address_zip_check='" + address_zip_check + '\'' +
-                ", brand='" + brand + '\'' +
-                ", country='" + country + '\'' +
-                ", customer=" + customer +
-                ", cvc_check=" + cvc_check +
-                ", dynamic_last4=" + dynamic_last4 +
-                ", exp_month='" + exp_month + '\'' +
-                ", exp_year='" + exp_year + '\'' +
-                ", fingerprint='" + fingerprint + '\'' +
-                ", funding='" + funding + '\'' +
-                ", last4='" + last4 + '\'' +
-                ", metadata=" + metadata +
-                ", name='" + name + '\'' +
-                ", tokenization_method='" + tokenization_method + '\'' +
-                '}';
+        return "CardResponse {" +
+                "\n        id =  '" + id + '\'' +
+                "\n        object =  '" + object + '\'' +
+                "\n        address_city =  '" + address_city + '\'' +
+                "\n        address_country =  '" + address_country + '\'' +
+                "\n        address_line1 =  '" + address_line1 + '\'' +
+                "\n        address_line1_check =  '" + address_line1_check + '\'' +
+                "\n        address_line2 =  '" + address_line2 + '\'' +
+                "\n        address_state =  '" + address_state + '\'' +
+                "\n        address_zip =  '" + address_zip + '\'' +
+                "\n        address_zip_check =  '" + address_zip_check + '\'' +
+                "\n        brand =  '" + brand + '\'' +
+                "\n        country =  '" + country + '\'' +
+                "\n        customer =  " + customer +
+                "\n        cvc_check =  " + cvc_check +
+                "\n        dynamic_last4 =  " + dynamic_last4 +
+                "\n        exp_month =  '" + exp_month + '\'' +
+                "\n        exp_year =  '" + exp_year + '\'' +
+                "\n        fingerprint =  '" + fingerprint + '\'' +
+                "\n        funding =  '" + funding + '\'' +
+                "\n        last4 =  '" + last4 + '\'' +
+                "\n        metadata =  " + metadata +
+                "\n        name =  '" + name + '\'' +
+                "\n        tokenization_method =  '" + tokenization_method + '\'' +
+                "\n    }";
     }
 }

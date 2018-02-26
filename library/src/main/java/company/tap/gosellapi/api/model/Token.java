@@ -125,17 +125,17 @@ public final class Token implements BaseResponse {
 
     @Override
     public String toString() {
-        return "Token{" +
-                "id='" + id + '\'' +
-                ", object='" + object + '\'' +
-                ", card=" + card +
-                ", client_ip='" + client_ip + '\'' +
-                ", created=" + created +
-                ", livemode=" + livemode +
-                ", type='" + type + '\'' +
-                ", used=" + used +
-                ", currency='" + currency + '\'' +
-                ", name='" + name + '\'' +
-                '}';
+        return "\nToken {" +
+                "\n    id =  '" + id + '\'' +
+                "\n    object =  '" + object + '\'' +
+                "\n    card =  " + card +
+                "\n    client_ip =  '" + client_ip + '\'' +
+                "\n    created =  " + created +
+                "\n    livemode =  " + livemode +
+                "\n    type =  '" + type + '\'' +
+                "\n    used =  " + used +
+                "\n    currency =  '" + currency + '\'' +
+                "\n    name =  '" + name + '\'' +
+                "\n}";
     }
 }
