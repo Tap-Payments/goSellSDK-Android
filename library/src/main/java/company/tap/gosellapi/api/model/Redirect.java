@@ -65,11 +65,11 @@ public final class Redirect {
 
     @Override
     public String toString() {
-        return "Redirect{" +
-                "status='" + status + '\'' +
-                ", url='" + url + '\'' +
-                ", return_url='" + return_url + '\'' +
-                ", post_url='" + post_url + '\'' +
-                '}';
+        return "Redirect {" +
+                "\n        status =  '" + status + '\'' +
+                "\n        url =  '" + url + '\'' +
+                "\n        return_url =  '" + return_url + '\'' +
+                "\n        post_url =  '" + post_url + '\'' +
+                "\n    }";
     }
 }

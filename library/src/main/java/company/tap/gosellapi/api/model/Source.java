@@ -89,13 +89,13 @@ public final class Source {
 
     @Override
     public String toString() {
-        return "Source{" +
-                "id='" + id + '\'' +
-                ", object_type='" + object_type + '\'' +
-                ", exp_month='" + exp_month + '\'' +
-                ", exp_year='" + exp_year + '\'' +
-                ", number='" + number + '\'' +
-                ", cvc='" + cvc + '\'' +
-                '}';
+        return "Source {" +
+                "\n        id =  '" + id + '\'' +
+                "\n        object_type =  '" + object_type + '\'' +
+                "\n        exp_month =  '" + exp_month + '\'' +
+                "\n        exp_year =  '" + exp_year + '\'' +
+                "\n        number =  '" + number + '\'' +
+                "\n        cvc =  '" + cvc + '\'' +
+                "\n    }";
     }
 }

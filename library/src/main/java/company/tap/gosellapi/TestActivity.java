@@ -8,6 +8,7 @@
 //
 //import company.tap.gosellapi.api.facade.APIRequestCallback;
 //import company.tap.gosellapi.api.facade.GoSellAPI;
+//import company.tap.gosellapi.api.facade.GoSellError;
 //import company.tap.gosellapi.api.model.Charge;
 //import company.tap.gosellapi.api.model.Redirect;
 //import company.tap.gosellapi.api.model.Source;
@@ -18,8 +19,8 @@
 //
 //public class TestActivity extends Activity {
 //    private static final String TAG = "TestAct";
-//    private static final String AUTH_TOKEN = "your authorization token goes here";
-//    public static final String ENCRYPTION_KEY = "your encryption key goes here";
+//    private static final String AUTH_TOKEN = "sk_test_LVmRFM2Y0gifacSPnI4GqbZh"; //"your authorization token goes here";
+//    public static final String ENCRYPTION_KEY = "-----BEGIN PUBLIC KEY-----\nMIIBIDANBgkqhkiG9w0BAQEFAAOCAQ0AMIIBCAKCAQEAndkqmyMcuBdK81jsddnv\nMxdDMxl2qccY+15CGJGiFub1uYl5Z+Lm6Bb50EFtaU10D8QziwdWWACtVu3llHvu\nlcq+1Vzo7fr8SxAWlKI4Xlndmuat/1qG29y+zXOyAcezHe6X793YGYU6k3pC3LVb\nAOR4gDFOKZBTQAwdmsChcVh2ibOA5Bt7l1lxVKfR2GZun72HNYYs+2Jvwz7SeQZP\nTkbDMDfrWRJTurCk66WSU/Zh0dlF/5Nkzfnv/xXd8xIOo9J3zddpIbpEDMGa8wU7\nVy54szyBbbPH5+OMGj1G3Okb2UNy3JuM9CVfHHO2J/dKjud4MsdhtJ6NWLB/Cq49\n8QIBEQ==\n-----END PUBLIC KEY-----\n"; //"your encryption key goes here";
 //
 //    private Token token;
 //    private Charge charge;
@@ -55,17 +56,8 @@
 //                    }
 //
 //                    @Override
-//                    public void onFailure(Throwable t) {
-//                        synchronized (this) {
-//                            Log.d(TAG, "onFailure createToken, t: " + t);
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(int responseCode, String errorBody) {
-//                        synchronized (this) {
-//                            Log.d(TAG, "onFailure createToken, responseCode: " + responseCode + ", errorBody: " + errorBody);
-//                        }
+//                    public void onFailure(GoSellError errorDetails) {
+//                        Log.d(TAG, "onFailure createToken, errorCode: " + errorDetails.getErrorCode() + ", errorBody: " + errorDetails.getErrorBody() + ", throwable: " + errorDetails.getThrowable());
 //                    }
 //                });
 //    }
@@ -78,13 +70,8 @@
 //            }
 //
 //            @Override
-//            public void onFailure(Throwable t) {
-//                Log.d(TAG, "onFailure retrieveToken, t: " + t);
-//            }
-//
-//            @Override
-//            public void onFailure(int responseCode, String errorBody) {
-//                Log.d(TAG, "onFailure retrieveToken, responseCode: " + responseCode + ", errorBody: " + errorBody);
+//            public void onFailure(GoSellError errorDetails) {
+//                Log.d(TAG, "onFailure retrieveToken, errorCode: " + errorDetails.getErrorCode() + ", errorBody: " + errorDetails.getErrorBody() + ", throwable: " + errorDetails.getThrowable());
 //            }
 //        });
 //    }
@@ -113,13 +100,8 @@
 //                    }
 //
 //                    @Override
-//                    public void onFailure(Throwable t) {
-//                        Log.d(TAG, "onFailure createCharge, t: " + t);
-//                    }
-//
-//                    @Override
-//                    public void onFailure(int responseCode, String errorBody) {
-//                        Log.d(TAG, "onFailure createCharge, responseCode: " + responseCode + ", errorBody: " + errorBody);
+//                    public void onFailure(GoSellError errorDetails) {
+//                        Log.d(TAG, "onFailure createCharge, errorCode: " + errorDetails.getErrorCode() + ", errorBody: " + errorDetails.getErrorBody() + ", throwable: " + errorDetails.getThrowable());
 //                    }
 //                }
 //        );
@@ -135,13 +117,8 @@
 //                    }
 //
 //                    @Override
-//                    public void onFailure(Throwable t) {
-//                        Log.d(TAG, "onFailure retrieveCharge, t: " + t);
-//                    }
-//
-//                    @Override
-//                    public void onFailure(int responseCode, String errorBody) {
-//                        Log.d(TAG, "onFailure retrieveCharge, responseCode: " + responseCode + ", errorBody: " + errorBody);
+//                    public void onFailure(GoSellError errorDetails) {
+//                        Log.d(TAG, "onFailure retrieveCharge, errorCode: " + errorDetails.getErrorCode() + ", errorBody: " + errorDetails.getErrorBody() + ", throwable: " + errorDetails.getThrowable());
 //                    }
 //                }
 //        );
@@ -160,13 +137,8 @@
 //                    }
 //
 //                    @Override
-//                    public void onFailure(Throwable t) {
-//                        Log.d(TAG, "onFailure updateCharge, t: " + t);
-//                    }
-//
-//                    @Override
-//                    public void onFailure(int responseCode, String errorBody) {
-//                        Log.d(TAG, "onFailure updateCharge, responseCode: " + responseCode + ", errorBody: " + errorBody);
+//                    public void onFailure(GoSellError errorDetails) {
+//                        Log.d(TAG, "onFailure updateCharge, errorCode: " + errorDetails.getErrorCode() + ", errorBody: " + errorDetails.getErrorBody() + ", throwable: " + errorDetails.getThrowable());
 //                    }
 //                }
 //        );

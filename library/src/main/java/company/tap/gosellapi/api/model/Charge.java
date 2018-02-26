@@ -242,27 +242,27 @@ public final class Charge implements BaseResponse{
 
     @Override
     public String toString() {
-        return "Charge{" +
-                "id='" + id + '\'' +
-                ", object_type='" + object_type + '\'' +
-                ", amount=" + amount +
-                ", amount_refunded=" + amount_refunded +
-                ", created=" + created +
-                ", currency='" + currency + '\'' +
-                ", description='" + description + '\'' +
-                ", failure_code='" + failure_code + '\'' +
-                ", failure_message='" + failure_message + '\'' +
-                ", livemode=" + livemode +
-                ", metadata=" + metadata +
-                ", paid=" + paid +
-                ", receipt_email='" + receipt_email + '\'' +
-                ", receipt_sms='" + receipt_sms + '\'' +
-                ", receipt_number='" + receipt_number + '\'' +
-                ", refunded=" + refunded +
-                ", source=" + source +
-                ", statement_descriptor='" + statement_descriptor + '\'' +
-                ", status='" + status + '\'' +
-                ", redirect=" + redirect +
-                '}';
+        return "\nCharge {" +
+                "\n    id =  '" + id + '\'' +
+                "\n    object_type =  '" + object_type + '\'' +
+                "\n    amount =  " + amount +
+                "\n    amount_refunded =  " + amount_refunded +
+                "\n    created =  " + created +
+                "\n    currency =  '" + currency + '\'' +
+                "\n    description =  '" + description + '\'' +
+                "\n    failure_code =  '" + failure_code + '\'' +
+                "\n    failure_message =  '" + failure_message + '\'' +
+                "\n    livemode =  " + livemode +
+                "\n    metadata =  " + metadata +
+                "\n    paid =  " + paid +
+                "\n    receipt_email =  '" + receipt_email + '\'' +
+                "\n    receipt_sms =  '" + receipt_sms + '\'' +
+                "\n    receipt_number =  '" + receipt_number + '\'' +
+                "\n    refunded =  " + refunded +
+                "\n    source =  " + source +
+                "\n    statement_descriptor =  '" + statement_descriptor + '\'' +
+                "\n    status =  '" + status + '\'' +
+                "\n    redirect =  " + redirect +
+                "\n}";
     }
 }
