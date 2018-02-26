@@ -15,15 +15,8 @@ public interface APIRequestCallback<T extends BaseResponse> {
     void onSuccess(int responseCode, T serializedResponse);
 
     /**
-     * General failure callback (connection errors)
-     * @param t {@link Throwable} representing a failure reason
+     * General failure callback
+     * @param errorDetails {@link GoSellError} representing a failure reason
      */
-    void onFailure(Throwable t);
-
-    /**
-     * Failure callback returned by server side
-     * @param responseCode Failure response code
-     * @param errorBody Raw json response from server side, if present
-     */
-    void onFailure(int responseCode, String errorBody);
+    void onFailure(GoSellError errorDetails);
 }
