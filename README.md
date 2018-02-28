@@ -1,5 +1,6 @@
 # goSellSDK-Android
-Android SDK to use [goSell API][1].
+Android SDK to use [goSell API][1].<br>
+Minimum API version is 14.
 
 Install
 --------
@@ -90,6 +91,23 @@ GoSellAPI.getInstance(AUTH_TOKEN).createCharge(
     }
 );
 ```
+**Create redirect**<br><br>
+Redirect instance can be created in two ways - providing both return and post url, or only return one.
+   
+```java
+Redirect redirect = new Redirect("your_return_url", "your_post_url");
+Redirect redirect = new Redirect("your_return_url");
+```
+
+**Create source**<br><br>
+Source instance can be created in a multiple ways - providing token id, static id or card details.
+   
+```java
+Source source = new Source("your_token_id");
+Source source = new Source("src_kw.knet");
+Source source = new Source("card", "12", "20", "4242424242424242", "123");
+```
+
 
 Also see `company.tap.gosellapi.TestActivity` class for usage examples.
 
