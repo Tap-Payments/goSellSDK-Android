@@ -16,7 +16,7 @@ Add it in your **root** `build.gradle` at the end of repositories:
 Step 2. Add the dependency
 ```groovy
 	dependencies {
-	        compile 'com.github.Tap-Payments:goSellSDK-Android:1.0'
+	        compile 'com.github.Tap-Payments:goSellSDK-Android:1.0.2'
 	}
 ```
 
