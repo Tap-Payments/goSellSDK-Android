@@ -39,7 +39,9 @@ public final class CryptoUtil {
             Cipher encryptCipher = Cipher.getInstance("RSA/None/PKCS1Padding");
             encryptCipher.init(Cipher.ENCRYPT_MODE, pubKey);
             result = Base64.encodeToString(encryptCipher.doFinal(encrypt.getBytes()), Base64.DEFAULT).replaceAll("\\n", "");
-        } catch (GeneralSecurityException|IllegalArgumentException ex) {
+        } catch (GeneralSecurityException ex) {
+            ex.printStackTrace();
+        } catch (IllegalArgumentException ex) {
             ex.printStackTrace();
         }
         return result;
