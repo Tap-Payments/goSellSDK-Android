@@ -18,9 +18,9 @@ public final class Charge implements BaseResponse{
     @Expose
     private String id;
 
-    @SerializedName("object_type")
+    @SerializedName("object")
     @Expose
-    private String object_type;
+    private String object;
 
     @SerializedName("amount")
     @Expose
@@ -104,8 +104,8 @@ public final class Charge implements BaseResponse{
     /**
      * @return String representing the object&#8217;s type. Objects of the same type share the same value.
      */
-    public String getObject_type() {
-        return object_type;
+    public String getObject() {
+        return object;
     }
 
     /**
@@ -244,7 +244,7 @@ public final class Charge implements BaseResponse{
     public String toString() {
         return "\nCharge {" +
                 "\n    id =  '" + id + '\'' +
-                "\n    object_type =  '" + object_type + '\'' +
+                "\n    object =  '" + object + '\'' +
                 "\n    amount =  " + amount +
                 "\n    amount_refunded =  " + amount_refunded +
                 "\n    created =  " + created +
