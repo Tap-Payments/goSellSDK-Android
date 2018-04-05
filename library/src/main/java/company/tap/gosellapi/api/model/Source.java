@@ -14,9 +14,9 @@ public final class Source {
     @Expose
     private String id;
 
-    @SerializedName("object_type")
+    @SerializedName("object")
     @Expose
-    private String object_type;
+    private String object;
 
     @SerializedName("exp_month")
     @Expose
@@ -37,8 +37,8 @@ public final class Source {
     /**
      * Constructor with all fields, except id
      */
-    public Source(String object_type, String exp_month, String exp_year, String number, String cvc) {
-        this.object_type = object_type;
+    public Source(String object, String exp_month, String exp_year, String number, String cvc) {
+        this.object = object;
         this.exp_month = exp_month;
         this.exp_year = exp_year;
         this.number = number;
@@ -91,7 +91,7 @@ public final class Source {
     public String toString() {
         return "Source {" +
                 "\n        id =  '" + id + '\'' +
-                "\n        object_type =  '" + object_type + '\'' +
+                "\n        object =  '" + object + '\'' +
                 "\n        exp_month =  '" + exp_month + '\'' +
                 "\n        exp_year =  '" + exp_year + '\'' +
                 "\n        number =  '" + number + '\'' +
