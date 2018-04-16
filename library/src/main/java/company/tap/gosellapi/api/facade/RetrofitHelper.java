@@ -52,6 +52,7 @@ final class RetrofitHelper {
                 Request request = chain.request()
                         .newBuilder()
                         .addHeader(API_Constants.AUTH_TOKEN_KEY, API_Constants.AUTH_TOKEN_PREFIX + authToken)
+                        .addHeader(API_Constants.USER_AGENT, BuildConfig.APPLICATION_ID)
                         .addHeader(API_Constants.CONTENT_TYPE_KEY, API_Constants.CONTENT_TYPE_VALUE).build();
                 return chain.proceed(request);
             }
