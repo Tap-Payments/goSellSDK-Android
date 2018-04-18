@@ -1,5 +1,7 @@
 package company.tap.gosellapi.internal.api.responses;
 
+import android.support.annotation.RestrictTo;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -11,6 +13,7 @@ import java.util.ArrayList;
  * Model for {@link InitResponse} object
  */
 
+@RestrictTo(RestrictTo.Scope.LIBRARY)
 public final class InitResponse implements BaseResponse {
     @SerializedName("status")
     @Expose

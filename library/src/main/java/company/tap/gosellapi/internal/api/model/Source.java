@@ -1,5 +1,7 @@
 package company.tap.gosellapi.internal.api.model;
 
+import android.support.annotation.RestrictTo;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -9,6 +11,7 @@ import com.google.gson.annotations.SerializedName;
  * Model for Source object
  */
 
+@RestrictTo(RestrictTo.Scope.LIBRARY)
 public final class Source {
     @SerializedName("id")
     @Expose

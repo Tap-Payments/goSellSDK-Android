@@ -1,5 +1,7 @@
 package company.tap.gosellapi.internal.api.api_service;
 
+import android.support.annotation.RestrictTo;
+
 /**
  * Model for response errors
  * <br>
@@ -8,6 +10,7 @@ package company.tap.gosellapi.internal.api.api_service;
  * And vice versa, if {@link #getErrorCode()} or {@link #getErrorBody()} return {@link #ERROR_CODE_UNAVAILABLE} and null accordingly, then use {@link #getThrowable()} to obtain error details.
  */
 
+@RestrictTo(RestrictTo.Scope.LIBRARY)
 public class GoSellError {
     public static final int ERROR_CODE_UNAVAILABLE = -1;
 

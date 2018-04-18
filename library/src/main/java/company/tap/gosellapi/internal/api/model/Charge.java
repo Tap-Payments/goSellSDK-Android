@@ -1,5 +1,7 @@
 package company.tap.gosellapi.internal.api.model;
 
+import android.support.annotation.RestrictTo;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -13,6 +15,7 @@ import company.tap.gosellapi.internal.api.responses.BaseResponse;
  * Charge response
  */
 
+@RestrictTo(RestrictTo.Scope.LIBRARY)
 public final class Charge implements BaseResponse{
     @SerializedName("id")
     @Expose

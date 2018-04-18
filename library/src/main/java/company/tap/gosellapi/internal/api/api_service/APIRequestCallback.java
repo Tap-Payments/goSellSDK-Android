@@ -1,11 +1,15 @@
 package company.tap.gosellapi.internal.api.api_service;
 
+import android.support.annotation.RestrictTo;
+
 import company.tap.gosellapi.internal.api.responses.BaseResponse;
 
 /**
  * Base callback to process API responses
  * @param <T> {@link Class} implementing {@link BaseResponse} interface
  */
+
+@RestrictTo(RestrictTo.Scope.LIBRARY)
 public interface APIRequestCallback<T extends BaseResponse> {
     /**
      * Success callback. Request is considered as successful when response code is between 200 and 299

@@ -2,13 +2,13 @@ package company.tap.sample;
 
 import android.app.Application;
 
-import company.tap.gosellapi.internal.api.api_service.GoSellAPI;
+import company.tap.gosellapi.Auth;
 
 public class SampleApp extends Application{
 
     @Override
     public void onCreate() {
         super.onCreate();
-        GoSellAPI.setAuthToken(this, "sk_test_0spETzD5rvIjOoM8mwqJA27i");
+        Auth.setAuthToken(this, "sk_test_0spETzD5rvIjOoM8mwqJA27i");
     }
 }
