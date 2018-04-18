@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 
 /**
- * Created by eugene.goltsev on 12.02.2018.
+ * Created by eugene.goltsev on 17.04.2018.
  * <br>
  * Model for {@link InitResponse} object
  */
@@ -36,5 +36,29 @@ public final class InitResponse implements BaseResponse {
         @SerializedName("encryption_key")
         @Expose
         private String encryption_key;
+
+        public boolean isLivemode() {
+            return livemode;
+        }
+
+        public ArrayList<String> getPermissions() {
+            return permissions;
+        }
+
+        public String getVerified_application() {
+            return verified_application;
+        }
+
+        public String getEncryption_key() {
+            return encryption_key;
+        }
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public Data getData() {
+        return data;
     }
 }

@@ -8,7 +8,7 @@ package company.tap.gosellapi.internal.api.api_service;
  * And vice versa, if {@link #getErrorCode()} or {@link #getErrorBody()} return {@link #ERROR_CODE_UNAVAILABLE} and null accordingly, then use {@link #getThrowable()} to obtain error details.
  */
 
-class GoSellError {
+public class GoSellError {
     public static final int ERROR_CODE_UNAVAILABLE = -1;
 
     private int errorCode;

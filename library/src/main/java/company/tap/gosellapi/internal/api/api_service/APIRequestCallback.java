@@ -6,7 +6,7 @@ import company.tap.gosellapi.internal.api.responses.BaseResponse;
  * Base callback to process API responses
  * @param <T> {@link Class} implementing {@link BaseResponse} interface
  */
-interface APIRequestCallback<T extends BaseResponse> {
+public interface APIRequestCallback<T extends BaseResponse> {
     /**
      * Success callback. Request is considered as successful when response code is between 200 and 299
      * @param responseCode Response code, from 200 to 299

@@ -45,6 +45,7 @@ class DataManager {
                     @Override
                     public void onFailure(GoSellError errorDetails) {
                         initIsRunning = false;
+                        failDelayedRequests(errorDetails);
                     }
                 }));
     }
@@ -52,6 +53,13 @@ class DataManager {
     private void runDelayedRequests() {
         for (DelayedRequest delayedRequest : delayedRequests) {
             delayedRequest.run();
+        }
+        delayedRequests.clear();
+    }
+
+    private void failDelayedRequests(GoSellError errorDetails) {
+        for (DelayedRequest delayedRequest : delayedRequests) {
+            delayedRequest.fail(errorDetails);
         }
         delayedRequests.clear();
     }
@@ -67,6 +75,10 @@ class DataManager {
 
         void run() {
             request.enqueue(new BaseCallback<>(requestCallback));
+        }
+
+        void fail(GoSellError errorDetails) {
+            requestCallback.onFailure(errorDetails);
         }
     }
 }
