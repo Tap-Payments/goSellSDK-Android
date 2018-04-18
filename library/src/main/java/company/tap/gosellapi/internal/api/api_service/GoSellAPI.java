@@ -3,14 +3,9 @@ package company.tap.gosellapi.internal.api.api_service;
 import android.content.Context;
 import android.support.annotation.RestrictTo;
 
-import java.util.ArrayList;
-
 import company.tap.gosellapi.internal.api.model.Charge;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
 import company.tap.gosellapi.internal.api.requests.UpdateChargeRequest;
-import company.tap.gosellapi.internal.api.responses.BaseResponse;
-import company.tap.gosellapi.internal.api.responses.InitResponse;
-import retrofit2.Call;
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 public final class GoSellAPI {

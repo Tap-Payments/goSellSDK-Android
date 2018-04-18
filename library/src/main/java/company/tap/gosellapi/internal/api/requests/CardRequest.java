@@ -1,5 +1,7 @@
 package company.tap.gosellapi.internal.api.requests;
 
+import android.support.annotation.RestrictTo;
+
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -12,6 +14,7 @@ import company.tap.gosellapi.internal.api.crypto.CryptoUtil;
  * Model for {@link CardRequest} object
  */
 
+@RestrictTo(RestrictTo.Scope.LIBRARY)
 public class CardRequest {
     /**
      * Builder to create {@link CardRequest} instance

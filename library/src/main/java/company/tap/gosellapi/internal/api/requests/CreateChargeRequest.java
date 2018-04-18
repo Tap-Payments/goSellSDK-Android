@@ -1,5 +1,7 @@
 package company.tap.gosellapi.internal.api.requests;
 
+import android.support.annotation.RestrictTo;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -15,6 +17,7 @@ import company.tap.gosellapi.internal.api.model.Source;
  * Request to create {@link Charge}, with {@link Builder}
  */
 
+@RestrictTo(RestrictTo.Scope.LIBRARY)
 public final class CreateChargeRequest {
     @SerializedName("amount")
     @Expose
