@@ -1,5 +1,7 @@
 package company.tap.gosellapi.api.facade;
 
+import android.content.Context;
+
 import company.tap.gosellapi.api.model.Charge;
 import company.tap.gosellapi.api.model.Token;
 import company.tap.gosellapi.api.requests.CardRequest;
@@ -15,6 +17,8 @@ import company.tap.gosellapi.api.responses.CardResponse;
  */
 public final class GoSellAPI {
     private APIService apiHelper;
+    private static String authToken;
+    private static String applicationId;
 
     private GoSellAPI() {
         apiHelper = RetrofitHelper.getApiHelper();
@@ -30,8 +34,20 @@ public final class GoSellAPI {
      * @return {@link GoSellAPI} instance to perform requests
      */
     public static GoSellAPI getInstance(String authToken) {
-        RetrofitHelper.setAuthenticationKey(authToken);
         return SingletonHolder.INSTANCE;
+    }
+
+    public static void setAuthToken(Context context, String authToken) {
+        GoSellAPI.authToken = authToken;
+        GoSellAPI.applicationId = context.getPackageName();
+    }
+
+    static String getAuthToken() {
+        return authToken;
+    }
+
+    static String getApplicationId() {
+        return applicationId;
     }
 
     /**
