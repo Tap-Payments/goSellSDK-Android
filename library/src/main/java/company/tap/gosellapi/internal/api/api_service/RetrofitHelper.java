@@ -24,6 +24,10 @@ final class RetrofitHelper {
     @Nullable
     static APIService getApiHelper() {
         if (retrofit == null) {
+            if (GoSellAPI.getAuthToken() == null) {
+                throw new RuntimeException("Auth token was not provided!");
+            }
+
             OkHttpClient okHttpClient = getOkHttpClient();
             retrofit = new Retrofit.Builder()
                     .baseUrl(API_Constants.BASE_URL)

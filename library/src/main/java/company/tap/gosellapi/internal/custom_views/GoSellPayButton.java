@@ -9,15 +9,25 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.HashMap;
+
 import company.tap.gosellapi.R;
+import company.tap.gosellapi.internal.api.api_service.APIRequestCallback;
+import company.tap.gosellapi.internal.api.api_service.GoSellAPI;
+import company.tap.gosellapi.internal.api.api_service.GoSellError;
+import company.tap.gosellapi.internal.api.model.Charge;
+import company.tap.gosellapi.internal.api.model.Redirect;
+import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
 
 public class GoSellPayButton extends AppCompatTextView implements View.OnClickListener {
     private static final int VALUE_IS_MISSING = -11111;
+    private static final String TAG = "GoSellPayButton TAG";
 
     private int mMarginTop;
     private int mMarginBottom;
@@ -229,6 +239,29 @@ public class GoSellPayButton extends AppCompatTextView implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
+        HashMap<String, String> chargeMetadata = new HashMap<>();
+        chargeMetadata.put("Order Number", "ORD-1001");
 
+        GoSellAPI.getInstance().createCharge(
+                new CreateChargeRequest
+                        .Builder(10, "KWD", new Redirect("http://return.com/returnurl", "http://return.com/posturl"))
+                        .statement_descriptor("Test Txn 001")
+                        .description("Test Transaction")
+                        .metadata(chargeMetadata)
+                        .receipt_sms("96598989898")
+                        .receipt_email("test@test.com")
+                        .build(),
+                new APIRequestCallback<Charge>() {
+                    @Override
+                    public void onSuccess(int responseCode, Charge serializedResponse) {
+                        Log.d(TAG, "onSuccess createCharge: serializedResponse:" + serializedResponse);
+                    }
+
+                    @Override
+                    public void onFailure(GoSellError errorDetails) {
+                        Log.d(TAG, "onFailure createCharge, errorCode: " + errorDetails.getErrorCode() + ", errorBody: " + errorDetails.getErrorBody() + ", throwable: " + errorDetails.getThrowable());
+                    }
+                }
+        );
     }
 }
