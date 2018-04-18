@@ -1,4 +1,4 @@
-package company.tap.gosellapi.custom_views;
+package company.tap.gosellapi.internal.custom_views;
 
 import android.content.Context;
 import android.content.res.TypedArray;

@@ -6,16 +6,16 @@
 //
 //import java.util.HashMap;
 //
-//import company.tap.gosellapi.api.facade.APIRequestCallback;
-//import company.tap.gosellapi.api.facade.GoSellAPI;
-//import company.tap.gosellapi.api.facade.GoSellError;
-//import company.tap.gosellapi.api.model.Charge;
-//import company.tap.gosellapi.api.model.Redirect;
-//import company.tap.gosellapi.api.model.Source;
-//import company.tap.gosellapi.api.model.Token;
-//import company.tap.gosellapi.api.requests.CardRequest;
-//import company.tap.gosellapi.api.requests.CreateChargeRequest;
-//import company.tap.gosellapi.api.requests.UpdateChargeRequest;
+//import company.tap.gosellapi.internal.api.facade.APIRequestCallback;
+//import company.tap.gosellapi.internal.api.facade.GoSellAPI;
+//import company.tap.gosellapi.internal.api.facade.GoSellError;
+//import company.tap.gosellapi.internal.api.model.Charge;
+//import company.tap.gosellapi.internal.api.model.Redirect;
+//import company.tap.gosellapi.internal.api.model.Source;
+//import company.tap.gosellapi.internal.api.model.Token;
+//import company.tap.gosellapi.internal.api.requests.CardRequest;
+//import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
+//import company.tap.gosellapi.internal.api.requests.UpdateChargeRequest;
 //
 //public class TestActivity extends Activity {
 //    private static final String TAG = "TestAct";

@@ -1,4 +1,4 @@
-package company.tap.gosellapi.api.facade;
+package company.tap.gosellapi.internal.api.api_service;
 
 /**
  * Model for response errors
@@ -8,7 +8,7 @@ package company.tap.gosellapi.api.facade;
  * And vice versa, if {@link #getErrorCode()} or {@link #getErrorBody()} return {@link #ERROR_CODE_UNAVAILABLE} and null accordingly, then use {@link #getThrowable()} to obtain error details.
  */
 
-public class GoSellError {
+class GoSellError {
     public static final int ERROR_CODE_UNAVAILABLE = -1;
 
     private int errorCode;

@@ -1,4 +1,4 @@
-package company.tap.gosellapi.api.crypto;
+package company.tap.gosellapi.internal.api.crypto;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
