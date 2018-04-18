@@ -1,6 +1,5 @@
-package company.tap.gosellapi.api.facade;
+package company.tap.gosellapi.internal.api.api_service;
 
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 

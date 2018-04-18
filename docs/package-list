@@ -1,4 +1,4 @@
-company.tap.gosellapi.api.facade
-company.tap.gosellapi.api.model
-company.tap.gosellapi.api.requests
-company.tap.gosellapi.api.responses
+company.tap.gosellapi.internal.api.facade
+company.tap.gosellapi.internal.api.model
+company.tap.gosellapi.internal.api.requests
+company.tap.gosellapi.internal.api.responses

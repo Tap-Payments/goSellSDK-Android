@@ -1,10 +1,11 @@
-package company.tap.gosellapi.api.facade;
+package company.tap.gosellapi.internal.api.api_service;
 
-import company.tap.gosellapi.api.model.Charge;
-import company.tap.gosellapi.api.model.Token;
-import company.tap.gosellapi.api.requests.CreateChargeRequest;
-import company.tap.gosellapi.api.requests.CreateTokenRequest;
-import company.tap.gosellapi.api.requests.UpdateChargeRequest;
+import company.tap.gosellapi.internal.api.model.Charge;
+import company.tap.gosellapi.internal.api.model.Token;
+import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
+import company.tap.gosellapi.internal.api.requests.CreateTokenRequest;
+import company.tap.gosellapi.internal.api.requests.UpdateChargeRequest;
+import company.tap.gosellapi.internal.api.responses.InitResponse;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -19,6 +20,9 @@ import retrofit2.http.Path;
  */
 
 interface APIService {
+    @GET(API_Constants.INIT)
+    Call<InitResponse> init();
+
     @POST(API_Constants.TOKEN)
     Call<Token> createToken(@Body CreateTokenRequest createTokenRequest);
 

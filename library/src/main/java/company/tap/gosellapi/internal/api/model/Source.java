@@ -1,4 +1,4 @@
-package company.tap.gosellapi.api.model;
+package company.tap.gosellapi.internal.api.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

@@ -1,10 +1,10 @@
-package company.tap.gosellapi.api.facade;
+package company.tap.gosellapi.internal.api.api_service;
 
 import android.support.annotation.NonNull;
 
 import java.io.IOException;
 
-import company.tap.gosellapi.api.responses.BaseResponse;
+import company.tap.gosellapi.internal.api.responses.BaseResponse;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;

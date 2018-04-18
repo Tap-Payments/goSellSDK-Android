@@ -1,4 +1,4 @@
-package company.tap.gosellapi.api.responses;
+package company.tap.gosellapi.internal.api.responses;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -11,7 +11,7 @@ import java.util.HashMap;
  * Model for {@link CardResponse} object
  */
 
-public final class CardResponse implements BaseResponse{
+public final class CardResponse implements BaseResponse {
     @SerializedName("id")
     @Expose
     private String id;
