@@ -17,6 +17,8 @@ public class AppInfo {
     public static void setAuthToken(Context context, String authToken) {
         AppInfo.authToken = authToken;
         initApplicationInfo(context.getPackageName());
+
+        setLocale("fr");
     }
 
     static String getAuthToken() {
@@ -25,7 +27,7 @@ public class AppInfo {
 
     public static void setLocale(String locale) {
         AppInfo.localeString = locale.length() < 2 ? locale : locale.substring(0, 2);
-        AppInfo.applicationInfo.put("app_locale", localeString);
+        AppInfo.applicationInfo.put("app_locale", SupportedLocales.findByString(localeString).language);
     }
 
     private static void initApplicationInfo(String applicationId) {
@@ -36,7 +38,7 @@ public class AppInfo {
         applicationInfo.put("requirer_version", BuildConfig.VERSION_NAME);
         applicationInfo.put("requirer_os", "Android");
         applicationInfo.put("requirer_os_version", Build.VERSION.RELEASE);
-        applicationInfo.put("app_locale", localeString);
+        applicationInfo.put("app_locale", SupportedLocales.findByString(localeString).language);
     }
 
     static String getApplicationInfo() {
@@ -51,5 +53,25 @@ public class AppInfo {
         stringBuilder.deleteCharAt(stringBuilder.length() - 1);
 
         return stringBuilder.toString();
+    }
+
+    private enum SupportedLocales {
+        EN("en");
+
+        private String language;
+
+        SupportedLocales(String language) {
+            this.language = language;
+        }
+
+        static SupportedLocales findByString(String localeString) {
+            for (SupportedLocales locale : values()) {
+                if (locale.language.equalsIgnoreCase(localeString)) {
+                    return locale;
+                }
+            }
+
+            return EN;
+        }
     }
 }
