@@ -203,6 +203,7 @@ public class GoSellPayButton extends AppCompatTextView implements View.OnClickLi
         setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);
         setTextColor(mTextColor);
         setTypeface(getTypeface(), mTextStyle);
+        setAllCaps(true);
 
         setBackgroundDrawable(mBackground);
         setGravity(mGravity);
