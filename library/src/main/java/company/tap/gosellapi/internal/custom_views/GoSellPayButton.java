@@ -14,6 +14,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import java.util.HashMap;
 
@@ -25,7 +26,7 @@ import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.models.Redirect;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
 
-public class GoSellPayButton extends AppCompatTextView implements View.OnClickListener {
+public class GoSellPayButton extends FrameLayout implements View.OnClickListener {
     private static final int VALUE_IS_MISSING = -11111;
     private static final String TAG = "GoSellPayButton TAG";
 
@@ -47,6 +48,7 @@ public class GoSellPayButton extends AppCompatTextView implements View.OnClickLi
     private int mTextColor;
     private int mTextStyle;
 
+    private AppCompatTextView payButton;
     private Drawable mBackground;
     private int mGravity;
     private CharSequence mText;
@@ -62,10 +64,14 @@ public class GoSellPayButton extends AppCompatTextView implements View.OnClickLi
     }
 
     private void init(Context context, AttributeSet attrs) {
+        payButton = new AppCompatTextView(context, attrs);
+
         initAttributes(context, attrs);
         setAttributes();
 
+        this.addView(payButton, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         super.setOnClickListener(this);
+        payButton.setOnClickListener(this);
     }
 
     private void initAttributes(Context context, AttributeSet attrs) {
@@ -194,20 +200,20 @@ public class GoSellPayButton extends AppCompatTextView implements View.OnClickLi
     }
 
     private void setAttributes() {
-        setPadding(mPaddingLeft, mPaddingTop, mPaddingRight, mPaddingBottom);
+        payButton.setPadding(mPaddingLeft, mPaddingTop, mPaddingRight, mPaddingBottom);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            setPaddingRelative(mPaddingStart != VALUE_IS_MISSING ? mPaddingStart : mPaddingLeft, mPaddingTop, mPaddingEnd != VALUE_IS_MISSING ? mPaddingEnd : mPaddingRight, mPaddingBottom);
+            payButton.setPaddingRelative(mPaddingStart != VALUE_IS_MISSING ? mPaddingStart : mPaddingLeft, mPaddingTop, mPaddingEnd != VALUE_IS_MISSING ? mPaddingEnd : mPaddingRight, mPaddingBottom);
         }
 
-        setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);
-        setTextColor(mTextColor);
-        setTypeface(getTypeface(), mTextStyle);
-        setAllCaps(true);
+        payButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);
+        payButton.setTextColor(mTextColor);
+        payButton.setTypeface(payButton.getTypeface(), mTextStyle);
+        payButton.setAllCaps(true);
 
-        setBackgroundDrawable(mBackground);
-        setGravity(mGravity);
-        setText(mText);
+        payButton.setBackgroundDrawable(mBackground);
+        payButton.setGravity(mGravity);
+        payButton.setText(mText);
     }
 
     @Override
