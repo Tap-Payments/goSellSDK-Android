@@ -1,4 +1,4 @@
-package company.tap.gosellapi.internal.api.api_service;
+package company.tap.gosellapi.internal.api.callbacks;
 
 import android.support.annotation.NonNull;
 
@@ -16,11 +16,11 @@ import retrofit2.Response;
  * Base callback with response handling
  */
 
-final class BaseCallback<K extends BaseResponse> implements Callback<K> {
+public final class BaseCallback<K extends BaseResponse> implements Callback<K> {
     private static final String UNABLE_TO_FETCH_ERROR_INFO = "Unable to fetch error information";
     private APIRequestCallback<K> requestCallback;
 
-    BaseCallback(APIRequestCallback<K> requestCallback) {
+    public BaseCallback(APIRequestCallback<K> requestCallback) {
         this.requestCallback = requestCallback;
     }
 

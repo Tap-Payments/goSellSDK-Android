@@ -1,7 +1,11 @@
-package company.tap.gosellapi.internal.api.api_service;
+package company.tap.gosellapi.internal.api.facade;
 
 import java.util.ArrayList;
 
+import company.tap.gosellapi.internal.api.api_service.APIService;
+import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
+import company.tap.gosellapi.internal.api.callbacks.BaseCallback;
+import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.responses.BaseResponse;
 import company.tap.gosellapi.internal.api.responses.InitResponse;
 import retrofit2.Call;

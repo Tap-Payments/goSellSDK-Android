@@ -5,7 +5,7 @@ import android.support.annotation.RestrictTo;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import company.tap.gosellapi.internal.api.model.Token;
+import company.tap.gosellapi.internal.api.models.Token;
 
 /**
  * Created by eugene.goltsev on 12.02.2018.

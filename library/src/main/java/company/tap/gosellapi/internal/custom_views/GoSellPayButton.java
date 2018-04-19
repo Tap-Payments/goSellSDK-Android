@@ -18,11 +18,11 @@ import android.view.ViewGroup;
 import java.util.HashMap;
 
 import company.tap.gosellapi.R;
-import company.tap.gosellapi.internal.api.api_service.APIRequestCallback;
-import company.tap.gosellapi.internal.api.api_service.GoSellAPI;
-import company.tap.gosellapi.internal.api.api_service.GoSellError;
-import company.tap.gosellapi.internal.api.model.Charge;
-import company.tap.gosellapi.internal.api.model.Redirect;
+import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
+import company.tap.gosellapi.internal.api.callbacks.GoSellError;
+import company.tap.gosellapi.internal.api.facade.GoSellAPI;
+import company.tap.gosellapi.internal.api.models.Charge;
+import company.tap.gosellapi.internal.api.models.Redirect;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
 
 public class GoSellPayButton extends AppCompatTextView implements View.OnClickListener {

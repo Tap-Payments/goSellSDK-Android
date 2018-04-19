@@ -1,4 +1,4 @@
-package company.tap.gosellapi.internal.api.model;
+package company.tap.gosellapi.internal.api.models;
 
 import android.support.annotation.RestrictTo;
 
