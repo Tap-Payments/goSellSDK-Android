@@ -1,5 +1,6 @@
 package company.tap.gosellapi.internal.api.api_service;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -17,14 +18,31 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-final class RetrofitHelper {
+public final class RetrofitHelper {
     private static Retrofit retrofit;
     private static APIService helper;
 
+    //auth information for headers
+    private static String authToken;
+    private static String applicationId;
+
+    public static void setAuthToken(Context context, String authToken) {
+        RetrofitHelper.authToken = authToken;
+        RetrofitHelper.applicationId = context.getPackageName();
+    }
+
+    static String getAuthToken() {
+        return authToken;
+    }
+
+    static String getApplicationId() {
+        return applicationId;
+    }
+
     @Nullable
-    static APIService getApiHelper() {
+    public static APIService getApiHelper() {
         if (retrofit == null) {
-            if (GoSellAPI.getAuthToken() == null) {
+            if (authToken == null) {
                 throw new RuntimeException("Auth token was not provided!");
             }
 
@@ -53,8 +71,8 @@ final class RetrofitHelper {
             public Response intercept(@NonNull Chain chain) throws IOException {
                 Request request = chain.request()
                         .newBuilder()
-                        .addHeader(API_Constants.AUTH_TOKEN_KEY, API_Constants.AUTH_TOKEN_PREFIX + GoSellAPI.getAuthToken())
-                        .addHeader(API_Constants.APPLICATION, GoSellAPI.getApplicationId())
+                        .addHeader(API_Constants.AUTH_TOKEN_KEY, API_Constants.AUTH_TOKEN_PREFIX + authToken)
+                        .addHeader(API_Constants.APPLICATION, applicationId)
                         .addHeader(API_Constants.CONTENT_TYPE_KEY, API_Constants.CONTENT_TYPE_VALUE).build();
                 return chain.proceed(request);
             }

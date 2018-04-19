@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.HashMap;
 
-import company.tap.gosellapi.internal.api.model.Charge;
+import company.tap.gosellapi.internal.api.models.Charge;
 
 /**
  * Created by eugene.goltsev on 14.02.2018.

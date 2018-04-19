@@ -1,19 +1,17 @@
-package company.tap.gosellapi.internal.api.api_service;
+package company.tap.gosellapi.internal.api.facade;
 
-import android.content.Context;
 import android.support.annotation.RestrictTo;
 
-import company.tap.gosellapi.internal.api.model.Charge;
+import company.tap.gosellapi.internal.api.api_service.APIService;
+import company.tap.gosellapi.internal.api.api_service.RetrofitHelper;
+import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
+import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
 import company.tap.gosellapi.internal.api.requests.UpdateChargeRequest;
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 public final class GoSellAPI {
     private APIService apiHelper;
-
-    //auth information for headers
-    private static String authToken;
-    private static String applicationId;
 
     //init and pending requests
     private DataManager dataManager;
@@ -29,21 +27,6 @@ public final class GoSellAPI {
 
     public static GoSellAPI getInstance() {
         return SingletonHolder.INSTANCE;
-    }
-
-
-    //auth information for headers
-    public static void setAuthToken(Context context, String authToken) {
-        GoSellAPI.authToken = authToken;
-        GoSellAPI.applicationId = context.getPackageName();
-    }
-
-    static String getAuthToken() {
-        return authToken;
-    }
-
-    static String getApplicationId() {
-        return applicationId;
     }
 
 

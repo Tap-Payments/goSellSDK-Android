@@ -1,7 +1,7 @@
 package company.tap.gosellapi.internal.api.api_service;
 
-import company.tap.gosellapi.internal.api.model.Charge;
-import company.tap.gosellapi.internal.api.model.Token;
+import company.tap.gosellapi.internal.api.models.Charge;
+import company.tap.gosellapi.internal.api.models.Token;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
 import company.tap.gosellapi.internal.api.requests.CreateTokenRequest;
 import company.tap.gosellapi.internal.api.requests.UpdateChargeRequest;
@@ -19,7 +19,7 @@ import retrofit2.http.Path;
  * Interface for Retrofit methods
  */
 
-interface APIService {
+public interface APIService {
     @GET(API_Constants.INIT)
     Call<InitResponse> init();
 
