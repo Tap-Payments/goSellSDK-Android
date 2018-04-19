@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import company.tap.gosellapi.BuildConfig;
+import company.tap.gosellapi.internal.logger.lo;
 
 public class AppInfo {
     //auth information for headers
@@ -18,7 +19,7 @@ public class AppInfo {
         AppInfo.authToken = authToken;
         initApplicationInfo(context.getPackageName());
 
-        setLocale("fr");
+        lo.init(context);
     }
 
     static String getAuthToken() {
