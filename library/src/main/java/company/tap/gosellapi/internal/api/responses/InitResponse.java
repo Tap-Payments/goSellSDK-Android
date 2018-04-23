@@ -40,6 +40,10 @@ public final class InitResponse implements BaseResponse {
         @Expose
         private String encryption_key;
 
+        @SerializedName("merchant")
+        @Expose
+        private Merchant merchant;
+
         public boolean isLivemode() {
             return livemode;
         }
@@ -54,6 +58,37 @@ public final class InitResponse implements BaseResponse {
 
         public String getEncryption_key() {
             return encryption_key;
+        }
+
+        public Merchant getMerchant() {
+            return merchant;
+        }
+
+        public static final class Merchant {
+            @SerializedName("name")
+            @Expose
+            private String name;
+
+            @SerializedName("logo")
+            @Expose
+            private String logo;
+
+
+            @SerializedName("supported_currencies")
+            @Expose
+            private ArrayList<String> supported_currencies;
+
+            public String getName() {
+                return name;
+            }
+
+            public String getLogo() {
+                return logo;
+            }
+
+            public ArrayList<String> getSupported_currencies() {
+                return supported_currencies;
+            }
         }
     }
 
