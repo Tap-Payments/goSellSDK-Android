@@ -36,6 +36,7 @@ public class GoSellPayButton extends FrameLayout implements View.OnClickListener
     private int mMarginStart;
     private int mMarginRight;
     private int mMarginEnd;
+    private boolean mMarginsWasSet;
 
     private int mPaddingTop;
     private int mPaddingBottom;
@@ -217,10 +218,10 @@ public class GoSellPayButton extends FrameLayout implements View.OnClickListener
     }
 
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
 
-        if (getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+        if (getLayoutParams() instanceof ViewGroup.MarginLayoutParams && !mMarginsWasSet) {
             ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) getLayoutParams();
             layoutParams.setMargins(mMarginLeft, mMarginTop, mMarginRight, mMarginBottom);
 
@@ -234,8 +235,14 @@ public class GoSellPayButton extends FrameLayout implements View.OnClickListener
             }
 
             setLayoutParams(layoutParams);
-            requestLayout();
+            mMarginsWasSet = true;
+            requestLayout(); //just to make sure that changes will apply
         }
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
     }
 
     //goSell handles clicks
