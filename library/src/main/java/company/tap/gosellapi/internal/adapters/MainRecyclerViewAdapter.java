@@ -3,11 +3,13 @@ package company.tap.gosellapi.internal.adapters;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
+import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.view_holders.CardCredentialsViewHolder;
 import company.tap.gosellapi.internal.view_holders.KNETSectionViewHolder;
 import company.tap.gosellapi.internal.view_holders.MainHeaderViewHolder;
@@ -62,6 +64,17 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
+        SectionType type = SectionType.valueOf(position);
+
+        switch (type) {
+
+            case RECENT:
+                ((RecentSectionViewHolder) holder).bind();
+
+            default:
+
+                 break;
+        }
     }
 
     @Override
@@ -84,7 +97,7 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter {
                 return new MainHeaderViewHolder(parent);
 
             case RECENT:
-                return new RecentSectionViewHolder(parent);
+                return new RecentSectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.gosellapi_viewholder_recent_section, parent, false));
 
             case KNET:
                 return new KNETSectionViewHolder(parent);
