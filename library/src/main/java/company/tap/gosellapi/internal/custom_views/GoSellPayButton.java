@@ -25,10 +25,13 @@ import company.tap.gosellapi.internal.api.facade.GoSellAPI;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.models.Redirect;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
+import gotap.com.tapglkitandroid.gl.Views.TapLoadingView;
 
 public class GoSellPayButton extends FrameLayout implements View.OnClickListener {
     private static final int VALUE_IS_MISSING = -11111;
     private static final String TAG = "GoSellPayButton TAG";
+
+    private int mHeight;
 
     private int mMarginTop;
     private int mMarginBottom;
@@ -36,7 +39,6 @@ public class GoSellPayButton extends FrameLayout implements View.OnClickListener
     private int mMarginStart;
     private int mMarginRight;
     private int mMarginEnd;
-    private boolean mMarginsWasSet;
 
     private int mPaddingTop;
     private int mPaddingBottom;
@@ -49,10 +51,16 @@ public class GoSellPayButton extends FrameLayout implements View.OnClickListener
     private int mTextColor;
     private int mTextStyle;
 
+    private int mLoadingViewMarginVertical;
+    private int mLoadingViewMarginStart;
+    private int mLoadingViewDimension;
+
     private AppCompatTextView payButton;
     private Drawable mBackground;
     private int mGravity;
     private CharSequence mText;
+
+    private TapLoadingView loadingView;
 
     public GoSellPayButton(Context context) {
         super(context);
@@ -66,31 +74,36 @@ public class GoSellPayButton extends FrameLayout implements View.OnClickListener
 
     private void init(Context context, AttributeSet attrs) {
         payButton = new AppCompatTextView(context, attrs);
+        loadingView = new TapLoadingView(context, attrs);
 
         initAttributes(context, attrs);
         setAttributes();
 
-        this.addView(payButton, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        addView(payButton, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        addView(loadingView, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.START | Gravity.CENTER_VERTICAL));
+
         super.setOnClickListener(this);
         payButton.setOnClickListener(this);
     }
 
     private void initAttributes(Context context, AttributeSet attrs) {
-        mMarginTop = context.getResources().getDimensionPixelSize(R.dimen.btn_margin_vertical);
-        mMarginBottom = context.getResources().getDimensionPixelSize(R.dimen.btn_margin_vertical);
-        mMarginLeft = context.getResources().getDimensionPixelSize(R.dimen.btn_margin_horizontal);
+        mHeight = context.getResources().getDimensionPixelSize(R.dimen.pay_btn_min_height);
+
+        mMarginTop = context.getResources().getDimensionPixelSize(R.dimen.pay_btn_margin_vertical);
+        mMarginBottom = context.getResources().getDimensionPixelSize(R.dimen.pay_btn_margin_vertical);
+        mMarginLeft = context.getResources().getDimensionPixelSize(R.dimen.pay_btn_margin_horizontal);
         mMarginStart = VALUE_IS_MISSING;
-        mMarginRight = context.getResources().getDimensionPixelSize(R.dimen.btn_margin_horizontal);
+        mMarginRight = context.getResources().getDimensionPixelSize(R.dimen.pay_btn_margin_horizontal);
         mMarginEnd = VALUE_IS_MISSING;
 
-        mPaddingTop = context.getResources().getDimensionPixelSize(R.dimen.btn_padding_vertical);
-        mPaddingBottom = context.getResources().getDimensionPixelSize(R.dimen.btn_padding_vertical);
-        mPaddingLeft = context.getResources().getDimensionPixelSize(R.dimen.btn_padding_horizontal);
+        mPaddingTop = context.getResources().getDimensionPixelSize(R.dimen.pay_btn_padding_vertical);
+        mPaddingBottom = context.getResources().getDimensionPixelSize(R.dimen.pay_btn_padding_vertical);
+        mPaddingLeft = context.getResources().getDimensionPixelSize(R.dimen.pay_btn_padding_horizontal);
         mPaddingStart = VALUE_IS_MISSING;
-        mPaddingRight = context.getResources().getDimensionPixelSize(R.dimen.btn_padding_horizontal);
+        mPaddingRight = context.getResources().getDimensionPixelSize(R.dimen.pay_btn_padding_horizontal);
         mPaddingEnd = VALUE_IS_MISSING;
 
-        mTextSize = context.getResources().getDimensionPixelSize(R.dimen.btn_text_size);
+        mTextSize = context.getResources().getDimensionPixelSize(R.dimen.pay_btn_text_size);
         mTextColor = ContextCompat.getColor(context, R.color.white);
         mTextStyle = Typeface.BOLD;
         
@@ -101,6 +114,11 @@ public class GoSellPayButton extends FrameLayout implements View.OnClickListener
         if (attrs != null) {
             // Attribute initialization
             final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.GoSellPayButton);
+
+            int height = a.getLayoutDimension(R.styleable.GoSellPayButton_android_layout_height, VALUE_IS_MISSING);
+            if (height != VALUE_IS_MISSING && height > mHeight) {
+                mHeight = height;
+            }
 
             //margins
             int marginTop = a.getDimensionPixelSize(R.styleable.GoSellPayButton_android_layout_marginTop, VALUE_IS_MISSING);
@@ -198,6 +216,9 @@ public class GoSellPayButton extends FrameLayout implements View.OnClickListener
 
             a.recycle();
         }
+
+        mLoadingViewMarginVertical = mLoadingViewMarginStart = mHeight / 6;
+        mLoadingViewDimension = mHeight * 4 / 6;
     }
 
     private void setAttributes() {
@@ -215,14 +236,19 @@ public class GoSellPayButton extends FrameLayout implements View.OnClickListener
         payButton.setBackgroundDrawable(mBackground);
         payButton.setGravity(mGravity);
         payButton.setText(mText);
+
+        loadingView.useCustomColor = true;
+        loadingView.color = ContextCompat.getColor(getContext(), R.color.white);
+        loadingView.setPercent(1.0f);
     }
 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
 
-        if (getLayoutParams() instanceof ViewGroup.MarginLayoutParams && !mMarginsWasSet) {
+        if (getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
             ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) getLayoutParams();
+            layoutParams.height = mHeight;
             layoutParams.setMargins(mMarginLeft, mMarginTop, mMarginRight, mMarginBottom);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -235,8 +261,17 @@ public class GoSellPayButton extends FrameLayout implements View.OnClickListener
             }
 
             setLayoutParams(layoutParams);
-            mMarginsWasSet = true;
             requestLayout(); //just to make sure that changes will apply
+        }
+
+        if (loadingView.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams loadingViewLayoutParams = (MarginLayoutParams) loadingView.getLayoutParams();
+            loadingViewLayoutParams.height = loadingViewLayoutParams.width = mLoadingViewDimension;
+            loadingViewLayoutParams.setMargins(mLoadingViewMarginStart, mLoadingViewMarginVertical, 0, mLoadingViewMarginVertical);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                loadingViewLayoutParams.setMarginStart(mLoadingViewMarginStart);
+            }
         }
     }
 

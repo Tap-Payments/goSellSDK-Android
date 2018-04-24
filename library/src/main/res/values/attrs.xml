@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="GoSellPayButton">
+        <attr name="android:layout_height"/>
+
         <attr name="android:layout_marginTop"/>
         <attr name="android:layout_marginBottom"/>
         <attr name="android:layout_marginLeft"/>
