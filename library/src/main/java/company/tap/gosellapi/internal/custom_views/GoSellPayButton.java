@@ -22,8 +22,8 @@ import android.widget.Toast;
 import java.util.HashMap;
 
 import company.tap.gosellapi.R;
-import company.tap.gosellapi.internal.activities.MainActivity;
 import company.tap.gosellapi.internal.Utils;
+import company.tap.gosellapi.internal.activities.MainActivity;
 import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.facade.GoSellAPI;
