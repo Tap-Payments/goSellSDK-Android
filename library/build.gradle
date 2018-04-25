@@ -28,6 +28,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
 
     implementation 'com.github.Tap-Payments:TapGLKit-Android:1.14'
+    implementation 'com.github.Tap-Payments:TapCardValidator-Android:1.0.3'
 }
 
 task sourcesJar(type: Jar) {
