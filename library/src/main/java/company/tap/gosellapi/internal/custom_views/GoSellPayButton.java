@@ -1,6 +1,7 @@
 package company.tap.gosellapi.internal.custom_views;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import java.util.HashMap;
 
 import company.tap.gosellapi.R;
+import company.tap.gosellapi.internal.activities.MainActivity;
 import company.tap.gosellapi.internal.Utils;
 import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
@@ -346,5 +348,8 @@ public class GoSellPayButton extends FrameLayout implements View.OnClickListener
                     }
                 }
         );
+
+        Intent intent = new Intent(getContext(), MainActivity.class);
+        getContext().startActivity(intent);
     }
 }
