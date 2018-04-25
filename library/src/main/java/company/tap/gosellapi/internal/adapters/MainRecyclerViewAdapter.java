@@ -11,17 +11,15 @@ import java.util.ArrayList;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.view_holders.CardCredentialsViewHolder;
-import company.tap.gosellapi.internal.view_holders.KNETSectionViewHolder;
-import company.tap.gosellapi.internal.view_holders.MainHeaderViewHolder;
+import company.tap.gosellapi.internal.view_holders.PaymentSystemsViewHolder;
 import company.tap.gosellapi.internal.view_holders.RecentSectionViewHolder;
 
 public class MainRecyclerViewAdapter extends RecyclerView.Adapter {
 
     enum SectionType {
-        HEADER(0),
-        RECENT(1),
-        KNET(2),
-        CARD_CREDENTIALS(3);
+        RECENT(0),
+        KNET(1),
+        CARD_CREDENTIALS(2);
 
         private int value;
         private static SparseArray<SectionType> sectionsMap = new SparseArray<>();
@@ -47,7 +45,6 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter {
 
     private ArrayList<SectionType> temporarySectionsModel = new ArrayList<SectionType>() {
         {
-            add(SectionType.HEADER);
             add(SectionType.RECENT);
             add(SectionType.KNET);
             add(SectionType.CARD_CREDENTIALS);
@@ -93,14 +90,11 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter {
 
         switch (type) {
 
-            case HEADER:
-                return new MainHeaderViewHolder(parent);
-
             case RECENT:
                 return new RecentSectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.gosellapi_viewholder_recent_section, parent, false));
 
             case KNET:
-                return new KNETSectionViewHolder(parent);
+                return new PaymentSystemsViewHolder(parent);
 
             case CARD_CREDENTIALS:
                 return new CardCredentialsViewHolder(parent);
