@@ -64,7 +64,7 @@ public class GoSellPayButton extends FrameLayout implements View.OnClickListener
     private CharSequence mText;
 
     private TapLoadingView loadingView;
-    private ImageView iconView;
+    private ImageView securityIconView;
 
     public GoSellPayButton(Context context) {
         super(context);
@@ -79,22 +79,22 @@ public class GoSellPayButton extends FrameLayout implements View.OnClickListener
     private void init(Context context, AttributeSet attrs) {
         payButton = new AppCompatTextView(context, attrs);
         loadingView = new TapLoadingView(context, attrs);
-        iconView = new ImageView(context, attrs);
+        securityIconView = new ImageView(context, attrs);
 
         setId(R.id.pay_layout_id);
         payButton.setId(R.id.pay_button_id);
-        iconView.setId(R.id.pay_security_icon_id);
+        securityIconView.setId(R.id.pay_security_icon_id);
 
         initAttributes(context, attrs);
         setAttributes();
 
         addView(payButton, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         addView(loadingView, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.START | Gravity.CENTER_VERTICAL));
-        addView(iconView, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.END | Gravity.CENTER_VERTICAL));
+        addView(securityIconView, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.END | Gravity.CENTER_VERTICAL));
 
         super.setOnClickListener(this);
         payButton.setOnClickListener(this);
-        iconView.setOnClickListener(this);
+        securityIconView.setOnClickListener(this);
     }
 
     private void initAttributes(Context context, AttributeSet attrs) {
@@ -252,7 +252,13 @@ public class GoSellPayButton extends FrameLayout implements View.OnClickListener
         loadingView.color = ContextCompat.getColor(getContext(), R.color.white);
         loadingView.setPercent(1.0f);
 
-        iconView.setImageDrawable(Utils.setImageTint(getContext(), R.drawable.image_security, R.color.white));
+        securityIconView.setImageDrawable(Utils.setImageTint(getContext(), R.drawable.image_security, R.color.white));
+
+        //padding stuff is for better click UX
+        securityIconView.setPadding(mAdditionalViewMarginHorizontal * 2, mAdditionalViewMarginVertical, mAdditionalViewMarginHorizontal * 2, mAdditionalViewMarginVertical);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            securityIconView.setPaddingRelative(mAdditionalViewMarginHorizontal * 2, mAdditionalViewMarginVertical, mAdditionalViewMarginHorizontal * 2, mAdditionalViewMarginVertical);
+        }
     }
 
     @Override
@@ -289,17 +295,12 @@ public class GoSellPayButton extends FrameLayout implements View.OnClickListener
             loadingView.setLayoutParams(loadingViewLayoutParams);
         }
 
-        if (iconView.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
-            ViewGroup.MarginLayoutParams iconViewLayoutParams = (MarginLayoutParams) iconView.getLayoutParams();
-            iconViewLayoutParams.height = mAdditionalViewDimension;
-            iconViewLayoutParams.width = mAdditionalViewDimension / 2;
-            iconViewLayoutParams.setMargins(0, mAdditionalViewMarginVertical, mAdditionalViewMarginHorizontal * 2, mAdditionalViewMarginVertical);
+        if (securityIconView.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams iconViewLayoutParams = (MarginLayoutParams) securityIconView.getLayoutParams();
+            iconViewLayoutParams.height = mHeight;
+            iconViewLayoutParams.width = mAdditionalViewDimension / 2 + mAdditionalViewMarginHorizontal * 2 * 2;
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                iconViewLayoutParams.setMarginEnd(mAdditionalViewMarginHorizontal * 2);
-            }
-
-            iconView.setLayoutParams(iconViewLayoutParams);
+            securityIconView.setLayoutParams(iconViewLayoutParams);
         }
     }
 
