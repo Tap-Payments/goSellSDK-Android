@@ -15,10 +15,12 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import java.util.HashMap;
 
 import company.tap.gosellapi.R;
+import company.tap.gosellapi.internal.Utils;
 import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.facade.GoSellAPI;
@@ -51,9 +53,9 @@ public class GoSellPayButton extends FrameLayout implements View.OnClickListener
     private int mTextColor;
     private int mTextStyle;
 
-    private int mLoadingViewMarginVertical;
-    private int mLoadingViewMarginStart;
-    private int mLoadingViewDimension;
+    private int mAdditionalViewMarginVertical;
+    private int mAdditionalViewMarginHorizontal;
+    private int mAdditionalViewDimension;
 
     private AppCompatTextView payButton;
     private Drawable mBackground;
@@ -61,6 +63,7 @@ public class GoSellPayButton extends FrameLayout implements View.OnClickListener
     private CharSequence mText;
 
     private TapLoadingView loadingView;
+    private ImageView iconView;
 
     public GoSellPayButton(Context context) {
         super(context);
@@ -75,12 +78,14 @@ public class GoSellPayButton extends FrameLayout implements View.OnClickListener
     private void init(Context context, AttributeSet attrs) {
         payButton = new AppCompatTextView(context, attrs);
         loadingView = new TapLoadingView(context, attrs);
+        iconView = new ImageView(context, attrs);
 
         initAttributes(context, attrs);
         setAttributes();
 
         addView(payButton, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         addView(loadingView, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.START | Gravity.CENTER_VERTICAL));
+        addView(iconView, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.END | Gravity.CENTER_VERTICAL));
 
         super.setOnClickListener(this);
         payButton.setOnClickListener(this);
@@ -217,8 +222,8 @@ public class GoSellPayButton extends FrameLayout implements View.OnClickListener
             a.recycle();
         }
 
-        mLoadingViewMarginVertical = mLoadingViewMarginStart = mHeight / 6;
-        mLoadingViewDimension = mHeight * 4 / 6;
+        mAdditionalViewMarginVertical = mAdditionalViewMarginHorizontal = mHeight / 6;
+        mAdditionalViewDimension = mHeight * 4 / 6;
     }
 
     private void setAttributes() {
@@ -240,6 +245,8 @@ public class GoSellPayButton extends FrameLayout implements View.OnClickListener
         loadingView.useCustomColor = true;
         loadingView.color = ContextCompat.getColor(getContext(), R.color.white);
         loadingView.setPercent(1.0f);
+
+        iconView.setImageDrawable(Utils.setImageTint(getContext(), R.drawable.image_security, R.color.white));
     }
 
     @Override
@@ -266,12 +273,27 @@ public class GoSellPayButton extends FrameLayout implements View.OnClickListener
 
         if (loadingView.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
             ViewGroup.MarginLayoutParams loadingViewLayoutParams = (MarginLayoutParams) loadingView.getLayoutParams();
-            loadingViewLayoutParams.height = loadingViewLayoutParams.width = mLoadingViewDimension;
-            loadingViewLayoutParams.setMargins(mLoadingViewMarginStart, mLoadingViewMarginVertical, 0, mLoadingViewMarginVertical);
+            loadingViewLayoutParams.height = loadingViewLayoutParams.width = mAdditionalViewDimension;
+            loadingViewLayoutParams.setMargins(mAdditionalViewMarginHorizontal, mAdditionalViewMarginVertical, 0, mAdditionalViewMarginVertical);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                loadingViewLayoutParams.setMarginStart(mLoadingViewMarginStart);
+                loadingViewLayoutParams.setMarginStart(mAdditionalViewMarginHorizontal);
             }
+
+            loadingView.setLayoutParams(loadingViewLayoutParams);
+        }
+
+        if (iconView.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams iconViewLayoutParams = (MarginLayoutParams) iconView.getLayoutParams();
+            iconViewLayoutParams.height = mAdditionalViewDimension;
+            iconViewLayoutParams.width = mAdditionalViewDimension / 2;
+            iconViewLayoutParams.setMargins(0, mAdditionalViewMarginVertical, mAdditionalViewMarginHorizontal * 2, mAdditionalViewMarginVertical);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                iconViewLayoutParams.setMarginEnd(mAdditionalViewMarginHorizontal * 2);
+            }
+
+            iconView.setLayoutParams(iconViewLayoutParams);
         }
     }
 
