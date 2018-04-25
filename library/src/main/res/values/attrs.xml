@@ -25,4 +25,8 @@
         <attr name="android:gravity"/>
         <attr name="android:text"/>
     </declare-styleable>
+
+    <item name="pay_layout_id" type="id"/>
+    <item name="pay_button_id" type="id"/>
+    <item name="pay_security_icon_id" type="id"/>
 </resources>

@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.HashMap;
 
@@ -80,6 +81,10 @@ public class GoSellPayButton extends FrameLayout implements View.OnClickListener
         loadingView = new TapLoadingView(context, attrs);
         iconView = new ImageView(context, attrs);
 
+        setId(R.id.pay_layout_id);
+        payButton.setId(R.id.pay_button_id);
+        iconView.setId(R.id.pay_security_icon_id);
+
         initAttributes(context, attrs);
         setAttributes();
 
@@ -89,6 +94,7 @@ public class GoSellPayButton extends FrameLayout implements View.OnClickListener
 
         super.setOnClickListener(this);
         payButton.setOnClickListener(this);
+        iconView.setOnClickListener(this);
     }
 
     private void initAttributes(Context context, AttributeSet attrs) {
@@ -297,11 +303,6 @@ public class GoSellPayButton extends FrameLayout implements View.OnClickListener
         }
     }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-    }
-
     //goSell handles clicks
     @Override
     public final void setOnClickListener(@Nullable OnClickListener l) {
@@ -310,6 +311,16 @@ public class GoSellPayButton extends FrameLayout implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
+        int i = v.getId();
+        if (i == R.id.pay_layout_id || i == R.id.pay_button_id) {
+            createCharge();
+            Toast.makeText(getContext(), "Pressed non-security!", Toast.LENGTH_SHORT).show();
+        } else if (i == R.id.pay_security_icon_id) {
+            Toast.makeText(getContext(), "Pressed security!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void createCharge() {
         HashMap<String, String> chargeMetadata = new HashMap<>();
         chargeMetadata.put("Order Number", "ORD-1001");
 
