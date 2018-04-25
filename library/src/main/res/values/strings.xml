@@ -1,4 +1,14 @@
 <resources>
     <string name="app_name">GoSellAPI</string>
     <string name="pay">Pay</string>
+
+    <string name="edittext_hint_card_number">Card number</string>
+    <string name="edittext_hint_expiration_date">MM/YY</string>
+    <string name="edittext_hint_CVV">CVV</string>
+    <string name="edittext_hint_name_on_card">Name on card</string>
+
+    <string name="textview_title_recent">Recent</string>
+    <string name="textview_title_others">Others</string>
+    <string name="textview_disclaimer_save_card">For faster and more secure checkout, save your card</string>
+
 </resources>
