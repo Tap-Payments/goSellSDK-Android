@@ -14,18 +14,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gosellapi_activity_main);
-
-        initMainRecyclerView();
-    }
-
-    private void initMainRecyclerView() {
-        RecyclerView mainRecyclerView = findViewById(R.id.mainRecyclerView);
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        MainRecyclerViewAdapter adapter = new MainRecyclerViewAdapter();
-
-        mainRecyclerView.setLayoutManager(layoutManager);
-        mainRecyclerView.setAdapter(adapter);
     }
 }
 
