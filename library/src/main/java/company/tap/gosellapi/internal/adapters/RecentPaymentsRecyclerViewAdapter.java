@@ -14,7 +14,6 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
     @NonNull
     @Override
     public RecentPaymentsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.e("TAG", "ON CREATE VIEW HOLDER");
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.gosellapi_viewholder_recent_payments, parent, false);
         return new RecentPaymentsViewHolder(view);
     }
@@ -26,7 +25,6 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
 
     @Override
     public int getItemCount() {
-        Log.e("TAG", "GET ITEM COUNT");
         return 10;
     }
 
