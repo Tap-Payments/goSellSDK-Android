@@ -32,10 +32,6 @@ public final class InitResponse implements BaseResponse {
         @Expose
         private ArrayList<String> permissions;
 
-        @SerializedName("verified_application")
-        @Expose
-        private String verified_application;
-
         @SerializedName("encryption_key")
         @Expose
         private String encryption_key;
@@ -50,10 +46,6 @@ public final class InitResponse implements BaseResponse {
 
         public ArrayList<String> getPermissions() {
             return permissions;
-        }
-
-        public String getVerified_application() {
-            return verified_application;
         }
 
         public String getEncryption_key() {
@@ -73,6 +65,9 @@ public final class InitResponse implements BaseResponse {
             @Expose
             private String logo;
 
+            @SerializedName("currency_code")
+            @Expose
+            private String currency_code;
 
             @SerializedName("supported_currencies")
             @Expose
@@ -84,6 +79,10 @@ public final class InitResponse implements BaseResponse {
 
             public String getLogo() {
                 return logo;
+            }
+
+            public String getCurrency_code() {
+                return currency_code;
             }
 
             public ArrayList<String> getSupported_currencies() {
