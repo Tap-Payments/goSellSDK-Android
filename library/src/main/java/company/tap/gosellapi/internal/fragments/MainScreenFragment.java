@@ -1,9 +1,8 @@
 package company.tap.gosellapi.internal.fragments;
 
-import android.content.Context;
-
-import android.os.Bundle;
 import android.app.Fragment;
+import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
