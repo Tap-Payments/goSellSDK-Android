@@ -1,20 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/paymentSystemsViewHolderLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/layout_main_section_background_shape"
-    android:gravity="center_vertical">
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
 
     <ImageView
+        android:id="@+id/paymentSystemIcon"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_margin="10dp"
-        android:background="@drawable/btn_pay_pressed_shape"/>
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/auxillary_shape_square"/>
 
     <TextView
-        android:text="KNET"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/arrowIcon"
+        android:layout_toStartOf="@+id/arrowIcon"
+        android:layout_toRightOf="@+id/paymentSystemIcon"
+        android:layout_toEndOf="@id/paymentSystemIcon"
+        android:layout_centerVertical="true"
+        android:text="KNET"/>
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/arrowIcon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_margin="10dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/auxillary_shape_square"/>
+</RelativeLayout>
