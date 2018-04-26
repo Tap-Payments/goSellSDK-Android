@@ -1,8 +1,10 @@
 package company.tap.gosellapi.internal.fragments;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,9 +12,20 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import company.tap.gosellapi.R;
+import company.tap.gosellapi.internal.activities.MainActivity;
 import company.tap.gosellapi.internal.adapters.MainRecyclerViewAdapter;
 
 public class MainScreenFragment extends Fragment {
+
+    public interface MainScreenFragmentListener {
+
+        void cardScannerButtonClicked();
+        void saveCardSwitchCheckedChanged();
+        void paymentSystemViewHolderClicked();
+        void recentPaymentItemClicked();
+    }
+
+    private MainScreenFragmentListener listener;
 
     public MainScreenFragment() {
         // Required empty public constructor
@@ -24,33 +37,65 @@ public class MainScreenFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.gosellapi_fragment_main_screen, container, false);
-        initMainRecyclerView(view);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.gosellapi_fragment_main_screen, container, false);
+    }
 
-        return view;
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initMainRecyclerView(view);
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
+        if(context instanceof MainActivity) {
+            this.listener = (MainScreenFragmentListener) context;
+        }
+        else {
+        throw new ClassCastException(context.toString()
+                + " must implement MainScreenFragment.MainScreenFragmentListener");
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+        this.listener = null;
     }
-
 
     private void initMainRecyclerView(View view) {
         RecyclerView mainRecyclerView = view.findViewById(R.id.mainRecyclerView);
 
+        //Configuring layout manager
         LinearLayoutManager layoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);
-        MainRecyclerViewAdapter adapter = new MainRecyclerViewAdapter();
-
         mainRecyclerView.setLayoutManager(layoutManager);
+
+        // Configuring MainRecycleViewAdapter and handle MainRecyclerViewAdapterListener
+        MainRecyclerViewAdapter adapter = new MainRecyclerViewAdapter(new MainRecyclerViewAdapter.MainRecyclerViewAdapterListener() {
+            @Override
+            public void cardScannerButtonClicked() {
+                listener.cardScannerButtonClicked();
+            }
+
+            @Override
+            public void saveCardSwitchCheckedChanged() {
+                listener.saveCardSwitchCheckedChanged();
+            }
+
+            @Override
+            public void paymentSystemViewHolderClicked() {
+                listener.paymentSystemViewHolderClicked();
+            }
+
+            @Override
+            public void recentPaymentItemClicked() {
+                listener.recentPaymentItemClicked();
+            }
+        });
+
         mainRecyclerView.setAdapter(adapter);
     }
 }

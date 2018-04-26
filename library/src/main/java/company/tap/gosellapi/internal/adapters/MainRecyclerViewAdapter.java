@@ -16,9 +16,17 @@ import company.tap.gosellapi.internal.view_holders.RecentSectionViewHolder;
 
 public class MainRecyclerViewAdapter extends RecyclerView.Adapter {
 
+    public interface MainRecyclerViewAdapterListener {
+
+        void cardScannerButtonClicked();
+        void saveCardSwitchCheckedChanged();
+        void paymentSystemViewHolderClicked();
+        void recentPaymentItemClicked();
+    }
+
     enum SectionType {
         RECENT(0),
-        KNET(1),
+        PAYMENT_SYSTEMS(1),
         CARD_CREDENTIALS(2);
 
         private int value;
@@ -46,10 +54,16 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter {
     private ArrayList<SectionType> temporarySectionsModel = new ArrayList<SectionType>() {
         {
             add(SectionType.RECENT);
-            add(SectionType.KNET);
+            add(SectionType.PAYMENT_SYSTEMS);
             add(SectionType.CARD_CREDENTIALS);
         }
     };
+
+    private MainRecyclerViewAdapterListener listener;
+
+    public MainRecyclerViewAdapter(MainRecyclerViewAdapterListener listener) {
+        this.listener = listener;
+    }
 
     @NonNull
     @Override
@@ -67,6 +81,15 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter {
 
             case RECENT:
                 ((RecentSectionViewHolder) holder).bind();
+                break;
+
+            case PAYMENT_SYSTEMS:
+                ((PaymentSystemsViewHolder) holder).bind();
+                break;
+
+            case CARD_CREDENTIALS:
+                ((CardCredentialsViewHolder) holder).bind();
+                break;
 
             default:
 
@@ -91,16 +114,19 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter {
         switch (type) {
 
             case RECENT:
-                return new RecentSectionViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.gosellapi_viewholder_recent_section, parent, false));
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.gosellapi_viewholder_recent_section, parent, false);
+                return new RecentSectionViewHolder(view, this.listener);
 
-            case KNET:
-                return new PaymentSystemsViewHolder(parent);
+            case PAYMENT_SYSTEMS:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.gosellapi_viewholder_payment_systems, parent, false);
+                return new PaymentSystemsViewHolder(view, this.listener);
 
             case CARD_CREDENTIALS:
-                return new CardCredentialsViewHolder(parent);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.gosellapi_viewholder_card_credentials, parent, false);
+                return new CardCredentialsViewHolder(view, this.listener);
 
             default:
-                View view = new View(parent.getContext());
+                view = new View(parent.getContext());
                 return new BlankViewHolder(view);
         }
     }
