@@ -14,18 +14,11 @@ import android.view.ViewGroup;
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.activities.MainActivity;
 import company.tap.gosellapi.internal.adapters.MainRecyclerViewAdapter;
+import company.tap.gosellapi.internal.adapters.MainRecyclerViewAdapter.MainRecyclerViewAdapterListener;
 
 public class MainScreenFragment extends Fragment {
 
-    public interface MainScreenFragmentListener {
-
-        void cardScannerButtonClicked();
-        void saveCardSwitchCheckedChanged();
-        void paymentSystemViewHolderClicked();
-        void recentPaymentItemClicked();
-    }
-
-    private MainScreenFragmentListener listener;
+    private MainRecyclerViewAdapterListener listener;
 
     public MainScreenFragment() {
         // Required empty public constructor
@@ -52,7 +45,7 @@ public class MainScreenFragment extends Fragment {
         super.onAttach(context);
 
         if(context instanceof MainActivity) {
-            this.listener = (MainScreenFragmentListener) context;
+            this.listener = (MainRecyclerViewAdapterListener) context;
         }
         else {
         throw new ClassCastException(context.toString()
