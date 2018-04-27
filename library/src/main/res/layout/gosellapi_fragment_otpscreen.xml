@@ -1,14 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="horizontal"
     tools:context=".internal.fragments.OTPScreenFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <EditText
+        android:id="@+id/passwordInput"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_alignBottom="@+id/textViewsLayout"
+        android:layout_alignEnd="@+id/textViewsLayout"
+        android:layout_alignLeft="@+id/textViewsLayout"
+        android:layout_alignRight="@+id/textViewsLayout"
+        android:layout_alignStart="@id/textViewsLayout"
+        android:layout_alignTop="@id/textViewsLayout"
+        android:cursorVisible="false"
+        android:inputType="numberPassword"
+        android:maxLength="6"
+        android:background="@android:color/transparent"
+        android:textColor="@android:color/transparent">
+        <requestFocus />
+    </EditText>
 
-</FrameLayout>
+    <LinearLayout
+        android:id="@+id/textViewsLayout"
+        android:background="@drawable/auxillary_shape_square"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerInParent="true">
+
+    </LinearLayout>
+
+</RelativeLayout>
