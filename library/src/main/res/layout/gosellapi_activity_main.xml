@@ -44,10 +44,14 @@
 
     </RelativeLayout>
 
-    <fragment
-        android:name="company.tap.gosellapi.internal.fragments.MainScreenFragment"
-        android:id="@+id/mainScreenFragment"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent" />
+    <FrameLayout
+        android:id="@+id/mainScreenFragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <company.tap.gosellapi.internal.custom_views.GoSellPayButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>
