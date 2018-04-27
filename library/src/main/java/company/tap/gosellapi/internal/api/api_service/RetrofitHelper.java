@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import company.tap.gosellapi.BuildConfig;
+import company.tap.gosellapi.StagingURL;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -30,7 +31,7 @@ public final class RetrofitHelper {
 
             OkHttpClient okHttpClient = getOkHttpClient();
             retrofit = new Retrofit.Builder()
-                    .baseUrl(API_Constants.BASE_URL)
+                    .baseUrl(StagingURL.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()))
                     .client(okHttpClient)
                     .build();
