@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.adapters.MainRecyclerViewAdapter;
 import company.tap.gosellapi.internal.fragments.MainScreenFragment;
+import company.tap.gosellapi.internal.fragments.OTPScreenFragment;
 
 public class MainActivity extends AppCompatActivity implements MainRecyclerViewAdapter.MainRecyclerViewAdapterListener {
     private FragmentManager fragmentManager;
@@ -59,6 +60,11 @@ public class MainActivity extends AppCompatActivity implements MainRecyclerViewA
     @Override
     public void recentPaymentItemClicked() {
         Log.e("MAIN ACTIVITY", "RECENT PAYMENT ITEM CLICKED");
+
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.mainScreenFragmentContainer, new OTPScreenFragment())
+                .commit();
     }
 }
 
