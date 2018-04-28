@@ -17,4 +17,6 @@ final class API_Constants {
 
     static final String CHARGES = "charges";
     static final String CHARGE_ID = "charge_id";
+
+    static final String PAYMENT_TYPES = "payment/types";
 }
