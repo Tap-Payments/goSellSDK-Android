@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import java.util.HashMap;
 
@@ -316,10 +315,8 @@ public class GoSellPayButton extends FrameLayout implements View.OnClickListener
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.pay_layout_id || i == R.id.pay_button_id) {
-            createCharge();
-            Toast.makeText(getContext(), "Pressed non-security!", Toast.LENGTH_SHORT).show();
+            getPaymentTypes();
         } else if (i == R.id.pay_security_icon_id) {
-            Toast.makeText(getContext(), "Pressed security!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -351,5 +348,9 @@ public class GoSellPayButton extends FrameLayout implements View.OnClickListener
 
         Intent intent = new Intent(getContext(), MainActivity.class);
         getContext().startActivity(intent);
+    }
+
+    private void getPaymentTypes() {
+        GoSellAPI.getInstance().getPaymentTypes();
     }
 }
