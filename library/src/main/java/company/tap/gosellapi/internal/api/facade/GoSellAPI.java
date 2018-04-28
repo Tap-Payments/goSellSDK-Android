@@ -8,6 +8,11 @@ import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
 import company.tap.gosellapi.internal.api.requests.UpdateChargeRequest;
+import company.tap.gosellapi.internal.logger.lo;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 public final class GoSellAPI {
@@ -41,5 +46,19 @@ public final class GoSellAPI {
 
     public void updateCharge(final String chargeId, final UpdateChargeRequest updateChargeRequest, final APIRequestCallback<Charge> requestCallback) {
         dataManager.request(new DataManager.DelayedRequest<>(apiHelper.updateCharge(chargeId, updateChargeRequest), requestCallback));
+    }
+
+    public void getPaymentTypes(/*final APIRequestCallback<ResponseBody> requestCallback*/) {
+        apiHelper.getPaymentTypes().enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                lo.g("payment types success");
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                lo.g("payment types fail");
+            }
+        });
     }
 }
