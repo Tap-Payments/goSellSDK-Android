@@ -4,8 +4,8 @@ import android.content.Context;
 
 import company.tap.gosellapi.internal.api.api_service.AppInfo;
 
-public class Auth {
-    public static void setAuthToken(Context context, String authToken) {
+public class GoSellSDK {
+    public static void init(Context context, String authToken) {
         AppInfo.setAuthToken(context, authToken);
     }
 
