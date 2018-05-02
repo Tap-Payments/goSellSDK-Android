@@ -36,14 +36,14 @@ import company.tap.gosellapi.internal.logger.lo;
 import gotap.com.tapglkitandroid.gl.Views.TapLoadingView;
 
 public final class GoSellPayButton extends FrameLayout implements View.OnClickListener {
-    public interface GoSellPayButtonPaymentInfoRequester {
+    public interface GoSellPaymentInfoRequester {
         PaymentInfo getPaymentInfo();
     }
 
     private static final int VALUE_IS_MISSING = -11111;
     private static final String TAG = "GoSellPayButton TAG";
 
-    private GoSellPayButtonPaymentInfoRequester paymentInfoRequester;
+    private GoSellPaymentInfoRequester paymentInfoRequester;
     private int layoutId;
 
     private int mHeight;
@@ -88,8 +88,14 @@ public final class GoSellPayButton extends FrameLayout implements View.OnClickLi
         init(context, attrs);
     }
 
-    public void setPaymentInfoRequester(GoSellPayButtonPaymentInfoRequester paymentInfoRequester) {
+    public void setPaymentInfoRequester(GoSellPaymentInfoRequester paymentInfoRequester) {
         this.paymentInfoRequester = paymentInfoRequester;
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        payButton.setEnabled(enabled);
     }
 
     private void init(Context context, AttributeSet attrs) {
@@ -372,15 +378,21 @@ public final class GoSellPayButton extends FrameLayout implements View.OnClickLi
     }
 
     private void getPaymentTypes() {
+        loadingView.start();
         GoSellAPI.getInstance().getPaymentTypes(paymentInfoRequester.getPaymentInfo(),
                 new APIRequestCallback<PaymentOptionsResponse>() {
                     @Override
                     public void onSuccess(int responseCode, PaymentOptionsResponse serializedResponse) {
+                        loadingView.setForceStop(true);
                         lo.g("payment types success");
+
+                        Intent intent = new Intent(getContext(), MainActivity.class);
+                        getContext().startActivity(intent);
                     }
 
                     @Override
                     public void onFailure(GoSellError errorDetails) {
+                        loadingView.setForceStop(true);
                         lo.g("payment types fail");
                     }
                 });

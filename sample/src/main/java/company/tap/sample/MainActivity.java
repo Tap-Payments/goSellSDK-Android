@@ -10,7 +10,7 @@ import company.tap.gosellapi.internal.api.models.Item;
 import company.tap.gosellapi.internal.api.models.PaymentInfo;
 import company.tap.gosellapi.internal.custom_views.GoSellPayButton;
 
-public class MainActivity extends AppCompatActivity implements GoSellPayButton.GoSellPayButtonPaymentInfoRequester{
+public class MainActivity extends AppCompatActivity implements GoSellPayButton.GoSellPaymentInfoRequester {
     PaymentInfo paymentInfo;
 
     @Override
