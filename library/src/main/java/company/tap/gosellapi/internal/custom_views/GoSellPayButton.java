@@ -27,13 +27,22 @@ import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.facade.GoSellAPI;
 import company.tap.gosellapi.internal.api.models.Charge;
+import company.tap.gosellapi.internal.api.models.PaymentInfo;
 import company.tap.gosellapi.internal.api.models.Redirect;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
+import company.tap.gosellapi.internal.exceptions.NoPaymentInfoRequesterProvidedException;
 import gotap.com.tapglkitandroid.gl.Views.TapLoadingView;
 
-public class GoSellPayButton extends FrameLayout implements View.OnClickListener {
+public final class GoSellPayButton extends FrameLayout implements View.OnClickListener {
+    public interface GoSellPayButtonPaymentInfoRequester {
+        PaymentInfo getPaymentInfo();
+    }
+
     private static final int VALUE_IS_MISSING = -11111;
     private static final String TAG = "GoSellPayButton TAG";
+
+    private GoSellPayButtonPaymentInfoRequester paymentInfoRequester;
+    private int layoutId;
 
     private int mHeight;
 
@@ -77,12 +86,18 @@ public class GoSellPayButton extends FrameLayout implements View.OnClickListener
         init(context, attrs);
     }
 
+    public void setPaymentInfoRequester(GoSellPayButtonPaymentInfoRequester paymentInfoRequester) {
+        this.paymentInfoRequester = paymentInfoRequester;
+    }
+
     private void init(Context context, AttributeSet attrs) {
         payButton = new AppCompatTextView(context, attrs);
         loadingView = new TapLoadingView(context, attrs);
         securityIconView = new ImageView(context, attrs);
 
-        setId(R.id.pay_layout_id);
+        layoutId = getId() == -1 ? R.id.pay_layout_id : getId();
+        setId(layoutId);
+
         payButton.setId(R.id.pay_button_id);
         securityIconView.setId(R.id.pay_security_icon_id);
 
@@ -313,8 +328,12 @@ public class GoSellPayButton extends FrameLayout implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
+        if (paymentInfoRequester == null) {
+            throw new NoPaymentInfoRequesterProvidedException();
+        }
+
         int i = v.getId();
-        if (i == R.id.pay_layout_id || i == R.id.pay_button_id) {
+        if (i == layoutId || i == R.id.pay_button_id) {
             getPaymentTypes();
         } else if (i == R.id.pay_security_icon_id) {
         }
@@ -351,6 +370,6 @@ public class GoSellPayButton extends FrameLayout implements View.OnClickListener
     }
 
     private void getPaymentTypes() {
-        GoSellAPI.getInstance().getPaymentTypes();
+        GoSellAPI.getInstance().getPaymentTypes(paymentInfoRequester.getPaymentInfo());
     }
 }
