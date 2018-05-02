@@ -54,6 +54,10 @@ class DataManager {
                 }));
     }
 
+    InitResponse getInitResponse() {
+        return initResponse;
+    }
+
     private void runDelayedRequests() {
         for (DelayedRequest delayedRequest : delayedRequests) {
             delayedRequest.run();

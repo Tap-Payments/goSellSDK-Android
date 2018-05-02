@@ -9,6 +9,7 @@ import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.models.PaymentInfo;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
 import company.tap.gosellapi.internal.api.requests.UpdateChargeRequest;
+import company.tap.gosellapi.internal.api.responses.InitResponse;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
@@ -31,6 +32,9 @@ public final class GoSellAPI {
         return SingletonHolder.INSTANCE;
     }
 
+    public InitResponse getInitResponse() {
+        return dataManager.getInitResponse();
+    }
 
     //requests
     public void createCharge(final CreateChargeRequest createChargeRequest, final APIRequestCallback<Charge> requestCallback) {
