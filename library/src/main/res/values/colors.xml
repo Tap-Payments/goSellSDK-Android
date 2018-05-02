@@ -2,6 +2,7 @@
 <resources>
     <color name="vibrant_green">#2ace00</color>
     <color name="vibrant_green_pressed">#1F9A00</color>
+    <color name="silver">#C9C9C9</color>
     <color name="white">#FFF</color>
     <color name="gray">#DDDDDD</color>
 </resources>
