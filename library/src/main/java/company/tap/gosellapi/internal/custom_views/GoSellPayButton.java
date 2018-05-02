@@ -386,8 +386,7 @@ public final class GoSellPayButton extends FrameLayout implements View.OnClickLi
                         loadingView.setForceStop(true);
                         lo.g("payment types success");
 
-                        Intent intent = new Intent(getContext(), MainActivity.class);
-                        getContext().startActivity(intent);
+                        startMainActivity();
                     }
 
                     @Override
@@ -396,5 +395,10 @@ public final class GoSellPayButton extends FrameLayout implements View.OnClickLi
                         lo.g("payment types fail");
                     }
                 });
+    }
+
+    private void startMainActivity() {
+        Intent intent = new Intent(getContext(), MainActivity.class);
+        getContext().startActivity(intent);
     }
 }
