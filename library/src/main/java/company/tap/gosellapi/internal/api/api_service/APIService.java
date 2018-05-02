@@ -7,7 +7,7 @@ import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
 import company.tap.gosellapi.internal.api.requests.CreateTokenRequest;
 import company.tap.gosellapi.internal.api.requests.UpdateChargeRequest;
 import company.tap.gosellapi.internal.api.responses.InitResponse;
-import okhttp3.ResponseBody;
+import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -41,5 +41,5 @@ public interface APIService {
     Call<Charge> updateCharge(@Path(API_Constants.CHARGE_ID) String chargeId, @Body UpdateChargeRequest updateChargeRequest);
 
     @POST(API_Constants.PAYMENT_TYPES)
-    Call<ResponseBody> getPaymentTypes(@Body PaymentInfo paymentInfo);
+    Call<PaymentOptionsResponse> getPaymentTypes(@Body PaymentInfo paymentInfo);
 }

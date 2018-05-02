@@ -14,7 +14,7 @@ public class PaymentInfo {
     @Expose
     private Customer customer;
 
-    @SerializedName("crypted_data")
+    @SerializedName("items")
     @Expose
     private ArrayList<Item> items;
 
