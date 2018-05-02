@@ -16,16 +16,16 @@ public final class Item {
 
     @SerializedName("quantity")
     @Expose
-    private String quantity;
+    private double quantity;
 
     @SerializedName("amount")
     @Expose
-    private String amount;
+    private double amount;
 
     /**
      * Constructor with all fields
      */
-    public Item(String name, String quantity, String amount) {
+    public Item(String name, double quantity, double amount) {
         this.name = name;
         this.quantity = quantity;
         this.amount = amount;
@@ -35,11 +35,11 @@ public final class Item {
         return name;
     }
 
-    public String getQuantity() {
+    public double getQuantity() {
         return quantity;
     }
 
-    public String getAmount() {
+    public double getAmount() {
         return amount;
     }
 

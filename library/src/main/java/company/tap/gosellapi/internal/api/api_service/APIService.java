@@ -1,6 +1,7 @@
 package company.tap.gosellapi.internal.api.api_service;
 
 import company.tap.gosellapi.internal.api.models.Charge;
+import company.tap.gosellapi.internal.api.models.PaymentInfo;
 import company.tap.gosellapi.internal.api.models.Token;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
 import company.tap.gosellapi.internal.api.requests.CreateTokenRequest;
@@ -39,6 +40,6 @@ public interface APIService {
     @PUT(API_Constants.CHARGES + "/{" + API_Constants.CHARGE_ID + "}")
     Call<Charge> updateCharge(@Path(API_Constants.CHARGE_ID) String chargeId, @Body UpdateChargeRequest updateChargeRequest);
 
-    @GET(API_Constants.INIT)
-    Call<ResponseBody> getPaymentTypes();
+    @POST(API_Constants.PAYMENT_TYPES)
+    Call<ResponseBody> getPaymentTypes(@Body PaymentInfo paymentInfo);
 }

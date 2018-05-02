@@ -6,6 +6,7 @@ import company.tap.gosellapi.internal.api.api_service.APIService;
 import company.tap.gosellapi.internal.api.api_service.RetrofitHelper;
 import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
 import company.tap.gosellapi.internal.api.models.Charge;
+import company.tap.gosellapi.internal.api.models.PaymentInfo;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
 import company.tap.gosellapi.internal.api.requests.UpdateChargeRequest;
 import company.tap.gosellapi.internal.logger.lo;
@@ -48,8 +49,8 @@ public final class GoSellAPI {
         dataManager.request(new DataManager.DelayedRequest<>(apiHelper.updateCharge(chargeId, updateChargeRequest), requestCallback));
     }
 
-    public void getPaymentTypes(/*final APIRequestCallback<ResponseBody> requestCallback*/) {
-        apiHelper.getPaymentTypes().enqueue(new Callback<ResponseBody>() {
+    public void getPaymentTypes(/*final APIRequestCallback<ResponseBody> requestCallback*/PaymentInfo paymentInfo) {
+        apiHelper.getPaymentTypes(paymentInfo).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 lo.g("payment types success");
