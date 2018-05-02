@@ -7,6 +7,7 @@
     tools:context=".MainActivity">
 
     <company.tap.gosellapi.internal.custom_views.GoSellPayButton
+        android:id="@+id/payButtonId"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_alignParentBottom="true"/>
