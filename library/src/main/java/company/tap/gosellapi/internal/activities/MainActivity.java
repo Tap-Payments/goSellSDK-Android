@@ -7,9 +7,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.adapters.MainRecyclerViewAdapter;
+import company.tap.gosellapi.internal.api.facade.GoSellAPI;
 import company.tap.gosellapi.internal.fragments.MainScreenFragment;
 import company.tap.gosellapi.internal.fragments.OTPScreenFragment;
 import io.card.payment.CardIOActivity;
@@ -18,6 +23,8 @@ import io.card.payment.CreditCard;
 public class MainActivity extends AppCompatActivity implements MainRecyclerViewAdapter.MainRecyclerViewAdapterListener {
     private static final int SCAN_REQUEST_CODE = 123;
     private FragmentManager fragmentManager;
+
+    private ImageView businessIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +51,10 @@ public class MainActivity extends AppCompatActivity implements MainRecyclerViewA
                 finish();
             }
         });
+
+        businessIcon = findViewById(R.id.businessIcon);
+        String logoPath = GoSellAPI.getInstance().getInitResponse().getData().getMerchant().getLogo();
+        Glide.with(this).load(logoPath).apply(RequestOptions.circleCropTransform()).into(businessIcon);
     }
 
     @Override
