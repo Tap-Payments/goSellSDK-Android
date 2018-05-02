@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity implements GoSellPayButton.G
                     {
                         add(new Item("itemFirst", 2, 53.25));
                         add(new Item("itemSecond", 15, 0.11));
-                        add(new Item("itemThird", 7, 1_200.00));
+                        add(new Item("itemThird", 7.3, 1_200.00));
                     }
                 });
 

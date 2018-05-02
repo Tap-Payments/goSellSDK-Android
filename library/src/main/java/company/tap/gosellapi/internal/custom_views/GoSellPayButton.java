@@ -30,7 +30,9 @@ import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.models.PaymentInfo;
 import company.tap.gosellapi.internal.api.models.Redirect;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
+import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import company.tap.gosellapi.internal.exceptions.NoPaymentInfoRequesterProvidedException;
+import company.tap.gosellapi.internal.logger.lo;
 import gotap.com.tapglkitandroid.gl.Views.TapLoadingView;
 
 public final class GoSellPayButton extends FrameLayout implements View.OnClickListener {
@@ -370,6 +372,17 @@ public final class GoSellPayButton extends FrameLayout implements View.OnClickLi
     }
 
     private void getPaymentTypes() {
-        GoSellAPI.getInstance().getPaymentTypes(paymentInfoRequester.getPaymentInfo());
+        GoSellAPI.getInstance().getPaymentTypes(paymentInfoRequester.getPaymentInfo(),
+                new APIRequestCallback<PaymentOptionsResponse>() {
+                    @Override
+                    public void onSuccess(int responseCode, PaymentOptionsResponse serializedResponse) {
+                        lo.g("payment types success");
+                    }
+
+                    @Override
+                    public void onFailure(GoSellError errorDetails) {
+                        lo.g("payment types fail");
+                    }
+                });
     }
 }
