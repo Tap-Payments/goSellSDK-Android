@@ -11,6 +11,8 @@ import java.security.spec.X509EncodedKeySpec;
 
 import javax.crypto.Cipher;
 
+import company.tap.gosellapi.internal.exceptions.EmptyStringToEncryptException;
+
 /**
  * Created by eugene.goltsev on 16.02.2018.
  * <br>
@@ -21,7 +23,7 @@ import javax.crypto.Cipher;
 public final class CryptoUtil {
     public static String encryptJsonString(@NonNull String jsonString, String encryptionKey) {
         if(jsonString.length() == 0) {
-            throw new IllegalArgumentException("Parameter jsonString cannot be empty");
+            throw new EmptyStringToEncryptException();
         }
 
         return encrypt(jsonString, encryptionKey);

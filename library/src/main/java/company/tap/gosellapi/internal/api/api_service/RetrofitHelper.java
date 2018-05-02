@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 import company.tap.gosellapi.BuildConfig;
 import company.tap.gosellapi.StagingURL;
+import company.tap.gosellapi.internal.exceptions.NoAuthTokenProvidedException;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -26,7 +27,7 @@ public final class RetrofitHelper {
     public static APIService getApiHelper() {
         if (retrofit == null) {
             if (AppInfo.getAuthToken() == null) {
-                throw new RuntimeException("Auth token was not provided!");
+                throw new NoAuthTokenProvidedException();
             }
 
             OkHttpClient okHttpClient = getOkHttpClient();
