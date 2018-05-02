@@ -5,4 +5,6 @@
     <color name="silver">#C9C9C9</color>
     <color name="white">#FFF</color>
     <color name="gray">#DDDDDD</color>
+    <color name="azure_radiance">#0090FF</color>
+    <color name="azure_radiance_pressed">#0077FF</color>
 </resources>

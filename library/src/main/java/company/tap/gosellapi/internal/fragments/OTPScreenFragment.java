@@ -7,9 +7,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,10 +19,11 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import company.tap.gosellapi.R;
+import company.tap.gosellapi.internal.Utils;
 
 public class OTPScreenFragment extends Fragment {
 
-    private static final int PASSWORD_LENGTH = 6;
+    private static final int CONFIRMATION_CODE_LENGTH = 6;
     private ArrayList<TextView> textViewsArray = new ArrayList<>();
 
     public OTPScreenFragment() {
@@ -44,7 +47,8 @@ public class OTPScreenFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         prepareTextViews(view);
-        handlePasswordInputEditText(view);
+        handleConfirmationCodeInputEditText(view);
+        handleConfirmButton(view);
     }
 
     @Override
@@ -61,9 +65,10 @@ public class OTPScreenFragment extends Fragment {
 
         LayoutInflater inflater = LayoutInflater.from(getContext());
         LinearLayout textViewsLayout = view.findViewById(R.id.textViewsLayout);
+        Utils.showKeyboard(view.getContext(), textViewsLayout);
 
         int index = 0;
-        while (index < PASSWORD_LENGTH) {
+        while (index < CONFIRMATION_CODE_LENGTH) {
 
             LinearLayout.LayoutParams textViewParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
             textViewParams.weight = 1;
@@ -77,11 +82,11 @@ public class OTPScreenFragment extends Fragment {
         }
     }
 
-    private void handlePasswordInputEditText(View view) {
+    private void handleConfirmationCodeInputEditText(final View view) {
 
-        final EditText passwordInput = view.findViewById(R.id.passwordInput);
+        final EditText confirmationCodeInput = view.findViewById(R.id.confirmationCodeInput);
 
-        passwordInput.addTextChangedListener(new TextWatcher() {
+        confirmationCodeInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -89,13 +94,10 @@ public class OTPScreenFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String text = before == 0 ? String.valueOf(s.charAt(start)) : "";
+                updateConfirmationCodeCells(start, text);
 
-                if(before == 0) {
-                    updatePasswordCells(start, String.valueOf(s.charAt(start)));
-                }
-                else {
-                    updatePasswordCells(start, "");
-                }
+                updateConfirmButtonStatus(view, s.length());
             }
 
             @Override
@@ -105,11 +107,29 @@ public class OTPScreenFragment extends Fragment {
         });
     }
 
-    private void updatePasswordCells(Integer index, String text) {
-        if (index < 0 || index > PASSWORD_LENGTH) return;
+    private void updateConfirmationCodeCells(Integer index, String text) {
+        if (index < 0 || index > CONFIRMATION_CODE_LENGTH) return;
 
         TextView passwordCell = textViewsArray.get(index);
         passwordCell.setText(text);
+    }
+
+    private void updateConfirmButtonStatus(View view, Integer passwordLength) {
+        Button confirmButton = view.findViewById(R.id.confirmButton);
+        boolean state = passwordLength == CONFIRMATION_CODE_LENGTH;
+        confirmButton.setEnabled(state);
+    }
+
+    private void handleConfirmButton(View view) {
+
+        Button confirmButton = view.findViewById(R.id.confirmButton);
+
+        confirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
 }
