@@ -7,7 +7,7 @@
     tools:context=".internal.fragments.OTPScreenFragment">
 
     <EditText
-        android:id="@+id/passwordInput"
+        android:id="@+id/confirmationCodeInput"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignBottom="@+id/textViewsLayout"
@@ -30,8 +30,35 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_centerInParent="true">
+        android:layout_centerInParent="true"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewsLayout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/textview_disclaimer_otp_sent_number"/>
+
+        <TextView
+            android:id="@+id/resendConfirmationCode"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/textview_title_resend_again"/>
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/confirmButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_title_confirm"
+        android:enabled="false"
+        android:textColor="@color/white"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/btn_confirm_selector"/>
 
 </RelativeLayout>
