@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class PaymentInfo {
     @SerializedName("total_amount")
     @Expose
-    private String total_amount;
+    private double total_amount;
 
     @SerializedName("currency_code")
     @Expose
