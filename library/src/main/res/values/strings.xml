@@ -9,5 +9,9 @@
 
     <string name="textview_title_recent">Recent</string>
     <string name="textview_title_others">Others</string>
+    <string name="textview_title_resend_again">Resend again</string>
     <string name="textview_disclaimer_save_card">For faster and more secure checkout, save your card</string>
+    <string name="textview_disclaimer_otp_sent_number">OTP has been sent to %s</string>
+
+    <string name="btn_title_confirm">Confirm</string>
 </resources>
