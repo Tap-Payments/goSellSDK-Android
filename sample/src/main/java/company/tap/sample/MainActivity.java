@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import company.tap.gosellapi.internal.api.models.Customer;
 import company.tap.gosellapi.internal.api.models.Item;
 import company.tap.gosellapi.internal.api.models.PaymentInfo;
-import company.tap.gosellapi.internal.custom_views.GoSellPayButton;
+import company.tap.gosellapi.internal.custom_views.GoSellPayLayout;
 
-public class MainActivity extends AppCompatActivity implements GoSellPayButton.GoSellPaymentInfoRequester {
+public class MainActivity extends AppCompatActivity implements GoSellPayLayout.GoSellPaymentInfoRequester {
     PaymentInfo paymentInfo;
 
     @Override
@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements GoSellPayButton.G
                     }
                 });
 
-        GoSellPayButton payButton = findViewById(R.id.payButtonId);
+        GoSellPayLayout payButton = findViewById(R.id.payButtonId);
         payButton.setPaymentInfoRequester(this);
     }
 

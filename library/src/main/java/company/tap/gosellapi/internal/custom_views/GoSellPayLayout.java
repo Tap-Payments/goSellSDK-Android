@@ -35,13 +35,13 @@ import company.tap.gosellapi.internal.exceptions.NoPaymentInfoRequesterProvidedE
 import company.tap.gosellapi.internal.logger.lo;
 import gotap.com.tapglkitandroid.gl.Views.TapLoadingView;
 
-public final class GoSellPayButton extends FrameLayout implements View.OnClickListener {
+public final class GoSellPayLayout extends FrameLayout implements View.OnClickListener {
     public interface GoSellPaymentInfoRequester {
         PaymentInfo getPaymentInfo();
     }
 
     private static final int VALUE_IS_MISSING = -11111;
-    private static final String TAG = "GoSellPayButton TAG";
+    private static final String TAG = "GoSellPayLayout TAG";
 
     private GoSellPaymentInfoRequester paymentInfoRequester;
     private int layoutId;
@@ -78,12 +78,12 @@ public final class GoSellPayButton extends FrameLayout implements View.OnClickLi
     private TapLoadingView loadingView;
     private ImageView securityIconView;
 
-    public GoSellPayButton(Context context) {
+    public GoSellPayLayout(Context context) {
         super(context);
         init(context, null);
     }
 
-    public GoSellPayButton(Context context, @Nullable AttributeSet attrs) {
+    public GoSellPayLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
     }
@@ -148,103 +148,103 @@ public final class GoSellPayButton extends FrameLayout implements View.OnClickLi
 
         if (attrs != null) {
             // Attribute initialization
-            final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.GoSellPayButton);
+            final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.GoSellPayLayout);
 
-            int height = a.getLayoutDimension(R.styleable.GoSellPayButton_android_layout_height, VALUE_IS_MISSING);
+            int height = a.getLayoutDimension(R.styleable.GoSellPayLayout_android_layout_height, VALUE_IS_MISSING);
             if (height != VALUE_IS_MISSING && height > mHeight) {
                 mHeight = height;
             }
 
             //margins
-            int marginTop = a.getDimensionPixelSize(R.styleable.GoSellPayButton_android_layout_marginTop, VALUE_IS_MISSING);
+            int marginTop = a.getDimensionPixelSize(R.styleable.GoSellPayLayout_android_layout_marginTop, VALUE_IS_MISSING);
             if (marginTop != VALUE_IS_MISSING) {
                 mMarginTop = marginTop;
             }
 
-            int marginBottom = a.getDimensionPixelSize(R.styleable.GoSellPayButton_android_layout_marginBottom, VALUE_IS_MISSING);
+            int marginBottom = a.getDimensionPixelSize(R.styleable.GoSellPayLayout_android_layout_marginBottom, VALUE_IS_MISSING);
             if (marginBottom != VALUE_IS_MISSING) {
                 mMarginBottom = marginBottom;
             }
 
-            int marginLeft = a.getDimensionPixelSize(R.styleable.GoSellPayButton_android_layout_marginLeft, VALUE_IS_MISSING);
+            int marginLeft = a.getDimensionPixelSize(R.styleable.GoSellPayLayout_android_layout_marginLeft, VALUE_IS_MISSING);
             if (marginLeft != VALUE_IS_MISSING) {
                 mMarginLeft = marginLeft;
             }
 
-            int marginRight = a.getDimensionPixelSize(R.styleable.GoSellPayButton_android_layout_marginRight, VALUE_IS_MISSING);
+            int marginRight = a.getDimensionPixelSize(R.styleable.GoSellPayLayout_android_layout_marginRight, VALUE_IS_MISSING);
             if (marginRight != VALUE_IS_MISSING) {
                 mMarginRight = marginRight;
             }
 
-            int marginStart = a.getDimensionPixelSize(R.styleable.GoSellPayButton_android_layout_marginStart, VALUE_IS_MISSING);
+            int marginStart = a.getDimensionPixelSize(R.styleable.GoSellPayLayout_android_layout_marginStart, VALUE_IS_MISSING);
             if (marginStart != VALUE_IS_MISSING) {
                 mMarginStart = marginStart;
             }
 
-            int marginEnd = a.getDimensionPixelSize(R.styleable.GoSellPayButton_android_layout_marginEnd, VALUE_IS_MISSING);
+            int marginEnd = a.getDimensionPixelSize(R.styleable.GoSellPayLayout_android_layout_marginEnd, VALUE_IS_MISSING);
             if (marginEnd != VALUE_IS_MISSING) {
                 mMarginEnd = marginEnd;
             }
 
             //paddings
-            int paddingTop = a.getDimensionPixelSize(R.styleable.GoSellPayButton_android_paddingTop, VALUE_IS_MISSING);
+            int paddingTop = a.getDimensionPixelSize(R.styleable.GoSellPayLayout_android_paddingTop, VALUE_IS_MISSING);
             if (paddingTop != VALUE_IS_MISSING) {
                 mPaddingTop = paddingTop;
             }
 
-            int paddingBottom = a.getDimensionPixelSize(R.styleable.GoSellPayButton_android_paddingBottom, VALUE_IS_MISSING);
+            int paddingBottom = a.getDimensionPixelSize(R.styleable.GoSellPayLayout_android_paddingBottom, VALUE_IS_MISSING);
             if (paddingBottom != VALUE_IS_MISSING) {
                 mPaddingBottom = paddingBottom;
             }
 
-            int paddingLeft = a.getDimensionPixelSize(R.styleable.GoSellPayButton_android_paddingLeft, VALUE_IS_MISSING);
+            int paddingLeft = a.getDimensionPixelSize(R.styleable.GoSellPayLayout_android_paddingLeft, VALUE_IS_MISSING);
             if (paddingLeft != VALUE_IS_MISSING) {
                 mPaddingLeft = paddingLeft;
             }
 
-            int paddingRight = a.getDimensionPixelSize(R.styleable.GoSellPayButton_android_paddingRight, VALUE_IS_MISSING);
+            int paddingRight = a.getDimensionPixelSize(R.styleable.GoSellPayLayout_android_paddingRight, VALUE_IS_MISSING);
             if (paddingRight != VALUE_IS_MISSING) {
                 mPaddingRight = paddingRight;
             }
 
-            int paddingStart = a.getDimensionPixelSize(R.styleable.GoSellPayButton_android_paddingStart, VALUE_IS_MISSING);
+            int paddingStart = a.getDimensionPixelSize(R.styleable.GoSellPayLayout_android_paddingStart, VALUE_IS_MISSING);
             if (paddingStart != VALUE_IS_MISSING) {
                 mPaddingStart = paddingStart;
             }
 
-            int paddingEnd = a.getDimensionPixelSize(R.styleable.GoSellPayButton_android_paddingEnd, VALUE_IS_MISSING);
+            int paddingEnd = a.getDimensionPixelSize(R.styleable.GoSellPayLayout_android_paddingEnd, VALUE_IS_MISSING);
             if (paddingEnd != VALUE_IS_MISSING) {
                 mPaddingEnd = paddingEnd;
             }
 
             //text options
-            int textSize = a.getDimensionPixelSize(R.styleable.GoSellPayButton_android_textSize, VALUE_IS_MISSING);
+            int textSize = a.getDimensionPixelSize(R.styleable.GoSellPayLayout_android_textSize, VALUE_IS_MISSING);
             if (textSize != VALUE_IS_MISSING) {
                 mTextSize = textSize;
             }
 
-            int textColor = a.getColor(R.styleable.GoSellPayButton_android_textColor, VALUE_IS_MISSING);
+            int textColor = a.getColor(R.styleable.GoSellPayLayout_android_textColor, VALUE_IS_MISSING);
             if (textColor != VALUE_IS_MISSING) {
                 mTextColor = textColor;
             }
 
-            int textStyle = a.getInteger(R.styleable.GoSellPayButton_android_textStyle, VALUE_IS_MISSING);
+            int textStyle = a.getInteger(R.styleable.GoSellPayLayout_android_textStyle, VALUE_IS_MISSING);
             if (textStyle != VALUE_IS_MISSING) {
                 mTextStyle = textStyle;
             }
 
             //other
-            Drawable background = a.getDrawable(R.styleable.GoSellPayButton_android_background);
+            Drawable background = a.getDrawable(R.styleable.GoSellPayLayout_android_background);
             if (background != null) {
                 mBackground = background;
             }
 
-            int gravity = a.getInteger(R.styleable.GoSellPayButton_android_gravity, VALUE_IS_MISSING);
+            int gravity = a.getInteger(R.styleable.GoSellPayLayout_android_gravity, VALUE_IS_MISSING);
             if (gravity != VALUE_IS_MISSING) {
                 mGravity = gravity;
             }
 
-            CharSequence text = a.getText(R.styleable.GoSellPayButton_android_text);
+            CharSequence text = a.getText(R.styleable.GoSellPayLayout_android_text);
             if (text != null) {
                 mText = text;
             }
