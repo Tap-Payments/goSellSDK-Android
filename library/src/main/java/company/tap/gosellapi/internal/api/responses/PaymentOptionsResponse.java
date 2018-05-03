@@ -35,9 +35,9 @@ public final class PaymentOptionsResponse implements BaseResponse {
     @Expose
     private String currency_code;
 
-    @SerializedName("amounts")
+    @SerializedName("supported_currencies")
     @Expose
-    private HashMap<String, Double> amounts;
+    private HashMap<String, Double> supported_currencies;
 
     @SerializedName("cards")
     @Expose

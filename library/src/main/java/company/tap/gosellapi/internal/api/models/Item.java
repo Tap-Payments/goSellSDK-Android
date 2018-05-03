@@ -16,39 +16,43 @@ public final class Item {
 
     @SerializedName("quantity")
     @Expose
-    private double quantity;
+    private Quantity quantity;
 
     @SerializedName("amount")
     @Expose
     private double amount;
 
+    @SerializedName("total_amount")
+    @Expose
+    private double total_amount;
+
+    private static class Quantity {
+        @SerializedName("value")
+        @Expose
+        private double value;
+
+        @SerializedName("unit_of_measurement")
+        @Expose
+        private String unit_of_measurement;
+
+        private Quantity(double value, String unit_of_measurement) {
+            this.value = value;
+            this.unit_of_measurement = unit_of_measurement;
+        }
+    }
+
     /**
      * Constructor with all fields
      */
-    public Item(String name, double quantity, double amount) {
+    public Item(String name, double value, String unitOfMeasurement, double amount) {
         this.name = name;
-        this.quantity = quantity;
+        this.quantity = new Quantity(value, unitOfMeasurement);
         this.amount = amount;
+
+        this.total_amount = value * amount;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public double getQuantity() {
-        return quantity;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    @Override
-    public String toString() {
-        return "Item {" +
-                "\n        name =  '" + name + '\'' +
-                "\n        quantity =  '" + quantity + '\'' +
-                "\n        amount =  '" + amount + '\'' +
-                "\n    }";
+    double getTotal_amount() {
+        return total_amount;
     }
 }
