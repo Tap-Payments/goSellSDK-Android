@@ -1,8 +1,9 @@
 <resources>
+    <dimen name="default_padding">16dp</dimen>
+
     <dimen name="pay_btn_min_height">40dp</dimen>
     <dimen name="pay_btn_corners_radius">50dp</dimen>
 
-    <dimen name="pay_btn_margin_horizontal">15dp</dimen>
     <dimen name="pay_btn_margin_vertical">10dp</dimen>
 
     <dimen name="pay_btn_padding_horizontal">10dp</dimen>
