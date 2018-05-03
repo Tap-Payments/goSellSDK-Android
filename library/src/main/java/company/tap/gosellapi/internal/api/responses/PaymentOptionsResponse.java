@@ -42,4 +42,28 @@ public final class PaymentOptionsResponse implements BaseResponse {
     @SerializedName("cards")
     @Expose
     private ArrayList<Card> cards;
+
+    public String getId() {
+        return id;
+    }
+
+    public String getObject() {
+        return object;
+    }
+
+    public ArrayList<PaymentOption> getPayment_options() {
+        return payment_options;
+    }
+
+    public String getCurrency_code() {
+        return currency_code;
+    }
+
+    public HashMap<String, Double> getSupported_currencies() {
+        return supported_currencies;
+    }
+
+    public ArrayList<Card> getCards() {
+        return cards;
+    }
 }

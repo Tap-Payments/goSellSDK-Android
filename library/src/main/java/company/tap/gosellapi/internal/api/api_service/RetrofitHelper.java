@@ -3,6 +3,7 @@ package company.tap.gosellapi.internal.api.api_service;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
@@ -10,6 +11,8 @@ import java.util.concurrent.TimeUnit;
 
 import company.tap.gosellapi.BuildConfig;
 import company.tap.gosellapi.StagingURL;
+import company.tap.gosellapi.internal.api.deserializers.PaymentOptionsResponseDeserializer;
+import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import company.tap.gosellapi.internal.exceptions.NoAuthTokenProvidedException;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -33,7 +36,7 @@ public final class RetrofitHelper {
             OkHttpClient okHttpClient = getOkHttpClient();
             retrofit = new Retrofit.Builder()
                     .baseUrl(StagingURL.BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()))
+                    .addConverterFactory(buildGsonConverter())
                     .client(okHttpClient)
                     .build();
         }
@@ -43,6 +46,16 @@ public final class RetrofitHelper {
         }
 
         return helper;
+    }
+
+    private static GsonConverterFactory buildGsonConverter() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+
+        // Adding custom deserializers
+        gsonBuilder.registerTypeAdapter(PaymentOptionsResponse.class, new PaymentOptionsResponseDeserializer());
+        Gson myGson = gsonBuilder.excludeFieldsWithoutExposeAnnotation().create();
+
+        return GsonConverterFactory.create(myGson);
     }
 
     private static OkHttpClient getOkHttpClient() {
