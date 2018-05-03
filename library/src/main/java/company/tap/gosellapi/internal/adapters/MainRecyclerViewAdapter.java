@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.view_holders.CardCredentialsViewHolder;
+import company.tap.gosellapi.internal.view_holders.CurrencyViewHolder;
 import company.tap.gosellapi.internal.view_holders.PaymentSystemsViewHolder;
 import company.tap.gosellapi.internal.view_holders.RecentSectionViewHolder;
 
@@ -25,9 +26,10 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter {
     }
 
     enum SectionType {
-        RECENT(0),
-        PAYMENT_SYSTEMS(1),
-        CARD_CREDENTIALS(2);
+        CURRENCY(0),
+        RECENT(1),
+        PAYMENT_SYSTEMS(2),
+        CARD_CREDENTIALS(3);
 
         private int value;
         private static SparseArray<SectionType> sectionsMap = new SparseArray<>();
@@ -53,6 +55,7 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter {
 
     private ArrayList<SectionType> temporarySectionsModel = new ArrayList<SectionType>() {
         {
+            add(SectionType.CURRENCY);
             add(SectionType.RECENT);
             add(SectionType.PAYMENT_SYSTEMS);
             add(SectionType.CARD_CREDENTIALS);
@@ -113,8 +116,12 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter {
 
         switch (type) {
 
+            case CURRENCY:
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.gosellapi_viewholder_currency, parent, false);
+                return new CurrencyViewHolder(view, this.listener);
+
             case RECENT:
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.gosellapi_viewholder_recent_section, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.gosellapi_viewholder_recent_section, parent, false);
                 return new RecentSectionViewHolder(view, this.listener);
 
             case PAYMENT_SYSTEMS:

@@ -8,7 +8,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/auxillary_shape_square"
+        android:padding="@dimen/default_padding"
         android:text="@string/textview_title_recent"/>
 
     <android.support.v7.widget.RecyclerView android:id="@+id/recentPaymentsRecyclerView"
@@ -19,7 +19,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/auxillary_shape_square"
+        android:padding="@dimen/default_padding"
         android:text="@string/textview_title_others"/>
 </LinearLayout>
 
