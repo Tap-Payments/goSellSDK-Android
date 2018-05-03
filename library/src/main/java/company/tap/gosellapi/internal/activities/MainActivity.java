@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements MainRecyclerViewA
         fragmentManager
                 .beginTransaction()
                 .replace(R.id.mainScreenFragmentContainer, new OTPScreenFragment())
+                .addToBackStack("")
                 .commit();
     }
 
