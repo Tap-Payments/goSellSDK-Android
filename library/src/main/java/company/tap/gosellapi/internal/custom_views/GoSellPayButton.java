@@ -126,9 +126,9 @@ public final class GoSellPayButton extends FrameLayout implements View.OnClickLi
 
         mMarginTop = context.getResources().getDimensionPixelSize(R.dimen.pay_btn_margin_vertical);
         mMarginBottom = context.getResources().getDimensionPixelSize(R.dimen.pay_btn_margin_vertical);
-        mMarginLeft = context.getResources().getDimensionPixelSize(R.dimen.pay_btn_margin_horizontal);
+        mMarginLeft = context.getResources().getDimensionPixelSize(R.dimen.default_padding);
         mMarginStart = VALUE_IS_MISSING;
-        mMarginRight = context.getResources().getDimensionPixelSize(R.dimen.pay_btn_margin_horizontal);
+        mMarginRight = context.getResources().getDimensionPixelSize(R.dimen.default_padding);
         mMarginEnd = VALUE_IS_MISSING;
 
         mPaddingTop = context.getResources().getDimensionPixelSize(R.dimen.pay_btn_padding_vertical);

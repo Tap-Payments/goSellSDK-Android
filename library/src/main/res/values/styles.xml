@@ -1,0 +1,12 @@
+<resources>
+
+    <style name="TextView"></style>
+    <style name="TextView.Title"></style>
+    <style name="TextView.Title.Small"></style>
+    <style name="TextView.Disclaimer"></style>
+    <style name="TextView.Disclaimer.Small"></style>
+    <style name="TextView.Hyperlink"></style>
+
+    <style name="EditText"></style>
+    <style name="EditText.Password"></style>
+</resources>
