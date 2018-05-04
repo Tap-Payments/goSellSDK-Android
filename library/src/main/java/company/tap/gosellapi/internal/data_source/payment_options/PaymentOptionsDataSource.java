@@ -10,6 +10,17 @@ import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 
 public class PaymentOptionsDataSource {
+    private enum CardPaymentType {
+        WEB("web"),
+        CARD("card");
+
+        private String value;
+
+        CardPaymentType(String value) {
+            this.value = value;
+        }
+    }
+
     public enum PaymentType {
         CURRENCY(0),
         RECENT(1),
@@ -21,16 +32,15 @@ public class PaymentOptionsDataSource {
         PaymentType(int viewType) {
             this.viewType = viewType;
         }
-    }
 
-    private enum CardPaymentType {
-        WEB("web"),
-        CARD("card");
+        public static PaymentType getByViewType(int viewType) {
+            for (PaymentType paymentType : PaymentType.values()) {
+                if (paymentType.viewType == viewType) {
+                    return paymentType;
+                }
+            }
 
-        private String value;
-
-        CardPaymentType(String value) {
-            this.value = value;
+            return null;
         }
     }
 
