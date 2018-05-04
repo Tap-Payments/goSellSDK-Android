@@ -386,6 +386,7 @@ public final class GoSellPayLayout extends FrameLayout implements View.OnClickLi
                         loadingView.setForceStop(true);
                         lo.g("payment types success");
 
+                        MainActivity.paymentOptionsResponse = serializedResponse;
                         startMainActivity();
                     }
 
