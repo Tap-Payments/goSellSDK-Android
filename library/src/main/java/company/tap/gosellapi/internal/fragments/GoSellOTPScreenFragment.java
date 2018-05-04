@@ -21,12 +21,12 @@ import java.util.ArrayList;
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.Utils;
 
-public class OTPScreenFragment extends Fragment {
+public class GoSellOTPScreenFragment extends Fragment {
 
     private static final int CONFIRMATION_CODE_LENGTH = 6;
     private ArrayList<TextView> textViewsArray = new ArrayList<>();
 
-    public OTPScreenFragment() {
+    public GoSellOTPScreenFragment() {
         // Required empty public constructor
     }
 

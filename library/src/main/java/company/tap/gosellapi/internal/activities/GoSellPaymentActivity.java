@@ -16,12 +16,12 @@ import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.adapters.MainRecyclerViewAdapter;
 import company.tap.gosellapi.internal.api.facade.GoSellAPI;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
-import company.tap.gosellapi.internal.fragments.MainScreenFragment;
-import company.tap.gosellapi.internal.fragments.OTPScreenFragment;
+import company.tap.gosellapi.internal.fragments.GoSellPaymentOptionsFragment;
+import company.tap.gosellapi.internal.fragments.GoSellOTPScreenFragment;
 import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
 
-public class MainActivity extends AppCompatActivity implements MainRecyclerViewAdapter.MainRecyclerViewAdapterListener {
+public class GoSellPaymentActivity extends AppCompatActivity implements MainRecyclerViewAdapter.MainRecyclerViewAdapterListener {
     public static PaymentOptionsResponse paymentOptionsResponse;
 
     private static final int SCAN_REQUEST_CODE = 123;
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements MainRecyclerViewA
     private void initViews() {
         fragmentManager
                 .beginTransaction()
-                .replace(R.id.mainScreenFragmentContainer, new MainScreenFragment())
+                .replace(R.id.paymentActivityFragmentContainer, new GoSellPaymentOptionsFragment())
                 .commit();
 
         // Configure Close button
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements MainRecyclerViewA
 
         fragmentManager
                 .beginTransaction()
-                .replace(R.id.mainScreenFragmentContainer, new OTPScreenFragment())
+                .replace(R.id.paymentActivityFragmentContainer, new GoSellOTPScreenFragment())
                 .addToBackStack("")
                 .commit();
     }

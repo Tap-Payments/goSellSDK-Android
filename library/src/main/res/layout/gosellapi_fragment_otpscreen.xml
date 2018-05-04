@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    tools:context=".internal.fragments.OTPScreenFragment">
+    tools:context=".internal.fragments.GoSellOTPScreenFragment">
 
     <EditText
         android:id="@+id/confirmationCodeInput"

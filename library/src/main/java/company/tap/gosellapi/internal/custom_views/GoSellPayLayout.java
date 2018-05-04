@@ -22,7 +22,7 @@ import java.util.HashMap;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.Utils;
-import company.tap.gosellapi.internal.activities.MainActivity;
+import company.tap.gosellapi.internal.activities.GoSellPaymentActivity;
 import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.facade.GoSellAPI;
@@ -373,7 +373,7 @@ public final class GoSellPayLayout extends FrameLayout implements View.OnClickLi
                 }
         );
 
-        Intent intent = new Intent(getContext(), MainActivity.class);
+        Intent intent = new Intent(getContext(), GoSellPaymentActivity.class);
         getContext().startActivity(intent);
     }
 
@@ -384,7 +384,7 @@ public final class GoSellPayLayout extends FrameLayout implements View.OnClickLi
                     @Override
                     public void onSuccess(int responseCode, PaymentOptionsResponse serializedResponse) {
                         lo.g("payment types success");
-                        MainActivity.paymentOptionsResponse = serializedResponse;
+                        GoSellPaymentActivity.paymentOptionsResponse = serializedResponse;
                         loadingView.setForceStop(true, new TapLoadingView.FullProgressListener() {
                             @Override
                             public void onFullProgress() {
@@ -402,7 +402,7 @@ public final class GoSellPayLayout extends FrameLayout implements View.OnClickLi
     }
 
     private void startMainActivity() {
-        Intent intent = new Intent(getContext(), MainActivity.class);
+        Intent intent = new Intent(getContext(), GoSellPaymentActivity.class);
         getContext().startActivity(intent);
     }
 }

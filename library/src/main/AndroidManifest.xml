@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application>
-        <activity android:name=".internal.activities.MainActivity"/>
+        <activity android:name=".internal.activities.GoSellPaymentActivity"/>
     </application>
 
 </manifest>
