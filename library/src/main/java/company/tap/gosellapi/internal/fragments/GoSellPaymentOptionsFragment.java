@@ -60,35 +60,35 @@ public class GoSellPaymentOptionsFragment extends Fragment {
     }
 
     private void initMainRecyclerView(View view) {
-        RecyclerView mainRecyclerView = view.findViewById(R.id.paymentOptionsRecyclerView);
+        RecyclerView paymentOptionsRecyclerView = view.findViewById(R.id.paymentOptionsRecyclerView);
 
         //Configuring layout manager
         LinearLayoutManager layoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);
-        mainRecyclerView.setLayoutManager(layoutManager);
+        paymentOptionsRecyclerView.setLayoutManager(layoutManager);
 
         // Configuring MainRecycleViewAdapter and handle PaymentOptionsViewAdapterListener
-        PaymentOptionsRecyclerViewAdapter adapter = new PaymentOptionsRecyclerViewAdapter(new PaymentOptionsRecyclerViewAdapter.PaymentOptionsViewAdapterListener() {
-            @Override
-            public void cardScannerButtonClicked() {
-                listener.cardScannerButtonClicked();
-            }
+//        PaymentOptionsRecyclerViewAdapter adapter = new PaymentOptionsRecyclerViewAdapter(new PaymentOptionsRecyclerViewAdapter.PaymentOptionsViewAdapterListener() {
+//            @Override
+//            public void cardScannerButtonClicked() {
+//                listener.cardScannerButtonClicked();
+//            }
+//
+//            @Override
+//            public void saveCardSwitchCheckedChanged() {
+//                listener.saveCardSwitchCheckedChanged();
+//            }
+//
+//            @Override
+//            public void paymentSystemViewHolderClicked() {
+//                listener.paymentSystemViewHolderClicked();
+//            }
+//
+//            @Override
+//            public void recentPaymentItemClicked() {
+//                listener.recentPaymentItemClicked();
+//            }
+//        });
 
-            @Override
-            public void saveCardSwitchCheckedChanged() {
-                listener.saveCardSwitchCheckedChanged();
-            }
-
-            @Override
-            public void paymentSystemViewHolderClicked() {
-                listener.paymentSystemViewHolderClicked();
-            }
-
-            @Override
-            public void recentPaymentItemClicked() {
-                listener.recentPaymentItemClicked();
-            }
-        });
-
-        mainRecyclerView.setAdapter(adapter);
+//        paymentOptionsRecyclerView.setAdapter(adapter);
     }
 }
