@@ -1,23 +1,21 @@
 package company.tap.gosellapi.internal.view_holders;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.Switch;
 
 import company.tap.gosellapi.R;
-import company.tap.gosellapi.internal.adapters.MainRecyclerViewAdapter;
+import company.tap.gosellapi.internal.adapters.PaymentOptionsRecyclerViewAdapter;
 
-public class CardCredentialsViewHolder extends RecyclerView.ViewHolder {
+public class CardCredentialsViewHolder extends PaymentOptionsBaseViewHolder {
 
-    private MainRecyclerViewAdapter.MainRecyclerViewAdapterListener mListener;
+    private PaymentOptionsRecyclerViewAdapter.PaymentOptionsViewAdapterListener mListener;
 
-    public CardCredentialsViewHolder(View view, MainRecyclerViewAdapter.MainRecyclerViewAdapterListener listener) {
+    public CardCredentialsViewHolder(View view) {
         super(view);
 
-        mListener = listener;
+//        mListener = listener;
     }
 
     public void bind() {
