@@ -2,19 +2,18 @@ package company.tap.gosellapi.internal.view_holders;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 
 import company.tap.gosellapi.R;
-import company.tap.gosellapi.internal.adapters.MainRecyclerViewAdapter;
+import company.tap.gosellapi.internal.adapters.PaymentOptionsRecyclerViewAdapter;
 import company.tap.gosellapi.internal.adapters.RecentPaymentsRecyclerViewAdapter;
 
 public class RecentSectionViewHolder extends RecyclerView.ViewHolder {
     private RecyclerView mRecycler;
 
-    private MainRecyclerViewAdapter.MainRecyclerViewAdapterListener listener;
+    private PaymentOptionsRecyclerViewAdapter.PaymentOptionsViewAdapterListener listener;
 
-    public RecentSectionViewHolder(View view, MainRecyclerViewAdapter.MainRecyclerViewAdapterListener listener) {
+    public RecentSectionViewHolder(View view, PaymentOptionsRecyclerViewAdapter.PaymentOptionsViewAdapterListener listener) {
         super(view);
 
         this.listener = listener;

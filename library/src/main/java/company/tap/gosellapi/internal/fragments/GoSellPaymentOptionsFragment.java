@@ -13,12 +13,12 @@ import android.view.ViewGroup;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.activities.GoSellPaymentActivity;
-import company.tap.gosellapi.internal.adapters.MainRecyclerViewAdapter;
-import company.tap.gosellapi.internal.adapters.MainRecyclerViewAdapter.MainRecyclerViewAdapterListener;
+import company.tap.gosellapi.internal.adapters.PaymentOptionsRecyclerViewAdapter;
+import company.tap.gosellapi.internal.adapters.PaymentOptionsRecyclerViewAdapter.PaymentOptionsViewAdapterListener;
 
 public class GoSellPaymentOptionsFragment extends Fragment {
 
-    private MainRecyclerViewAdapterListener listener;
+    private PaymentOptionsViewAdapterListener listener;
 
     public GoSellPaymentOptionsFragment() {
         // Required empty public constructor
@@ -45,7 +45,7 @@ public class GoSellPaymentOptionsFragment extends Fragment {
         super.onAttach(context);
 
         if(context instanceof GoSellPaymentActivity) {
-            this.listener = (MainRecyclerViewAdapterListener) context;
+            this.listener = (PaymentOptionsRecyclerViewAdapter.PaymentOptionsViewAdapterListener) context;
         }
         else {
         throw new ClassCastException(context.toString()
@@ -66,8 +66,8 @@ public class GoSellPaymentOptionsFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);
         mainRecyclerView.setLayoutManager(layoutManager);
 
-        // Configuring MainRecycleViewAdapter and handle MainRecyclerViewAdapterListener
-        MainRecyclerViewAdapter adapter = new MainRecyclerViewAdapter(new MainRecyclerViewAdapter.MainRecyclerViewAdapterListener() {
+        // Configuring MainRecycleViewAdapter and handle PaymentOptionsViewAdapterListener
+        PaymentOptionsRecyclerViewAdapter adapter = new PaymentOptionsRecyclerViewAdapter(new PaymentOptionsRecyclerViewAdapter.PaymentOptionsViewAdapterListener() {
             @Override
             public void cardScannerButtonClicked() {
                 listener.cardScannerButtonClicked();

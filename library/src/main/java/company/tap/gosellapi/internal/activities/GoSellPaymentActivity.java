@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
 import company.tap.gosellapi.R;
-import company.tap.gosellapi.internal.adapters.MainRecyclerViewAdapter;
+import company.tap.gosellapi.internal.adapters.PaymentOptionsRecyclerViewAdapter;
 import company.tap.gosellapi.internal.api.facade.GoSellAPI;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import company.tap.gosellapi.internal.fragments.GoSellPaymentOptionsFragment;
@@ -21,7 +21,7 @@ import company.tap.gosellapi.internal.fragments.GoSellOTPScreenFragment;
 import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
 
-public class GoSellPaymentActivity extends AppCompatActivity implements MainRecyclerViewAdapter.MainRecyclerViewAdapterListener {
+public class GoSellPaymentActivity extends AppCompatActivity implements PaymentOptionsRecyclerViewAdapter.PaymentOptionsViewAdapterListener {
     public static PaymentOptionsResponse paymentOptionsResponse;
 
     private static final int SCAN_REQUEST_CODE = 123;

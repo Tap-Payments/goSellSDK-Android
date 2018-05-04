@@ -5,13 +5,13 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import company.tap.gosellapi.R;
-import company.tap.gosellapi.internal.adapters.MainRecyclerViewAdapter;
+import company.tap.gosellapi.internal.adapters.PaymentOptionsRecyclerViewAdapter;
 
 public class PaymentSystemsViewHolder extends RecyclerView.ViewHolder {
 
-    private MainRecyclerViewAdapter.MainRecyclerViewAdapterListener mListener;
+    private PaymentOptionsRecyclerViewAdapter.PaymentOptionsViewAdapterListener mListener;
 
-    public PaymentSystemsViewHolder(View view, MainRecyclerViewAdapter.MainRecyclerViewAdapterListener listener) {
+    public PaymentSystemsViewHolder(View view, PaymentOptionsRecyclerViewAdapter.PaymentOptionsViewAdapterListener listener) {
         super(view);
 
         mListener = listener;

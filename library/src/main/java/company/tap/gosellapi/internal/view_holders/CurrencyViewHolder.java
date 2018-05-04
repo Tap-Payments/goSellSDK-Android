@@ -3,13 +3,13 @@ package company.tap.gosellapi.internal.view_holders;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import company.tap.gosellapi.internal.adapters.MainRecyclerViewAdapter;
+import company.tap.gosellapi.internal.adapters.PaymentOptionsRecyclerViewAdapter;
 
 public class CurrencyViewHolder extends RecyclerView.ViewHolder {
 
-    private MainRecyclerViewAdapter.MainRecyclerViewAdapterListener mListener;
+    private PaymentOptionsRecyclerViewAdapter.PaymentOptionsViewAdapterListener mListener;
 
-    public CurrencyViewHolder (View view, MainRecyclerViewAdapter.MainRecyclerViewAdapterListener listener) {
+    public CurrencyViewHolder (View view, PaymentOptionsRecyclerViewAdapter.PaymentOptionsViewAdapterListener listener) {
         super(view);
 
         mListener = listener;
