@@ -15,12 +15,15 @@ import com.bumptech.glide.request.RequestOptions;
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.adapters.MainRecyclerViewAdapter;
 import company.tap.gosellapi.internal.api.facade.GoSellAPI;
+import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import company.tap.gosellapi.internal.fragments.MainScreenFragment;
 import company.tap.gosellapi.internal.fragments.OTPScreenFragment;
 import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
 
 public class MainActivity extends AppCompatActivity implements MainRecyclerViewAdapter.MainRecyclerViewAdapterListener {
+    public static PaymentOptionsResponse paymentOptionsResponse;
+
     private static final int SCAN_REQUEST_CODE = 123;
     private FragmentManager fragmentManager;
 
