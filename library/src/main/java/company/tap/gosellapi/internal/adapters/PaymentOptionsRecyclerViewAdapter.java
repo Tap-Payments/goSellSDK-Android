@@ -33,6 +33,18 @@ public class PaymentOptionsRecyclerViewAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        PaymentOptionsDataSource.PaymentType paymentType = PaymentOptionsDataSource.PaymentType.getByViewType(viewType);
+        switch (paymentType) {
+            case CURRENCY:
+                break;
+            case RECENT:
+                break;
+            case WEB:
+                break;
+            case CARD:
+                break;
+        }
+
 //        PaymentOptionsDataSource.PaymentType type = PaymentOptionsDataSource.PaymentType.valueOf(viewType);
 //        return getViewHolderForType(type, parent);
 
