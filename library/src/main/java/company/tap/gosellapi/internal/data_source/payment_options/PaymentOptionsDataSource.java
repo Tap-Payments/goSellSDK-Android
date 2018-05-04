@@ -11,10 +11,16 @@ import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 
 public class PaymentOptionsDataSource {
     public enum PaymentType {
-        CURRENCY,
-        RECENT,
-        WEB,
-        CARD
+        CURRENCY(0),
+        RECENT(1),
+        WEB(2),
+        CARD(3);
+
+        private int viewType;
+
+        PaymentType(int viewType) {
+            this.viewType = viewType;
+        }
     }
 
     private enum CardPaymentType {
@@ -59,14 +65,14 @@ public class PaymentOptionsDataSource {
     private void addCurrencies() {
         HashMap<String,Double> supportedCurrencies = paymentOptionsResponse.getSupported_currencies();
         if (supportedCurrencies != null && supportedCurrencies.size() > 0) {
-            dataList.add(new PaymentOptionsCurrencyModel(supportedCurrencies));
+            dataList.add(new PaymentOptionsCurrencyModel(supportedCurrencies, PaymentType.CURRENCY.viewType));
         }
     }
 
     private void addRecent() {
         ArrayList<Card> recentCards = paymentOptionsResponse.getCards();
         if (recentCards != null && recentCards.size() > 0) {
-            dataList.add(new PaymentOptionsRecentModel(recentCards));
+            dataList.add(new PaymentOptionsRecentModel(recentCards, PaymentType.RECENT.viewType));
         }
     }
 
@@ -79,7 +85,7 @@ public class PaymentOptionsDataSource {
 
         for (PaymentOption paymentOption : paymentOptions) {
             if (paymentOption.getPayment_type().equalsIgnoreCase(CardPaymentType.WEB.value)) {
-                dataList.add(new PaymentOptionsWebModel(paymentOption));
+                dataList.add(new PaymentOptionsWebModel(paymentOption, PaymentType.WEB.viewType));
             }
         }
     }
@@ -99,7 +105,15 @@ public class PaymentOptionsDataSource {
         }
 
         if (paymentOptionsCards.size() > 0) {
-            dataList.add(new PaymentOptionsCardModel(paymentOptionsCards));
+            dataList.add(new PaymentOptionsCardModel(paymentOptionsCards, PaymentType.CARD.viewType));
         }
+    }
+
+    public ArrayList<PaymentOptionsBaseModel> getDataList() {
+        return dataList;
+    }
+
+    public int getItemViewType(int position) {
+        return dataList.get(position).getModelType();
     }
 }
