@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 
 class PaymentOptionsCardModel extends PaymentOptionsBaseModel<ArrayList<PaymentOption>> {
-    PaymentOptionsCardModel(ArrayList<PaymentOption> data) {
-        super(data);
+    PaymentOptionsCardModel(ArrayList<PaymentOption> data, int modelType) {
+        super(data, modelType);
     }
 }
