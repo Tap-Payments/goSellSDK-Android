@@ -4,6 +4,7 @@
     android:id="@+id/paymentSystemsViewHolderLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:padding="@dimen/default_padding"
     android:background="@drawable/layout_main_section_background_shape"
     android:gravity="center_vertical"
     android:orientation="horizontal">
@@ -12,7 +13,6 @@
         android:id="@+id/paymentSystemIcon"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_margin="10dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
@@ -25,6 +25,7 @@
         android:layout_toStartOf="@+id/arrowIcon"
         android:layout_toRightOf="@+id/paymentSystemIcon"
         android:layout_toEndOf="@id/paymentSystemIcon"
+        android:background="@drawable/auxillary_shape_square"
         android:layout_centerVertical="true"
         android:text="KNET"/>
 
@@ -32,7 +33,6 @@
         android:id="@+id/arrowIcon"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_margin="10dp"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"

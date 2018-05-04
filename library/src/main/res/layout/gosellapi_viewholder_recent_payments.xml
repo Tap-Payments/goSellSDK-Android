@@ -5,8 +5,8 @@
     android:layout_width="wrap_content"
     android:layout_height="100dp"
     android:layout_margin="10dp"
-    card_view:cardBackgroundColor="#FF0000"
-    card_view:cardElevation="3dp">
+    card_view:cardElevation="3dp"
+    card_view:cardCornerRadius="5dp">
 
     <TextView
         android:text="VISA"

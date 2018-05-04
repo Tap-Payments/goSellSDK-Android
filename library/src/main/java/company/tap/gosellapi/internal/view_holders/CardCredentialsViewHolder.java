@@ -3,6 +3,7 @@ package company.tap.gosellapi.internal.view_holders;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
@@ -33,9 +34,9 @@ public class CardCredentialsViewHolder extends RecyclerView.ViewHolder {
         });
 
         // Configure Save Card Switch
-        Switch saveCardSwitch = itemView.findViewById(R.id.saveCardSwitch);
+        CheckBox saveCardCheck = itemView.findViewById(R.id.saveCardCheck);
 
-        saveCardSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        saveCardCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
