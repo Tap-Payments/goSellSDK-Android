@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".internal.fragments.MainScreenFragment">
+    tools:context=".internal.fragments.GoSellPaymentOptionsFragment">
 
-    <android.support.v7.widget.RecyclerView android:id="@+id/mainRecyclerView"
+    <android.support.v7.widget.RecyclerView android:id="@+id/paymentOptionsRecyclerView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:overScrollMode="never"

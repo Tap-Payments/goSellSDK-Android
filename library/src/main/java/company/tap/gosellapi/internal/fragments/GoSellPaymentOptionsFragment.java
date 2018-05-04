@@ -12,15 +12,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import company.tap.gosellapi.R;
-import company.tap.gosellapi.internal.activities.MainActivity;
+import company.tap.gosellapi.internal.activities.GoSellPaymentActivity;
 import company.tap.gosellapi.internal.adapters.MainRecyclerViewAdapter;
 import company.tap.gosellapi.internal.adapters.MainRecyclerViewAdapter.MainRecyclerViewAdapterListener;
 
-public class MainScreenFragment extends Fragment {
+public class GoSellPaymentOptionsFragment extends Fragment {
 
     private MainRecyclerViewAdapterListener listener;
 
-    public MainScreenFragment() {
+    public GoSellPaymentOptionsFragment() {
         // Required empty public constructor
     }
 
@@ -44,12 +44,12 @@ public class MainScreenFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        if(context instanceof MainActivity) {
+        if(context instanceof GoSellPaymentActivity) {
             this.listener = (MainRecyclerViewAdapterListener) context;
         }
         else {
         throw new ClassCastException(context.toString()
-                + " must implement MainScreenFragment.MainScreenFragmentListener");
+                + " must implement GoSellPaymentOptionsFragment.GoSellPaymentOptionsFragmentListener");
         }
     }
 
@@ -60,7 +60,7 @@ public class MainScreenFragment extends Fragment {
     }
 
     private void initMainRecyclerView(View view) {
-        RecyclerView mainRecyclerView = view.findViewById(R.id.mainRecyclerView);
+        RecyclerView mainRecyclerView = view.findViewById(R.id.paymentOptionsRecyclerView);
 
         //Configuring layout manager
         LinearLayoutManager layoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);
