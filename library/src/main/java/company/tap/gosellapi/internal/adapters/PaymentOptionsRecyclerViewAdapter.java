@@ -55,8 +55,12 @@ public class PaymentOptionsRecyclerViewAdapter extends RecyclerView.Adapter<Paym
     //focus interaction between holders
     @Override
     public void setFocused(int position) {
+        int oldPosition = focusedPosition;
         focusedPosition = position;
-        notifyDataSetChanged();
+        if (oldPosition != NO_FOCUS) {
+            notifyItemChanged(oldPosition);
+        }
+        notifyItemChanged(focusedPosition);
     }
 
     public void clearFocus() {
