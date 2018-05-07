@@ -1,6 +1,6 @@
 package company.tap.gosellapi.internal.data_source.payment_options;
 
-class PaymentOptionsBaseModel<T> {
+public class PaymentOptionsBaseModel<T> {
     private T data;
     private int modelType;
 
@@ -9,11 +9,12 @@ class PaymentOptionsBaseModel<T> {
         this.modelType = modelType;
     }
 
-    T getData() {
+    public T getData() {
         return data;
     }
 
-    int getModelType() {
+    public int getModelType() {
         return modelType;
     }
 }
+
