@@ -71,7 +71,7 @@ public class GoSellPaymentActivity extends AppCompatActivity implements PaymentO
     }
 
     @Override
-    public void paymentSystemViewHolderClicked() {
+    public void webPaymentSystemViewHolderClicked() {
         Log.e("MAIN ACTIVITY", "PAYMENT SYSTEM VIEW HOLDER CLICKED");
     }
 
@@ -84,6 +84,16 @@ public class GoSellPaymentActivity extends AppCompatActivity implements PaymentO
                 .replace(R.id.paymentActivityFragmentContainer, new GoSellOTPScreenFragment())
                 .addToBackStack("")
                 .commit();
+    }
+
+    @Override
+    public void currencyHolderClicked() {
+
+    }
+
+    @Override
+    public void cardDetailsFilled(boolean isFilled) {
+
     }
 
     public void scanCard() {

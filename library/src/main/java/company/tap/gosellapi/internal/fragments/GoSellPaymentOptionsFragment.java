@@ -81,13 +81,23 @@ public class GoSellPaymentOptionsFragment extends Fragment {
             }
 
             @Override
-            public void paymentSystemViewHolderClicked() {
-                listener.paymentSystemViewHolderClicked();
+            public void webPaymentSystemViewHolderClicked() {
+                listener.webPaymentSystemViewHolderClicked();
             }
 
             @Override
             public void recentPaymentItemClicked() {
                 listener.recentPaymentItemClicked();
+            }
+
+            @Override
+            public void currencyHolderClicked() {
+
+            }
+
+            @Override
+            public void cardDetailsFilled(boolean isFilled) {
+
             }
         });
 

@@ -8,16 +8,30 @@ import company.tap.gosellapi.internal.data_source.payment_options.PaymentOptions
 import company.tap.gosellapi.internal.data_source.payment_options.PaymentType;
 import company.tap.gosellapi.internal.view_holders.PaymentOptionsBaseViewHolder;
 
-public class PaymentOptionsRecyclerViewAdapter extends RecyclerView.Adapter<PaymentOptionsBaseViewHolder> {
+public class PaymentOptionsRecyclerViewAdapter extends RecyclerView.Adapter<PaymentOptionsBaseViewHolder> implements PaymentOptionsViewHolderFocusedStateInterface {
     public interface PaymentOptionsViewAdapterListener {
+        void currencyHolderClicked();
+        void recentPaymentItemClicked();
+        void webPaymentSystemViewHolderClicked();
         void cardScannerButtonClicked();
         void saveCardSwitchCheckedChanged();
-        void paymentSystemViewHolderClicked();
-        void recentPaymentItemClicked();
+        void cardDetailsFilled(boolean isFilled);
     }
 
     private PaymentOptionsDataSource dataSource;
     private PaymentOptionsViewAdapterListener listener;
+
+    int focusedPosition = -1;
+    PaymentOptionsBaseViewHolder focusedHolder;
+
+    @Override
+    public void setFocused(PaymentOptionsBaseViewHolder holder, int position) {
+        if (focusedHolder != null && focusedPosition != -1) {
+            focusedHolder.setFocused(false);
+        }
+        focusedPosition = position;
+        focusedHolder = holder;
+    }
 
     public PaymentOptionsRecyclerViewAdapter(PaymentOptionsDataSource dataSource, PaymentOptionsViewAdapterListener listener) {
         this.dataSource = dataSource;
@@ -27,7 +41,7 @@ public class PaymentOptionsRecyclerViewAdapter extends RecyclerView.Adapter<Paym
     @NonNull
     @Override
     public PaymentOptionsBaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return PaymentOptionsBaseViewHolder.newInstance(parent, PaymentType.getByViewType(viewType));
+        return PaymentOptionsBaseViewHolder.newInstance(parent, PaymentType.getByViewType(viewType), this);
     }
 
     @Override
