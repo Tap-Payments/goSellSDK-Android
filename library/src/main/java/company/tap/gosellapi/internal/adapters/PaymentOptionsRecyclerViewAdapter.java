@@ -1,14 +1,14 @@
 package company.tap.gosellapi.internal.adapters;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
-import android.view.ViewGroup;
+        import android.support.annotation.NonNull;
+        import android.support.v7.widget.RecyclerView;
+        import android.view.ViewGroup;
 
-import company.tap.gosellapi.internal.data_source.payment_options.PaymentOptionsDataSource;
-import company.tap.gosellapi.internal.data_source.payment_options.PaymentType;
-import company.tap.gosellapi.internal.view_holders.PaymentOptionsBaseViewHolder;
+        import company.tap.gosellapi.internal.data_source.payment_options.PaymentOptionsDataSource;
+        import company.tap.gosellapi.internal.data_source.payment_options.PaymentType;
+        import company.tap.gosellapi.internal.view_holders.PaymentOptionsBaseViewHolder;
 
-public class PaymentOptionsRecyclerViewAdapter extends RecyclerView.Adapter<PaymentOptionsBaseViewHolder> implements PaymentOptionsViewHolderFocusedStateInterface {
+public class PaymentOptionsRecyclerViewAdapter extends RecyclerView.Adapter<PaymentOptionsBaseViewHolder> implements PaymentOptionsBaseViewHolder.PaymentOptionsViewHolderFocusedStateInterface {
     public interface PaymentOptionsViewAdapterListener {
         void currencyHolderClicked();
         void recentPaymentItemClicked();
@@ -21,17 +21,8 @@ public class PaymentOptionsRecyclerViewAdapter extends RecyclerView.Adapter<Paym
     private PaymentOptionsDataSource dataSource;
     private PaymentOptionsViewAdapterListener listener;
 
-    int focusedPosition = -1;
-    PaymentOptionsBaseViewHolder focusedHolder;
-
-    @Override
-    public void setFocused(PaymentOptionsBaseViewHolder holder, int position) {
-        if (focusedHolder != null && focusedPosition != -1) {
-            focusedHolder.setFocused(false);
-        }
-        focusedPosition = position;
-        focusedHolder = holder;
-    }
+    private final static int NO_FOCUS = -1;
+    private int focusedPosition = NO_FOCUS;
 
     public PaymentOptionsRecyclerViewAdapter(PaymentOptionsDataSource dataSource, PaymentOptionsViewAdapterListener listener) {
         this.dataSource = dataSource;
@@ -47,7 +38,7 @@ public class PaymentOptionsRecyclerViewAdapter extends RecyclerView.Adapter<Paym
     @Override
     public void onBindViewHolder(@NonNull PaymentOptionsBaseViewHolder holder, int position) {
         //noinspection unchecked
-        holder.bind(dataSource.getDataList().get(position));
+        holder.bind(dataSource.getDataList().get(position), position == focusedPosition);
     }
 
     @Override
@@ -58,5 +49,18 @@ public class PaymentOptionsRecyclerViewAdapter extends RecyclerView.Adapter<Paym
     @Override
     public int getItemViewType(int position) {
         return dataSource.getItemViewType(position);
+    }
+
+
+    //focus interaction between holders
+    @Override
+    public void setFocused(int position) {
+        focusedPosition = position;
+        notifyDataSetChanged();
+    }
+
+    public void clearFocus() {
+        focusedPosition = NO_FOCUS;
+        notifyDataSetChanged();
     }
 }

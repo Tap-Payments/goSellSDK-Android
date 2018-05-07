@@ -2,7 +2,6 @@ package company.tap.gosellapi.internal.view_holders;
 
 import android.view.View;
 
-import company.tap.gosellapi.internal.adapters.PaymentOptionsViewHolderFocusedStateInterface;
 import company.tap.gosellapi.internal.data_source.payment_options.PaymentOptionsBaseModel;
 
 public class DummyViewHolder extends PaymentOptionsBaseViewHolder {
@@ -14,4 +13,7 @@ public class DummyViewHolder extends PaymentOptionsBaseViewHolder {
     public void bind(PaymentOptionsBaseModel data) {
 
     }
+
+    @Override
+    void setFocused(boolean isFocused) { }
 }
