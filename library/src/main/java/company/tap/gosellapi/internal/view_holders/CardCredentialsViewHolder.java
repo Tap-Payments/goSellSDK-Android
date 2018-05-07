@@ -1,45 +1,19 @@
 package company.tap.gosellapi.internal.view_holders;
 
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 
-import company.tap.gosellapi.R;
-import company.tap.gosellapi.internal.adapters.PaymentOptionsRecyclerViewAdapter;
+import java.util.ArrayList;
 
-public class CardCredentialsViewHolder extends PaymentOptionsBaseViewHolder {
+import company.tap.gosellapi.internal.api.models.PaymentOption;
+import company.tap.gosellapi.internal.data_source.payment_options.PaymentOptionsBaseModel;
 
-    private PaymentOptionsRecyclerViewAdapter.PaymentOptionsViewAdapterListener mListener;
-
-    public CardCredentialsViewHolder(View view) {
+public class CardCredentialsViewHolder extends PaymentOptionsBaseViewHolder<PaymentOptionsBaseModel<ArrayList<PaymentOption>>> {
+    CardCredentialsViewHolder(View view) {
         super(view);
-
-//        mListener = listener;
     }
 
-    public void bind() {
+    @Override
+    public void bind(PaymentOptionsBaseModel<ArrayList<PaymentOption>> data) {
 
-        // Configure Card Scanner Button
-        Button cardScannerButton = itemView.findViewById(R.id.cardScannerButton);
-
-        cardScannerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                mListener.cardScannerButtonClicked();
-            }
-        });
-
-        // Configure Save Card Switch
-        CheckBox saveCardCheck = itemView.findViewById(R.id.saveCardCheck);
-
-        saveCardCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                mListener.saveCardSwitchCheckedChanged();
-            }
-        });
     }
 }

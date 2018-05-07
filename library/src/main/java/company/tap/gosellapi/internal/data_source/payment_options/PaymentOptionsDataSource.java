@@ -21,29 +21,6 @@ public class PaymentOptionsDataSource {
         }
     }
 
-    public enum PaymentType {
-        CURRENCY(0),
-        RECENT(1),
-        WEB(2),
-        CARD(3);
-
-        private int viewType;
-
-        PaymentType(int viewType) {
-            this.viewType = viewType;
-        }
-
-        public static PaymentType getByViewType(int viewType) {
-            for (PaymentType paymentType : PaymentType.values()) {
-                if (paymentType.viewType == viewType) {
-                    return paymentType;
-                }
-            }
-
-            return null;
-        }
-    }
-
     private PaymentOptionsResponse paymentOptionsResponse;
     private ArrayList<PaymentOptionsBaseModel> dataList;
 
@@ -75,14 +52,14 @@ public class PaymentOptionsDataSource {
     private void addCurrencies() {
         HashMap<String,Double> supportedCurrencies = paymentOptionsResponse.getSupported_currencies();
         if (supportedCurrencies != null && supportedCurrencies.size() > 0) {
-            dataList.add(new PaymentOptionsCurrencyModel(supportedCurrencies, PaymentType.CURRENCY.viewType));
+            dataList.add(new PaymentOptionsBaseModel<>(supportedCurrencies, PaymentType.CURRENCY.getViewType()));
         }
     }
 
     private void addRecent() {
         ArrayList<Card> recentCards = paymentOptionsResponse.getCards();
         if (recentCards != null && recentCards.size() > 0) {
-            dataList.add(new PaymentOptionsRecentModel(recentCards, PaymentType.RECENT.viewType));
+            dataList.add(new PaymentOptionsBaseModel<>(recentCards, PaymentType.RECENT.getViewType()));
         }
     }
 
@@ -95,7 +72,7 @@ public class PaymentOptionsDataSource {
 
         for (PaymentOption paymentOption : paymentOptions) {
             if (paymentOption.getPayment_type().equalsIgnoreCase(CardPaymentType.WEB.value)) {
-                dataList.add(new PaymentOptionsWebModel(paymentOption, PaymentType.WEB.viewType));
+                dataList.add(new PaymentOptionsBaseModel<>(paymentOption, PaymentType.WEB.getViewType()));
             }
         }
     }
@@ -115,7 +92,7 @@ public class PaymentOptionsDataSource {
         }
 
         if (paymentOptionsCards.size() > 0) {
-            dataList.add(new PaymentOptionsCardModel(paymentOptionsCards, PaymentType.CARD.viewType));
+            dataList.add(new PaymentOptionsBaseModel<>(paymentOptionsCards, PaymentType.CARD.getViewType()));
         }
     }
 

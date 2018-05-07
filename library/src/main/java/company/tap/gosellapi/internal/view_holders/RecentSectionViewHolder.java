@@ -1,40 +1,19 @@
 package company.tap.gosellapi.internal.view_holders;
 
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import company.tap.gosellapi.R;
-import company.tap.gosellapi.internal.adapters.PaymentOptionsRecyclerViewAdapter;
-import company.tap.gosellapi.internal.adapters.RecentPaymentsRecyclerViewAdapter;
+import java.util.ArrayList;
 
-public class RecentSectionViewHolder extends RecyclerView.ViewHolder {
-    private RecyclerView mRecycler;
+import company.tap.gosellapi.internal.api.models.Card;
+import company.tap.gosellapi.internal.data_source.payment_options.PaymentOptionsBaseModel;
 
-    private PaymentOptionsRecyclerViewAdapter.PaymentOptionsViewAdapterListener listener;
-
-    public RecentSectionViewHolder(View view, PaymentOptionsRecyclerViewAdapter.PaymentOptionsViewAdapterListener listener) {
-        super(view);
-
-        this.listener = listener;
-        mRecycler = view.findViewById(R.id.recentPaymentsRecyclerView);
+public class RecentSectionViewHolder extends PaymentOptionsBaseViewHolder<PaymentOptionsBaseModel<ArrayList<Card>>> {
+    RecentSectionViewHolder(View itemView) {
+        super(itemView);
     }
 
-    public void bind() {
+    @Override
+    public void bind(PaymentOptionsBaseModel<ArrayList<Card>> data) {
 
-        // Configure layout manager
-        LinearLayoutManager layoutManager = new LinearLayoutManager(mRecycler.getContext(), LinearLayoutManager.HORIZONTAL, false);
-        mRecycler.setLayoutManager(layoutManager);
-
-        // Configure RecentPaymentsRecyclerViewAdapter
-        RecentPaymentsRecyclerViewAdapter adapter = new RecentPaymentsRecyclerViewAdapter(new RecentPaymentsRecyclerViewAdapter.RecentPaymentsRecyclerViewAdapterListener() {
-            @Override
-            public void recentPaymentItemClicked() {
-                listener.recentPaymentItemClicked();
-            }
-        });
-
-
-        mRecycler.setAdapter(adapter);
     }
 }

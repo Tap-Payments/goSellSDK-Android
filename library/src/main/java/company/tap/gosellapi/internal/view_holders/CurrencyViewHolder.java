@@ -1,17 +1,18 @@
 package company.tap.gosellapi.internal.view_holders;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import company.tap.gosellapi.internal.adapters.PaymentOptionsRecyclerViewAdapter;
+import java.util.HashMap;
 
-public class CurrencyViewHolder extends RecyclerView.ViewHolder {
+import company.tap.gosellapi.internal.data_source.payment_options.PaymentOptionsBaseModel;
 
-    private PaymentOptionsRecyclerViewAdapter.PaymentOptionsViewAdapterListener mListener;
-
-    public CurrencyViewHolder (View view, PaymentOptionsRecyclerViewAdapter.PaymentOptionsViewAdapterListener listener) {
+public class CurrencyViewHolder extends PaymentOptionsBaseViewHolder<PaymentOptionsBaseModel<HashMap<String,Double>>> {
+    CurrencyViewHolder(View view) {
         super(view);
+    }
 
-        mListener = listener;
+    @Override
+    public void bind(PaymentOptionsBaseModel<HashMap<String, Double>> data) {
+
     }
 }
