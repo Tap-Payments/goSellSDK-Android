@@ -7,12 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import company.tap.gosellapi.R;
-import company.tap.gosellapi.internal.adapters.PaymentOptionsViewHolderFocusedStateInterface;
 import company.tap.gosellapi.internal.data_source.payment_options.PaymentOptionsBaseModel;
 import company.tap.gosellapi.internal.data_source.payment_options.PaymentType;
 
 public abstract class PaymentOptionsBaseViewHolder<T extends PaymentOptionsBaseModel> extends RecyclerView.ViewHolder {
-    private final PaymentOptionsViewHolderFocusedStateInterface focusedStateInterface;
+    //interface for focus interaction between holders
+    public interface PaymentOptionsViewHolderFocusedStateInterface {
+        void setFocused(int position);
+    }
+    final PaymentOptionsViewHolderFocusedStateInterface focusedStateInterface;
 
     public static PaymentOptionsBaseViewHolder newInstance(ViewGroup parent, @NonNull PaymentType paymentType, PaymentOptionsViewHolderFocusedStateInterface focusedStateInterface) {
         View view = null;
@@ -34,32 +37,17 @@ public abstract class PaymentOptionsBaseViewHolder<T extends PaymentOptionsBaseM
         }
     }
 
-    boolean isFocused;
-    private View itemView;
-
     PaymentOptionsBaseViewHolder(View itemView, PaymentOptionsViewHolderFocusedStateInterface focusedStateInterface) {
         super(itemView);
-        this.itemView = itemView;
         this.focusedStateInterface = focusedStateInterface;
-
-        itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PaymentOptionsBaseViewHolder.this.focusedStateInterface.setFocused(PaymentOptionsBaseViewHolder.this, getAdapterPosition());
-                setFocused(!isFocused);
-            }
-        });
     }
 
-    public void setFocused(boolean isFocused) {
-        this.isFocused = isFocused;
-
-        if (isFocused) {
-            itemView.setBackgroundResource(R.color.vibrant_green);
-        } else {
-            itemView.setBackground(null);
-        }
+    public final void bind(T data, boolean isFocused) {
+        setFocused(isFocused);
+        bind(data);
     }
 
-    abstract public void bind(T data);
+    abstract void bind(T data);
+
+    abstract void setFocused(boolean isFocused);
 }
