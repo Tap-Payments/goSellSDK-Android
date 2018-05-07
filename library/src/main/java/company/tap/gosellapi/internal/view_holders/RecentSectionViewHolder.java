@@ -4,10 +4,12 @@ import android.view.View;
 
 import java.util.ArrayList;
 
+import company.tap.gosellapi.internal.adapters.RecentPaymentsRecyclerViewAdapter;
 import company.tap.gosellapi.internal.api.models.Card;
 import company.tap.gosellapi.internal.data_source.payment_options.PaymentOptionsBaseModel;
 
-public class RecentSectionViewHolder extends PaymentOptionsBaseViewHolder<PaymentOptionsBaseModel<ArrayList<Card>>> {
+public class RecentSectionViewHolder extends PaymentOptionsBaseViewHolder<PaymentOptionsBaseModel<ArrayList<Card>>>
+        implements RecentPaymentsRecyclerViewAdapter.RecentPaymentsRecyclerViewAdapterListener {
     RecentSectionViewHolder(View itemView, PaymentOptionsViewHolderFocusedStateInterface focusedStateInterface) {
         super(itemView, focusedStateInterface);
     }
@@ -20,5 +22,10 @@ public class RecentSectionViewHolder extends PaymentOptionsBaseViewHolder<Paymen
     @Override
     void setFocused(boolean isFocused) {
 
+    }
+
+    @Override
+    public void recentPaymentItemClicked() {
+        focusedStateInterface.setFocused(getAdapterPosition());
     }
 }
