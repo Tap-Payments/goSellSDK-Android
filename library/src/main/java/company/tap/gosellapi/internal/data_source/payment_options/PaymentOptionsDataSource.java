@@ -58,7 +58,7 @@ public class PaymentOptionsDataSource {
         ArrayList<Card> recentCards = new ArrayList<>();//paymentOptionsResponse.getCards();
 
         // TODO - temporary Card filler
-        for(int i = 0; i < 5; i++) {
+        for(int i = 0; i < 20; i++) {
             recentCards.add(createCardData());
         }
 
@@ -76,7 +76,9 @@ public class PaymentOptionsDataSource {
 
         for (PaymentOption paymentOption : paymentOptions) {
             if (paymentOption.getPayment_type().equalsIgnoreCase(CardPaymentType.WEB.value)) {
-                dataList.add(new PaymentOptionsBaseModel<>(paymentOption, PaymentType.WEB.getViewType()));
+                for (int i = 0; i < 20; i++) {
+                    dataList.add(new PaymentOptionsBaseModel<>(paymentOption, PaymentType.WEB.getViewType()));
+                }
             }
         }
     }

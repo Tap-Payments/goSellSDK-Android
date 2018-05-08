@@ -4,11 +4,12 @@ import android.view.View;
 
 import java.util.HashMap;
 
+import company.tap.gosellapi.internal.adapters.PaymentOptionsRecyclerViewAdapter;
 import company.tap.gosellapi.internal.data_source.payment_options.PaymentOptionsBaseModel;
 
 public class CurrencyViewHolder extends PaymentOptionsBaseViewHolder<PaymentOptionsBaseModel<HashMap<String,Double>>> {
-    CurrencyViewHolder(View view, PaymentOptionsViewHolderFocusedStateInterface focusedStateInterface) {
-        super(view, focusedStateInterface);
+    CurrencyViewHolder(View view, PaymentOptionsViewHolderFocusedStateInterface focusedStateInterface, PaymentOptionsRecyclerViewAdapter.PaymentOptionsViewAdapterListener adapterListener) {
+        super(view, focusedStateInterface, adapterListener);
     }
 
     @Override

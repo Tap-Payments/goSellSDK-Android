@@ -2,27 +2,28 @@ package company.tap.gosellapi.internal.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import company.tap.gosellapi.R;
+import company.tap.gosellapi.internal.Constants;
 import company.tap.gosellapi.internal.api.models.Card;
 
 public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<RecentPaymentsRecyclerViewAdapter.RecentPaymentsViewHolder> {
-
-    private ArrayList<Card> datasource = new ArrayList<>();
-
     public interface RecentPaymentsRecyclerViewAdapterListener {
-
-        void recentPaymentItemClicked();
+        void recentPaymentItemClicked(int position, Card card);
     }
 
+    private ArrayList<Card> datasource;
+    private RecyclerView parent;
+
     private RecentPaymentsRecyclerViewAdapterListener listener;
+    private int focusedPosition = Constants.NO_FOCUS;
 
     public RecentPaymentsRecyclerViewAdapter(ArrayList<Card> datasource, RecentPaymentsRecyclerViewAdapterListener listener) {
         this.datasource = datasource;
@@ -38,19 +39,9 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
 
     @Override
     public void onBindViewHolder(@NonNull RecentPaymentsViewHolder holder, int position) {
-
         Card card = datasource.get(position);
-
-        TextView cardLastDigits = holder.itemView.findViewById(R.id.cardLastDigits);
-        cardLastDigits.setText(card.getLast4());
-
-        // Handle item click
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.recentPaymentItemClicked();
-            }
-        });
+        holder.bind(position, card);
+        holder.setFocused(position == focusedPosition);
     }
 
     @Override
@@ -58,10 +49,66 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
         return datasource.size();
     }
 
-    static class RecentPaymentsViewHolder extends RecyclerView.ViewHolder {
+    public void setFocused(boolean focused) {
+        setFocused(focused ? focusedPosition : Constants.NO_FOCUS);
+    }
 
-        RecentPaymentsViewHolder(View itemView) {
+    private void setFocused(int position) {
+        RecentPaymentsViewHolder oldHolder;
+
+        if (focusedPosition != Constants.NO_FOCUS) {
+            oldHolder = (RecentPaymentsViewHolder) parent.findViewHolderForAdapterPosition(focusedPosition);
+            if (oldHolder != null) {
+                oldHolder.setFocused(false);
+            }
+        }
+
+        focusedPosition = position;
+        RecentPaymentsViewHolder newHolder = (RecentPaymentsViewHolder) parent.findViewHolderForAdapterPosition(focusedPosition);
+        if (newHolder != null) {
+            newHolder.setFocused(true);
+        }
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        this.parent = recyclerView;
+    }
+
+    @Override
+    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView);
+    }
+
+    public class RecentPaymentsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private int position;
+        private Card card;
+        private ImageView itemCheckmark;
+
+        private RecentPaymentsViewHolder(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
+        }
+
+        private void bind(int position, Card card) {
+            this.position = position;
+            this.card = card;
+
+            TextView cardLastDigits = itemView.findViewById(R.id.cardLastDigits);
+            cardLastDigits.setText(card.getLast4());
+
+            itemCheckmark = itemView.findViewById(R.id.itemCheckmark);
+        }
+
+        @Override
+        public void onClick(View v) {
+            RecentPaymentsRecyclerViewAdapter.this.setFocused(position);
+            listener.recentPaymentItemClicked(position, card);
+        }
+
+        private void setFocused(boolean focused) {
+            itemCheckmark.setVisibility(focused ? View.VISIBLE : View.INVISIBLE);
         }
     }
 }
