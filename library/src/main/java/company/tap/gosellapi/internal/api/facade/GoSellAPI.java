@@ -5,23 +5,24 @@ import android.support.annotation.RestrictTo;
 import company.tap.gosellapi.internal.api.api_service.APIService;
 import company.tap.gosellapi.internal.api.api_service.RetrofitHelper;
 import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
+import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.models.PaymentInfo;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
 import company.tap.gosellapi.internal.api.requests.UpdateChargeRequest;
-import company.tap.gosellapi.internal.api.responses.InitResponse;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
+import company.tap.gosellapi.internal.data_source.GlobalDataManager;
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 public final class GoSellAPI {
     private APIService apiHelper;
 
     //init and pending requests
-    private DataManager dataManager;
+    private RequestManager requestManager;
 
     private GoSellAPI() {
         apiHelper = RetrofitHelper.getApiHelper();
-        dataManager = new DataManager(apiHelper);
+        requestManager = new RequestManager(apiHelper);
     }
 
     private static class SingletonHolder {
@@ -32,24 +33,31 @@ public final class GoSellAPI {
         return SingletonHolder.INSTANCE;
     }
 
-    public InitResponse getInitResponse() {
-        return dataManager.getInitResponse();
-    }
-
     //requests
     public void createCharge(final CreateChargeRequest createChargeRequest, final APIRequestCallback<Charge> requestCallback) {
-        dataManager.request(new DataManager.DelayedRequest<>(apiHelper.createCharge(createChargeRequest), requestCallback));
+        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.createCharge(createChargeRequest), requestCallback));
     }
 
     public void retrieveCharge(final String chargeId, final APIRequestCallback<Charge> requestCallback) {
-        dataManager.request(new DataManager.DelayedRequest<>(apiHelper.retrieveCharge(chargeId), requestCallback));
+        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.retrieveCharge(chargeId), requestCallback));
     }
 
     public void updateCharge(final String chargeId, final UpdateChargeRequest updateChargeRequest, final APIRequestCallback<Charge> requestCallback) {
-        dataManager.request(new DataManager.DelayedRequest<>(apiHelper.updateCharge(chargeId, updateChargeRequest), requestCallback));
+        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.updateCharge(chargeId, updateChargeRequest), requestCallback));
     }
 
     public void getPaymentTypes(PaymentInfo paymentInfo, final APIRequestCallback<PaymentOptionsResponse> requestCallback) {
-        dataManager.request(new DataManager.DelayedRequest<>(apiHelper.getPaymentTypes(paymentInfo), requestCallback));
+        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.getPaymentTypes(paymentInfo), new APIRequestCallback<PaymentOptionsResponse>() {
+            @Override
+            public void onSuccess(int responseCode, PaymentOptionsResponse serializedResponse) {
+                GlobalDataManager.getInstance().setPaymentOptionsResponse(serializedResponse);
+                requestCallback.onSuccess(responseCode, serializedResponse);
+            }
+
+            @Override
+            public void onFailure(GoSellError errorDetails) {
+                requestCallback.onFailure(errorDetails);
+            }
+        }));
     }
 }

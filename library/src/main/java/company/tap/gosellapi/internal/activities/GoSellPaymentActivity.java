@@ -15,8 +15,8 @@ import com.bumptech.glide.request.RequestOptions;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.adapters.PaymentOptionsRecyclerViewAdapter;
-import company.tap.gosellapi.internal.api.facade.GoSellAPI;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
+import company.tap.gosellapi.internal.data_source.GlobalDataManager;
 import company.tap.gosellapi.internal.fragments.GoSellOTPScreenFragment;
 import company.tap.gosellapi.internal.fragments.GoSellPaymentOptionsFragment;
 import io.card.payment.CardIOActivity;
@@ -59,7 +59,7 @@ public class GoSellPaymentActivity extends AppCompatActivity implements PaymentO
         });
 
         businessIcon = findViewById(R.id.businessIcon);
-        String logoPath = GoSellAPI.getInstance().getInitResponse().getData().getMerchant().getLogo();
+        String logoPath = GlobalDataManager.getInstance().getInitResponse().getData().getMerchant().getLogo();
         Glide.with(this).load(logoPath).apply(RequestOptions.circleCropTransform()).into(businessIcon);
     }
 

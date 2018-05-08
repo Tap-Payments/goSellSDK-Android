@@ -8,24 +8,24 @@ import company.tap.gosellapi.internal.api.callbacks.BaseCallback;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.responses.BaseResponse;
 import company.tap.gosellapi.internal.api.responses.InitResponse;
+import company.tap.gosellapi.internal.data_source.GlobalDataManager;
 import retrofit2.Call;
 
-class DataManager {
+class RequestManager {
     private APIService apiHelper;
 
     //all requests are wrapped in DelayedRequest, until init() would be finished
     private boolean initIsRunning;
     private ArrayList<DelayedRequest> delayedRequests;
-    private InitResponse initResponse;
 
-    DataManager(APIService apiHelper) {
+    RequestManager(APIService apiHelper) {
         this.apiHelper = apiHelper;
         delayedRequests = new ArrayList<>();
     }
 
     void request(DelayedRequest delayedRequest) {
         delayedRequests.add(delayedRequest);
-        if (initResponse == null) {
+        if (GlobalDataManager.getInstance().getInitResponse() == null) {
             if (!initIsRunning) {
                 init();
             }
@@ -42,7 +42,7 @@ class DataManager {
                     @Override
                     public void onSuccess(int responseCode, InitResponse serializedResponse) {
                         initIsRunning = false;
-                        initResponse = serializedResponse;
+                        GlobalDataManager.getInstance().setInitResponse(serializedResponse);
                         runDelayedRequests();
                     }
 
@@ -52,10 +52,6 @@ class DataManager {
                         failDelayedRequests(errorDetails);
                     }
                 }));
-    }
-
-    InitResponse getInitResponse() {
-        return initResponse;
     }
 
     private void runDelayedRequests() {

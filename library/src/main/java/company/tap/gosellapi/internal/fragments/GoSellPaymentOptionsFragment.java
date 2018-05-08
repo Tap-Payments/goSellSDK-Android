@@ -15,7 +15,7 @@ import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.activities.GoSellPaymentActivity;
 import company.tap.gosellapi.internal.adapters.PaymentOptionsRecyclerViewAdapter;
 import company.tap.gosellapi.internal.adapters.PaymentOptionsRecyclerViewAdapter.PaymentOptionsViewAdapterListener;
-import company.tap.gosellapi.internal.data_source.payment_options.PaymentOptionsDataSource;
+import company.tap.gosellapi.internal.data_source.GlobalDataManager;
 
 public class GoSellPaymentOptionsFragment extends Fragment {
 
@@ -68,7 +68,7 @@ public class GoSellPaymentOptionsFragment extends Fragment {
         paymentOptionsRecyclerView.setLayoutManager(layoutManager);
 
         // Configuring MainRecycleViewAdapter and handle PaymentOptionsViewAdapterListener
-        PaymentOptionsRecyclerViewAdapter adapter = new PaymentOptionsRecyclerViewAdapter(new PaymentOptionsDataSource(GoSellPaymentActivity.paymentOptionsResponse),
+        PaymentOptionsRecyclerViewAdapter adapter = new PaymentOptionsRecyclerViewAdapter(GlobalDataManager.getInstance().getPaymentOptionsDataSource(),
                 new PaymentOptionsRecyclerViewAdapter.PaymentOptionsViewAdapterListener() {
             @Override
             public void cardScannerButtonClicked() {
