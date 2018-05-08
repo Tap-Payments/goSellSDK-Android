@@ -15,7 +15,7 @@ import com.bumptech.glide.request.RequestOptions;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.adapters.PaymentOptionsRecyclerViewAdapter;
-import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
+import company.tap.gosellapi.internal.api.models.CardRawData;
 import company.tap.gosellapi.internal.data_source.GlobalDataManager;
 import company.tap.gosellapi.internal.fragments.GoSellOTPScreenFragment;
 import company.tap.gosellapi.internal.fragments.GoSellPaymentOptionsFragment;
@@ -23,8 +23,6 @@ import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
 
 public class GoSellPaymentActivity extends AppCompatActivity implements PaymentOptionsRecyclerViewAdapter.PaymentOptionsViewAdapterListener {
-    public static PaymentOptionsResponse paymentOptionsResponse;
-
     private static final int SCAN_REQUEST_CODE = 123;
     private FragmentManager fragmentManager;
     private GoSellPaymentOptionsFragment paymentOptionsFragment;
@@ -79,12 +77,12 @@ public class GoSellPaymentActivity extends AppCompatActivity implements PaymentO
     }
 
     @Override
-    public void webPaymentSystemViewHolderClicked() {
+    public void webPaymentSystemViewHolderClicked(int position) {
         Log.e("MAIN ACTIVITY", "PAYMENT SYSTEM VIEW HOLDER CLICKED");
     }
 
     @Override
-    public void recentPaymentItemClicked() {
+    public void recentPaymentItemClicked(int clickedItemPosition) {
         Log.e("MAIN ACTIVITY", "RECENT PAYMENT ITEM CLICKED");
 
         fragmentManager
@@ -100,7 +98,7 @@ public class GoSellPaymentActivity extends AppCompatActivity implements PaymentO
     }
 
     @Override
-    public void cardDetailsFilled(boolean isFilled) {
+    public void cardDetailsFilled(boolean isFilled, CardRawData cardRawData) {
 
     }
 

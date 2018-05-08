@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import company.tap.gosellapi.internal.api.models.CardRawData;
 import company.tap.gosellapi.internal.data_source.payment_options.PaymentOptionsDataSource;
 import company.tap.gosellapi.internal.data_source.payment_options.PaymentType;
 import company.tap.gosellapi.internal.view_holders.PaymentOptionsBaseViewHolder;
@@ -13,11 +14,11 @@ public class PaymentOptionsRecyclerViewAdapter extends RecyclerView.Adapter<Paym
         RecyclerView.ViewHolder getHolderForAdapterPosition(int position);
 
         void currencyHolderClicked();
-        void recentPaymentItemClicked();
-        void webPaymentSystemViewHolderClicked();
+        void recentPaymentItemClicked(int clickedItemPosition);
+        void webPaymentSystemViewHolderClicked(int position);
         void cardScannerButtonClicked();
         void saveCardSwitchCheckedChanged();
-        void cardDetailsFilled(boolean isFilled);
+        void cardDetailsFilled(boolean isFilled, CardRawData cardRawData);
     }
 
     private PaymentOptionsDataSource dataSource;

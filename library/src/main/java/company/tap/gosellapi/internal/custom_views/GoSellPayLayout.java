@@ -384,7 +384,6 @@ public final class GoSellPayLayout extends FrameLayout implements View.OnClickLi
                     @Override
                     public void onSuccess(int responseCode, PaymentOptionsResponse serializedResponse) {
                         lo.g("payment types success");
-                        GoSellPaymentActivity.paymentOptionsResponse = serializedResponse;
                         loadingView.setForceStop(true, new TapLoadingView.FullProgressListener() {
                             @Override
                             public void onFullProgress() {
