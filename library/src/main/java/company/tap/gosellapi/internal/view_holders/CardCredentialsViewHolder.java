@@ -5,12 +5,13 @@ import android.view.View;
 import java.util.ArrayList;
 
 import company.tap.gosellapi.R;
+import company.tap.gosellapi.internal.adapters.PaymentOptionsRecyclerViewAdapter;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.data_source.payment_options.PaymentOptionsBaseModel;
 
 public class CardCredentialsViewHolder extends PaymentOptionsBaseViewHolder<PaymentOptionsBaseModel<ArrayList<PaymentOption>>> {
-    CardCredentialsViewHolder(View view, PaymentOptionsViewHolderFocusedStateInterface focusedStateInterface) {
-        super(view, focusedStateInterface);
+    CardCredentialsViewHolder(View view, PaymentOptionsViewHolderFocusedStateInterface focusedStateInterface, PaymentOptionsRecyclerViewAdapter.PaymentOptionsViewAdapterListener adapterListener) {
+        super(view, focusedStateInterface, adapterListener);
     }
 
     @Override
