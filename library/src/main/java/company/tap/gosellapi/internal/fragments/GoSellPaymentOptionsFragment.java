@@ -61,7 +61,7 @@ public class GoSellPaymentOptionsFragment extends Fragment {
     }
 
     private void initMainRecyclerView(View view) {
-        RecyclerView paymentOptionsRecyclerView = view.findViewById(R.id.paymentOptionsRecyclerView);
+        final RecyclerView paymentOptionsRecyclerView = view.findViewById(R.id.paymentOptionsRecyclerView);
 
         //Configuring layout manager
         LinearLayoutManager layoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);
@@ -98,6 +98,11 @@ public class GoSellPaymentOptionsFragment extends Fragment {
             @Override
             public void cardDetailsFilled(boolean isFilled) {
 
+            }
+
+            @Override
+            public RecyclerView.ViewHolder getHolderForAdapterPosition(int position) {
+                return paymentOptionsRecyclerView.findViewHolderForAdapterPosition(position);
             }
         });
 
