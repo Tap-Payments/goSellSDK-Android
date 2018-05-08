@@ -1,7 +1,5 @@
 package company.tap.gosellapi.internal.data_source.payment_options;
 
-import android.support.annotation.NonNull;
-
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -9,7 +7,7 @@ import java.util.HashMap;
 
 import company.tap.gosellapi.internal.api.models.Card;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
-import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
+import company.tap.gosellapi.internal.data_source.GlobalDataManager;
 
 public class PaymentOptionsDataSource {
     private enum CardPaymentType {
@@ -23,11 +21,9 @@ public class PaymentOptionsDataSource {
         }
     }
 
-    private PaymentOptionsResponse paymentOptionsResponse;
     private ArrayList<PaymentOptionsBaseModel> dataList;
 
-    public PaymentOptionsDataSource(@NonNull PaymentOptionsResponse paymentOptionsResponse) {
-        this.paymentOptionsResponse = paymentOptionsResponse;
+    public PaymentOptionsDataSource() {
         init();
     }
 
@@ -52,7 +48,7 @@ public class PaymentOptionsDataSource {
     }
 
     private void addCurrencies() {
-        HashMap<String,Double> supportedCurrencies = paymentOptionsResponse.getSupported_currencies();
+        HashMap<String,Double> supportedCurrencies = GlobalDataManager.getInstance().getPaymentOptionsResponse().getSupported_currencies();
         if (supportedCurrencies != null && supportedCurrencies.size() > 0) {
             dataList.add(new PaymentOptionsBaseModel<>(supportedCurrencies, PaymentType.CURRENCY.getViewType()));
         }
@@ -72,7 +68,7 @@ public class PaymentOptionsDataSource {
     }
 
     private void addWeb() {
-        ArrayList<PaymentOption> paymentOptions = paymentOptionsResponse.getPayment_options();
+        ArrayList<PaymentOption> paymentOptions = GlobalDataManager.getInstance().getPaymentOptionsResponse().getPayment_options();
 
         if (paymentOptions == null || paymentOptions.size() == 0) {
             return;
@@ -86,7 +82,7 @@ public class PaymentOptionsDataSource {
     }
 
     private void addCard() {
-        ArrayList<PaymentOption> paymentOptions = paymentOptionsResponse.getPayment_options();
+        ArrayList<PaymentOption> paymentOptions = GlobalDataManager.getInstance().getPaymentOptionsResponse().getPayment_options();
         ArrayList<PaymentOption> paymentOptionsCards = new ArrayList<>();
 
         if (paymentOptions == null || paymentOptions.size() == 0) {
