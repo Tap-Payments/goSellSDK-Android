@@ -6,10 +6,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import java.util.ArrayList;
 
 import company.tap.gosellapi.R;
+import company.tap.gosellapi.internal.api.models.Card;
 
 public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<RecentPaymentsRecyclerViewAdapter.RecentPaymentsViewHolder> {
+
+    private ArrayList<Card> datasource = new ArrayList<>();
 
     public interface RecentPaymentsRecyclerViewAdapterListener {
 
@@ -18,8 +24,8 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
 
     private RecentPaymentsRecyclerViewAdapterListener listener;
 
-    public RecentPaymentsRecyclerViewAdapter(RecentPaymentsRecyclerViewAdapterListener listener) {
-
+    public RecentPaymentsRecyclerViewAdapter(ArrayList<Card> datasource, RecentPaymentsRecyclerViewAdapterListener listener) {
+        this.datasource = datasource;
         this.listener = listener;
     }
 
@@ -33,6 +39,11 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
     @Override
     public void onBindViewHolder(@NonNull RecentPaymentsViewHolder holder, int position) {
 
+        Card card = datasource.get(position);
+
+        TextView cardLastDigits = holder.itemView.findViewById(R.id.cardLastDigits);
+        cardLastDigits.setText(card.getLast4());
+
         // Handle item click
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,7 +55,7 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
 
     @Override
     public int getItemCount() {
-        return 10;
+        return datasource.size();
     }
 
     static class RecentPaymentsViewHolder extends RecyclerView.ViewHolder {
