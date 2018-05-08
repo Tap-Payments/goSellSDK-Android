@@ -16,6 +16,7 @@ public abstract class PaymentOptionsBaseViewHolder<T extends PaymentOptionsBaseM
         void setFocused(int position);
     }
     final PaymentOptionsViewHolderFocusedStateInterface focusedStateInterface;
+    int position;
 
     public static PaymentOptionsBaseViewHolder newInstance(ViewGroup parent, @NonNull PaymentType paymentType, PaymentOptionsViewHolderFocusedStateInterface focusedStateInterface) {
         View view = null;
@@ -42,8 +43,9 @@ public abstract class PaymentOptionsBaseViewHolder<T extends PaymentOptionsBaseM
         this.focusedStateInterface = focusedStateInterface;
     }
 
-    public final void bind(T data, boolean isFocused) {
+    public final void bind(T data, boolean isFocused, int position) {
         setFocused(isFocused);
+        this.position = position;
         bind(data);
     }
 

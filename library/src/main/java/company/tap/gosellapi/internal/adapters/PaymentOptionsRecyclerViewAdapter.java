@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import company.tap.gosellapi.internal.api.models.Card;
 import company.tap.gosellapi.internal.api.models.CardRawData;
 import company.tap.gosellapi.internal.data_source.payment_options.PaymentOptionsDataSource;
 import company.tap.gosellapi.internal.data_source.payment_options.PaymentType;
@@ -14,11 +15,11 @@ public class PaymentOptionsRecyclerViewAdapter extends RecyclerView.Adapter<Paym
         RecyclerView.ViewHolder getHolderForAdapterPosition(int position);
 
         void currencyHolderClicked();
-        void recentPaymentItemClicked(int clickedItemPosition);
+        void recentPaymentItemClicked(int position, Card recentItem);
         void webPaymentSystemViewHolderClicked(int position);
         void cardScannerButtonClicked();
-        void saveCardSwitchCheckedChanged();
-        void cardDetailsFilled(boolean isFilled, CardRawData cardRawData);
+        void saveCardSwitchCheckedChanged(int position, boolean isChecked);
+        void cardDetailsFilled(boolean isFilled, CardRawData cardRawData); //pass null, if isFilled = false
     }
 
     private PaymentOptionsDataSource dataSource;
@@ -41,7 +42,7 @@ public class PaymentOptionsRecyclerViewAdapter extends RecyclerView.Adapter<Paym
     @Override
     public void onBindViewHolder(@NonNull PaymentOptionsBaseViewHolder holder, int position) {
         //noinspection unchecked
-        holder.bind(dataSource.getDataList().get(position), position == focusedPosition);
+        holder.bind(dataSource.getDataList().get(position), position == focusedPosition, position);
     }
 
     @Override
@@ -75,7 +76,12 @@ public class PaymentOptionsRecyclerViewAdapter extends RecyclerView.Adapter<Paym
     }
 
     public void clearFocus() {
+        if (focusedPosition != NO_FOCUS) {
+            PaymentOptionsBaseViewHolder oldHolder = (PaymentOptionsBaseViewHolder) listener.getHolderForAdapterPosition(focusedPosition);
+            if (oldHolder != null) {
+                oldHolder.setFocused(false);
+            }
+        }
         focusedPosition = NO_FOCUS;
-        notifyDataSetChanged();
     }
 }

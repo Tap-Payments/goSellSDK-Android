@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -14,7 +12,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
 import company.tap.gosellapi.R;
-import company.tap.gosellapi.internal.adapters.PaymentOptionsRecyclerViewAdapter;
 import company.tap.gosellapi.internal.api.models.CardRawData;
 import company.tap.gosellapi.internal.data_source.GlobalDataManager;
 import company.tap.gosellapi.internal.fragments.GoSellOTPScreenFragment;
@@ -22,7 +19,7 @@ import company.tap.gosellapi.internal.fragments.GoSellPaymentOptionsFragment;
 import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
 
-public class GoSellPaymentActivity extends AppCompatActivity implements PaymentOptionsRecyclerViewAdapter.PaymentOptionsViewAdapterListener {
+public class GoSellPaymentActivity extends AppCompatActivity implements GoSellPaymentOptionsFragment.PaymentOptionsFragmentListener{
     private static final int SCAN_REQUEST_CODE = 123;
     private FragmentManager fragmentManager;
     private GoSellPaymentOptionsFragment paymentOptionsFragment;
@@ -62,29 +59,7 @@ public class GoSellPaymentActivity extends AppCompatActivity implements PaymentO
     }
 
     @Override
-    public RecyclerView.ViewHolder getHolderForAdapterPosition(int position) {
-        return null;
-    }
-
-    @Override
-    public void cardScannerButtonClicked() {
-        Log.e("MAIN ACTIVITY", "CARD SCANNER BUTTON CLICKED");
-    }
-
-    @Override
-    public void saveCardSwitchCheckedChanged() {
-        Log.e("MAIN ACTIVITY", "SAVE CARD SWITCH CHECKED CHANGED");
-    }
-
-    @Override
-    public void webPaymentSystemViewHolderClicked(int position) {
-        Log.e("MAIN ACTIVITY", "PAYMENT SYSTEM VIEW HOLDER CLICKED");
-    }
-
-    @Override
-    public void recentPaymentItemClicked(int clickedItemPosition) {
-        Log.e("MAIN ACTIVITY", "RECENT PAYMENT ITEM CLICKED");
-
+    public void startOTP() {
         fragmentManager
                 .beginTransaction()
                 .replace(R.id.paymentActivityFragmentContainer, new GoSellOTPScreenFragment())
@@ -93,16 +68,22 @@ public class GoSellPaymentActivity extends AppCompatActivity implements PaymentO
     }
 
     @Override
-    public void currencyHolderClicked() {
+    public void startCurrencySelection() {
+
+    }
+
+    @Override
+    public void startWebPayment() {
+
+    }
+
+    @Override
+    public void startScanCard() {
 
     }
 
     @Override
     public void cardDetailsFilled(boolean isFilled, CardRawData cardRawData) {
-
-    }
-
-    private void collectPaymentData() {
 
     }
 
