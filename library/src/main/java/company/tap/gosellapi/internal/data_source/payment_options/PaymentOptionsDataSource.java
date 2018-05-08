@@ -2,6 +2,8 @@ package company.tap.gosellapi.internal.data_source.payment_options;
 
 import android.support.annotation.NonNull;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -57,7 +59,13 @@ public class PaymentOptionsDataSource {
     }
 
     private void addRecent() {
-        ArrayList<Card> recentCards = paymentOptionsResponse.getCards();
+        ArrayList<Card> recentCards = new ArrayList<>();//paymentOptionsResponse.getCards();
+
+        // TODO - temporary Card filler
+        for(int i = 0; i < 5; i++) {
+            recentCards.add(createCardData());
+        }
+
         if (recentCards != null && recentCards.size() > 0) {
             dataList.add(new PaymentOptionsBaseModel<>(recentCards, PaymentType.RECENT.getViewType()));
         }
@@ -102,5 +110,22 @@ public class PaymentOptionsDataSource {
 
     public int getItemViewType(int position) {
         return dataList.get(position).getModelType();
+    }
+
+    // TODO remove after real data will be received
+    private static String cardJSONString = "{\n" +
+            "      \"id\": \"crd_q3242434\",\n" +
+            "      \"object\": \"card\",\n" +
+            "      \"last4\": \"1025\",\n" +
+            "      \"exp_month\": \"02\",\n" +
+            "      \"exp_year\": \"25\",\n" +
+            "      \"brand\": \"VISA\",\n" +
+            "      \"name\": \"test\",\n" +
+            "      \"bin\": \"415254\"\n" +
+            "    }";
+
+    private Card createCardData() {
+        Gson mapper = new Gson();
+        return mapper.fromJson(cardJSONString, Card.class);
     }
 }
