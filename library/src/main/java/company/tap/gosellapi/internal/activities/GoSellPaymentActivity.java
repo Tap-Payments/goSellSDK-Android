@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -58,6 +59,11 @@ public class GoSellPaymentActivity extends AppCompatActivity implements PaymentO
         businessIcon = findViewById(R.id.businessIcon);
         String logoPath = GoSellAPI.getInstance().getInitResponse().getData().getMerchant().getLogo();
         Glide.with(this).load(logoPath).apply(RequestOptions.circleCropTransform()).into(businessIcon);
+    }
+
+    @Override
+    public RecyclerView.ViewHolder getHolderForAdapterPosition(int position) {
+        return null;
     }
 
     @Override

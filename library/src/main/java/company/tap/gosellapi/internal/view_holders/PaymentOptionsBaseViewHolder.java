@@ -49,5 +49,5 @@ public abstract class PaymentOptionsBaseViewHolder<T extends PaymentOptionsBaseM
 
     abstract void bind(T data);
 
-    abstract void setFocused(boolean isFocused);
+    public abstract void setFocused(boolean isFocused);
 }

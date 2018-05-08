@@ -15,5 +15,5 @@ public class DummyViewHolder extends PaymentOptionsBaseViewHolder {
     }
 
     @Override
-    void setFocused(boolean isFocused) { }
+    public void setFocused(boolean isFocused) { }
 }

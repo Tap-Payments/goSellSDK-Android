@@ -17,5 +17,5 @@ public class CurrencyViewHolder extends PaymentOptionsBaseViewHolder<PaymentOpti
     }
 
     @Override
-    void setFocused(boolean isFocused) { }
+    public void setFocused(boolean isFocused) { }
 }

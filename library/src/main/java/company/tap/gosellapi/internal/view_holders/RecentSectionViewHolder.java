@@ -20,7 +20,7 @@ public class RecentSectionViewHolder extends PaymentOptionsBaseViewHolder<Paymen
     }
 
     @Override
-    void setFocused(boolean isFocused) {
+    public void setFocused(boolean isFocused) {
 
     }
 

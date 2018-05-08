@@ -1,15 +1,17 @@
 package company.tap.gosellapi.internal.adapters;
 
-        import android.support.annotation.NonNull;
-        import android.support.v7.widget.RecyclerView;
-        import android.view.ViewGroup;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
+import android.view.ViewGroup;
 
-        import company.tap.gosellapi.internal.data_source.payment_options.PaymentOptionsDataSource;
-        import company.tap.gosellapi.internal.data_source.payment_options.PaymentType;
-        import company.tap.gosellapi.internal.view_holders.PaymentOptionsBaseViewHolder;
+import company.tap.gosellapi.internal.data_source.payment_options.PaymentOptionsDataSource;
+import company.tap.gosellapi.internal.data_source.payment_options.PaymentType;
+import company.tap.gosellapi.internal.view_holders.PaymentOptionsBaseViewHolder;
 
 public class PaymentOptionsRecyclerViewAdapter extends RecyclerView.Adapter<PaymentOptionsBaseViewHolder> implements PaymentOptionsBaseViewHolder.PaymentOptionsViewHolderFocusedStateInterface {
     public interface PaymentOptionsViewAdapterListener {
+        RecyclerView.ViewHolder getHolderForAdapterPosition(int position);
+
         void currencyHolderClicked();
         void recentPaymentItemClicked();
         void webPaymentSystemViewHolderClicked();
@@ -55,12 +57,20 @@ public class PaymentOptionsRecyclerViewAdapter extends RecyclerView.Adapter<Paym
     //focus interaction between holders
     @Override
     public void setFocused(int position) {
-        int oldPosition = focusedPosition;
-        focusedPosition = position;
-        if (oldPosition != NO_FOCUS) {
-            notifyItemChanged(oldPosition);
+        PaymentOptionsBaseViewHolder oldHolder;
+
+        if (focusedPosition != NO_FOCUS) {
+            oldHolder = (PaymentOptionsBaseViewHolder) listener.getHolderForAdapterPosition(focusedPosition);
+            if (oldHolder != null) {
+                oldHolder.setFocused(false);
+            }
         }
-        notifyItemChanged(focusedPosition);
+
+        focusedPosition = position;
+        PaymentOptionsBaseViewHolder newHolder = (PaymentOptionsBaseViewHolder) listener.getHolderForAdapterPosition(focusedPosition);
+        if (newHolder != null) {
+            newHolder.setFocused(true);
+        }
     }
 
     public void clearFocus() {
