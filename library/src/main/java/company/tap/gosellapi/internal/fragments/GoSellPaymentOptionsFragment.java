@@ -15,6 +15,7 @@ import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.activities.GoSellPaymentActivity;
 import company.tap.gosellapi.internal.adapters.PaymentOptionsRecyclerViewAdapter;
 import company.tap.gosellapi.internal.adapters.PaymentOptionsRecyclerViewAdapter.PaymentOptionsViewAdapterListener;
+import company.tap.gosellapi.internal.api.models.CardRawData;
 import company.tap.gosellapi.internal.data_source.GlobalDataManager;
 
 public class GoSellPaymentOptionsFragment extends Fragment {
@@ -81,13 +82,13 @@ public class GoSellPaymentOptionsFragment extends Fragment {
             }
 
             @Override
-            public void webPaymentSystemViewHolderClicked() {
-                listener.webPaymentSystemViewHolderClicked();
+            public void webPaymentSystemViewHolderClicked(int position) {
+                listener.webPaymentSystemViewHolderClicked(position);
             }
 
             @Override
-            public void recentPaymentItemClicked() {
-                listener.recentPaymentItemClicked();
+            public void recentPaymentItemClicked(int clickedItemPosition) {
+                listener.recentPaymentItemClicked(clickedItemPosition);
             }
 
             @Override
@@ -96,7 +97,7 @@ public class GoSellPaymentOptionsFragment extends Fragment {
             }
 
             @Override
-            public void cardDetailsFilled(boolean isFilled) {
+            public void cardDetailsFilled(boolean isFilled, CardRawData cardRawData) {
 
             }
 
