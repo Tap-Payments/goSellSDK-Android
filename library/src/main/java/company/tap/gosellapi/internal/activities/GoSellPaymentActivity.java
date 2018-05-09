@@ -79,15 +79,6 @@ public class GoSellPaymentActivity extends AppCompatActivity implements GoSellPa
 
     @Override
     public void startScanCard() {
-
-    }
-
-    @Override
-    public void cardDetailsFilled(boolean isFilled, CardRawData cardRawData) {
-
-    }
-
-    public void scanCard() {
         Intent scanCard = new Intent(this, CardIOActivity.class);
         scanCard.putExtra(CardIOActivity.EXTRA_REQUIRE_EXPIRY, true); // default: false
         scanCard.putExtra(CardIOActivity.EXTRA_REQUIRE_CVV, true); // default: false
@@ -99,6 +90,11 @@ public class GoSellPaymentActivity extends AppCompatActivity implements GoSellPa
         scanCard.putExtra(CardIOActivity.EXTRA_HIDE_CARDIO_LOGO, true);
 
         startActivityForResult(scanCard, SCAN_REQUEST_CODE);
+    }
+
+    @Override
+    public void cardDetailsFilled(boolean isFilled, CardRawData cardRawData) {
+
     }
 
     @Override
