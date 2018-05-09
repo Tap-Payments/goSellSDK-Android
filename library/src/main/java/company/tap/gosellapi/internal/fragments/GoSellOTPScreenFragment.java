@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -24,15 +22,16 @@ import java.util.concurrent.TimeUnit;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.Utils;
+import company.tap.gosellapi.internal.data_source.GlobalDataManager;
 
 public class GoSellOTPScreenFragment extends Fragment {
-
-    private static final int RESEND_CONFIRMATION_CODE_TIMEOUT = 31 * 1000;
     private static final int TICK_LENGTH = 1000;
     private static final String TIMER_STRING_FORMAT = "%02d:%02d";
     private static final int CONFIRMATION_CODE_LENGTH = 6;
 
     private CountDownTimer timer;
+    private int resendConfirmationCodeTimeout;
+
     TextView resendTextView;
     private ArrayList<TextView> textViewsArray = new ArrayList<>();
 
@@ -43,6 +42,7 @@ public class GoSellOTPScreenFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        resendConfirmationCodeTimeout = GlobalDataManager.getInstance().getInitResponse().getData().getSdk_settings().getResend_interval() * TICK_LENGTH;
     }
 
     @Override
@@ -168,7 +168,7 @@ public class GoSellOTPScreenFragment extends Fragment {
 
         resendTextView.setEnabled(false);
 
-        timer = new CountDownTimer(RESEND_CONFIRMATION_CODE_TIMEOUT, TICK_LENGTH) {
+        timer = new CountDownTimer(resendConfirmationCodeTimeout, TICK_LENGTH) {
             @Override
             public void onTick(long millisUntilFinished) {
                 timerTextView.setText(formatMilliseconds(millisUntilFinished));
