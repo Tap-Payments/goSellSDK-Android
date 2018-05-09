@@ -40,6 +40,10 @@ public final class InitResponse implements BaseResponse {
         @Expose
         private Merchant merchant;
 
+        @SerializedName("sdk_settings")
+        @Expose
+        private SDK_Settings sdk_settings;
+
         public boolean isLivemode() {
             return livemode;
         }
@@ -54,6 +58,10 @@ public final class InitResponse implements BaseResponse {
 
         public Merchant getMerchant() {
             return merchant;
+        }
+
+        public SDK_Settings getSdk_settings() {
+            return sdk_settings;
         }
 
         public static final class Merchant {
@@ -87,6 +95,32 @@ public final class InitResponse implements BaseResponse {
 
             public ArrayList<String> getSupported_currencies() {
                 return supported_currencies;
+            }
+        }
+
+        public static final class SDK_Settings {
+            @SerializedName("status_popup_duration")
+            @Expose
+            private int status_popup_duration;
+
+            @SerializedName("resend_interval")
+            @Expose
+            private int resend_interval;
+
+            @SerializedName("resend_number_attempts")
+            @Expose
+            private int resend_number_attempts;
+
+            public int getStatus_popup_duration() {
+                return status_popup_duration;
+            }
+
+            public int getResend_interval() {
+                return resend_interval;
+            }
+
+            public int getResend_number_attempts() {
+                return resend_number_attempts;
             }
         }
     }
