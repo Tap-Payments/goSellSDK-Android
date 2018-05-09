@@ -6,12 +6,22 @@
     <string name="edittext_hint_expiration_date">MM/YY</string>
     <string name="edittext_hint_CVV">CVV</string>
     <string name="edittext_hint_name_on_card">Name on card</string>
+    <string name="edittext_hint_line1">Line 1</string>
+    <string name="edittext_hint_line2">Line 2</string>
+    <string name="edittext_hint_city">City</string>
+    <string name="edittext_hint_state">State</string>
+    <string name="edittext_hint_zip_code">Zip code</string>
 
+    <string name="textview_title_address_on_card">Address on Card</string>
+    <string name="textview_title_country">Country</string>
     <string name="textview_title_recent">Recent</string>
     <string name="textview_title_others">Others</string>
     <string name="textview_title_resend_again">Resend again</string>
+
     <string name="textview_disclaimer_save_card">For faster and more secure checkout, save your card</string>
     <string name="textview_disclaimer_otp_sent_number">OTP has been sent to %s</string>
 
     <string name="btn_title_confirm">Confirm</string>
+    <string name="btn_title_save">Save</string>
+
 </resources>
