@@ -13,8 +13,6 @@ import company.tap.gosellapi.internal.view_holders.PaymentOptionsBaseViewHolder;
 
 public class PaymentOptionsRecyclerViewAdapter extends RecyclerView.Adapter<PaymentOptionsBaseViewHolder> implements PaymentOptionsBaseViewHolder.PaymentOptionsViewHolderFocusedStateInterface {
     public interface PaymentOptionsViewAdapterListener {
-        RecyclerView.ViewHolder getHolderForAdapterPosition(int position);
-
         void currencyHolderClicked();
         void recentPaymentItemClicked(int position, Card recentItem);
         void webPaymentSystemViewHolderClicked(int position);
@@ -26,6 +24,7 @@ public class PaymentOptionsRecyclerViewAdapter extends RecyclerView.Adapter<Paym
     private int focusedPosition = Constants.NO_FOCUS;
 
     private PaymentOptionsDataSource dataSource;
+    private RecyclerView parent;
     private PaymentOptionsViewAdapterListener listener;
 
     public PaymentOptionsRecyclerViewAdapter(PaymentOptionsDataSource dataSource, PaymentOptionsViewAdapterListener listener) {
@@ -56,9 +55,15 @@ public class PaymentOptionsRecyclerViewAdapter extends RecyclerView.Adapter<Paym
     }
 
     @Override
-    public void onViewDetachedFromWindow(@NonNull PaymentOptionsBaseViewHolder holder) {
-        super.onViewDetachedFromWindow(holder);
-        holder.unbind();
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        parent = recyclerView;
+    }
+
+    @Override
+    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView);
+        parent = null;
     }
 
     //focus interaction between holders
@@ -67,14 +72,14 @@ public class PaymentOptionsRecyclerViewAdapter extends RecyclerView.Adapter<Paym
         PaymentOptionsBaseViewHolder oldHolder;
 
         if (focusedPosition != Constants.NO_FOCUS) {
-            oldHolder = (PaymentOptionsBaseViewHolder) listener.getHolderForAdapterPosition(focusedPosition);
+            oldHolder = (PaymentOptionsBaseViewHolder) parent.findViewHolderForAdapterPosition(focusedPosition);
             if (oldHolder != null) {
                 oldHolder.setFocused(false);
             }
         }
 
         focusedPosition = position;
-        PaymentOptionsBaseViewHolder newHolder = (PaymentOptionsBaseViewHolder) listener.getHolderForAdapterPosition(focusedPosition);
+        PaymentOptionsBaseViewHolder newHolder = (PaymentOptionsBaseViewHolder) parent.findViewHolderForAdapterPosition(focusedPosition);
         if (newHolder != null) {
             newHolder.setFocused(true);
         }
@@ -82,11 +87,15 @@ public class PaymentOptionsRecyclerViewAdapter extends RecyclerView.Adapter<Paym
 
     public void clearFocus() {
         if (focusedPosition != Constants.NO_FOCUS) {
-            PaymentOptionsBaseViewHolder oldHolder = (PaymentOptionsBaseViewHolder) listener.getHolderForAdapterPosition(focusedPosition);
+            PaymentOptionsBaseViewHolder oldHolder = (PaymentOptionsBaseViewHolder) parent.findViewHolderForAdapterPosition(focusedPosition);
             if (oldHolder != null) {
                 oldHolder.setFocused(false);
             }
         }
         focusedPosition = Constants.NO_FOCUS;
+    }
+
+    public int getFocusedPosition() {
+        return focusedPosition;
     }
 }

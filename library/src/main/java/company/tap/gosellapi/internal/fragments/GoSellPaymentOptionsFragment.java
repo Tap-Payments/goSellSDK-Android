@@ -18,6 +18,7 @@ import company.tap.gosellapi.internal.api.models.Card;
 import company.tap.gosellapi.internal.api.models.CardRawData;
 import company.tap.gosellapi.internal.data_source.GlobalDataManager;
 import company.tap.gosellapi.internal.data_source.payment_options.PaymentOptionsDataSource;
+import company.tap.gosellapi.internal.view_holders.PaymentOptionsStateManager;
 
 public class GoSellPaymentOptionsFragment extends Fragment {
     public interface PaymentOptionsFragmentListener {
@@ -29,6 +30,12 @@ public class GoSellPaymentOptionsFragment extends Fragment {
     }
 
     private PaymentOptionsFragmentListener listener;
+
+    private RecyclerView paymentOptionsRecyclerView;
+    private LinearLayoutManager layoutManager;
+    private PaymentOptionsRecyclerViewAdapter adapter;
+    private PaymentOptionsDataSource dataSource;
+
 
     public GoSellPaymentOptionsFragment() {
         // Required empty public constructor
@@ -70,21 +77,16 @@ public class GoSellPaymentOptionsFragment extends Fragment {
     }
 
     private void initMainRecyclerView(View view) {
-        final RecyclerView paymentOptionsRecyclerView = view.findViewById(R.id.paymentOptionsRecyclerView);
-        final PaymentOptionsDataSource dataSource = GlobalDataManager.getInstance().getPaymentOptionsDataSource();
+        paymentOptionsRecyclerView = view.findViewById(R.id.paymentOptionsRecyclerView);
+        dataSource = GlobalDataManager.getInstance().getPaymentOptionsDataSource();
 
         //Configuring layout manager
-        LinearLayoutManager layoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);
+        layoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);
         paymentOptionsRecyclerView.setLayoutManager(layoutManager);
 
         // Configuring MainRecycleViewAdapter and handle PaymentOptionsViewAdapterListener
-        PaymentOptionsRecyclerViewAdapter adapter = new PaymentOptionsRecyclerViewAdapter(dataSource,
+        adapter = new PaymentOptionsRecyclerViewAdapter(dataSource,
                 new PaymentOptionsRecyclerViewAdapter.PaymentOptionsViewAdapterListener() {
-                    @Override
-                    public RecyclerView.ViewHolder getHolderForAdapterPosition(int position) {
-                        return paymentOptionsRecyclerView.findViewHolderForAdapterPosition(position);
-                    }
-
                     @Override
                     public void currencyHolderClicked() {
                         listener.startCurrencySelection();
@@ -117,5 +119,24 @@ public class GoSellPaymentOptionsFragment extends Fragment {
                 });
 
         paymentOptionsRecyclerView.setAdapter(adapter);
+        restoreRecyclerState();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        saveRecyclerState();
+    }
+
+    private void saveRecyclerState() {
+        PaymentOptionsStateManager.getInstance().saveState(paymentOptionsRecyclerView, adapter);
+    }
+
+    private void restoreRecyclerState() {
+//        Parcelable savedState = PaymentOptionsStateManager.getInstance().getSavedTopState();
+//        if (savedState != null) {
+//            layoutManager.onRestoreInstanceState(savedState);
+//            PaymentOptionsStateManager.getInstance().setSavedTopState(null);
+//        }
     }
 }

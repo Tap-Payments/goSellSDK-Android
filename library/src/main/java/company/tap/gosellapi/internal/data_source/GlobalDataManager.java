@@ -42,6 +42,4 @@ public class GlobalDataManager {
     public PaymentOptionsDataSource getPaymentOptionsDataSource() {
         return paymentOptionsDataSource;
     }
-
-
 }
