@@ -7,7 +7,6 @@ import android.view.View;
 import java.util.ArrayList;
 
 import company.tap.gosellapi.R;
-import company.tap.gosellapi.internal.Constants;
 import company.tap.gosellapi.internal.adapters.PaymentOptionsRecyclerViewAdapter;
 import company.tap.gosellapi.internal.adapters.RecentPaymentsRecyclerViewAdapter;
 import company.tap.gosellapi.internal.api.models.Card;
@@ -20,18 +19,30 @@ public class RecentSectionViewHolder extends PaymentOptionsBaseViewHolder<Paymen
     }
 
     private RecyclerView recentPaymentsRecyclerView;
+    private LinearLayoutManager linearLayoutManager;
     private RecentPaymentsRecyclerViewAdapter adapter;
-    private int focusedPosition = Constants.NO_FOCUS;
+    private PaymentOptionsBaseModel<ArrayList<Card>> data;
 
     @Override
     public void bind(PaymentOptionsBaseModel<ArrayList<Card>> data) {
-        recentPaymentsRecyclerView = itemView.findViewById(R.id.recentPaymentsRecyclerView);
+        if (recentPaymentsRecyclerView == null) {
+            recentPaymentsRecyclerView = itemView.findViewById(R.id.recentPaymentsRecyclerView);
+        }
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
-        recentPaymentsRecyclerView.setLayoutManager(linearLayoutManager);
+        if (linearLayoutManager == null) {
+            linearLayoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
+            recentPaymentsRecyclerView.setLayoutManager(linearLayoutManager);
+        }
 
-        adapter = new RecentPaymentsRecyclerViewAdapter(data.getData(), this);
-        recentPaymentsRecyclerView.setAdapter(adapter);
+        if (adapter == null) {
+            adapter = new RecentPaymentsRecyclerViewAdapter(data.getData(), this);
+            recentPaymentsRecyclerView.setAdapter(adapter);
+        }
+
+//        if (this.data == null || this.data != data) {
+//            this.data = data;
+//
+//        }
     }
 
     @Override
@@ -43,11 +54,12 @@ public class RecentSectionViewHolder extends PaymentOptionsBaseViewHolder<Paymen
 
     @Override
     public void recentPaymentItemClicked(int position, Card card) {
+        focusedStateInterface.setFocused(getAdapterPosition());
         adapterListener.recentPaymentItemClicked(position, card);
     }
 
     @Override
     public void unbind() {
-        recentPaymentsRecyclerView.setAdapter(null);
+//        recentPaymentsRecyclerView.setAdapter(null);
     }
 }
