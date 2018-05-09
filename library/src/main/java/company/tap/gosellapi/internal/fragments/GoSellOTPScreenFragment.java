@@ -2,6 +2,7 @@ package company.tap.gosellapi.internal.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,15 +16,24 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.Utils;
 
 public class GoSellOTPScreenFragment extends Fragment {
 
+    private static final int RESEND_CONFIRMATION_CODE_TIMEOUT = 31 * 1000;
+    private static final int TICK_LENGTH = 1000;
+    private static final String TIMER_STRING_FORMAT = "%02d:%02d";
     private static final int CONFIRMATION_CODE_LENGTH = 6;
+
+    private CountDownTimer timer;
+    TextView resendTextView;
     private ArrayList<TextView> textViewsArray = new ArrayList<>();
 
     public GoSellOTPScreenFragment() {
@@ -36,7 +46,7 @@ public class GoSellOTPScreenFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.gosellapi_fragment_otpscreen, container, false);
@@ -49,6 +59,7 @@ public class GoSellOTPScreenFragment extends Fragment {
         prepareTextViews(view);
         handleConfirmationCodeInputEditText(view);
         handleConfirmButton(view);
+        startCountdown();
     }
 
     @Override
@@ -59,6 +70,8 @@ public class GoSellOTPScreenFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+
+        timer.cancel();
     }
 
     private void prepareTextViews(View view) {
@@ -80,6 +93,14 @@ public class GoSellOTPScreenFragment extends Fragment {
             textViewsArray.add(textView);
             index++;
         }
+
+        resendTextView = view.findViewById(R.id.resendConfirmationCode);
+        resendTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resendConfirmationCode();
+            }
+        });
     }
 
     private void handleConfirmationCodeInputEditText(final View view) {
@@ -130,6 +151,45 @@ public class GoSellOTPScreenFragment extends Fragment {
 
             }
         });
+    }
+
+    private void resendConfirmationCode() {
+        startCountdown();
+    }
+
+    private void startCountdown() {
+
+        View view = getView();
+        if(view == null) return;
+
+        final TextView timerTextView = getView().findViewById(R.id.timerTextView);
+
+        if(timer != null) timer.cancel();
+
+        resendTextView.setEnabled(false);
+
+        timer = new CountDownTimer(RESEND_CONFIRMATION_CODE_TIMEOUT, TICK_LENGTH) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                timerTextView.setText(formatMilliseconds(millisUntilFinished));
+            }
+
+            @Override
+            public void onFinish() {
+                timerTextView.setText(formatMilliseconds(0));
+                resendTextView.setEnabled(true);
+            }
+        };
+
+        timer.start();
+    }
+
+    private String formatMilliseconds(long time) {
+
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(time) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(time));
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(time) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(time));
+
+        return String.format(Locale.getDefault(), TIMER_STRING_FORMAT, minutes, seconds);
     }
 
 }
