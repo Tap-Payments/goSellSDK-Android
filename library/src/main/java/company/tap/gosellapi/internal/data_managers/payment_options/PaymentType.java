@@ -1,4 +1,4 @@
-package company.tap.gosellapi.internal.data_source.payment_options;
+package company.tap.gosellapi.internal.data_managers.payment_options;
 
 public enum PaymentType {
     DUMMY(-1),

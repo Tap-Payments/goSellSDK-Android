@@ -7,9 +7,9 @@ import android.view.ViewGroup;
 import company.tap.gosellapi.internal.Constants;
 import company.tap.gosellapi.internal.api.models.Card;
 import company.tap.gosellapi.internal.api.models.CardRawData;
-import company.tap.gosellapi.internal.data_source.payment_options.PaymentOptionsDataSource;
-import company.tap.gosellapi.internal.data_source.payment_options.PaymentType;
-import company.tap.gosellapi.internal.view_holders.PaymentOptionsBaseViewHolder;
+import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
+import company.tap.gosellapi.internal.data_managers.payment_options.PaymentType;
+import company.tap.gosellapi.internal.viewholders_and_viewmodels.PaymentOptionsBaseViewHolder;
 
 public class PaymentOptionsRecyclerViewAdapter extends RecyclerView.Adapter<PaymentOptionsBaseViewHolder> implements PaymentOptionsBaseViewHolder.PaymentOptionsViewHolderFocusedStateInterface {
     public interface PaymentOptionsViewAdapterListener {
@@ -23,11 +23,11 @@ public class PaymentOptionsRecyclerViewAdapter extends RecyclerView.Adapter<Paym
 
     private int focusedPosition = Constants.NO_FOCUS;
 
-    private PaymentOptionsDataSource dataSource;
+    private PaymentOptionsDataManager dataSource;
     private RecyclerView parent;
     private PaymentOptionsViewAdapterListener listener;
 
-    public PaymentOptionsRecyclerViewAdapter(PaymentOptionsDataSource dataSource, PaymentOptionsViewAdapterListener listener) {
+    public PaymentOptionsRecyclerViewAdapter(PaymentOptionsDataManager dataSource, PaymentOptionsViewAdapterListener listener) {
         this.dataSource = dataSource;
         this.listener = listener;
     }
@@ -41,7 +41,7 @@ public class PaymentOptionsRecyclerViewAdapter extends RecyclerView.Adapter<Paym
     @Override
     public void onBindViewHolder(@NonNull PaymentOptionsBaseViewHolder holder, int position) {
         //noinspection unchecked
-        holder.bind(dataSource.getDataList().get(position), position == focusedPosition, position);
+        holder.bind(dataSource.getDataList().get(position).getData(), position == focusedPosition, position);
     }
 
     @Override

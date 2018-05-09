@@ -1,13 +1,13 @@
-package company.tap.gosellapi.internal.data_source;
+package company.tap.gosellapi.internal.data_managers;
 
 import company.tap.gosellapi.internal.api.responses.InitResponse;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
-import company.tap.gosellapi.internal.data_source.payment_options.PaymentOptionsDataSource;
+import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
 
 public class GlobalDataManager {
     private InitResponse initResponse;
 
-    private PaymentOptionsDataSource paymentOptionsDataSource;
+    private PaymentOptionsDataManager paymentOptionsDataManager;
     private PaymentOptionsResponse paymentOptionsResponse;
 
     private GlobalDataManager() {
@@ -36,10 +36,10 @@ public class GlobalDataManager {
 
     public void setPaymentOptionsResponse(PaymentOptionsResponse paymentOptionsResponse) {
         this.paymentOptionsResponse = paymentOptionsResponse;
-        paymentOptionsDataSource = new PaymentOptionsDataSource();
+        paymentOptionsDataManager = new PaymentOptionsDataManager();
     }
 
-    public PaymentOptionsDataSource getPaymentOptionsDataSource() {
-        return paymentOptionsDataSource;
+    public PaymentOptionsDataManager getPaymentOptionsDataManager() {
+        return paymentOptionsDataManager;
     }
 }

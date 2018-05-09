@@ -13,7 +13,7 @@ import com.bumptech.glide.request.RequestOptions;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.models.CardRawData;
-import company.tap.gosellapi.internal.data_source.GlobalDataManager;
+import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
 import company.tap.gosellapi.internal.fragments.GoSellOTPScreenFragment;
 import company.tap.gosellapi.internal.fragments.GoSellPaymentOptionsFragment;
 import io.card.payment.CardIOActivity;

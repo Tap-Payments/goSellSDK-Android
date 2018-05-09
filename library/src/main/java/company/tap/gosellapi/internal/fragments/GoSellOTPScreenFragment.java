@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.Utils;
-import company.tap.gosellapi.internal.data_source.GlobalDataManager;
+import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
 
 public class GoSellOTPScreenFragment extends Fragment {
     private static final int TICK_LENGTH = 1000;

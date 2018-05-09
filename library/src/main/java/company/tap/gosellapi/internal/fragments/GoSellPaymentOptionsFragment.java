@@ -16,9 +16,9 @@ import company.tap.gosellapi.internal.activities.GoSellPaymentActivity;
 import company.tap.gosellapi.internal.adapters.PaymentOptionsRecyclerViewAdapter;
 import company.tap.gosellapi.internal.api.models.Card;
 import company.tap.gosellapi.internal.api.models.CardRawData;
-import company.tap.gosellapi.internal.data_source.GlobalDataManager;
-import company.tap.gosellapi.internal.data_source.payment_options.PaymentOptionsDataSource;
-import company.tap.gosellapi.internal.view_holders.PaymentOptionsStateManager;
+import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
+import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
+import company.tap.gosellapi.internal.viewholders_and_viewmodels.PaymentOptionsStateManager;
 
 public class GoSellPaymentOptionsFragment extends Fragment {
     public interface PaymentOptionsFragmentListener {
@@ -34,7 +34,7 @@ public class GoSellPaymentOptionsFragment extends Fragment {
     private RecyclerView paymentOptionsRecyclerView;
     private LinearLayoutManager layoutManager;
     private PaymentOptionsRecyclerViewAdapter adapter;
-    private PaymentOptionsDataSource dataSource;
+    private PaymentOptionsDataManager dataSource;
 
 
     public GoSellPaymentOptionsFragment() {
@@ -78,7 +78,7 @@ public class GoSellPaymentOptionsFragment extends Fragment {
 
     private void initMainRecyclerView(View view) {
         paymentOptionsRecyclerView = view.findViewById(R.id.paymentOptionsRecyclerView);
-        dataSource = GlobalDataManager.getInstance().getPaymentOptionsDataSource();
+        dataSource = GlobalDataManager.getInstance().getPaymentOptionsDataManager();
 
         //Configuring layout manager
         layoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);

@@ -1,19 +1,20 @@
-package company.tap.gosellapi.internal.view_holders;
+package company.tap.gosellapi.internal.viewholders_and_viewmodels;
 
 import android.view.View;
 
 import java.util.HashMap;
 
 import company.tap.gosellapi.internal.adapters.PaymentOptionsRecyclerViewAdapter;
-import company.tap.gosellapi.internal.data_source.payment_options.PaymentOptionsBaseModel;
 
-public class CurrencyViewHolder extends PaymentOptionsBaseViewHolder<PaymentOptionsBaseModel<HashMap<String,Double>>> {
+public class CurrencyViewHolder
+        extends PaymentOptionsBaseViewHolder<HashMap<String, Double>> {
+
     CurrencyViewHolder(View view, PaymentOptionsViewHolderFocusedStateInterface focusedStateInterface, PaymentOptionsRecyclerViewAdapter.PaymentOptionsViewAdapterListener adapterListener) {
         super(view, focusedStateInterface, adapterListener);
     }
 
     @Override
-    public void bind(PaymentOptionsBaseModel<HashMap<String, Double>> data) {
+    public void bind(HashMap<String, Double> data) {
 
     }
 
