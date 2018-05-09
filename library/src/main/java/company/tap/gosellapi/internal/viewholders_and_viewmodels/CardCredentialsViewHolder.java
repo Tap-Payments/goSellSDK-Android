@@ -1,4 +1,4 @@
-package company.tap.gosellapi.internal.view_holders;
+package company.tap.gosellapi.internal.viewholders_and_viewmodels;
 
 import android.view.View;
 
@@ -7,15 +7,16 @@ import java.util.ArrayList;
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.adapters.PaymentOptionsRecyclerViewAdapter;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
-import company.tap.gosellapi.internal.data_source.payment_options.PaymentOptionsBaseModel;
 
-public class WebPaymentSystemsViewHolder extends PaymentOptionsBaseViewHolder<PaymentOptionsBaseModel<ArrayList<PaymentOption>>> {
-    WebPaymentSystemsViewHolder(final View itemView, PaymentOptionsViewHolderFocusedStateInterface focusedStateInterface, PaymentOptionsRecyclerViewAdapter.PaymentOptionsViewAdapterListener adapterListener) {
-        super(itemView, focusedStateInterface, adapterListener);
+public class CardCredentialsViewHolder
+        extends PaymentOptionsBaseViewHolder<ArrayList<PaymentOption>> {
+
+    CardCredentialsViewHolder(View view, PaymentOptionsViewHolderFocusedStateInterface focusedStateInterface, PaymentOptionsRecyclerViewAdapter.PaymentOptionsViewAdapterListener adapterListener) {
+        super(view, focusedStateInterface, adapterListener);
     }
 
     @Override
-    public void bind(PaymentOptionsBaseModel<ArrayList<PaymentOption>> data) {
+    public void bind(ArrayList<PaymentOption> data) {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
