@@ -55,9 +55,7 @@ public abstract class PaymentOptionsBaseViewHolder<T extends PaymentOptionsBaseM
 
     abstract void bind(T data);
 
-    public void unbind() {
-
-    }
+//    public abstract Bundle getSavedState();
 
     public abstract void setFocused(boolean isFocused);
 }

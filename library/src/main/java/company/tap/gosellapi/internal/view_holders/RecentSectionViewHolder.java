@@ -57,9 +57,4 @@ public class RecentSectionViewHolder extends PaymentOptionsBaseViewHolder<Paymen
         focusedStateInterface.setFocused(getAdapterPosition());
         adapterListener.recentPaymentItemClicked(position, card);
     }
-
-    @Override
-    public void unbind() {
-//        recentPaymentsRecyclerView.setAdapter(null);
-    }
 }
