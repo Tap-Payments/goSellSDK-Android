@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -56,6 +57,10 @@ public class GoSellPaymentActivity extends AppCompatActivity implements GoSellPa
         businessIcon = findViewById(R.id.businessIcon);
         String logoPath = GlobalDataManager.getInstance().getInitResponse().getData().getMerchant().getLogo();
         Glide.with(this).load(logoPath).apply(RequestOptions.circleCropTransform()).into(businessIcon);
+
+        String businessNameString = GlobalDataManager.getInstance().getInitResponse().getData().getMerchant().getName();
+        TextView businessName = findViewById(R.id.businessName);
+        businessName.setText(businessNameString);
     }
 
     @Override

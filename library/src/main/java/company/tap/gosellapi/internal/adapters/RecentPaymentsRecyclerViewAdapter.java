@@ -95,8 +95,9 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
             this.position = position;
             this.card = card;
 
+            String cardNumber = String.format(itemView.getResources().getString(R.string.textview_placeholder_last_four_digits), card.getLast4());
             TextView cardLastDigits = itemView.findViewById(R.id.cardLastDigits);
-            cardLastDigits.setText(card.getLast4());
+            cardLastDigits.setText(cardNumber);
 
             itemCheckmark = itemView.findViewById(R.id.itemCheckmark);
         }
@@ -104,7 +105,7 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
         @Override
         public void onClick(View v) {
             RecentPaymentsRecyclerViewAdapter.this.setFocused(position);
-            listener.recentPaymentItemClicked(position, card);
+//            listener.recentPaymentItemClicked(position, card);
         }
 
         private void setFocused(boolean focused) {

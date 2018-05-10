@@ -26,10 +26,10 @@ public class WebPaymentSystemsViewHolder extends PaymentOptionsBaseViewHolder<Pa
 
     @Override
     public void setFocused(boolean isFocused) {
-        if (isFocused) {
-            itemView.setBackgroundResource(R.color.vibrant_green);
-        } else {
-            itemView.setBackground(null);
-        }
+//        if (isFocused) {
+//            itemView.setBackgroundResource(R.color.vibrant_green);
+//        } else {
+//            itemView.setBackground(null);
+//        }
     }
 }
