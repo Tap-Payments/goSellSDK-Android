@@ -1,16 +1,19 @@
 package company.tap.gosellapi.internal.data_managers.payment_options.viewmodels;
 
+import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
 import company.tap.gosellapi.internal.viewholders_and_viewmodels.PaymentOptionsBaseViewHolder;
 
 //T - data, K - this holder, Q - model
 public class PaymentOptionsBaseViewModel<T, K extends PaymentOptionsBaseViewHolder<T, K, Q>, Q extends PaymentOptionsBaseViewModel<T, K, Q>> {
+    private PaymentOptionsDataManager parentDataManager;
     private T data;
     private int modelType;
 
     K holder;
     int position;
 
-    PaymentOptionsBaseViewModel(T data, int modelType) {
+    PaymentOptionsBaseViewModel(PaymentOptionsDataManager parentDataManager, T data, int modelType) {
+        this.parentDataManager = parentDataManager;
         this.data = data;
         this.modelType = modelType;
     }
