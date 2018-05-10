@@ -16,19 +16,23 @@ import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.W
 
 public class PaymentOptionsDataManager {
     private ArrayList<PaymentOptionsBaseViewModel> dataList;
+    private int focusedPosition;
 
     public PaymentOptionsDataManager() {
         new DataFiller().fill();
     }
 
-    public ArrayList<PaymentOptionsBaseViewModel> getDataList() {
-        return dataList;
+    public int getSize() {
+        return dataList.size();
     }
 
     public int getItemViewType(int position) {
         return dataList.get(position).getModelType();
     }
 
+    public PaymentOptionsBaseViewModel getViewModel(int position) {
+        return dataList.get(position);
+    }
 
     private final class DataFiller {
         private void fill() {
@@ -54,7 +58,7 @@ public class PaymentOptionsDataManager {
         private void addCurrencies() {
             HashMap<String, Double> supportedCurrencies = GlobalDataManager.getInstance().getPaymentOptionsResponse().getSupported_currencies();
             if (supportedCurrencies != null && supportedCurrencies.size() > 0) {
-                dataList.add(new CurrencyViewModel(supportedCurrencies, PaymentType.CURRENCY.getViewType()));
+                dataList.add(new CurrencyViewModel(PaymentOptionsDataManager.this, supportedCurrencies, PaymentType.CURRENCY.getViewType()));
             }
         }
 
@@ -67,7 +71,7 @@ public class PaymentOptionsDataManager {
             }
 
             if (recentCards != null && recentCards.size() > 0) {
-                dataList.add(new RecentSectionViewModel(recentCards, PaymentType.RECENT.getViewType()));
+                dataList.add(new RecentSectionViewModel(PaymentOptionsDataManager.this, recentCards, PaymentType.RECENT.getViewType()));
             }
         }
 
@@ -81,7 +85,7 @@ public class PaymentOptionsDataManager {
             for (PaymentOption paymentOption : paymentOptions) {
                 if (paymentOption.getPayment_type().equalsIgnoreCase(CardPaymentType.WEB.getValue())) {
                     for (int i = 0; i < 20; i++) {
-                        dataList.add(new WebPaymentViewModel(paymentOption, PaymentType.WEB.getViewType()));
+                        dataList.add(new WebPaymentViewModel(PaymentOptionsDataManager.this, paymentOption, PaymentType.WEB.getViewType()));
                     }
                 }
             }
@@ -102,7 +106,7 @@ public class PaymentOptionsDataManager {
             }
 
             if (paymentOptionsCards.size() > 0) {
-                dataList.add(new CardCredentialsViewModel(paymentOptionsCards, PaymentType.CARD.getViewType()));
+                dataList.add(new CardCredentialsViewModel(PaymentOptionsDataManager.this, paymentOptionsCards, PaymentType.CARD.getViewType()));
             }
         }
 

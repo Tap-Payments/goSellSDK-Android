@@ -41,12 +41,12 @@ public class PaymentOptionsRecyclerViewAdapter extends RecyclerView.Adapter<Paym
     @Override
     public void onBindViewHolder(@NonNull PaymentOptionsBaseViewHolder holder, int position) {
         //noinspection unchecked
-        holder.bind(dataSource.getDataList().get(position), position == focusedPosition, position);
+        holder.bind(dataSource.getViewModel(position), position == focusedPosition, position);
     }
 
     @Override
     public int getItemCount() {
-        return dataSource.getDataList().size();
+        return dataSource.getSize();
     }
 
     @Override
