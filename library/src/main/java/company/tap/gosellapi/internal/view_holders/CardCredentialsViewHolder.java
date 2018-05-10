@@ -26,10 +26,10 @@ public class CardCredentialsViewHolder extends PaymentOptionsBaseViewHolder<Paym
 
     @Override
     public void setFocused(boolean isFocused) {
-        if (isFocused) {
-            itemView.setBackgroundResource(R.color.vibrant_green);
-        } else {
-            itemView.setBackground(null);
-        }
+//        if (isFocused) {
+//            itemView.setBackgroundResource(R.color.vibrant_green);
+//        } else {
+//            itemView.setBackground(null);
+//        }
     }
 }
