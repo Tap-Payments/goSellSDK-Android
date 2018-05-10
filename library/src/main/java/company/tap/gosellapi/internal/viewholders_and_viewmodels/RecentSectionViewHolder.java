@@ -10,9 +10,10 @@ import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.adapters.PaymentOptionsRecyclerViewAdapter;
 import company.tap.gosellapi.internal.adapters.RecentPaymentsRecyclerViewAdapter;
 import company.tap.gosellapi.internal.api.models.Card;
+import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.RecentSectionViewModel;
 
 public class RecentSectionViewHolder
-        extends PaymentOptionsBaseViewHolder<ArrayList<Card>>
+        extends PaymentOptionsBaseViewHolder<ArrayList<Card>, RecentSectionViewHolder, RecentSectionViewModel>
         implements RecentPaymentsRecyclerViewAdapter.RecentPaymentsRecyclerViewAdapterListener {
 
     RecentSectionViewHolder(View itemView, PaymentOptionsViewHolderFocusedStateInterface focusedStateInterface, PaymentOptionsRecyclerViewAdapter.PaymentOptionsViewAdapterListener adapterListener) {

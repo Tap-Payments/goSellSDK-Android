@@ -41,7 +41,7 @@ public class PaymentOptionsRecyclerViewAdapter extends RecyclerView.Adapter<Paym
     @Override
     public void onBindViewHolder(@NonNull PaymentOptionsBaseViewHolder holder, int position) {
         //noinspection unchecked
-        holder.bind(dataSource.getDataList().get(position).getData(), position == focusedPosition, position);
+        holder.bind(dataSource.getDataList().get(position), position == focusedPosition, position);
     }
 
     @Override
@@ -64,6 +64,12 @@ public class PaymentOptionsRecyclerViewAdapter extends RecyclerView.Adapter<Paym
     public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onDetachedFromRecyclerView(recyclerView);
         parent = null;
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(@NonNull PaymentOptionsBaseViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+        holder.unbind();
     }
 
     //focus interaction between holders

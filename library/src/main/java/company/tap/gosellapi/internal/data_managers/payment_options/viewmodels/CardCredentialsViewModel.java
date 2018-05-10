@@ -6,7 +6,7 @@ import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.viewholders_and_viewmodels.CardCredentialsViewHolder;
 
 public class CardCredentialsViewModel
-        extends PaymentOptionsBaseViewModel<ArrayList<PaymentOption>, CardCredentialsViewHolder> {
+        extends PaymentOptionsBaseViewModel<ArrayList<PaymentOption>, CardCredentialsViewHolder, CardCredentialsViewModel> {
 
     public CardCredentialsViewModel(ArrayList<PaymentOption> data, int modelType) {
         super(data, modelType);
