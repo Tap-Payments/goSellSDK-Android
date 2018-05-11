@@ -1,10 +1,10 @@
-package company.tap.gosellapi.internal.api.requests;
+package company.tap.gosellapi.api.requests;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import company.tap.gosellapi.internal.api.crypto.CryptoUtil;
+import company.tap.gosellapi.api.crypto.CryptoUtil;
 
 /**
  * Created by eugene.goltsev on 12.02.2018.

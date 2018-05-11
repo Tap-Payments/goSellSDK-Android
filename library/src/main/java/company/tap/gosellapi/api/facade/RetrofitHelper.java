@@ -1,4 +1,4 @@
-package company.tap.gosellapi.internal.api.api_service;
+package company.tap.gosellapi.api.facade;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,13 +21,11 @@ final class RetrofitHelper {
     private static Retrofit retrofit;
     private static APIService helper;
 
+    private static String authToken = "";
+
     @Nullable
     static APIService getApiHelper() {
         if (retrofit == null) {
-            if (GoSellAPI.getAuthToken() == null) {
-                throw new RuntimeException("Auth token was not provided!");
-            }
-
             OkHttpClient okHttpClient = getOkHttpClient();
             retrofit = new Retrofit.Builder()
                     .baseUrl(API_Constants.BASE_URL)
@@ -53,8 +51,7 @@ final class RetrofitHelper {
             public Response intercept(@NonNull Chain chain) throws IOException {
                 Request request = chain.request()
                         .newBuilder()
-                        .addHeader(API_Constants.AUTH_TOKEN_KEY, API_Constants.AUTH_TOKEN_PREFIX + GoSellAPI.getAuthToken())
-                        .addHeader(API_Constants.APPLICATION, GoSellAPI.getApplicationId())
+                        .addHeader(API_Constants.AUTH_TOKEN_KEY, API_Constants.AUTH_TOKEN_PREFIX + authToken)
                         .addHeader(API_Constants.CONTENT_TYPE_KEY, API_Constants.CONTENT_TYPE_VALUE).build();
                 return chain.proceed(request);
             }
@@ -62,5 +59,9 @@ final class RetrofitHelper {
         httpClientBuilder.addInterceptor(new HttpLoggingInterceptor().setLevel(!BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.NONE : HttpLoggingInterceptor.Level.BODY));
 
         return httpClientBuilder.build();
+    }
+
+    static void setAuthenticationKey(String authToken) {
+        RetrofitHelper.authToken = authToken;
     }
 }

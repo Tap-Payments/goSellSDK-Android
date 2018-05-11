@@ -1,4 +1,4 @@
-package company.tap.gosellapi.internal.api.api_service;
+package company.tap.gosellapi.api.facade;
 
 /**
  * Model for response errors

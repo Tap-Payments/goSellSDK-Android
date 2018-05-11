@@ -1,10 +1,10 @@
-package company.tap.gosellapi.internal.api.model;
+package company.tap.gosellapi.api.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import company.tap.gosellapi.internal.api.responses.BaseResponse;
-import company.tap.gosellapi.internal.api.responses.CardResponse;
+import company.tap.gosellapi.api.responses.BaseResponse;
+import company.tap.gosellapi.api.responses.CardResponse;
 
 /**
  Created by eugene.goltsev on 12.02.2018.

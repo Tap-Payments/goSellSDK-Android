@@ -1,6 +1,6 @@
-package company.tap.gosellapi.internal.api.api_service;
+package company.tap.gosellapi.api.facade;
 
-import company.tap.gosellapi.internal.api.responses.BaseResponse;
+import company.tap.gosellapi.api.responses.BaseResponse;
 
 /**
  * Base callback to process API responses
