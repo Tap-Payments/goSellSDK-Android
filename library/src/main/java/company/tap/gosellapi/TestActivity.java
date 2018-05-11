@@ -153,7 +153,13 @@
 //    private void captureCharge() {
 //        GoSellAPI.getInstance(AUTH_TOKEN).captureCharge(
 //                charge.getId(),
-//                new CaptureChargeRequest.Builder().build(),
+//                new CaptureChargeRequest
+//                    .Builder()
+//                    .amount(10)
+//                    .statement_descriptor("Test Txn 001")
+//                    .receipt_sms("96598989898")
+//                    .receipt_email("test@test.com")
+//                    .build(),
 //                new APIRequestCallback<Charge>() {
 //                    @Override
 //                    public void onSuccess(int responseCode, Charge serializedResponse) {
