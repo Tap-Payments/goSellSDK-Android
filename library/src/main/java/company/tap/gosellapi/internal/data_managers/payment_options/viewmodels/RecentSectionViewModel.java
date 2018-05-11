@@ -8,10 +8,14 @@ import company.tap.gosellapi.internal.viewholders_and_viewmodels.RecentSectionVi
 
 public class RecentSectionViewModel
         extends PaymentOptionsBaseViewModel<ArrayList<Card>, RecentSectionViewHolder, RecentSectionViewModel> {
+    private int recentItemClickedPosition;
 
     public RecentSectionViewModel(PaymentOptionsDataManager parentDataManager, ArrayList<Card> data, int modelType) {
         super(parentDataManager, data, modelType);
     }
 
-
+    public void recentItemClicked(int recentItemClickedPosition) {
+        this.recentItemClickedPosition = recentItemClickedPosition;
+        parentDataManager.recentPaymentItemClicked(position, data.get(recentItemClickedPosition));
+    }
 }

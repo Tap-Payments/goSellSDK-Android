@@ -5,8 +5,8 @@ import company.tap.gosellapi.internal.viewholders_and_viewmodels.PaymentOptionsB
 
 //T - data, K - this holder, Q - model
 public class PaymentOptionsBaseViewModel<T, K extends PaymentOptionsBaseViewHolder<T, K, Q>, Q extends PaymentOptionsBaseViewModel<T, K, Q>> {
-    private PaymentOptionsDataManager parentDataManager;
-    private T data;
+    PaymentOptionsDataManager parentDataManager;
+    T data;
     private int modelType;
 
     K holder;
@@ -18,10 +18,6 @@ public class PaymentOptionsBaseViewModel<T, K extends PaymentOptionsBaseViewHold
         this.modelType = modelType;
     }
 
-    public T getData() {
-        return data;
-    }
-
     public int getModelType() {
         return modelType;
     }
@@ -29,9 +25,16 @@ public class PaymentOptionsBaseViewModel<T, K extends PaymentOptionsBaseViewHold
     public void registerHolder(K holder, int position) {
         this.holder = holder;
         this.position = position;
+
+        holder.bind(data);
+        holder.setFocused(parentDataManager.isPositionInFocus(position));
     }
 
     public void unregisterHolder() {
         holder = null;
+    }
+
+    public void setViewFocused(boolean focused) {
+        if (holder != null) holder.setFocused(focused);
     }
 }
