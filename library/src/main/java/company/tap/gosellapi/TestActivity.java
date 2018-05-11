@@ -6,16 +6,18 @@
 //
 //import java.util.HashMap;
 //
-//import company.tap.gosellapi.internal.api.facade.APIRequestCallback;
-//import company.tap.gosellapi.internal.api.facade.GoSellAPI;
-//import company.tap.gosellapi.internal.api.facade.GoSellError;
-//import company.tap.gosellapi.internal.api.model.Charge;
-//import company.tap.gosellapi.internal.api.model.Redirect;
-//import company.tap.gosellapi.internal.api.model.Source;
-//import company.tap.gosellapi.internal.api.model.Token;
-//import company.tap.gosellapi.internal.api.requests.CardRequest;
-//import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
-//import company.tap.gosellapi.internal.api.requests.UpdateChargeRequest;
+//import company.tap.gosellapi.api.facade.APIRequestCallback;
+//import company.tap.gosellapi.api.facade.GoSellAPI;
+//import company.tap.gosellapi.api.facade.GoSellError;
+//import company.tap.gosellapi.api.model.BIN;
+//import company.tap.gosellapi.api.model.Charge;
+//import company.tap.gosellapi.api.model.Redirect;
+//import company.tap.gosellapi.api.model.Source;
+//import company.tap.gosellapi.api.model.Token;
+//import company.tap.gosellapi.api.requests.CaptureChargeRequest;
+//import company.tap.gosellapi.api.requests.CardRequest;
+//import company.tap.gosellapi.api.requests.CreateChargeRequest;
+//import company.tap.gosellapi.api.requests.UpdateChargeRequest;
 //
 //public class TestActivity extends Activity {
 //    private static final String TAG = "TestAct";
@@ -29,7 +31,8 @@
 //    protected void onCreate(Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
 //
-//        createToken();
+//        getBINNumberDetails();
+////        createToken();
 //    }
 //
 //    private void createToken() {
@@ -51,7 +54,7 @@
 //                            Log.d(TAG, "onSuccess createToken serializedResponse:" + serializedResponse);
 //                        }
 //                        token = serializedResponse;
-//                        retrieveToken();
+////                        retrieveToken();
 //                        createCharge();
 //                    }
 //
@@ -89,14 +92,17 @@
 //                        .metadata(chargeMetadata)
 //                        .receipt_sms("96598989898")
 //                        .receipt_email("test@test.com")
+//                        .capture(true)
+//                        .threeds(true)
 //                        .build(),
 //                new APIRequestCallback<Charge>() {
 //                    @Override
 //                    public void onSuccess(int responseCode, Charge serializedResponse) {
 //                        Log.d(TAG, "onSuccess createCharge: serializedResponse:" + serializedResponse);
 //                        charge = serializedResponse;
-//                        retrieveCharge();
-//                        updateCharge();
+//                        captureCharge();
+////                        retrieveCharge();
+////                        updateCharge();
 //                    }
 //
 //                    @Override
@@ -142,5 +148,38 @@
 //                    }
 //                }
 //        );
+//    }
+//
+//    private void captureCharge() {
+//        GoSellAPI.getInstance(AUTH_TOKEN).captureCharge(
+//                charge.getId(),
+//                new CaptureChargeRequest.Builder().build(),
+//                new APIRequestCallback<Charge>() {
+//                    @Override
+//                    public void onSuccess(int responseCode, Charge serializedResponse) {
+//                        Log.d(TAG, "onSuccess captureCharge: serializedResponse:" + serializedResponse);
+//                    }
+//
+//                    @Override
+//                    public void onFailure(GoSellError errorDetails) {
+//                        Log.d(TAG, "onFailure captureCharge, errorCode: " + errorDetails.getErrorCode() + ", errorBody: " + errorDetails.getErrorBody() + ", throwable: " + errorDetails.getThrowable());
+//                    }
+//                });
+//    }
+//
+//    private void getBINNumberDetails() {
+//        GoSellAPI.getInstance(AUTH_TOKEN).getBINNumberDetails(
+//                "516874",
+//                new APIRequestCallback<BIN>() {
+//                    @Override
+//                    public void onSuccess(int responseCode, BIN serializedResponse) {
+//                        Log.d(TAG, "onSuccess getBINNumberDetails: serializedResponse:" + serializedResponse);
+//                    }
+//
+//                    @Override
+//                    public void onFailure(GoSellError errorDetails) {
+//                        Log.d(TAG, "onFailure getBINNumberDetails, errorCode: " + errorDetails.getErrorCode() + ", errorBody: " + errorDetails.getErrorBody() + ", throwable: " + errorDetails.getThrowable());
+//                    }
+//                });
 //    }
 //}
