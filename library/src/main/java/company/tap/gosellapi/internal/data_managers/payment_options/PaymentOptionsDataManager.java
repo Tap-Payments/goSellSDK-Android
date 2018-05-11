@@ -5,7 +5,9 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import company.tap.gosellapi.internal.Constants;
 import company.tap.gosellapi.internal.api.models.Card;
+import company.tap.gosellapi.internal.api.models.CardRawData;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
 import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.CardCredentialsViewModel;
@@ -15,6 +17,15 @@ import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.R
 import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.WebPaymentViewModel;
 
 public class PaymentOptionsDataManager {
+    public interface PaymentOptionsDataListener {
+        void startCurrencySelection();
+        void startOTP();
+        void startWebPayment();
+        void startScanCard();
+        void cardDetailsFilled(boolean isFilled, CardRawData cardRawData);
+    }
+
+    private PaymentOptionsDataListener listener;
     private ArrayList<PaymentOptionsBaseViewModel> dataList;
     private int focusedPosition;
 
@@ -22,6 +33,7 @@ public class PaymentOptionsDataManager {
         new DataFiller().fill();
     }
 
+    //data for adapter
     public int getSize() {
         return dataList.size();
     }
@@ -33,6 +45,59 @@ public class PaymentOptionsDataManager {
     public PaymentOptionsBaseViewModel getViewModel(int position) {
         return dataList.get(position);
     }
+
+    public PaymentOptionsDataManager setListener(PaymentOptionsDataListener listener) {
+        this.listener = listener;
+        return this;
+    }
+
+    //callback actions from child viewModels
+    public void currencyHolderClicked() {
+        listener.startCurrencySelection();
+    }
+
+    public void recentPaymentItemClicked(int position, Card recentItem) {
+        listener.startOTP();
+    }
+
+    public void webPaymentSystemViewHolderClicked(int position) {
+        listener.startWebPayment();
+    }
+
+    public void cardScannerButtonClicked() {
+        listener.startScanCard();
+    }
+
+    public void saveCardSwitchCheckedChanged(int position, boolean isChecked) {
+        //show or hide save card details by modifying dataSource?
+    }
+
+    public void cardDetailsFilled(boolean isFilled, CardRawData cardRawData) {
+        listener.cardDetailsFilled(isFilled, cardRawData);
+    }
+
+
+    //focus interaction between holders
+    public void setFocused(int position) {
+        if (focusedPosition != Constants.NO_FOCUS) {
+            dataList.get(focusedPosition).setViewFocused(false);
+        }
+
+        focusedPosition = position;
+        dataList.get(focusedPosition).setViewFocused(true);
+    }
+
+    public void clearFocus() {
+        if (focusedPosition != Constants.NO_FOCUS) {
+            dataList.get(focusedPosition).setViewFocused(false);
+        }
+        focusedPosition = Constants.NO_FOCUS;
+    }
+
+    public boolean isPositionInFocus(int position) {
+        return position == focusedPosition;
+    }
+
 
     private final class DataFiller {
         private void fill() {

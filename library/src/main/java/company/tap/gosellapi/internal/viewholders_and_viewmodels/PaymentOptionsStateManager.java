@@ -26,7 +26,7 @@ public class PaymentOptionsStateManager {
 
     public void saveState(RecyclerView recyclerView, PaymentOptionsRecyclerViewAdapter paymentOptionsRecyclerViewAdapter) {
         state = new Bundle();
-        state.putInt(TOP_FOCUSED_POSITION, paymentOptionsRecyclerViewAdapter.getFocusedPosition());
+//        state.putInt(TOP_FOCUSED_POSITION, paymentOptionsRecyclerViewAdapter.getFocusedPosition());
 
     }
 

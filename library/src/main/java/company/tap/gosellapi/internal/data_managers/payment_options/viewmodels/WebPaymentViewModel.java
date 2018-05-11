@@ -11,5 +11,7 @@ public class WebPaymentViewModel
         super(parentDataManager, data, modelType);
     }
 
-
+    public void itemClicked() {
+        parentDataManager.webPaymentSystemViewHolderClicked(position);
+    }
 }

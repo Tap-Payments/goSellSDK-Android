@@ -39,7 +39,7 @@ public class GlobalDataManager {
         paymentOptionsDataManager = new PaymentOptionsDataManager();
     }
 
-    public PaymentOptionsDataManager getPaymentOptionsDataManager() {
-        return paymentOptionsDataManager;
+    public PaymentOptionsDataManager getPaymentOptionsDataManager(PaymentOptionsDataManager.PaymentOptionsDataListener dataListener) {
+        return paymentOptionsDataManager.setListener(dataListener);
     }
 }
