@@ -1,11 +1,12 @@
-package company.tap.gosellapi.internal.api.api_service;
+package company.tap.gosellapi.api.facade;
 
-import company.tap.gosellapi.internal.api.model.Charge;
-import company.tap.gosellapi.internal.api.model.Token;
-import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
-import company.tap.gosellapi.internal.api.requests.CreateTokenRequest;
-import company.tap.gosellapi.internal.api.requests.UpdateChargeRequest;
-import company.tap.gosellapi.internal.api.responses.InitResponse;
+import company.tap.gosellapi.api.model.BIN;
+import company.tap.gosellapi.api.model.Charge;
+import company.tap.gosellapi.api.model.Token;
+import company.tap.gosellapi.api.requests.CaptureChargeRequest;
+import company.tap.gosellapi.api.requests.CreateChargeRequest;
+import company.tap.gosellapi.api.requests.CreateTokenRequest;
+import company.tap.gosellapi.api.requests.UpdateChargeRequest;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -20,9 +21,6 @@ import retrofit2.http.Path;
  */
 
 interface APIService {
-    @GET(API_Constants.INIT)
-    Call<InitResponse> init();
-
     @POST(API_Constants.TOKEN)
     Call<Token> createToken(@Body CreateTokenRequest createTokenRequest);
 
@@ -37,4 +35,10 @@ interface APIService {
 
     @PUT(API_Constants.CHARGES + "/{" + API_Constants.CHARGE_ID + "}")
     Call<Charge> updateCharge(@Path(API_Constants.CHARGE_ID) String chargeId, @Body UpdateChargeRequest updateChargeRequest);
+
+    @POST(API_Constants.CHARGES + "/{" + API_Constants.CHARGE_ID + "}/" + API_Constants.CAPTURE)
+    Call<Charge> captureCharge(@Path(API_Constants.CHARGE_ID) String chargeId, @Body CaptureChargeRequest captureChargeRequest);
+
+    @GET(API_Constants.BIN + "/{" + API_Constants.NUMBER + "}")
+    Call<BIN> getBINNumberDetails(@Path(API_Constants.NUMBER) String binNumber);
 }
