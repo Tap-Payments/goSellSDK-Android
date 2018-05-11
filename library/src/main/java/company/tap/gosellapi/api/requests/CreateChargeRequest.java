@@ -52,6 +52,14 @@ public final class CreateChargeRequest {
     @Expose
     private String receipt_email;
 
+    @SerializedName("capture")
+    @Expose
+    private boolean capture;
+
+    @SerializedName("threeds")
+    @Expose
+    private boolean threeds;
+
     private CreateChargeRequest(double amount, String currency, Redirect redirect) {
         this.amount = amount;
         this.currency = currency;
@@ -118,6 +126,22 @@ public final class CreateChargeRequest {
          */
         public Builder receipt_sms(String receipt_sms) {
             createChargeRequest.receipt_sms = receipt_sms;
+            return this;
+        }
+
+        /**
+         * @param capture Whether or not to immediately capture the charge. When false, the charge issues an authorization (or pre-authorization), and will need to be captured later. Uncaptured charges expire in 7 days. For more information, see authorizing charges and settling later. optional, default is true
+         */
+        public Builder capture(boolean capture) {
+            createChargeRequest.capture = capture;
+            return this;
+        }
+
+        /**
+         * @param threeds Defines if 3DS is required.
+         */
+        public Builder threeds(boolean threeds) {
+            createChargeRequest.threeds = threeds;
             return this;
         }
 
