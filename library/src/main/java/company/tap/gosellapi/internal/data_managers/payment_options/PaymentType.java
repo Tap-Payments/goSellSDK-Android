@@ -1,11 +1,11 @@
-package company.tap.gosellapi.internal.data_source.payment_options;
+package company.tap.gosellapi.internal.data_managers.payment_options;
 
 public enum PaymentType {
-    DUMMY(-1),
     CURRENCY(0),
     RECENT(1),
     WEB(2),
-    CARD(3);
+    CARD(3),
+    EMPTY(4);
 
     private int viewType;
 
@@ -24,6 +24,6 @@ public enum PaymentType {
             }
         }
 
-        return DUMMY;
+        return EMPTY;
     }
 }

@@ -8,7 +8,7 @@ import company.tap.gosellapi.internal.api.callbacks.BaseCallback;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.responses.BaseResponse;
 import company.tap.gosellapi.internal.api.responses.InitResponse;
-import company.tap.gosellapi.internal.data_source.GlobalDataManager;
+import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
 import retrofit2.Call;
 
 class RequestManager {

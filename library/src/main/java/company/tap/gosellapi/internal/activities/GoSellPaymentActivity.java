@@ -14,13 +14,14 @@ import com.bumptech.glide.request.RequestOptions;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.models.CardRawData;
-import company.tap.gosellapi.internal.data_source.GlobalDataManager;
+import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
+import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
 import company.tap.gosellapi.internal.fragments.GoSellOTPScreenFragment;
 import company.tap.gosellapi.internal.fragments.GoSellPaymentOptionsFragment;
 import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
 
-public class GoSellPaymentActivity extends AppCompatActivity implements GoSellPaymentOptionsFragment.PaymentOptionsFragmentListener{
+public class GoSellPaymentActivity extends AppCompatActivity implements PaymentOptionsDataManager.PaymentOptionsDataListener {
     private static final int SCAN_REQUEST_CODE = 123;
     private FragmentManager fragmentManager;
     private GoSellPaymentOptionsFragment paymentOptionsFragment;

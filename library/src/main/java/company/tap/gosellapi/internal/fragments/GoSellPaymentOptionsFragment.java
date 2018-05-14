@@ -14,21 +14,16 @@ import android.view.ViewGroup;
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.activities.GoSellPaymentActivity;
 import company.tap.gosellapi.internal.adapters.PaymentOptionsRecyclerViewAdapter;
-import company.tap.gosellapi.internal.api.models.Card;
-import company.tap.gosellapi.internal.api.models.CardRawData;
-import company.tap.gosellapi.internal.data_source.GlobalDataManager;
-import company.tap.gosellapi.internal.data_source.payment_options.PaymentOptionsDataSource;
+import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
+import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
+import company.tap.gosellapi.internal.viewholders.PaymentOptionsStateManager;
 
 public class GoSellPaymentOptionsFragment extends Fragment {
-    public interface PaymentOptionsFragmentListener {
-        void startCurrencySelection();
-        void startOTP();
-        void startWebPayment();
-        void startScanCard();
-        void cardDetailsFilled(boolean isFilled, CardRawData cardRawData);
-    }
-
-    private PaymentOptionsFragmentListener listener;
+    private PaymentOptionsDataManager.PaymentOptionsDataListener dataListener;
+    private RecyclerView paymentOptionsRecyclerView;
+    private LinearLayoutManager layoutManager;
+    private PaymentOptionsRecyclerViewAdapter adapter;
+    private PaymentOptionsDataManager dataSource;
 
     public GoSellPaymentOptionsFragment() {
         // Required empty public constructor
@@ -55,67 +50,50 @@ public class GoSellPaymentOptionsFragment extends Fragment {
         super.onAttach(context);
 
         if(context instanceof GoSellPaymentActivity) {
-            this.listener = (PaymentOptionsFragmentListener) context;
+            this.dataListener = (PaymentOptionsDataManager.PaymentOptionsDataListener) context;
         }
         else {
         throw new ClassCastException(context.toString()
-                + " must implement PaymentOptionsFragmentListener");
+                + " must implement PaymentOptionsDataListener");
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        this.listener = null;
+        this.dataListener = null;
     }
 
     private void initMainRecyclerView(View view) {
-        final RecyclerView paymentOptionsRecyclerView = view.findViewById(R.id.paymentOptionsRecyclerView);
-        final PaymentOptionsDataSource dataSource = GlobalDataManager.getInstance().getPaymentOptionsDataSource();
+        paymentOptionsRecyclerView = view.findViewById(R.id.paymentOptionsRecyclerView);
+        dataSource = GlobalDataManager.getInstance().getPaymentOptionsDataManager(dataListener);
 
         //Configuring layout manager
-        LinearLayoutManager layoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);
+        layoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);
         paymentOptionsRecyclerView.setLayoutManager(layoutManager);
 
         // Configuring MainRecycleViewAdapter and handle PaymentOptionsViewAdapterListener
-        PaymentOptionsRecyclerViewAdapter adapter = new PaymentOptionsRecyclerViewAdapter(dataSource,
-                new PaymentOptionsRecyclerViewAdapter.PaymentOptionsViewAdapterListener() {
-                    @Override
-                    public RecyclerView.ViewHolder getHolderForAdapterPosition(int position) {
-                        return paymentOptionsRecyclerView.findViewHolderForAdapterPosition(position);
-                    }
-
-                    @Override
-                    public void currencyHolderClicked() {
-                        listener.startCurrencySelection();
-                    }
-
-                    @Override
-                    public void recentPaymentItemClicked(int position, Card recentItem) {
-                        listener.startOTP();
-                    }
-
-                    @Override
-                    public void webPaymentSystemViewHolderClicked(int position) {
-                        listener.startWebPayment();
-                    }
-
-                    @Override
-                    public void cardScannerButtonClicked() {
-                        listener.startScanCard();
-                    }
-
-                    @Override
-                    public void saveCardSwitchCheckedChanged(int position, boolean isChecked) {
-                        //show or hide save card details by modifying dataSource?
-                    }
-
-                    @Override
-                    public void cardDetailsFilled(boolean isFilled, CardRawData cardRawData) {
-                        listener.cardDetailsFilled(isFilled, cardRawData);
-                    }
-                });
+        adapter = new PaymentOptionsRecyclerViewAdapter(dataSource);
 
         paymentOptionsRecyclerView.setAdapter(adapter);
+        restoreRecyclerState();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        saveRecyclerState();
+    }
+
+    private void saveRecyclerState() {
+        PaymentOptionsStateManager.getInstance().saveState(paymentOptionsRecyclerView, adapter);
+    }
+
+    private void restoreRecyclerState() {
+//        Parcelable savedState = PaymentOptionsStateManager.getInstance().getSavedTopState();
+//        if (savedState != null) {
+//            layoutManager.onRestoreInstanceState(savedState);
+//            PaymentOptionsStateManager.getInstance().setSavedTopState(null);
+//        }
     }
 }
