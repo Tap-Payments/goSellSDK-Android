@@ -16,7 +16,7 @@ import company.tap.gosellapi.internal.activities.GoSellPaymentActivity;
 import company.tap.gosellapi.internal.adapters.PaymentOptionsRecyclerViewAdapter;
 import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
-import company.tap.gosellapi.internal.viewholders_and_viewmodels.PaymentOptionsStateManager;
+import company.tap.gosellapi.internal.viewholders.PaymentOptionsStateManager;
 
 public class GoSellPaymentOptionsFragment extends Fragment {
     private PaymentOptionsDataManager.PaymentOptionsDataListener dataListener;

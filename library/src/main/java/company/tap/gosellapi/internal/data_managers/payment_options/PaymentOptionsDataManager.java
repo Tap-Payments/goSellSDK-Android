@@ -9,7 +9,7 @@ import company.tap.gosellapi.internal.Constants;
 import company.tap.gosellapi.internal.api.models.Card;
 import company.tap.gosellapi.internal.api.models.CardRawData;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
-import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
+import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.CardCredentialsViewModel;
 import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.CurrencyViewModel;
 import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.PaymentOptionsBaseViewModel;
@@ -17,6 +17,7 @@ import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.R
 import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.WebPaymentViewModel;
 
 public class PaymentOptionsDataManager {
+    //outer interface (for fragment, containing recyclerView)
     public interface PaymentOptionsDataListener {
         void startCurrencySelection();
         void startOTP();
@@ -26,10 +27,13 @@ public class PaymentOptionsDataManager {
     }
 
     private PaymentOptionsDataListener listener;
+
+    private PaymentOptionsResponse paymentOptionsResponse;
     private ArrayList<PaymentOptionsBaseViewModel> dataList;
     private int focusedPosition;
-
-    public PaymentOptionsDataManager() {
+    
+    public PaymentOptionsDataManager(PaymentOptionsResponse paymentOptionsResponse) {
+        this.paymentOptionsResponse = paymentOptionsResponse;
         new DataFiller().fill();
     }
 
@@ -46,10 +50,12 @@ public class PaymentOptionsDataManager {
         return dataList.get(position);
     }
 
+
     public PaymentOptionsDataManager setListener(PaymentOptionsDataListener listener) {
         this.listener = listener;
         return this;
     }
+
 
     //callback actions from child viewModels
     public void currencyHolderClicked() {
@@ -57,6 +63,7 @@ public class PaymentOptionsDataManager {
     }
 
     public void recentPaymentItemClicked(int position, Card recentItem) {
+        setFocused(position);
         listener.startOTP();
     }
 
@@ -122,7 +129,7 @@ public class PaymentOptionsDataManager {
         }
 
         private void addCurrencies() {
-            HashMap<String, Double> supportedCurrencies = GlobalDataManager.getInstance().getPaymentOptionsResponse().getSupported_currencies();
+            HashMap<String, Double> supportedCurrencies = paymentOptionsResponse.getSupported_currencies();
             if (supportedCurrencies != null && supportedCurrencies.size() > 0) {
                 dataList.add(new CurrencyViewModel(PaymentOptionsDataManager.this, supportedCurrencies, PaymentType.CURRENCY.getViewType()));
             }
@@ -142,7 +149,7 @@ public class PaymentOptionsDataManager {
         }
 
         private void addWeb() {
-            ArrayList<PaymentOption> paymentOptions = GlobalDataManager.getInstance().getPaymentOptionsResponse().getPayment_options();
+            ArrayList<PaymentOption> paymentOptions = paymentOptionsResponse.getPayment_options();
 
             if (paymentOptions == null || paymentOptions.size() == 0) {
                 return;
@@ -158,7 +165,7 @@ public class PaymentOptionsDataManager {
         }
 
         private void addCard() {
-            ArrayList<PaymentOption> paymentOptions = GlobalDataManager.getInstance().getPaymentOptionsResponse().getPayment_options();
+            ArrayList<PaymentOption> paymentOptions = paymentOptionsResponse.getPayment_options();
             ArrayList<PaymentOption> paymentOptionsCards = new ArrayList<>();
 
             if (paymentOptions == null || paymentOptions.size() == 0) {
