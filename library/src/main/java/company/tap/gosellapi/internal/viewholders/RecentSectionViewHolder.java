@@ -1,4 +1,4 @@
-package company.tap.gosellapi.internal.viewholders_and_viewmodels;
+package company.tap.gosellapi.internal.viewholders;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;

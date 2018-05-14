@@ -1,4 +1,4 @@
-package company.tap.gosellapi.internal.viewholders_and_viewmodels;
+package company.tap.gosellapi.internal.viewholders;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +13,6 @@ import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.P
 //T - data, K - this holder, Q - model
 public abstract class PaymentOptionsBaseViewHolder<T, K extends PaymentOptionsBaseViewHolder<T, K, Q>, Q extends PaymentOptionsBaseViewModel<T, K, Q>> extends RecyclerView.ViewHolder {
     Q viewModel;
-    int position;
 
     public static PaymentOptionsBaseViewHolder newInstance(ViewGroup parent, @NonNull PaymentType paymentType) {
         View view;
@@ -40,21 +39,17 @@ public abstract class PaymentOptionsBaseViewHolder<T, K extends PaymentOptionsBa
         super(itemView);
     }
 
-    public final void bind(Q viewModel, int position) {
+    public final void attachToViewModel(Q viewModel, int position) {
         this.viewModel = viewModel;
-        this.position = position;
 
         //noinspection unchecked
         viewModel.registerHolder((K) this, position);
     }
 
-    public abstract void bind(T data);
-
-    public final void unbind() {
+    public final void detachFromViewModel() {
         viewModel.unregisterHolder();
     }
 
-//    public abstract Bundle getSavedState();
-
+    public abstract void bind(T data);
     public abstract void setFocused(boolean isFocused);
 }

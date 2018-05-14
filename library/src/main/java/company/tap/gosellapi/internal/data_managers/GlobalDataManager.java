@@ -8,7 +8,6 @@ public class GlobalDataManager {
     private InitResponse initResponse;
 
     private PaymentOptionsDataManager paymentOptionsDataManager;
-    private PaymentOptionsResponse paymentOptionsResponse;
 
     private GlobalDataManager() {
 
@@ -30,13 +29,8 @@ public class GlobalDataManager {
         this.initResponse = initResponse;
     }
 
-    public PaymentOptionsResponse getPaymentOptionsResponse() {
-        return paymentOptionsResponse;
-    }
-
     public void setPaymentOptionsResponse(PaymentOptionsResponse paymentOptionsResponse) {
-        this.paymentOptionsResponse = paymentOptionsResponse;
-        paymentOptionsDataManager = new PaymentOptionsDataManager();
+        paymentOptionsDataManager = new PaymentOptionsDataManager(paymentOptionsResponse);
     }
 
     public PaymentOptionsDataManager getPaymentOptionsDataManager(PaymentOptionsDataManager.PaymentOptionsDataListener dataListener) {

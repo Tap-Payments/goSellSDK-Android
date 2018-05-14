@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentType;
-import company.tap.gosellapi.internal.viewholders_and_viewmodels.PaymentOptionsBaseViewHolder;
+import company.tap.gosellapi.internal.viewholders.PaymentOptionsBaseViewHolder;
 
 public class PaymentOptionsRecyclerViewAdapter extends RecyclerView.Adapter<PaymentOptionsBaseViewHolder> {
     private PaymentOptionsDataManager dataSource;
@@ -24,7 +24,7 @@ public class PaymentOptionsRecyclerViewAdapter extends RecyclerView.Adapter<Paym
     @Override
     public void onBindViewHolder(@NonNull PaymentOptionsBaseViewHolder holder, int position) {
         //noinspection unchecked
-        holder.bind(dataSource.getViewModel(position), position);
+        holder.attachToViewModel(dataSource.getViewModel(position), position);
     }
 
     @Override
@@ -40,6 +40,6 @@ public class PaymentOptionsRecyclerViewAdapter extends RecyclerView.Adapter<Paym
     @Override
     public void onViewDetachedFromWindow(@NonNull PaymentOptionsBaseViewHolder holder) {
         super.onViewDetachedFromWindow(holder);
-        holder.unbind();
+        holder.detachFromViewModel();
     }
 }
