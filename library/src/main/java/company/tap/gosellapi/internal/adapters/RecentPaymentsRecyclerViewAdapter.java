@@ -73,12 +73,13 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
     @Override
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-        this.parent = recyclerView;
+        parent = recyclerView;
     }
 
     @Override
     public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onDetachedFromRecyclerView(recyclerView);
+        parent = null;
     }
 
     public class RecentPaymentsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
