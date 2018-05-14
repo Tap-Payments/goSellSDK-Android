@@ -61,6 +61,7 @@ public class PaymentOptionsDataManager {
     }
 
     public void webPaymentSystemViewHolderClicked(int position) {
+        setFocused(position);
         listener.startWebPayment();
     }
 
