@@ -1,19 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/default_padding"
     android:background="@drawable/layout_main_section_background_shape"
     android:orientation="horizontal">
 
-    <TextView
+    <ImageView
+        android:id="@+id/billIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CURRENCY"/>
+        android:layout_margin="@dimen/margin_basic_enlarged"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:background="@drawable/ic_bill_normal"/>
+
+    <LinearLayout
+        android:id="@+id/separator"
+        android:layout_width="@dimen/separator_width_basic"
+        android:layout_height="match_parent"
+        android:layout_toEndOf="@id/billIcon"
+        android:layout_toRightOf="@id/billIcon"
+        android:orientation="vertical"
+        android:background="@color/gray"/>
+
+    <RelativeLayout
+        android:id="@+id/currencyLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_toEndOf="@id/separator"
+        android:layout_toRightOf="@id/separator"
+        android:layout_toStartOf="@id/arrowIcon"
+        android:layout_toLeftOf="@id/arrowIcon"
+        android:background="@drawable/auxillary_shape_square"/>
+
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="match_parent"-->
+      <!---->
+        <!--android:background="@drawable/auxillary_shape_square"-->
+        <!--android:gravity="start"-->
+        <!--android:text="SR 00.000"/>-->
 
     <ImageView
+        android:id="@id/arrowIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_basic"
+        android:layout_marginEnd="@dimen/margin_basic"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
         android:background="@drawable/ic_arrow_right_normal"/>
 
-</LinearLayout>
+</RelativeLayout>
