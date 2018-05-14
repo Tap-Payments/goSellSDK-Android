@@ -1,6 +1,9 @@
 package company.tap.gosellapi.internal.viewholders;
 
 import android.view.View;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
@@ -8,9 +11,11 @@ import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.W
 
 public class WebPaymentViewHolder
         extends PaymentOptionsBaseViewHolder<PaymentOption, WebPaymentViewHolder, WebPaymentViewModel> {
+    private ImageView paymentSystemIcon;
 
     WebPaymentViewHolder(final View itemView) {
         super(itemView);
+        paymentSystemIcon = itemView.findViewById(R.id.paymentSystemIcon);
     }
 
     @Override
@@ -21,6 +26,8 @@ public class WebPaymentViewHolder
                 viewModel.itemClicked();
             }
         });
+
+        Glide.with(itemView.getContext()).load(data.getImage()).into(paymentSystemIcon);
     }
 
     @Override

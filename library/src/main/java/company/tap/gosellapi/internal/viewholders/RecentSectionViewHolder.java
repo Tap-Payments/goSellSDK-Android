@@ -54,7 +54,7 @@ public class RecentSectionViewHolder
     }
 
     @Override
-    public void recentPaymentItemClicked(int position, Card card) {
-        viewModel.recentItemClicked(getAdapterPosition());
+    public void recentPaymentItemClicked(int position) {
+        viewModel.recentItemClicked(position);
     }
 }

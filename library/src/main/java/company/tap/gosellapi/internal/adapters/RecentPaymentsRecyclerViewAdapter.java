@@ -16,7 +16,7 @@ import company.tap.gosellapi.internal.api.models.Card;
 
 public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<RecentPaymentsRecyclerViewAdapter.RecentPaymentsViewHolder> {
     public interface RecentPaymentsRecyclerViewAdapterListener {
-        void recentPaymentItemClicked(int position, Card card);
+        void recentPaymentItemClicked(int position);
     }
 
     private ArrayList<Card> datasource;
@@ -106,7 +106,7 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
         @Override
         public void onClick(View v) {
             RecentPaymentsRecyclerViewAdapter.this.setFocused(position);
-//            listener.recentPaymentItemClicked(position, card);
+            listener.recentPaymentItemClicked(position);
         }
 
         private void setFocused(boolean focused) {
