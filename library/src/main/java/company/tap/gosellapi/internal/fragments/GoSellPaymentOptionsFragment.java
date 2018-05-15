@@ -2,6 +2,7 @@ package company.tap.gosellapi.internal.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,7 +17,6 @@ import company.tap.gosellapi.internal.activities.GoSellPaymentActivity;
 import company.tap.gosellapi.internal.adapters.PaymentOptionsRecyclerViewAdapter;
 import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
-import company.tap.gosellapi.internal.viewholders.PaymentOptionsStateManager;
 
 public class GoSellPaymentOptionsFragment extends Fragment {
     private PaymentOptionsDataManager.PaymentOptionsDataListener dataListener;
@@ -24,6 +24,7 @@ public class GoSellPaymentOptionsFragment extends Fragment {
     private LinearLayoutManager layoutManager;
     private PaymentOptionsRecyclerViewAdapter adapter;
     private PaymentOptionsDataManager dataSource;
+    private Parcelable layoutManagerState;
 
     public GoSellPaymentOptionsFragment() {
         // Required empty public constructor
@@ -43,6 +44,7 @@ public class GoSellPaymentOptionsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initMainRecyclerView(view);
+        restoreRecyclerState();
     }
 
     @Override
@@ -76,7 +78,6 @@ public class GoSellPaymentOptionsFragment extends Fragment {
         adapter = new PaymentOptionsRecyclerViewAdapter(dataSource);
 
         paymentOptionsRecyclerView.setAdapter(adapter);
-        restoreRecyclerState();
     }
 
     @Override
@@ -86,14 +87,15 @@ public class GoSellPaymentOptionsFragment extends Fragment {
     }
 
     private void saveRecyclerState() {
-        PaymentOptionsStateManager.getInstance().saveState(paymentOptionsRecyclerView, adapter);
+        layoutManagerState = layoutManager.onSaveInstanceState();
+        dataSource.saveState();
     }
 
     private void restoreRecyclerState() {
-//        Parcelable savedState = PaymentOptionsStateManager.getInstance().getSavedTopState();
-//        if (savedState != null) {
-//            layoutManager.onRestoreInstanceState(savedState);
-//            PaymentOptionsStateManager.getInstance().setSavedTopState(null);
-//        }
+        if (layoutManagerState != null) {
+            layoutManager.onRestoreInstanceState(layoutManagerState);
+            layoutManagerState = null;
+        }
+        dataSource.restoreState();
     }
 }

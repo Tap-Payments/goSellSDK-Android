@@ -13,5 +13,7 @@ public class CardCredentialsViewModel
         super(parentDataManager, data, modelType);
     }
 
-
+    public void cardScannerButtonClicked() {
+        parentDataManager.cardScannerButtonClicked();
+    }
 }
