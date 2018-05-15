@@ -107,6 +107,13 @@ public class PaymentOptionsDataManager {
     }
 
 
+    //save/restore state
+    public void saveState() {
+    }
+
+    public void restoreState() {
+    }
+
     private final class DataFiller {
         private void fill() {
             dataList = new ArrayList<>();
