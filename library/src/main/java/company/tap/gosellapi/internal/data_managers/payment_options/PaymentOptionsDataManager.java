@@ -30,7 +30,7 @@ public class PaymentOptionsDataManager {
 
     private PaymentOptionsResponse paymentOptionsResponse;
     private ArrayList<PaymentOptionsBaseViewModel> dataList;
-    private int focusedPosition;
+    private int focusedPosition = Constants.NO_FOCUS;
     
     public PaymentOptionsDataManager(PaymentOptionsResponse paymentOptionsResponse) {
         this.paymentOptionsResponse = paymentOptionsResponse;
