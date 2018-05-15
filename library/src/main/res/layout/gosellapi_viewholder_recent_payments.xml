@@ -10,13 +10,15 @@
     card_view:cardElevation="3dp">
 
     <RelativeLayout
+        android:id="@+id/recentPaymentsCardViewLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/selector_payment_options_viewholder">
 
         <ImageView
             android:id="@+id/logoImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/icon_width_basic"
+            android:layout_height="@dimen/icon_height_basic"
             android:layout_centerInParent="true"
             android:background="@mipmap/ic_launcher" />
 
@@ -30,6 +32,7 @@
                 android:id="@+id/itemCheckmark"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_margin="@dimen/margin_basic_small"
                 android:src="@drawable/ic_checkmark_normal"
                 android:visibility="invisible" />
 
