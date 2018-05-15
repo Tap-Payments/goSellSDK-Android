@@ -19,10 +19,10 @@
     <string name="textview_title_country">Country</string>
     <string name="textview_title_recent">Recent</string>
     <string name="textview_title_others">Others</string>
-    <string name="textview_title_resend_again">Resend again</string>
+    <string name="textview_title_resend_again">Resend OTP</string>
 
     <string name="textview_disclaimer_save_card">For faster and more secure checkout, save your card</string>
-    <string name="textview_disclaimer_otp_sent_number">OTP has been sent to %s</string>
+    <string name="textview_disclaimer_otp_sent_number">Please enter the OTP that has been sent to %s</string>
     <string name="textview_disclaimer_go_pay_checkouts">By enabling goPay, your card details will be saved with Tap Payments in order for you to get faster and more secure checkouts in multiple apps and websites</string>
 
     <string name="textview_placeholder_last_four_digits">••••%s</string>
