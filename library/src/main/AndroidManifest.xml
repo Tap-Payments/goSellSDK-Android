@@ -6,8 +6,10 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application>
-        <activity android:name=".internal.activities.GoSellPaymentActivity" />
-        <activity android:name=".internal.activities.GoSellCardAddressActivity"></activity>
+        <activity android:name=".internal.activities.GoSellPaymentActivity"
+            android:theme="@style/NoActionBar"/>
+        <activity android:name=".internal.activities.GoSellCardAddressActivity"
+            android:theme="@style/NoActionBar" />
     </application>
 
 </manifest>
