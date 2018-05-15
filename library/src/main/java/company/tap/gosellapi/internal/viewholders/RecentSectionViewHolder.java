@@ -1,5 +1,6 @@
 package company.tap.gosellapi.internal.viewholders;
 
+import android.os.Parcelable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -26,24 +27,11 @@ public class RecentSectionViewHolder
 
     @Override
     public void bind(ArrayList<Card> data) {
-        if (recentPaymentsRecyclerView == null) {
-            recentPaymentsRecyclerView = itemView.findViewById(R.id.recentPaymentsRecyclerView);
-        }
-
-        if (linearLayoutManager == null) {
-            linearLayoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
-            recentPaymentsRecyclerView.setLayoutManager(linearLayoutManager);
-        }
-
-        if (adapter == null) {
-            adapter = new RecentPaymentsRecyclerViewAdapter(data, this);
-            recentPaymentsRecyclerView.setAdapter(adapter);
-        }
-
-//        if (this.data == null || this.data != data) {
-//            this.data = data;
-//
-//        }
+        recentPaymentsRecyclerView = itemView.findViewById(R.id.recentPaymentsRecyclerView);
+        linearLayoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
+        recentPaymentsRecyclerView.setLayoutManager(linearLayoutManager);
+        adapter = new RecentPaymentsRecyclerViewAdapter(data, this);
+        recentPaymentsRecyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -56,5 +44,17 @@ public class RecentSectionViewHolder
     @Override
     public void recentPaymentItemClicked(int position) {
         viewModel.recentItemClicked(position);
+    }
+
+    @Override
+    public Parcelable saveState() {
+        return linearLayoutManager.onSaveInstanceState();
+    }
+
+    @Override
+    public void restoreState(Parcelable state) {
+        if (state != null) {
+            linearLayoutManager.onRestoreInstanceState(state);
+        }
     }
 }

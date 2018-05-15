@@ -38,8 +38,8 @@ public class PaymentOptionsRecyclerViewAdapter extends RecyclerView.Adapter<Paym
     }
 
     @Override
-    public void onViewDetachedFromWindow(@NonNull PaymentOptionsBaseViewHolder holder) {
-        super.onViewDetachedFromWindow(holder);
+    public void onViewRecycled(@NonNull PaymentOptionsBaseViewHolder holder) {
+        super.onViewRecycled(holder);
         holder.detachFromViewModel();
     }
 }

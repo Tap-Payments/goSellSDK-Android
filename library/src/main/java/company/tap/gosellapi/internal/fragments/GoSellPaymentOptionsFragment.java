@@ -96,6 +96,5 @@ public class GoSellPaymentOptionsFragment extends Fragment {
             layoutManager.onRestoreInstanceState(layoutManagerState);
             layoutManagerState = null;
         }
-        dataSource.restoreState();
     }
 }

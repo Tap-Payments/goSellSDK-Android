@@ -109,9 +109,9 @@ public class PaymentOptionsDataManager {
 
     //save/restore state
     public void saveState() {
-    }
-
-    public void restoreState() {
+        for (PaymentOptionsBaseViewModel viewModel : dataList) {
+            viewModel.saveState();
+        }
     }
 
     private final class DataFiller {
