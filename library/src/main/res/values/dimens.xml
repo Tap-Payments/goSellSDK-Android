@@ -17,6 +17,9 @@
     <dimen name="margin_basic">16dp</dimen>
     <dimen name="margin_basic_enlarged">23dp</dimen>
 
+    <dimen name="icon_height_small">26dp</dimen>
+    <dimen name="icon_width_small">26dp</dimen>
+
     <dimen name="icon_height_basic">40dp</dimen>
     <dimen name="icon_width_basic">40dp</dimen>
 

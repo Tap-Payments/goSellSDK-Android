@@ -3,28 +3,25 @@
     android:id="@+id/paymentSystemsViewHolderLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/layout_main_section_background_shape">
+    android:background="@drawable/selector_payment_options_viewholder">
 
     <ImageView
         android:id="@+id/paymentSystemIcon"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_alignParentLeft="true"
+        android:layout_width="@dimen/icon_width_small"
+        android:layout_height="@dimen/icon_height_small"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/margin_basic_enlarged"
-        android:layout_marginStart="@dimen/margin_basic_enlarged"
-        android:background="@drawable/auxillary_shape_square" />
+        android:layout_marginStart="@dimen/margin_basic_enlarged"/>
 
     <TextView
+        android:id="@+id/paymentSystemName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginBottom="@dimen/margin_basic"
         android:layout_marginTop="@dimen/margin_basic"
         android:layout_toEndOf="@id/paymentSystemIcon"
-        android:layout_toLeftOf="@id/arrowIcon"
-        android:layout_toRightOf="@+id/paymentSystemIcon"
         android:layout_toStartOf="@+id/arrowIcon"
         android:text="KNET" />
 
@@ -33,7 +30,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/margin_basic"
         android:layout_marginStart="@dimen/margin_basic"
