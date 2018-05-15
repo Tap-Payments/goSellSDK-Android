@@ -28,5 +28,7 @@
 
     <dimen name="separator_width_basic">1dp</dimen>
 
+    <dimen name="corner_radius_small">8dp</dimen>
+
 </resources>
 
