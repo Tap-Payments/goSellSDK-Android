@@ -1,11 +1,13 @@
 package company.tap.gosellapi.internal.adapters;
 
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -86,6 +88,7 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
         private int position;
         private Card card;
         private ImageView itemCheckmark;
+        private RelativeLayout recentPaymentsCardViewLayout;
 
         private RecentPaymentsViewHolder(View itemView) {
             super(itemView);
@@ -95,6 +98,8 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
         private void bind(int position, Card card) {
             this.position = position;
             this.card = card;
+
+            recentPaymentsCardViewLayout = itemView.findViewById(R.id.recentPaymentsCardViewLayout);
 
             String cardNumber = String.format(itemView.getResources().getString(R.string.textview_placeholder_last_four_digits), card.getLast4());
             TextView cardLastDigits = itemView.findViewById(R.id.cardLastDigits);
@@ -111,6 +116,7 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
 
         private void setFocused(boolean focused) {
             itemCheckmark.setVisibility(focused ? View.VISIBLE : View.INVISIBLE);
+            recentPaymentsCardViewLayout.setSelected(focused);
         }
     }
 }
