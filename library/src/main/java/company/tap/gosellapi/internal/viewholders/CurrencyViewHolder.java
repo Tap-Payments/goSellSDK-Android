@@ -20,6 +20,6 @@ public class CurrencyViewHolder
 
     @Override
     public void setFocused(boolean isFocused) {
-        itemView.setPressed(isFocused);
+        itemView.setSelected(isFocused);
     }
 }
