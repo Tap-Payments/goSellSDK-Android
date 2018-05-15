@@ -22,10 +22,6 @@ public class CardCredentialsViewHolder
 
     @Override
     public void setFocused(boolean isFocused) {
-        if (isFocused) {
-            itemView.setBackgroundResource(R.color.vibrant_green);
-        } else {
-            itemView.setBackground(null);
-        }
+        itemView.setPressed(isFocused);
     }
 }
