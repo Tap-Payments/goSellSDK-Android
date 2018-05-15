@@ -32,7 +32,7 @@ public class GoSellOTPScreenFragment extends Fragment {
     private CountDownTimer timer;
     private int resendConfirmationCodeTimeout;
 
-    TextView resendTextView;
+    TextView timerTextView;
     private ArrayList<TextView> textViewsArray = new ArrayList<>();
 
     public GoSellOTPScreenFragment() {
@@ -58,7 +58,6 @@ public class GoSellOTPScreenFragment extends Fragment {
 
         prepareTextViews(view);
         handleConfirmationCodeInputEditText(view);
-        handleConfirmButton(view);
         startCountdown();
     }
 
@@ -94,8 +93,8 @@ public class GoSellOTPScreenFragment extends Fragment {
             index++;
         }
 
-        resendTextView = view.findViewById(R.id.resendConfirmationCode);
-        resendTextView.setOnClickListener(new View.OnClickListener() {
+        timerTextView = view.findViewById(R.id.timerTextView);
+        timerTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 resendConfirmationCode();
@@ -117,8 +116,6 @@ public class GoSellOTPScreenFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String text = before == 0 ? String.valueOf(s.charAt(start)) : "";
                 updateConfirmationCodeCells(start, text);
-
-                updateConfirmButtonStatus(view, s.length());
             }
 
             @Override
@@ -135,24 +132,6 @@ public class GoSellOTPScreenFragment extends Fragment {
         passwordCell.setText(text);
     }
 
-    private void updateConfirmButtonStatus(View view, Integer passwordLength) {
-        Button confirmButton = view.findViewById(R.id.confirmButton);
-        boolean state = passwordLength == CONFIRMATION_CODE_LENGTH;
-        confirmButton.setEnabled(state);
-    }
-
-    private void handleConfirmButton(View view) {
-
-        Button confirmButton = view.findViewById(R.id.confirmButton);
-
-        confirmButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-    }
-
     private void resendConfirmationCode() {
         startCountdown();
     }
@@ -160,13 +139,13 @@ public class GoSellOTPScreenFragment extends Fragment {
     private void startCountdown() {
 
         View view = getView();
-        if(view == null) return;
+        if (view == null) return;
 
         final TextView timerTextView = getView().findViewById(R.id.timerTextView);
 
-        if(timer != null) timer.cancel();
+        if (timer != null) timer.cancel();
 
-        resendTextView.setEnabled(false);
+        timerTextView.setEnabled(false);
 
         timer = new CountDownTimer(resendConfirmationCodeTimeout, TICK_LENGTH) {
             @Override
@@ -176,8 +155,8 @@ public class GoSellOTPScreenFragment extends Fragment {
 
             @Override
             public void onFinish() {
-                timerTextView.setText(formatMilliseconds(0));
-                resendTextView.setEnabled(true);
+                timerTextView.setText(R.string.textview_title_resend_again);
+                timerTextView.setEnabled(true);
             }
         };
 

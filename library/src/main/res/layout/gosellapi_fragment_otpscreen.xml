@@ -1,78 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
     tools:context=".internal.fragments.GoSellOTPScreenFragment">
 
-    <EditText
-        android:id="@+id/confirmationCodeInput"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignBottom="@+id/textViewsLayout"
-        android:layout_alignEnd="@+id/textViewsLayout"
-        android:layout_alignLeft="@+id/textViewsLayout"
-        android:layout_alignRight="@+id/textViewsLayout"
-        android:layout_alignStart="@id/textViewsLayout"
-        android:layout_alignTop="@id/textViewsLayout"
-        android:cursorVisible="false"
-        android:inputType="numberPassword"
-        android:maxLength="6"
-        android:background="@android:color/transparent"
-        android:textColor="@android:color/transparent">
-        <requestFocus />
-    </EditText>
-
-    <LinearLayout
-        android:id="@+id/textViewsLayout"
-        android:background="@drawable/auxillary_shape_square"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_centerInParent="true"/>
+    <include layout="@layout/gosellapi_layout_password_input" />
 
     <LinearLayout
         android:id="@+id/disclaimerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewsLayout">
+        android:layout_marginTop="9dp">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="@string/textview_disclaimer_otp_sent_number"
-            android:layout_weight="1"/>
+            android:layout_marginStart="24dp"
+            android:layout_weight="1"
+            android:gravity="start"
+            android:text="@string/textview_disclaimer_otp_sent_number" />
 
         <TextView
-            android:id="@+id/resendConfirmationCode"
+            android:id="@+id/timerTextView"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="@string/textview_title_resend_again"
+            android:layout_marginEnd="24dp"
+            android:layout_weight="1"
             android:enabled="false"
+            android:gravity="end"
+            android:text="@string/textview_title_resend_again"
             android:textAllCaps="true"
-            android:layout_weight="1"/>
+            android:textColor="#007aff" />
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/timerTextView"
-        android:gravity="center"
-        android:layout_below="@+id/disclaimerLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:id="@+id/confirmButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_title_confirm"
-        android:enabled="false"
-        android:textColor="@color/white"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/btn_confirm_selector"/>
-
-</RelativeLayout>
+</LinearLayout>
