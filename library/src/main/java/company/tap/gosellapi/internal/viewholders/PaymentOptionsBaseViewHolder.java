@@ -1,5 +1,6 @@
 package company.tap.gosellapi.internal.viewholders;
 
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -51,5 +52,12 @@ public abstract class PaymentOptionsBaseViewHolder<T, K extends PaymentOptionsBa
     }
 
     public abstract void bind(T data);
+    public final void unbind() {
+        saveState();
+    }
+
     public abstract void setFocused(boolean isFocused);
+
+    public Parcelable saveState() { return null; }
+    public void restoreState(Parcelable state) { }
 }
