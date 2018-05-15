@@ -2,6 +2,7 @@ package company.tap.gosellapi.internal.viewholders;
 
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
@@ -12,10 +13,13 @@ import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.W
 public class WebPaymentViewHolder
         extends PaymentOptionsBaseViewHolder<PaymentOption, WebPaymentViewHolder, WebPaymentViewModel> {
     private ImageView paymentSystemIcon;
+    private TextView paymentSystemName;
 
     WebPaymentViewHolder(final View itemView) {
         super(itemView);
         paymentSystemIcon = itemView.findViewById(R.id.paymentSystemIcon);
+        paymentSystemName = itemView.findViewById(R.id.paymentSystemName);
+
     }
 
     @Override
@@ -27,15 +31,12 @@ public class WebPaymentViewHolder
             }
         });
 
+        paymentSystemName.setText(data.getName());
         Glide.with(itemView.getContext()).load(data.getImage()).into(paymentSystemIcon);
     }
 
     @Override
     public void setFocused(boolean isFocused) {
-        if (isFocused) {
-            itemView.setBackgroundResource(R.color.vibrant_green);
-        } else {
-            itemView.setBackground(null);
-        }
+        itemView.setPressed(isFocused);
     }
 }
