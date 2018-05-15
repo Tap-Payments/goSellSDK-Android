@@ -11,4 +11,8 @@ public class CurrencyViewModel
     public CurrencyViewModel(PaymentOptionsDataManager parentDataManager, HashMap<String, Double> data, int modelType) {
         super(parentDataManager, data, modelType);
     }
+
+    public void holderClicked() {
+        parentDataManager.currencyHolderClicked();
+    }
 }
