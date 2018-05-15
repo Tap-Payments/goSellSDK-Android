@@ -15,11 +15,15 @@ public class CurrencyViewHolder
 
     @Override
     public void bind(HashMap<String, Double> data) {
-
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewModel.holderClicked();
+            }
+        });
     }
 
     @Override
     public void setFocused(boolean isFocused) {
-        itemView.setSelected(isFocused);
     }
 }
