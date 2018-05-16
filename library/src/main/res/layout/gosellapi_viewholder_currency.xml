@@ -17,7 +17,7 @@
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/margin_basic_tiny"
         android:layout_marginBottom="@dimen/margin_basic_tiny"
-        android:background="@color/gray"/>
+        android:background="@color/alto_gray"/>
 
     <LinearLayout
         android:id="@+id/currencyLayout"
