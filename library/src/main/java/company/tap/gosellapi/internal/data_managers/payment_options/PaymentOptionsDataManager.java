@@ -10,6 +10,7 @@ import company.tap.gosellapi.internal.api.models.Card;
 import company.tap.gosellapi.internal.api.models.CardRawData;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
+import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
 import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.CardCredentialsViewModel;
 import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.CurrencyViewModel;
 import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.PaymentOptionsBaseViewModel;
@@ -49,7 +50,6 @@ public class PaymentOptionsDataManager {
     public PaymentOptionsBaseViewModel getViewModel(int position) {
         return dataList.get(position);
     }
-
 
     public PaymentOptionsDataManager setListener(PaymentOptionsDataListener listener) {
         this.listener = listener;
@@ -138,7 +138,11 @@ public class PaymentOptionsDataManager {
         private void addCurrencies() {
             HashMap<String, Double> supportedCurrencies = paymentOptionsResponse.getSupported_currencies();
             if (supportedCurrencies != null && supportedCurrencies.size() > 0) {
-                dataList.add(new CurrencyViewModel(PaymentOptionsDataManager.this, supportedCurrencies, PaymentType.CURRENCY.getViewType()));
+                String initialCurrency = paymentOptionsResponse.getCurrency_code();
+                double initialAmount = GlobalDataManager.getInstance().getPaymentInfo().getTotal_amount();
+                CurrencySectionData currencySectionData = new CurrencySectionData(supportedCurrencies, initialCurrency, initialAmount);
+
+                dataList.add(new CurrencyViewModel(PaymentOptionsDataManager.this, currencySectionData, PaymentType.CURRENCY.getViewType()));
             }
         }
 

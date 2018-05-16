@@ -42,6 +42,10 @@ public class AppInfo {
         applicationInfo.put("app_locale", SupportedLocales.findByString(localeString).language);
     }
 
+    public static String getLocaleString() {
+        return localeString;
+    }
+
     static String getApplicationInfo() {
         StringBuilder stringBuilder = new StringBuilder();
         for (Map.Entry entry : applicationInfo.entrySet()) {
