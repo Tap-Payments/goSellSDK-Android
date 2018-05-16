@@ -11,6 +11,6 @@ public class CurrencyViewModel
     }
 
     public void holderClicked() {
-        parentDataManager.currencyHolderClicked();
+        parentDataManager.currencyHolderClicked(position, data.getData());
     }
 }
