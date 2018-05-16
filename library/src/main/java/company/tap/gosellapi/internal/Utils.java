@@ -8,8 +8,6 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Currency;
 import java.util.Locale;
@@ -43,10 +41,9 @@ public class Utils {
         }
         String symbol = getOptionallyHardcodedSymbol(currency.getSymbol(locale));
 
-        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(locale);
-        DecimalFormatSymbols decimalFormatSymbols = ((DecimalFormat) currencyFormat).getDecimalFormatSymbols();
-        decimalFormatSymbols.setCurrencySymbol("");
-        ((java.text.DecimalFormat) currencyFormat).setDecimalFormatSymbols(decimalFormatSymbols);
+        NumberFormat currencyFormat = NumberFormat.getIntegerInstance();
+        currencyFormat.setMinimumFractionDigits(currency.getDefaultFractionDigits());
+        currencyFormat.setMaximumFractionDigits(currency.getDefaultFractionDigits());
 
         return String.format("%s %s", symbol, currencyFormat.format(sum));
     }

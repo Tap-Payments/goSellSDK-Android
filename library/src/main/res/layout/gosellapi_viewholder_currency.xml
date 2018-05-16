@@ -27,24 +27,24 @@
         android:layout_marginStart="@dimen/margin_basic"
         android:layout_weight="1"
         android:animateLayoutChanges="true"
+        android:layoutDirection="ltr"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/currencySecondaryText"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="start"
             android:textSize="13sp"
-            android:text="SR 00.000" />
+            android:text="SR 00.000"/>
 
         <TextView
             android:id="@+id/currencyMainText"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="start"
             android:textSize="20sp"
             android:text="KD 00.000" />
-
     </LinearLayout>
 
 
