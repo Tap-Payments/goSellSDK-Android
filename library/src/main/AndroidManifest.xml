@@ -12,6 +12,8 @@
         <activity
             android:name=".internal.activities.GoSellCardAddressActivity"
             android:theme="@style/GoSellSDKAppTheme"/>
+        <activity
+            android:name=".internal.activities.CurrenciesActivity"/>
     </application>
 
 </manifest>
