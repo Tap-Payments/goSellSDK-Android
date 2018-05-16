@@ -1,26 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <TextView
+        style="@style/TextView.Title.SectionHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/default_padding"
-        android:text="@string/textview_title_recent"/>
+        android:text="@string/textview_title_recent" />
 
-    <android.support.v7.widget.RecyclerView android:id="@+id/recentPaymentsRecyclerView"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recentPaymentsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:overScrollMode="never"/>
+        android:overScrollMode="never" />
 
     <TextView
+        style="@style/TextView.Title.SectionHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/default_padding"
-        android:text="@string/textview_title_others"/>
+        android:text="@string/textview_title_others" />
 </LinearLayout>
 
 
