@@ -30,5 +30,10 @@
 
     <dimen name="corner_radius_small">8dp</dimen>
 
+    <dimen name="font_size_13sp">13sp</dimen>
+    <dimen name="font_size_14sp">13sp</dimen>
+    <dimen name="font_size_16sp">16sp</dimen>
+    <dimen name="font_size_17sp">17sp</dimen>
+
 </resources>
 

@@ -2,10 +2,37 @@
     <style name="GoSellSDKAppTheme" parent="Theme.AppCompat.Light.NoActionBar"/>
 
     <style name="TextView"></style>
-    <style name="TextView.Title"></style>
-    <style name="TextView.Title.Small"></style>
+
+    <style name="TextView.Title">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/font_size_17sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="TextView.Title.Small">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/font_size_16sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="TextView.Title.SectionHeader">
+        <item name="android:textColor">@color/dark_gray</item>
+        <item name="android:textSize">@dimen/font_size_16sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
     <style name="TextView.Disclaimer"></style>
-    <style name="TextView.Disclaimer.Small"></style>
+
+    <style name="TextView.Disclaimer.Small">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/font_size_13sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
     <style name="TextView.Hyperlink"></style>
 
     <style name="EditText"></style>
