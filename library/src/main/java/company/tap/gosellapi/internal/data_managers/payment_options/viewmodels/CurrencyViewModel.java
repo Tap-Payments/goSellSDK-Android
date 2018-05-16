@@ -1,14 +1,12 @@
 package company.tap.gosellapi.internal.data_managers.payment_options.viewmodels;
 
-import java.util.HashMap;
-
+import company.tap.gosellapi.internal.data_managers.payment_options.CurrencySectionData;
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
 import company.tap.gosellapi.internal.viewholders.CurrencyViewHolder;
 
 public class CurrencyViewModel
-        extends PaymentOptionsBaseViewModel<HashMap<String, Double>, CurrencyViewHolder, CurrencyViewModel> {
-
-    public CurrencyViewModel(PaymentOptionsDataManager parentDataManager, HashMap<String, Double> data, int modelType) {
+        extends PaymentOptionsBaseViewModel<CurrencySectionData, CurrencyViewHolder, CurrencyViewModel> {
+    public CurrencyViewModel(PaymentOptionsDataManager parentDataManager, CurrencySectionData data, int modelType) {
         super(parentDataManager, data, modelType);
     }
 
