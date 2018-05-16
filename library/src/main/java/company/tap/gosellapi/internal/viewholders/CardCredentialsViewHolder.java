@@ -1,7 +1,7 @@
 package company.tap.gosellapi.internal.viewholders;
 
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 
 import java.util.ArrayList;
 
@@ -11,7 +11,7 @@ import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.C
 
 public class CardCredentialsViewHolder
         extends PaymentOptionsBaseViewHolder<ArrayList<PaymentOption>, CardCredentialsViewHolder, CardCredentialsViewModel> {
-    private Button cardScannerButton;
+    private ImageButton cardScannerButton;
 
     CardCredentialsViewHolder(View view) {
         super(view);
