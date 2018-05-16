@@ -34,9 +34,4 @@ public class WebPaymentViewHolder
         paymentSystemName.setText(data.getName());
         Glide.with(itemView.getContext()).load(data.getImage()).into(paymentSystemIcon);
     }
-
-    @Override
-    public void setFocused(boolean isFocused) {
-        itemView.setSelected(isFocused);
-    }
 }

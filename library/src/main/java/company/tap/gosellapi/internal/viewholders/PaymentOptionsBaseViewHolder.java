@@ -56,7 +56,7 @@ public abstract class PaymentOptionsBaseViewHolder<T, K extends PaymentOptionsBa
         saveState();
     }
 
-    public abstract void setFocused(boolean isFocused);
+    public void setFocused(boolean isFocused) {}
 
     public Parcelable saveState() { return null; }
     public void restoreState(Parcelable state) { }

@@ -30,10 +30,6 @@ public class CurrencyViewHolder
         setTexts(data);
     }
 
-    @Override
-    public void setFocused(boolean isFocused) {
-    }
-
     private void setTexts(CurrencySectionData data) {
         if (data.getUserChoiceData() != null) {
             currencySecondaryText.setVisibility(View.VISIBLE);
