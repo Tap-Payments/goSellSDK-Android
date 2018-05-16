@@ -383,7 +383,6 @@ public final class GoSellPayLayout extends FrameLayout implements View.OnClickLi
                 new APIRequestCallback<PaymentOptionsResponse>() {
                     @Override
                     public void onSuccess(int responseCode, PaymentOptionsResponse serializedResponse) {
-                        lo.g("payment types success");
                         loadingView.setForceStop(true, new TapLoadingView.FullProgressListener() {
                             @Override
                             public void onFullProgress() {
@@ -394,7 +393,6 @@ public final class GoSellPayLayout extends FrameLayout implements View.OnClickLi
 
                     @Override
                     public void onFailure(GoSellError errorDetails) {
-                        lo.g("payment types fail");
                         loadingView.setForceStop(true);
                     }
                 });
