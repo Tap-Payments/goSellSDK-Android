@@ -1,5 +1,6 @@
 <resources>
-    <style name="GoSellSDKAppTheme" parent="Theme.AppCompat.Light.NoActionBar"/>
+
+    <style name="GoSellSDKAppTheme" parent="Theme.AppCompat.Light.NoActionBar" />
 
     <style name="TextView"></style>
 
@@ -7,6 +8,13 @@
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">@dimen/font_size_17sp</item>
         <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="TextView.Title.Thin">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/font_size_16sp</item>
+        <item name="android:fontFamily">sans-serif-thin</item>
         <item name="android:textStyle">normal</item>
     </style>
 
@@ -35,6 +43,22 @@
 
     <style name="TextView.Hyperlink"></style>
 
-    <style name="EditText"></style>
+    <style name="EditText">
+        <item name="android:textCursorDrawable">@null</item>
+        <item name="android:textColor">@color/greyish_brown</item>
+        <item name="android:textSize">@dimen/font_size_16sp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
     <style name="EditText.Password"></style>
+
+    <!--Floating label text style-->
+    <style name="TextInputLayout.Hint" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textColor">@color/silver_light</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">@dimen/font_size_11sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
 </resources>

@@ -5,5 +5,5 @@
     <corners
         android:radius="@dimen/pay_btn_corners_radius"/>
     <solid
-        android:color="@color/silver"/>
+        android:color="@color/silver_light"/>
 </shape>

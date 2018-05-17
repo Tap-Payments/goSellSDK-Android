@@ -35,6 +35,9 @@ public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSys
     public void onBindViewHolder(@NonNull CardSystemViewHolder holder, int position) {
         PaymentOption option = data.get(position);
         Glide.with(holder.itemView.getContext()).load(option.getImage()).into(holder.cardSystemIcon);
+
+
+
     }
 
     @Override

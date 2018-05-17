@@ -2,12 +2,15 @@
 <resources>
     <color name="vibrant_green">#2ACE00</color>
     <color name="vibrant_green_pressed">#1F9A00</color>
-    <color name="silver">#C9C9C9</color>
+    <color name="silver_light">#C9C9C9</color>
     <color name="white">#FFFFFF</color>
     <color name="alto_gray">#DDDDDD</color>
     <color name="gray">#888888</color>
+    <color name="greyish_brown">#535353</color>
     <color name="dark_gray">#595959</color>
+    <color name="silver">#BFBFBF</color>
     <color name="black">#000000</color>
     <color name="azure_radiance">#0090FF</color>
     <color name="azure_radiance_pressed">#0077FF</color>
+
 </resources>
