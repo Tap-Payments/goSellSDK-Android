@@ -8,12 +8,13 @@
     <application>
         <activity
             android:name=".internal.activities.GoSellPaymentActivity"
-            android:theme="@style/GoSellSDKAppTheme"/>
+            android:theme="@style/GoSellSDKAppTheme.NoActionBar"/>
         <activity
             android:name=".internal.activities.GoSellCardAddressActivity"
             android:theme="@style/GoSellSDKAppTheme"/>
         <activity
-            android:name=".internal.activities.CurrenciesActivity"/>
+            android:name=".internal.activities.CurrenciesActivity"
+            android:theme="@style/GoSellSDKAppTheme"/>
     </application>
 
 </manifest>
