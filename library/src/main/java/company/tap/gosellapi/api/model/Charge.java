@@ -94,6 +94,26 @@ public final class Charge implements BaseResponse{
     @Expose
     private Redirect redirect;
 
+    @SerializedName("captured")
+    @Expose
+    private boolean captured;
+
+    @SerializedName("threeds")
+    @Expose
+    private boolean threeds;
+
+    @SerializedName("reference")
+    @Expose
+    private String reference;
+
+    @SerializedName("first_name")
+    @Expose
+    private String first_name;
+
+    @SerializedName("last_name")
+    @Expose
+    private String last_name;
+
     /**
      * @return Unique identifier for the object.
      */
@@ -238,6 +258,41 @@ public final class Charge implements BaseResponse{
      */
     public Redirect getRedirect() {
         return redirect;
+    }
+
+    /**
+     * @return Whether the charge was captured.
+     */
+    public boolean isCaptured() {
+        return captured;
+    }
+
+    /**
+     * @return Defining whether 3D secure transactions or not
+     */
+    public boolean isThreeds() {
+        return threeds;
+    }
+
+    /**
+     * @return Merchant Reference number to track the payment status and payment attempts
+     */
+    public String getReference() {
+        return reference;
+    }
+
+    /**
+     * @return Customer information
+     */
+    public String getFirst_name() {
+        return first_name;
+    }
+
+    /**
+     * @return Customer information
+     */
+    public String getLast_name() {
+        return last_name;
     }
 
     @Override

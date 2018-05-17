@@ -80,6 +80,9 @@ GoSellAPI.getInstance(AUTH_TOKEN).createCharge(
         .receipt_email("test@test.com")
         .capture(true)
         .threeds(true)
+        .reference("123456")
+        .first_name("John")
+        .last_name("Doe")
         .build(),
     new APIRequestCallback<Charge>() {
         @Override
