@@ -38,7 +38,7 @@ public class GlobalDataManager {
         this.paymentInfo = paymentInfo;
     }
 
-    public void setPaymentOptionsResponse(PaymentOptionsResponse paymentOptionsResponse) {
+    public void createPaymentOptionsDataManager(PaymentOptionsResponse paymentOptionsResponse) {
         paymentOptionsDataManager = new PaymentOptionsDataManager(paymentOptionsResponse);
     }
 
