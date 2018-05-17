@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.HashMap;
 
 import company.tap.gosellapi.api.responses.BaseResponse;
+import company.tap.gosellapi.api.responses.SourceResponse;
 
 /**
  * Created by eugene.goltsev on 14.02.2018.
@@ -80,7 +81,7 @@ public final class Charge implements BaseResponse{
 
     @SerializedName("source")
     @Expose
-    private Source source;
+    private SourceResponse source;
 
     @SerializedName("statement_descriptor")
     @Expose
@@ -235,7 +236,7 @@ public final class Charge implements BaseResponse{
     <br>
     if source.id = "src_visamastercard" then Credit Card payment page link will be provided.
      */
-    public Source getSource() {
+    public SourceResponse getSource() {
         return source;
     }
 
@@ -318,6 +319,11 @@ public final class Charge implements BaseResponse{
                 "\n    statement_descriptor =  '" + statement_descriptor + '\'' +
                 "\n    status =  '" + status + '\'' +
                 "\n    redirect =  " + redirect +
+                "\n    captured =  " + captured +
+                "\n    threeds =  " + threeds +
+                "\n    reference =  " + reference +
+                "\n    first_name =  " + first_name +
+                "\n    last_name =  " + last_name +
                 "\n}";
     }
 }
