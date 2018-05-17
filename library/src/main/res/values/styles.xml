@@ -1,5 +1,15 @@
 <resources>
-    <style name="GoSellSDKAppTheme" parent="Theme.AppCompat.Light.NoActionBar"/>
+    <style name="GoSellSDKAppTheme" parent="Theme.AppCompat.Light">
+        <item name="actionBarStyle">@style/GoSellSDKActionBar</item>
+    </style>
+    <style name="GoSellSDKAppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="GoSellSDKActionBar">
+        <item name="android:background">@color/white</item>
+    </style>
 
     <style name="TextView"></style>
     <style name="TextView.Title"></style>
