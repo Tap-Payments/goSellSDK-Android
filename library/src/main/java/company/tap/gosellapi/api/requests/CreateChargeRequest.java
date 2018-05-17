@@ -60,6 +60,18 @@ public final class CreateChargeRequest {
     @Expose
     private boolean threeds;
 
+    @SerializedName("reference")
+    @Expose
+    private String reference;
+
+    @SerializedName("first_name")
+    @Expose
+    private String first_name;
+
+    @SerializedName("last_name")
+    @Expose
+    private String last_name;
+
     private CreateChargeRequest(double amount, String currency, Redirect redirect) {
         this.amount = amount;
         this.currency = currency;
@@ -130,6 +142,14 @@ public final class CreateChargeRequest {
         }
 
         /**
+         * @param receipt_email The email address to send this charge&#8217;s receipt to. The receipt will not be sent until the charge is paid. If this charge is for a customer, the email address specified here will override the customer&#8217;s email address. Receipts will not be sent for test mode charges. If receipt_email is specified for a charge in live mode, a receipt will be sent regardless of your email settings. (optional, either receipt_sms or receipt_email is required if customer is not available)
+         */
+        public Builder receipt_email(String receipt_email) {
+            createChargeRequest.receipt_email = receipt_email;
+            return this;
+        }
+
+        /**
          * @param capture Whether or not to immediately capture the charge. When false, the charge issues an authorization (or pre-authorization), and will need to be captured later. Uncaptured charges expire in 7 days. For more information, see authorizing charges and settling later. optional, default is true
          */
         public Builder capture(boolean capture) {
@@ -138,7 +158,7 @@ public final class CreateChargeRequest {
         }
 
         /**
-         * @param threeds Defines if 3DS is required.
+         * @param threeds Defining whether 3D secure transactions or not
          */
         public Builder threeds(boolean threeds) {
             createChargeRequest.threeds = threeds;
@@ -146,10 +166,26 @@ public final class CreateChargeRequest {
         }
 
         /**
-         * @param receipt_email The email address to send this charge&#8217;s receipt to. The receipt will not be sent until the charge is paid. If this charge is for a customer, the email address specified here will override the customer&#8217;s email address. Receipts will not be sent for test mode charges. If receipt_email is specified for a charge in live mode, a receipt will be sent regardless of your email settings. (optional, either receipt_sms or receipt_email is required if customer is not available)
+         * @param reference Merchant Reference number to track the payment status and payment attempts
          */
-        public Builder receipt_email(String receipt_email) {
-            createChargeRequest.receipt_email = receipt_email;
+        public Builder reference(String reference) {
+            createChargeRequest.reference = reference;
+            return this;
+        }
+
+        /**
+         * @param first_name Customer information
+         */
+        public Builder first_name(String first_name) {
+            createChargeRequest.first_name = first_name;
+            return this;
+        }
+
+        /**
+         * @param last_name Customer information
+         */
+        public Builder last_name(String last_name) {
+            createChargeRequest.last_name = last_name;
             return this;
         }
 

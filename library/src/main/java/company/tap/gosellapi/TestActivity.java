@@ -31,8 +31,8 @@
 //    protected void onCreate(Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
 //
-//        getBINNumberDetails();
-////        createToken();
+//        createToken();
+////        getBINNumberDetails();
 //    }
 //
 //    private void createToken() {
@@ -50,9 +50,7 @@
 //                new APIRequestCallback<Token>() {
 //                    @Override
 //                    public void onSuccess(int responseCode, Token serializedResponse) {
-//                        synchronized (this) {
-//                            Log.d(TAG, "onSuccess createToken serializedResponse:" + serializedResponse);
-//                        }
+//                        Log.d(TAG, "onSuccess createToken serializedResponse:" + serializedResponse);
 //                        token = serializedResponse;
 ////                        retrieveToken();
 //                        createCharge();
@@ -94,6 +92,9 @@
 //                        .receipt_email("test@test.com")
 //                        .capture(true)
 //                        .threeds(true)
+//                        .reference("123456")
+//                        .first_name("John")
+//                        .last_name("Doe")
 //                        .build(),
 //                new APIRequestCallback<Charge>() {
 //                    @Override
