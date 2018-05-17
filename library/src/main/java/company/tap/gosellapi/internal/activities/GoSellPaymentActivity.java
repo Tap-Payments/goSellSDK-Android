@@ -80,9 +80,10 @@ public class GoSellPaymentActivity
     }
 
     @Override
-    public void startCurrencySelection(HashMap<String, Double> currencies) {
+    public void startCurrencySelection(HashMap<String, Double> currencies, String selectedCurrency) {
         Intent intent = new Intent(this, CurrenciesActivity.class);
         intent.putExtra(CurrenciesActivity.CURRENCIES_ACTIVITY_DATA, currencies);
+        intent.putExtra(CurrenciesActivity.CURRENCIES_ACTIVITY_SELECTED_CURRENCY, selectedCurrency);
 
         startActivityForResult(intent, CURRENCIES_REQUEST_CODE);
     }

@@ -1,19 +1,23 @@
 package company.tap.gosellapi.internal.activities;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.HashMap;
 
 import company.tap.gosellapi.R;
+import company.tap.gosellapi.internal.adapters.CurrenciesRecyclerViewAdapter;
 
 /**
  * Created by Roman Romanenko on 09.08.2016.
@@ -137,9 +141,13 @@ public class CurrenciesActivity
 
 
     public static final String CURRENCIES_ACTIVITY_DATA = "currenciesActivityData";
-    private TreeMap<String, Double> currenciesSorted;
+    public static final String CURRENCIES_ACTIVITY_SELECTED_CURRENCY = "currenciesActivityInitialCurrency";
     private SearchView mSearchView;
-    private RecyclerView recyclerCurrencies;
+
+    private HashMap<String, Double> currenciesSorted;
+    private String selectedCurrencyCode;
+    private RecyclerView recycler;
+    private CurrenciesRecyclerViewAdapter adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -153,19 +161,30 @@ public class CurrenciesActivity
 
     private void getData() {
         //noinspection unchecked
-        currenciesSorted = new TreeMap<>((Map<String, Double>) getIntent().getSerializableExtra(CURRENCIES_ACTIVITY_DATA));
+        currenciesSorted = (HashMap<String, Double>) getIntent().getSerializableExtra(CURRENCIES_ACTIVITY_DATA);
+        selectedCurrencyCode = getIntent().getStringExtra(CURRENCIES_ACTIVITY_SELECTED_CURRENCY);
     }
 
     private void initRecycler() {
-        recyclerCurrencies = findViewById(R.id.recyclerCurrencies);
+        recycler = findViewById(R.id.recyclerCurrencies);
+        adapter = new CurrenciesRecyclerViewAdapter(currenciesSorted, selectedCurrencyCode);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
+        recycler.setLayoutManager(layoutManager);
+        recycler.setAdapter(adapter);
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, layoutManager.getOrientation());
+        Drawable divider = ContextCompat.getDrawable(this, R.drawable.recycler_divider);
+        if (divider != null) {
+            dividerItemDecoration.setDrawable(divider);
+        }
+        recycler.addItemDecoration(dividerItemDecoration);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_search, menu);
-
         MenuItem searchItem = menu.findItem(R.id.action_search);
         mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
 

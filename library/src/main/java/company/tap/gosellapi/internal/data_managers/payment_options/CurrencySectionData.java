@@ -31,4 +31,8 @@ public class CurrencySectionData {
     public String getUserChoiceData() {
         return userChoiceData == null ? null : Utils.getFormattedCurrency(userChoiceData.getKey(), userChoiceData.getValue());
     }
+
+    public String getSelectedCurrencyCode() {
+        return userChoiceData == null ? initialData.getKey() : userChoiceData.getKey();
+    }
 }

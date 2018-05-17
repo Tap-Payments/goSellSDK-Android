@@ -55,4 +55,22 @@ public class Utils {
 
         return symbol;
     }
+
+    public static String getCurrencySelectionString(String currencyCode) {
+        Currency currency;
+        try {
+            currency = Currency.getInstance(currencyCode);
+        } catch (IllegalArgumentException ex) {
+            return currencyCode;
+        }
+
+        String symbol = currency.getSymbol();
+        String name = "";
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            name = currency.getDisplayName();
+        }
+        return currencyCode
+                + (!symbol.isEmpty() && !symbol.equalsIgnoreCase(currencyCode) ? " " + symbol : "")
+                + (!name.isEmpty() ? " (" + name + ")" : "");
+    }
 }
