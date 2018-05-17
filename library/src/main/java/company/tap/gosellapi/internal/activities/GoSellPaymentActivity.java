@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
+import java.util.HashMap;
+
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.models.CardRawData;
 import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
@@ -21,7 +23,9 @@ import company.tap.gosellapi.internal.fragments.GoSellPaymentOptionsFragment;
 import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
 
-public class GoSellPaymentActivity extends AppCompatActivity implements PaymentOptionsDataManager.PaymentOptionsDataListener {
+public class GoSellPaymentActivity
+        extends AppCompatActivity
+        implements PaymentOptionsDataManager.PaymentOptionsDataListener {
     private static final int SCAN_REQUEST_CODE = 123;
     private FragmentManager fragmentManager;
     private GoSellPaymentOptionsFragment paymentOptionsFragment;
@@ -31,6 +35,7 @@ public class GoSellPaymentActivity extends AppCompatActivity implements PaymentO
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.slide_in_top, android.R.anim.fade_out);
         setContentView(R.layout.gosellapi_activity_main);
 
         fragmentManager = getSupportFragmentManager();
@@ -74,7 +79,7 @@ public class GoSellPaymentActivity extends AppCompatActivity implements PaymentO
     }
 
     @Override
-    public void startCurrencySelection() {
+    public void startCurrencySelection(HashMap<String, Double> currencies) {
 
     }
 
@@ -142,6 +147,12 @@ public class GoSellPaymentActivity extends AppCompatActivity implements PaymentO
 //                TapDialog.createToast(this, L.scan_was_canceled.toString(), Toast.LENGTH_LONG);
             }
         }
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(android.R.anim.fade_in, R.anim.slide_out_bottom);
     }
 }
 
