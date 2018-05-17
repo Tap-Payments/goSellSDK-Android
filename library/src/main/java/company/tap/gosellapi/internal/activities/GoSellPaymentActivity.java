@@ -27,6 +27,7 @@ public class GoSellPaymentActivity
         extends AppCompatActivity
         implements PaymentOptionsDataManager.PaymentOptionsDataListener {
     private static final int SCAN_REQUEST_CODE = 123;
+    private static final int CURRENCIES_REQUEST_CODE = 124;
     private FragmentManager fragmentManager;
     private GoSellPaymentOptionsFragment paymentOptionsFragment;
 
@@ -80,7 +81,10 @@ public class GoSellPaymentActivity
 
     @Override
     public void startCurrencySelection(HashMap<String, Double> currencies) {
+        Intent intent = new Intent(this, CurrenciesActivity.class);
+        intent.putExtra(CurrenciesActivity.CURRENCIES_ACTIVITY_DATA, currencies);
 
+        startActivityForResult(intent, CURRENCIES_REQUEST_CODE);
     }
 
     @Override

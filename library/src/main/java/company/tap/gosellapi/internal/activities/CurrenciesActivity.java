@@ -10,7 +10,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 import company.tap.gosellapi.R;
 
@@ -135,18 +136,24 @@ public class CurrenciesActivity
 //    }
 
 
-
-    private HashMap<String, Double> currencies;
+    public static final String CURRENCIES_ACTIVITY_DATA = "currenciesActivityData";
+    private TreeMap<String, Double> currenciesSorted;
     private SearchView mSearchView;
     private RecyclerView recyclerCurrencies;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        overridePendingTransition(android.R.anim.fade_in, R.anim.slide_out_bottom);
+        overridePendingTransition(R.anim.slide_in_left, android.R.anim.fade_out);
         setContentView(R.layout.activity_currencies);
 
+        getData();
         initRecycler();
+    }
+
+    private void getData() {
+        //noinspection unchecked
+        currenciesSorted = new TreeMap<>((Map<String, Double>) getIntent().getSerializableExtra(CURRENCIES_ACTIVITY_DATA));
     }
 
     private void initRecycler() {
@@ -185,6 +192,6 @@ public class CurrenciesActivity
     @Override
     public void finish() {
         super.finish();
-        super.overridePendingTransition(android.R.anim.fade_in, R.anim.slide_out_bottom);
+        super.overridePendingTransition(android.R.anim.fade_in, R.anim.slide_out_left);
     }
 }
