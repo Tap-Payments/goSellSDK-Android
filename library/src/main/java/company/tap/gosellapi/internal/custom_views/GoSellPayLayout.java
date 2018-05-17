@@ -32,7 +32,6 @@ import company.tap.gosellapi.internal.api.models.Redirect;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import company.tap.gosellapi.internal.exceptions.NoPaymentInfoRequesterProvidedException;
-import company.tap.gosellapi.internal.logger.lo;
 import gotap.com.tapglkitandroid.gl.Views.TapLoadingView;
 
 public final class GoSellPayLayout extends FrameLayout implements View.OnClickListener {

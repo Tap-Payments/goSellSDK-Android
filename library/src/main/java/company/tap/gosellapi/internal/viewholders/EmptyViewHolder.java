@@ -16,7 +16,4 @@ public class EmptyViewHolder
     public void bind(EmptyType data) {
 
     }
-
-    @Override
-    public void setFocused(boolean isFocused) { }
 }

@@ -29,5 +29,6 @@
 
     <string name="btn_title_confirm">Confirm</string>
     <string name="btn_title_save">Save</string>
+    <string name="search">Search</string>
 
 </resources>

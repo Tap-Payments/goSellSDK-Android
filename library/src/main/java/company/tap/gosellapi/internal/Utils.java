@@ -8,6 +8,12 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import java.text.NumberFormat;
+import java.util.Currency;
+import java.util.Locale;
+
+import company.tap.gosellapi.internal.api.api_service.AppInfo;
+
 public class Utils {
     public static Drawable setImageTint(Context context, int drawableId, int colorId) {
         Drawable drawable = ContextCompat.getDrawable(context, drawableId);
@@ -23,5 +29,30 @@ public class Utils {
         if (imm != null) {
             imm.showSoftInput(focusableView, InputMethodManager.SHOW_IMPLICIT);
         }
+    }
+
+    public static String getFormattedCurrency(String currencyCode, Number sum){
+        Locale locale = new Locale(AppInfo.getLocaleString());
+        Currency currency;
+        try {
+            currency = Currency.getInstance(currencyCode);
+        } catch (IllegalArgumentException ex) {
+            return "";
+        }
+        String symbol = getOptionallyHardcodedSymbol(currency.getSymbol(locale));
+
+        NumberFormat currencyFormat = NumberFormat.getIntegerInstance();
+        currencyFormat.setMinimumFractionDigits(currency.getDefaultFractionDigits());
+        currencyFormat.setMaximumFractionDigits(currency.getDefaultFractionDigits());
+
+        return String.format("%s %s", symbol, currencyFormat.format(sum));
+    }
+
+    private static String getOptionallyHardcodedSymbol(String symbol) {
+        if (symbol.equals("KWD")) {
+            return "KD";
+        }
+
+        return symbol;
     }
 }

@@ -30,6 +30,14 @@ public class PaymentInfo {
         calculateTotalAmount();
     }
 
+    public double getTotal_amount() {
+        return total_amount;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
     private void calculateTotalAmount() {
         for (Item item : items) {
             total_amount += item.getTotal_amount();
