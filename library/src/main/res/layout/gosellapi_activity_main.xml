@@ -28,8 +28,7 @@
             android:layout_marginBottom="@dimen/margin_basic"
             android:layout_marginTop="@dimen/margin_basic"
             android:layout_toEndOf="@+id/businessIcon"
-            android:layout_toLeftOf="@+id/closeButton"
-            android:layout_toRightOf="@+id/businessIcon"
+            style="@style/TextView.Title"
             android:layout_toStartOf="@+id/closeButton" />
 
         <ImageButton
