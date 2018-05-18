@@ -12,5 +12,5 @@
     <color name="black">#000000</color>
     <color name="azure_radiance">#0090FF</color>
     <color name="azure_radiance_pressed">#0077FF</color>
-
+    <color name="gallery">#EAEAEA</color>
 </resources>

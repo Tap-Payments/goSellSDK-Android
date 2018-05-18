@@ -51,7 +51,7 @@ public final class GoSellAPI {
         requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.getPaymentTypes(paymentInfo), new APIRequestCallback<PaymentOptionsResponse>() {
             @Override
             public void onSuccess(int responseCode, PaymentOptionsResponse serializedResponse) {
-                GlobalDataManager.getInstance().setPaymentOptionsResponse(serializedResponse);
+                GlobalDataManager.getInstance().createPaymentOptionsDataManager(serializedResponse);
                 requestCallback.onSuccess(responseCode, serializedResponse);
             }
 
