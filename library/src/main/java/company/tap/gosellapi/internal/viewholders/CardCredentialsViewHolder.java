@@ -2,6 +2,7 @@ package company.tap.gosellapi.internal.viewholders;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -15,10 +16,12 @@ import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.C
 public class CardCredentialsViewHolder
         extends PaymentOptionsBaseViewHolder<ArrayList<PaymentOption>, CardCredentialsViewHolder, CardCredentialsViewModel> {
     private ImageButton cardScannerButton;
+    private View addressOnCardLayout;
 
     CardCredentialsViewHolder(View view) {
         super(view);
         cardScannerButton = itemView.findViewById(R.id.cardScannerButton);
+        addressOnCardLayout = itemView.findViewById(R.id.addressOnCardLayout);
     }
 
     @Override
@@ -27,6 +30,13 @@ public class CardCredentialsViewHolder
             @Override
             public void onClick(View v) {
                 viewModel.cardScannerButtonClicked();
+            }
+        });
+
+        addressOnCardLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewModel.addressOnCardClicked();
             }
         });
 

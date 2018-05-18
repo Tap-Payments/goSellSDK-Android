@@ -114,6 +114,12 @@ public class GoSellPaymentActivity
     }
 
     @Override
+    public void addressOnCardClicked() {
+        Intent intent  = new Intent(this, GoSellCardAddressActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 

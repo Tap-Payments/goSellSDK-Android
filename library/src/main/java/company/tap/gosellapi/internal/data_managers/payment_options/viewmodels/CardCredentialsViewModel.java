@@ -16,4 +16,8 @@ public class CardCredentialsViewModel
     public void cardScannerButtonClicked() {
         parentDataManager.cardScannerButtonClicked();
     }
+
+    public void addressOnCardClicked() {
+        parentDataManager.addressOnCardClicked();
+    }
 }
