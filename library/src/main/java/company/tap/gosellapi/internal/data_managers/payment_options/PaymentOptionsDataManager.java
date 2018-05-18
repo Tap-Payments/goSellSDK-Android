@@ -20,7 +20,7 @@ import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.W
 public class PaymentOptionsDataManager {
     //outer interface (for fragment, containing recyclerView)
     public interface PaymentOptionsDataListener {
-        void startCurrencySelection(HashMap<String, Double> currencies);
+        void startCurrencySelection(HashMap<String, Double> currencies, String selectedCurrency);
         void startOTP();
         void startWebPayment();
         void startScanCard();
@@ -60,7 +60,8 @@ public class PaymentOptionsDataManager {
 
     //callback actions from child viewModels
     public void currencyHolderClicked(int position, HashMap<String, Double> currencies) {
-        listener.startCurrencySelection(currencies);
+        CurrencySectionData currencySectionData = ((CurrencyViewModel)dataList.get(position)).getData();
+        listener.startCurrencySelection(currencies, currencySectionData.getSelectedCurrencyCode());
     }
 
     public void recentPaymentItemClicked(int position, Card recentItem) {

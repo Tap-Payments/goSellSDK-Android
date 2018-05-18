@@ -26,6 +26,14 @@ public class PaymentOptionsBaseViewModel<T, K extends PaymentOptionsBaseViewHold
         return modelType;
     }
 
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
+
     public void registerHolder(K holder, int position) {
         this.holder = holder;
         this.position = position;

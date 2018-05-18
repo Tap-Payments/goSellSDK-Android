@@ -2,23 +2,25 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:background="@android:color/white"
+                android:padding="20dp"
                 android:layoutDirection="ltr">
 
     <TextView
         android:id="@+id/tvCurrencyName"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:textSize="14sp"
-        android:textColor="@android:color/black"/>
+        android:layout_centerVertical="true"
+        android:textSize="16sp"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/greyish_brown"/>
 
-    <TextView
-        android:id="@+id/tvCurrencyAmount"
+    <ImageView
+        android:id="@+id/ivCurrencyChecked"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:textSize="14sp"
-        android:textColor="@android:color/black"/>
+        android:layout_centerVertical="true"/>
 </RelativeLayout>
