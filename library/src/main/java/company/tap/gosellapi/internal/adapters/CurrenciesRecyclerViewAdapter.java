@@ -77,14 +77,16 @@ public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<Currenci
 
             for (String currencyCode : dataSource) {
                 String currencyCodeLowered = currencyCode.toLowerCase();
-                String currencyName = Utils.getCurrencyName(currencyCode);
+                String currencyName = Utils.getCurrencyName(currencyCode, Utils.getCurrency(currencyCode));
 
                 boolean presentInCurrencyCode = true;
                 boolean presentInCurrencyName = currencyName.toLowerCase().contains(newText.toLowerCase());
 
                 //search in currency code (not sequentally)
+                int index = -1;
                 for (char ch : newText.toCharArray()) {
-                    if (currencyCodeLowered.indexOf(ch) < 0) {
+                    index = currencyCodeLowered.indexOf(ch, index + 1);
+                    if (index < 0) {
                         presentInCurrencyCode = false;
                     }
                 }
@@ -133,25 +135,17 @@ public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<Currenci
         private SpannableStringBuilder getCurrencySelectionString(String currencyCode) {
             Currency currency = Utils.getCurrency(currencyCode);
             String symbol = "";
+            int currencyNameIndex = 0;
+
             if (currency != null) {
                 symbol = currency.getSymbol();
             }
 
             String currencyCodeLowered = currencyCode.toLowerCase();
-            String currencyName = Utils.getCurrencyName(currencyCode);
+            String currencyName = Utils.getCurrencyName(currencyCode, currency);
 
 
             SpannableStringBuilder sb = new SpannableStringBuilder(currencyCode);
-
-            //search in currency code (not sequentally)
-            for (char ch : searchText.toCharArray()) {
-                int index = currencyCodeLowered.indexOf(ch);
-
-                while (index >= 0) {
-                    Utils.highlightText(itemView.getContext(), sb, index);
-                    index = currencyCodeLowered.indexOf(ch, index + 1);
-                }
-            }
 
             if (!symbol.isEmpty() && !symbol.equalsIgnoreCase(currencyCode)) {
                 sb.append(" ");
@@ -161,16 +155,39 @@ public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<Currenci
             if (!currencyName.isEmpty()) {
                 sb.append(" (");
 
-                int currencyNameIndex = sb.length();
+                currencyNameIndex = sb.length();
                 sb.append(currencyName);
 
                 sb.append(")");
+            }
 
-                if (!searchText.isEmpty()) {
-                    int index = currencyName.toLowerCase().indexOf(searchText);
+
+            //formatting
+            if (!currencyName.isEmpty() && !searchText.isEmpty()) {
+                int index = currencyName.toLowerCase().indexOf(searchText);
+                while (index >= 0) {
+                    Utils.highlightText(itemView.getContext(), sb, currencyNameIndex + index, searchText);
+                    index = currencyName.toLowerCase().indexOf(searchText, index + 1);
+                }
+            }
+
+            //search in currency code (not sequentally)
+            boolean allCharsPresent = true;
+            int index = -1;
+            for (char ch : searchText.toCharArray()) {
+                index = currencyCodeLowered.indexOf(ch, index + 1);
+                if (index < 0) {
+                    allCharsPresent = false;
+                }
+            }
+
+            if (allCharsPresent) {
+                for (char ch : searchText.toCharArray()) {
+                    index = currencyCodeLowered.indexOf(ch);
+
                     while (index >= 0) {
-                        Utils.highlightText(itemView.getContext(), sb, currencyNameIndex + index, searchText);
-                        index = currencyName.toLowerCase().indexOf(searchText, index + 1);
+                        Utils.highlightText(itemView.getContext(), sb, index);
+                        index = currencyCodeLowered.indexOf(ch, index + 1);
                     }
                 }
             }

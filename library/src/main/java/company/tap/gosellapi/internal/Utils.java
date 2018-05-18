@@ -68,8 +68,7 @@ public class Utils {
         }
     }
 
-    public static String getCurrencyName(String currencyCode) {
-        Currency currency = getCurrency(currencyCode);
+    public static String getCurrencyName(String currencyCode, Currency currency) {
         String name = "";
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT && currency != null) {
