@@ -172,23 +172,17 @@ public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<Currenci
             }
 
             //search in currency code (not sequentally)
-            boolean allCharsPresent = true;
+            ArrayList<Integer> indexesToHighlight = new ArrayList<>();
             int index = -1;
             for (char ch : searchText.toCharArray()) {
                 index = currencyCodeLowered.indexOf(ch, index + 1);
-                if (index < 0) {
-                    allCharsPresent = false;
+                if (index >= 0) {
+                    indexesToHighlight.add(index);
                 }
             }
-
-            if (allCharsPresent) {
-                for (char ch : searchText.toCharArray()) {
-                    index = currencyCodeLowered.indexOf(ch);
-
-                    while (index >= 0) {
-                        Utils.highlightText(itemView.getContext(), sb, index);
-                        index = currencyCodeLowered.indexOf(ch, index + 1);
-                    }
+            if (indexesToHighlight.size() == searchText.length()) {
+                for (int i : indexesToHighlight) {
+                    Utils.highlightText(itemView.getContext(), sb, i);
                 }
             }
 
