@@ -65,12 +65,24 @@ public class Utils {
         }
 
         String symbol = currency.getSymbol();
+        String name = getCurrencyName(currencyCode);
+        return currencyCode
+                + (!symbol.isEmpty() && !symbol.equalsIgnoreCase(currencyCode) ? " " + symbol : "")
+                + (!name.isEmpty() ? " (" + name + ")" : "");
+    }
+
+    public static String getCurrencyName(String currencyCode) {
+        Currency currency;
+        try {
+            currency = Currency.getInstance(currencyCode);
+        } catch (IllegalArgumentException ex) {
+            return "";
+        }
+
         String name = "";
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
             name = currency.getDisplayName();
         }
-        return currencyCode
-                + (!symbol.isEmpty() && !symbol.equalsIgnoreCase(currencyCode) ? " " + symbol : "")
-                + (!name.isEmpty() ? " (" + name + ")" : "");
+        return name;
     }
 }

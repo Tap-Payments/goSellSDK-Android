@@ -9,8 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.Utils;
@@ -21,23 +19,19 @@ public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<Currenci
     }
     private CurrenciesAdapterCallback callback;
 
-    private HashMap<String, Double> dataSource;
+    private final static int NO_SELECTION = -1;
+    private ArrayList<String> dataSource;
+    private ArrayList<String> dataSourceFiltered;
     private String selectedCurrencyCode;
-    private ArrayList<String> dataKeys;
 
-    private int selectedPosition;
+    private int selectedPosition = NO_SELECTION;
 
-    public CurrenciesRecyclerViewAdapter(HashMap<String, Double> dataSource, String selectedCurrencyCode, CurrenciesAdapterCallback callback) {
+    public CurrenciesRecyclerViewAdapter(ArrayList<String> dataSource, String selectedCurrencyCode, CurrenciesAdapterCallback callback) {
         this.dataSource = dataSource;
         this.selectedCurrencyCode = selectedCurrencyCode;
         this.callback = callback;
 
-        createDataKeys();
-    }
-
-    private void createDataKeys() {
-        dataKeys = new ArrayList<>(dataSource.keySet());
-        Collections.sort(dataKeys);
+        dataSourceFiltered = new ArrayList<>(dataSource);
     }
 
     @NonNull
@@ -49,20 +43,52 @@ public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<Currenci
 
     @Override
     public void onBindViewHolder(@NonNull CurrencyCellViewHolder holder, int position) {
-        holder.bind(dataKeys.get(position));
+        holder.bind(dataSourceFiltered.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return dataSource.size();
+        return dataSourceFiltered.size();
     }
 
     private void removePreviousSelection(int newSelection) {
-        selectedCurrencyCode = dataKeys.get(newSelection);
+        selectedCurrencyCode = dataSourceFiltered.get(newSelection);
 
-        notifyItemChanged(selectedPosition);
+        if (selectedPosition != NO_SELECTION) {
+            notifyItemChanged(selectedPosition);
+        }
+
         selectedPosition = newSelection;
         notifyItemChanged(selectedPosition);
+    }
+
+    public void filter(String newText) {
+        if (newText.equals("")) {
+            dataSourceFiltered.clear();
+            dataSourceFiltered.addAll(dataSource);
+        } else {
+            dataSourceFiltered.clear();
+
+            for (String currencyCode : dataSource) {
+                String currencyCodeLowered = currencyCode.toLowerCase();
+                String currencyName = Utils.getCurrencyName(currencyCode).toLowerCase();
+
+                boolean presentInCurrencyCode = true;
+                boolean presentInCurrencyName = currencyName.contains(newText.toLowerCase());
+
+                //search in currency code (not sequentally)
+                for (char ch : newText.toCharArray()) {
+                    if (currencyCode.indexOf(ch) < 0 && currencyCodeLowered.indexOf(ch) < 0) {
+                        presentInCurrencyCode = false;
+                    }
+                }
+
+                if (presentInCurrencyCode || presentInCurrencyName) {
+                    dataSourceFiltered.add(currencyCode);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
     class CurrencyCellViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -93,7 +119,7 @@ public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<Currenci
             int position = getAdapterPosition();
 
             removePreviousSelection(position);
-            callback.itemSelected(dataKeys.get(position));
+            callback.itemSelected(dataSourceFiltered.get(position));
         }
     }
 }
