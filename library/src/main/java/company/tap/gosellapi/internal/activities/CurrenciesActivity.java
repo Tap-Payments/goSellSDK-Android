@@ -101,7 +101,7 @@ public class CurrenciesActivity
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                adapter.filter(newText);
+                adapter.filter(newText.toLowerCase());
                 return true;
             }
         });
