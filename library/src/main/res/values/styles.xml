@@ -57,7 +57,12 @@
         <item name="android:textStyle">normal</item>
     </style>
 
-    <style name="TextView.Hyperlink"></style>
+    <style name="TextView.Hyperlink">
+        <item name="android:textColor">@color/azure_radiance</item>
+        <item name="android:textSize">@dimen/font_size_16sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+    </style>
 
     <style name="EditText">
         <item name="android:textCursorDrawable">@null</item>
