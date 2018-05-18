@@ -16,14 +16,11 @@ import android.view.MenuItem;
 import java.util.HashMap;
 
 import company.tap.gosellapi.R;
+import company.tap.gosellapi.internal.Utils;
 import company.tap.gosellapi.internal.adapters.CurrenciesRecyclerViewAdapter;
 
-/**
- * Created by Roman Romanenko on 09.08.2016.
- */
-
 public class CurrenciesActivity
-        extends BaseActionBarActivity {
+        extends BaseActionBarActivity implements CurrenciesRecyclerViewAdapter.CurrenciesAdapterCallback {
 //    public static final String COUNTRY_CODE = "chosen_country_code";
 //
 //    ListView listCurrencies;
@@ -156,6 +153,7 @@ public class CurrenciesActivity
 
         getData();
         initRecycler();
+        setTitle();
     }
 
     private void getData() {
@@ -166,7 +164,7 @@ public class CurrenciesActivity
 
     private void initRecycler() {
         recycler = findViewById(R.id.recyclerCurrencies);
-        adapter = new CurrenciesRecyclerViewAdapter(currenciesSorted, selectedCurrencyCode);
+        adapter = new CurrenciesRecyclerViewAdapter(currenciesSorted, selectedCurrencyCode, this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
         recycler.setLayoutManager(layoutManager);
@@ -178,6 +176,11 @@ public class CurrenciesActivity
             dividerItemDecoration.setDrawable(divider);
         }
         recycler.addItemDecoration(dividerItemDecoration);
+    }
+
+    private void setTitle() {
+        double selectedAmount = currenciesSorted.get(selectedCurrencyCode);
+        setTitle(Utils.getFormattedCurrency(selectedCurrencyCode, selectedAmount));
     }
 
     @Override
@@ -211,5 +214,13 @@ public class CurrenciesActivity
     public void finish() {
         super.finish();
         super.overridePendingTransition(android.R.anim.fade_in, R.anim.slide_out_left);
+    }
+
+    @Override
+    public void itemSelected(String currencyCode) {
+        if (!currencyCode.equalsIgnoreCase(selectedCurrencyCode)) {
+            selectedCurrencyCode = currencyCode;
+            setTitle();
+        }
     }
 }

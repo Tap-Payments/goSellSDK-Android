@@ -16,13 +16,22 @@ import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.Utils;
 
 public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<CurrenciesRecyclerViewAdapter.CurrencyCellViewHolder> {
+    public interface CurrenciesAdapterCallback {
+        void itemSelected(String currencyCode);
+    }
+    private CurrenciesAdapterCallback callback;
+
     private HashMap<String, Double> dataSource;
     private String selectedCurrencyCode;
     private ArrayList<String> dataKeys;
 
-    public CurrenciesRecyclerViewAdapter(HashMap<String, Double> dataSource, String selectedCurrencyCode) {
+    private int selectedPosition;
+
+    public CurrenciesRecyclerViewAdapter(HashMap<String, Double> dataSource, String selectedCurrencyCode, CurrenciesAdapterCallback callback) {
         this.dataSource = dataSource;
         this.selectedCurrencyCode = selectedCurrencyCode;
+        this.callback = callback;
+
         createDataKeys();
     }
 
@@ -48,6 +57,14 @@ public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<Currenci
         return dataSource.size();
     }
 
+    private void removePreviousSelection(int newSelection) {
+        selectedCurrencyCode = dataKeys.get(newSelection);
+
+        notifyItemChanged(selectedPosition);
+        selectedPosition = newSelection;
+        notifyItemChanged(selectedPosition);
+    }
+
     class CurrencyCellViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView tvCurrencyName;
         private ImageView ivCurrencyChecked;
@@ -63,12 +80,20 @@ public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<Currenci
 
         private void bind(String currencyCode) {
             tvCurrencyName.setText(Utils.getCurrencySelectionString(currencyCode));
-            ivCurrencyChecked.setVisibility(currencyCode.equals(selectedCurrencyCode) ? View.VISIBLE : View.INVISIBLE);
+            if (currencyCode.equals(selectedCurrencyCode)) {
+                ivCurrencyChecked.setVisibility(View.VISIBLE);
+                selectedPosition = getAdapterPosition();
+            } else {
+                ivCurrencyChecked.setVisibility(View.INVISIBLE);
+            }
         }
 
         @Override
         public void onClick(View view) {
-//            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
+            int position = getAdapterPosition();
+
+            removePreviousSelection(position);
+            callback.itemSelected(dataKeys.get(position));
         }
     }
 }
