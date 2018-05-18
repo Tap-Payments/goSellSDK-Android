@@ -14,10 +14,9 @@ import android.widget.TextView;
 import company.tap.gosellapi.R;
 
 public class BaseActionBarActivity extends AppCompatActivity {
-    View actionBarCustomView;
-    ImageView actionBarBackButton;
+    private View actionBarCustomView;
     ImageView actionBarImage;
-    TextView actionBarTitle;
+    private TextView actionBarTitle;
 
     @SuppressLint("InflateParams")
     @Override
@@ -39,7 +38,7 @@ public class BaseActionBarActivity extends AppCompatActivity {
             actionBar.setCustomView(actionBarCustomView, new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
             //back button
-            actionBarBackButton = actionBarCustomView.findViewById(R.id.actionBarBackButton);
+            ImageView actionBarBackButton = actionBarCustomView.findViewById(R.id.actionBarBackButton);
             actionBarBackButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -57,5 +56,10 @@ public class BaseActionBarActivity extends AppCompatActivity {
             Toolbar parent = (Toolbar) actionBarCustomView.getParent();
             parent.setContentInsetsAbsolute(0, 0);
         }
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        actionBarTitle.setText(title);
     }
 }
