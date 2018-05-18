@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Currency;
 
 import company.tap.gosellapi.R;
@@ -35,7 +36,7 @@ public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<Currenci
         this.selectedCurrencyCode = selectedCurrencyCode;
         this.callback = callback;
 
-        dataSourceFiltered = new ArrayList<>(dataSource);
+        prepareDataSources();
     }
 
     @NonNull
@@ -43,6 +44,16 @@ public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<Currenci
     public CurrencyCellViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_currencies, parent, false);
         return new CurrencyCellViewHolder(view);
+    }
+
+    private void prepareDataSources() {
+        Collections.sort(dataSource);
+        int selectedIndex = dataSource.indexOf(selectedCurrencyCode);
+        if (selectedIndex != NO_SELECTION) {
+            dataSource.remove(selectedIndex);
+            dataSource.add(0, selectedCurrencyCode);
+        }
+        dataSourceFiltered = new ArrayList<>(dataSource);
     }
 
     @Override
@@ -55,7 +66,7 @@ public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<Currenci
         return dataSourceFiltered.size();
     }
 
-    private void removePreviousSelection(int newSelection) {
+    private void setSelection(int newSelection) {
         selectedCurrencyCode = dataSourceFiltered.get(newSelection);
 
         if (selectedPosition != NO_SELECTION) {
@@ -127,7 +138,7 @@ public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<Currenci
         public void onClick(View view) {
             int position = getAdapterPosition();
 
-            removePreviousSelection(position);
+            setSelection(position);
             callback.itemSelected(dataSourceFiltered.get(position));
         }
 
