@@ -25,6 +25,7 @@ public class PaymentOptionsDataManager {
         void startWebPayment();
         void startScanCard();
         void cardDetailsFilled(boolean isFilled, CardRawData cardRawData);
+        void addressOnCardClicked();
     }
 
     private PaymentOptionsDataListener listener;
@@ -84,6 +85,9 @@ public class PaymentOptionsDataManager {
         listener.cardDetailsFilled(isFilled, cardRawData);
     }
 
+    public void addressOnCardClicked() {
+        listener.addressOnCardClicked();
+    }
 
     //focus interaction between holders
     public void setFocused(int position) {

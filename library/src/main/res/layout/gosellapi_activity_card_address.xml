@@ -1,81 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".internal.activities.GoSellCardAddressActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp" />
-
-        <TextView
-            android:text="@string/textview_title_address_on_card"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
-
-    </LinearLayout>
-
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/selectCountryLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_basic_29dp"
+        android:layout_marginTop="@dimen/margin_basic_29dp"
+        android:background="@drawable/layout_main_section_background_shape"
         android:orientation="horizontal">
 
         <TextView
-            android:text="@string/textview_title_country"
+            android:id="@+id/titleCountry"
+            style="@style/TextView.Title.Small"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="@dimen/margin_basic_15dp"
+            android:layout_marginStart="@dimen/margin_basic_25dp"
+            android:layout_marginTop="@dimen/margin_basic_15dp"
+            android:gravity="start"
+            android:text="@string/textview_title_country" />
 
-    </LinearLayout>
+        <TextView
+            style="@style/TextView.Hyperlink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/titleCountry"
+            android:layout_toStartOf="@id/arrowIcon"
+            android:gravity="end"
+            android:text="Bahrain" />
+
+        <ImageView
+            android:id="@+id/arrowIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/margin_basic_25dp"
+            android:layout_marginStart="@dimen/margin_basic_15dp"
+            android:background="@drawable/ic_arrow_right_normal" />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/layout_main_section_background_shape"
         android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/line1"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/edittext_hint_line1"/>
+            android:layout_height="@dimen/edit_text_height_basic"
+            android:layout_marginBottom="@dimen/margin_basic_9dp"
+            android:layout_marginEnd="@dimen/margin_basic_25dp"
+            android:layout_marginStart="@dimen/margin_basic_25dp"
+            android:layout_marginTop="@dimen/margin_basic_9dp"
+            app:hintTextAppearance="@style/TextInputLayout.Hint">
 
-        <EditText
-            android:id="@+id/line2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/edittext_hint_line2"/>
+            <EditText
+                android:id="@+id/line1"
+                style="@style/EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/edittext_hint_line1" />
+        </android.support.design.widget.TextInputLayout>
 
-        <EditText
-            android:id="@+id/city"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/edittext_hint_city"/>
+            android:layout_height="@dimen/edit_text_height_basic"
+            android:layout_marginBottom="9dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginStart="25dp"
+            app:hintTextAppearance="@style/TextInputLayout.Hint">
 
-        <EditText
-            android:id="@+id/state"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/edittext_hint_state"/>
+            <EditText
+                android:id="@+id/line2"
+                style="@style/EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/edittext_hint_line2" />
 
-        <EditText
-            android:id="@+id/zipCode"
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/edittext_hint_zip_code"/>
+            android:layout_height="@dimen/edit_text_height_basic"
+            android:layout_marginBottom="@dimen/margin_basic_9dp"
+            android:layout_marginEnd="@dimen/margin_basic_25dp"
+            android:layout_marginStart="@dimen/margin_basic_25dp"
+            app:hintTextAppearance="@style/TextInputLayout.Hint">
+
+            <EditText
+                android:id="@+id/city"
+                style="@style/EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/edittext_hint_city" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edit_text_height_basic"
+            android:layout_marginBottom="@dimen/margin_basic_9dp"
+            android:layout_marginEnd="@dimen/margin_basic_25dp"
+            android:layout_marginStart="@dimen/margin_basic_25dp"
+            app:hintTextAppearance="@style/TextInputLayout.Hint">
+
+            <EditText
+                android:id="@+id/state"
+                style="@style/EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/edittext_hint_state" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edit_text_height_basic"
+            android:layout_marginBottom="@dimen/margin_basic_9dp"
+            android:layout_marginEnd="@dimen/margin_basic_25dp"
+            android:layout_marginStart="@dimen/margin_basic_25dp"
+            app:hintTextAppearance="@style/TextInputLayout.Hint">
+
+            <EditText
+                android:id="@+id/zipCode"
+                style="@style/EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/edittext_hint_zip_code" />
+
+        </android.support.design.widget.TextInputLayout>
 
     </LinearLayout>
-
-    <Button
-        android:id="@+id/saveButton"
-        android:text="@string/btn_title_save"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
 </LinearLayout>
