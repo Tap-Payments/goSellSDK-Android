@@ -25,6 +25,11 @@
     <dimen name="icon_height_basic">40dp</dimen>
     <dimen name="icon_width_basic">40dp</dimen>
 
+    <!--action bar-->
+    <dimen name="action_bar_default_height">20dp</dimen>
+    <dimen name="action_bar_img_width">30dp</dimen>
+    <dimen name="action_bar_back_button_width">12dp</dimen>
+
     <dimen name="edit_text_height_basic">48dp</dimen>
 
     <dimen name="item_recent_height_basic">100dp</dimen>
@@ -39,6 +44,7 @@
     <dimen name="font_size_14sp">13sp</dimen>
     <dimen name="font_size_16sp">16sp</dimen>
     <dimen name="font_size_17sp">17sp</dimen>
+    <dimen name="font_size_20sp">20sp</dimen>
 
 </resources>
 
