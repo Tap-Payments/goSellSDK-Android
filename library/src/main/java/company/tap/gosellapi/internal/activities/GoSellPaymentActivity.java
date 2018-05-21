@@ -62,10 +62,10 @@ public class GoSellPaymentActivity
         });
 
         businessIcon = findViewById(R.id.businessIcon);
-        String logoPath = GlobalDataManager.getInstance().getInitResponse().getData().getMerchant().getLogo();
+        String logoPath = GlobalDataManager.getInstance().getSDKSettings().getData().getMerchant().getLogo();
         Glide.with(this).load(logoPath).apply(RequestOptions.circleCropTransform()).into(businessIcon);
 
-        String businessNameString = GlobalDataManager.getInstance().getInitResponse().getData().getMerchant().getName();
+        String businessNameString = GlobalDataManager.getInstance().getSDKSettings().getData().getMerchant().getName();
         TextView businessName = findViewById(R.id.businessName);
         businessName.setText(businessNameString);
     }

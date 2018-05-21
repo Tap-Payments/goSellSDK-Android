@@ -11,7 +11,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -42,7 +41,7 @@ public class GoSellOTPScreenFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        resendConfirmationCodeTimeout = GlobalDataManager.getInstance().getInitResponse().getData().getSdk_settings().getResend_interval() * TICK_LENGTH;
+        resendConfirmationCodeTimeout = GlobalDataManager.getInstance().getSDKSettings().getData().getInternalSdk_settings().getResend_interval() * TICK_LENGTH;
     }
 
     @Override

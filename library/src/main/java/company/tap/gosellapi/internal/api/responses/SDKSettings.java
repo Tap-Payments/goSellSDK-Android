@@ -10,15 +10,11 @@ import java.util.ArrayList;
 /**
  * Created by eugene.goltsev on 17.04.2018.
  * <br>
- * Model for {@link InitResponse} object
+ * Model for {@link SDKSettings} object
  */
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-public final class InitResponse implements BaseResponse {
-    @SerializedName("status")
-    @Expose
-    private String status;
-
+public final class SDKSettings implements BaseResponse {
     @SerializedName("data")
     @Expose
     private Data data;
@@ -42,7 +38,7 @@ public final class InitResponse implements BaseResponse {
 
         @SerializedName("sdk_settings")
         @Expose
-        private SDK_Settings sdk_settings;
+        private InternalSDKSettings internalSdk_settings;
 
         public boolean isLivemode() {
             return livemode;
@@ -60,8 +56,8 @@ public final class InitResponse implements BaseResponse {
             return merchant;
         }
 
-        public SDK_Settings getSdk_settings() {
-            return sdk_settings;
+        public InternalSDKSettings getInternalSdk_settings() {
+            return internalSdk_settings;
         }
 
         public static final class Merchant {
@@ -98,7 +94,7 @@ public final class InitResponse implements BaseResponse {
             }
         }
 
-        public static final class SDK_Settings {
+        public static final class InternalSDKSettings {
             @SerializedName("status_popup_duration")
             @Expose
             private int status_popup_duration;
@@ -123,10 +119,6 @@ public final class InitResponse implements BaseResponse {
                 return resend_number_attempts;
             }
         }
-    }
-
-    public String getStatus() {
-        return status;
     }
 
     public Data getData() {
