@@ -83,7 +83,7 @@ public class GoSellPaymentActivity
     public void startCurrencySelection(HashMap<String, Double> currencies, String selectedCurrency) {
         Intent intent = new Intent(this, CurrenciesActivity.class);
         intent.putExtra(CurrenciesActivity.CURRENCIES_ACTIVITY_DATA, currencies);
-        intent.putExtra(CurrenciesActivity.CURRENCIES_ACTIVITY_SELECTED_CURRENCY, selectedCurrency);
+        intent.putExtra(CurrenciesActivity.CURRENCIES_ACTIVITY_INITIAL_SELECTED_CURRENCY, selectedCurrency);
 
         startActivityForResult(intent, CURRENCIES_REQUEST_CODE);
     }
@@ -157,6 +157,8 @@ public class GoSellPaymentActivity
             } else {
 //                TapDialog.createToast(this, L.scan_was_canceled.toString(), Toast.LENGTH_LONG);
             }
+        } else if (requestCode == CURRENCIES_REQUEST_CODE) {
+            String userChoiceCurrency = data.getStringExtra(CurrenciesActivity.CURRENCIES_ACTIVITY_USER_CHOICE_CURRENCY);
         }
     }
 
