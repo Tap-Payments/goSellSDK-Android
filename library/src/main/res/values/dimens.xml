@@ -32,6 +32,7 @@
     <!--action bar-->
     <dimen name="action_bar_default_height">20dp</dimen>
     <dimen name="action_bar_img_width">30dp</dimen>
+    <dimen name="action_bar_back_button_container_width">30dp</dimen>
     <dimen name="action_bar_back_button_width">12dp</dimen>
 
     <dimen name="edit_text_height_basic">48dp</dimen>
