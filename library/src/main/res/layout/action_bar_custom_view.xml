@@ -1,34 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@android:color/transparent"
     android:orientation="horizontal">
+
+    <FrameLayout
+        android:id="@+id/actionBarBackButtonContainer"
+        android:layout_width="@dimen/action_bar_back_button_container_width"
+        android:layout_height="match_parent">
+
         <ImageView
             android:id="@+id/actionBarBackButton"
             android:layout_width="@dimen/action_bar_back_button_width"
             android:layout_height="@dimen/action_bar_default_height"
-            android:layout_marginStart="@dimen/margin_basic_14dp"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/btn_back"
-            android:scaleType="center"/>
+            android:layout_gravity="center"
+            android:scaleType="center"
+            android:src="@drawable/btn_back"/>
+    </FrameLayout>
 
-        <ImageView
-            android:id="@+id/actionBarImage"
-            android:layout_width="@dimen/action_bar_img_width"
-            android:layout_height="@dimen/action_bar_default_height"
-            android:layout_marginStart="@dimen/margin_basic_14dp"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/cio_ic_amex"
-            android:scaleType="center"/>
+    <ImageView
+        android:id="@+id/actionBarImage"
+        android:layout_width="@dimen/action_bar_img_width"
+        android:layout_height="@dimen/action_bar_default_height"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="@dimen/margin_basic_small"
+        android:layout_marginEnd="@dimen/margin_basic_small"
+        android:scaleType="center"
+        android:src="@drawable/cio_ic_amex"/>
 
-        <TextView
-            android:id="@+id/actionBarTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_basic_14dp"
-            android:layout_gravity="center_vertical"
-            android:gravity="center_vertical"
-            style="@style/TextView.Title.Header"/>
+    <TextView
+        android:id="@+id/actionBarTitle"
+        style="@style/TextView.Title.Header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"/>
 </LinearLayout>

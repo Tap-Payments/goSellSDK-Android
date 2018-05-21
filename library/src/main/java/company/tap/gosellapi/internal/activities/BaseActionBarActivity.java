@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,8 +39,8 @@ public class BaseActionBarActivity extends AppCompatActivity {
             actionBar.setCustomView(actionBarCustomView, new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
             //back button
-            ImageView actionBarBackButton = actionBarCustomView.findViewById(R.id.actionBarBackButton);
-            actionBarBackButton.setOnClickListener(new View.OnClickListener() {
+            FrameLayout actionBarBackButtonContainer = actionBarCustomView.findViewById(R.id.actionBarBackButtonContainer);
+            actionBarBackButtonContainer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     onBackPressed();
