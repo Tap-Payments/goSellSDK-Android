@@ -28,6 +28,8 @@ public class GoSellPaymentActivity
         implements PaymentOptionsDataManager.PaymentOptionsDataListener {
     private static final int SCAN_REQUEST_CODE = 123;
     private static final int CURRENCIES_REQUEST_CODE = 124;
+
+    private PaymentOptionsDataManager dataSource;
     private FragmentManager fragmentManager;
     private GoSellPaymentOptionsFragment paymentOptionsFragment;
 
@@ -40,12 +42,13 @@ public class GoSellPaymentActivity
         setContentView(R.layout.gosellapi_activity_main);
 
         fragmentManager = getSupportFragmentManager();
+        dataSource = GlobalDataManager.getInstance().getPaymentOptionsDataManager(this);
 
         initViews();
     }
 
     private void initViews() {
-        paymentOptionsFragment = new GoSellPaymentOptionsFragment();
+        paymentOptionsFragment = GoSellPaymentOptionsFragment.newInstance(dataSource);
         fragmentManager
                 .beginTransaction()
                 .replace(R.id.paymentActivityFragmentContainer, paymentOptionsFragment)
@@ -159,6 +162,9 @@ public class GoSellPaymentActivity
             }
         } else if (requestCode == CURRENCIES_REQUEST_CODE) {
             String userChoiceCurrency = data.getStringExtra(CurrenciesActivity.CURRENCIES_ACTIVITY_USER_CHOICE_CURRENCY);
+            if (userChoiceCurrency != null) {
+                dataSource.currencySelectedByUser(userChoiceCurrency);
+            }
         }
     }
 
