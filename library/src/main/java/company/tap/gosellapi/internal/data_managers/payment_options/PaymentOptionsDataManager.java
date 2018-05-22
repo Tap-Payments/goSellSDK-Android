@@ -39,7 +39,7 @@ public class PaymentOptionsDataManager {
         new DataFiller().fill();
     }
 
-    //data for adapter
+    //region data for adapter
     public int getSize() {
         return dataList.size();
     }
@@ -56,9 +56,9 @@ public class PaymentOptionsDataManager {
         this.listener = listener;
         return this;
     }
+    //endregion
 
-
-    //callback actions from child viewModels
+    //region callback actions from child viewModels
     public void currencyHolderClicked(int position, HashMap<String, Double> currencies) {
         CurrencySectionData currencySectionData = ((CurrencyViewModel)dataList.get(position)).getData();
         listener.startCurrencySelection(currencies, currencySectionData.getSelectedCurrencyCode());
@@ -89,9 +89,33 @@ public class PaymentOptionsDataManager {
     public void addressOnCardClicked() {
         listener.addressOnCardClicked();
     }
+    //endregion
 
-    //focus interaction between holders
-    public void setFocused(int position) {
+    //region update actions from activity
+    private PaymentOptionsBaseViewModel getViewModelByType(PaymentType type) {
+        for (PaymentOptionsBaseViewModel viewModel : dataList) {
+            if (viewModel.getModelType() == type.getViewType()) {
+                return viewModel;
+            }
+        }
+
+        return null;
+    }
+
+    public void currencySelectedByUser(String userChoiceCurrency) {
+        PaymentOptionsBaseViewModel baseViewModel = getViewModelByType(PaymentType.CURRENCY);
+        if (baseViewModel == null || !(baseViewModel instanceof CurrencyViewModel)) return;
+
+        CurrencyViewModel currencyViewModel = (CurrencyViewModel) baseViewModel;
+        CurrencySectionData currencySectionData = currencyViewModel.getData();
+
+        currencySectionData.setUserChoiceData(userChoiceCurrency, currencySectionData.getData().get(userChoiceCurrency));
+        currencyViewModel.updateData();
+    }
+    //endregion
+
+    //region focus interaction between holders
+    private void setFocused(int position) {
         if (focusedPosition != Constants.NO_FOCUS) {
             dataList.get(focusedPosition).setViewFocused(false);
         }
@@ -110,7 +134,7 @@ public class PaymentOptionsDataManager {
     public boolean isPositionInFocus(int position) {
         return position == focusedPosition;
     }
-
+    //endregion
 
     //save/restore state
     public void saveState() {
