@@ -1,6 +1,5 @@
 package company.tap.gosellapi.internal.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -13,13 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import company.tap.gosellapi.R;
-import company.tap.gosellapi.internal.activities.GoSellPaymentActivity;
 import company.tap.gosellapi.internal.adapters.PaymentOptionsRecyclerViewAdapter;
-import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
 
 public class GoSellPaymentOptionsFragment extends Fragment {
-    private PaymentOptionsDataManager.PaymentOptionsDataListener dataListener;
+    private static final String DATA_SOURCE_ARGUMENT = "dataSourceArgument";
+
     private RecyclerView paymentOptionsRecyclerView;
     private LinearLayoutManager layoutManager;
     private PaymentOptionsRecyclerViewAdapter adapter;
@@ -30,9 +28,10 @@ public class GoSellPaymentOptionsFragment extends Fragment {
         // Required empty public constructor
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public static GoSellPaymentOptionsFragment newInstance(PaymentOptionsDataManager dataSource) {
+        GoSellPaymentOptionsFragment fragment = new GoSellPaymentOptionsFragment();
+        fragment.dataSource = dataSource;
+        return fragment;
     }
 
     @Override
@@ -47,28 +46,8 @@ public class GoSellPaymentOptionsFragment extends Fragment {
         restoreRecyclerState();
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        if(context instanceof GoSellPaymentActivity) {
-            this.dataListener = (PaymentOptionsDataManager.PaymentOptionsDataListener) context;
-        }
-        else {
-        throw new ClassCastException(context.toString()
-                + " must implement PaymentOptionsDataListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        this.dataListener = null;
-    }
-
     private void initMainRecyclerView(View view) {
         paymentOptionsRecyclerView = view.findViewById(R.id.paymentOptionsRecyclerView);
-        dataSource = GlobalDataManager.getInstance().getPaymentOptionsDataManager(dataListener);
 
         //Configuring layout manager
         layoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);

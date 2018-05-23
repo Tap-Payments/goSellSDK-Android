@@ -6,7 +6,7 @@ import company.tap.gosellapi.internal.api.models.Token;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
 import company.tap.gosellapi.internal.api.requests.CreateTokenRequest;
 import company.tap.gosellapi.internal.api.requests.UpdateChargeRequest;
-import company.tap.gosellapi.internal.api.responses.InitResponse;
+import company.tap.gosellapi.internal.api.responses.SDKSettings;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -23,7 +23,7 @@ import retrofit2.http.Path;
 
 public interface APIService {
     @GET(API_Constants.INIT)
-    Call<InitResponse> init();
+    Call<SDKSettings> init();
 
     @POST(API_Constants.TOKEN)
     Call<Token> createToken(@Body CreateTokenRequest createTokenRequest);

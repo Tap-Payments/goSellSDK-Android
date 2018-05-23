@@ -17,7 +17,11 @@ public class CurrencySectionData {
     }
 
     public void setUserChoiceData(String currencyCode, double amount) {
-        this.userChoiceData = new AbstractMap.SimpleEntry<>(currencyCode, amount);
+        if (currencyCode.equalsIgnoreCase(initialData.getKey())) {
+            userChoiceData = null;
+        } else {
+            userChoiceData = new AbstractMap.SimpleEntry<>(currencyCode, amount);
+        }
     }
 
     public HashMap<String, Double> getData() {

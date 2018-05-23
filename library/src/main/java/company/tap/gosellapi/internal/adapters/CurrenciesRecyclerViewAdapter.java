@@ -2,6 +2,7 @@ package company.tap.gosellapi.internal.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,25 +11,32 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.Currency;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.Utils;
 
 public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<CurrenciesRecyclerViewAdapter.CurrencyCellViewHolder> {
-    private HashMap<String, Double> dataSource;
-    private String selectedCurrencyCode;
-    private ArrayList<String> dataKeys;
-
-    public CurrenciesRecyclerViewAdapter(HashMap<String, Double> dataSource, String selectedCurrencyCode) {
-        this.dataSource = dataSource;
-        this.selectedCurrencyCode = selectedCurrencyCode;
-        createDataKeys();
+    public interface CurrenciesAdapterCallback {
+        void itemSelected(String currencyCode);
     }
 
-    private void createDataKeys() {
-        dataKeys = new ArrayList<>(dataSource.keySet());
-        Collections.sort(dataKeys);
+    private CurrenciesAdapterCallback callback;
+
+    private final static int NO_SELECTION = -1;
+    private ArrayList<String> dataSource;
+    private ArrayList<String> dataSourceFiltered;
+    private String selectedCurrencyCode;
+    private String searchText = "";
+
+    private int selectedPosition = NO_SELECTION;
+
+    public CurrenciesRecyclerViewAdapter(ArrayList<String> dataSource, String selectedCurrencyCode, CurrenciesAdapterCallback callback) {
+        this.dataSource = dataSource;
+        this.selectedCurrencyCode = selectedCurrencyCode;
+        this.callback = callback;
+
+        prepareDataSources();
     }
 
     @NonNull
@@ -38,14 +46,68 @@ public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<Currenci
         return new CurrencyCellViewHolder(view);
     }
 
+    private void prepareDataSources() {
+        Collections.sort(dataSource);
+        int selectedIndex = dataSource.indexOf(selectedCurrencyCode);
+        if (selectedIndex != NO_SELECTION) {
+            dataSource.remove(selectedIndex);
+            dataSource.add(0, selectedCurrencyCode);
+        }
+        dataSourceFiltered = new ArrayList<>(dataSource);
+    }
+
     @Override
     public void onBindViewHolder(@NonNull CurrencyCellViewHolder holder, int position) {
-        holder.bind(dataKeys.get(position));
+        holder.bind(dataSourceFiltered.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return dataSource.size();
+        return dataSourceFiltered.size();
+    }
+
+    private void setSelection(int newSelection) {
+        selectedCurrencyCode = dataSourceFiltered.get(newSelection);
+
+        if (selectedPosition != NO_SELECTION) {
+            notifyItemChanged(selectedPosition);
+        }
+
+        selectedPosition = newSelection;
+        notifyItemChanged(selectedPosition);
+    }
+
+    public void filter(String newText) {
+        if (newText.equals("")) {
+            dataSourceFiltered.clear();
+            dataSourceFiltered.addAll(dataSource);
+            searchText = "";
+        } else {
+            dataSourceFiltered.clear();
+            searchText = newText;
+
+            for (String currencyCode : dataSource) {
+                String currencyCodeLowered = currencyCode.toLowerCase();
+                String currencyName = Utils.getCurrencyName(currencyCode, Utils.getCurrency(currencyCode));
+
+                boolean presentInCurrencyCode = true;
+                boolean presentInCurrencyName = currencyName.toLowerCase().contains(newText.toLowerCase());
+
+                //search in currency code (not sequentally)
+                int index = -1;
+                for (char ch : newText.toCharArray()) {
+                    index = currencyCodeLowered.indexOf(ch, index + 1);
+                    if (index < 0) {
+                        presentInCurrencyCode = false;
+                    }
+                }
+
+                if (presentInCurrencyCode || presentInCurrencyName) {
+                    dataSourceFiltered.add(currencyCode);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
     class CurrencyCellViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -62,13 +124,80 @@ public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<Currenci
         }
 
         private void bind(String currencyCode) {
-            tvCurrencyName.setText(Utils.getCurrencySelectionString(currencyCode));
-            ivCurrencyChecked.setVisibility(currencyCode.equals(selectedCurrencyCode) ? View.VISIBLE : View.INVISIBLE);
+            tvCurrencyName.setText(getCurrencySelectionString(currencyCode));
+
+            if (currencyCode.equals(selectedCurrencyCode)) {
+                ivCurrencyChecked.setVisibility(View.VISIBLE);
+                selectedPosition = getAdapterPosition();
+            } else {
+                ivCurrencyChecked.setVisibility(View.INVISIBLE);
+            }
         }
 
         @Override
         public void onClick(View view) {
-//            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
+            int position = getAdapterPosition();
+
+            setSelection(position);
+            callback.itemSelected(dataSourceFiltered.get(position));
+        }
+
+        //with highlight on search text logic
+        private SpannableStringBuilder getCurrencySelectionString(String currencyCode) {
+            Currency currency = Utils.getCurrency(currencyCode);
+            String symbol = "";
+            int currencyNameIndex = 0;
+
+            if (currency != null) {
+                symbol = currency.getSymbol();
+            }
+
+            String currencyCodeLowered = currencyCode.toLowerCase();
+            String currencyName = Utils.getCurrencyName(currencyCode, currency);
+
+
+            SpannableStringBuilder sb = new SpannableStringBuilder(currencyCode);
+
+            if (!symbol.isEmpty() && !symbol.equalsIgnoreCase(currencyCode)) {
+                sb.append(" ");
+                sb.append(symbol);
+            }
+
+            if (!currencyName.isEmpty()) {
+                sb.append(" (");
+
+                currencyNameIndex = sb.length();
+                sb.append(currencyName);
+
+                sb.append(")");
+            }
+
+
+            //formatting
+            if (!currencyName.isEmpty() && !searchText.isEmpty()) {
+                int index = currencyName.toLowerCase().indexOf(searchText);
+                while (index >= 0) {
+                    Utils.highlightText(itemView.getContext(), sb, currencyNameIndex + index, searchText);
+                    index = currencyName.toLowerCase().indexOf(searchText, index + 1);
+                }
+            }
+
+            //search in currency code (not sequentally)
+            ArrayList<Integer> indexesToHighlight = new ArrayList<>();
+            int index = -1;
+            for (char ch : searchText.toCharArray()) {
+                index = currencyCodeLowered.indexOf(ch, index + 1);
+                if (index >= 0) {
+                    indexesToHighlight.add(index);
+                }
+            }
+            if (indexesToHighlight.size() == searchText.length()) {
+                for (int i : indexesToHighlight) {
+                    Utils.highlightText(itemView.getContext(), sb, i);
+                }
+            }
+
+            return sb;
         }
     }
 }

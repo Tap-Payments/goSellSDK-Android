@@ -7,7 +7,7 @@ import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
 import company.tap.gosellapi.internal.api.callbacks.BaseCallback;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.responses.BaseResponse;
-import company.tap.gosellapi.internal.api.responses.InitResponse;
+import company.tap.gosellapi.internal.api.responses.SDKSettings;
 import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
 import retrofit2.Call;
 
@@ -25,7 +25,7 @@ class RequestManager {
 
     void request(DelayedRequest delayedRequest) {
         delayedRequests.add(delayedRequest);
-        if (GlobalDataManager.getInstance().getInitResponse() == null) {
+        if (GlobalDataManager.getInstance().getSDKSettings() == null) {
             if (!initIsRunning) {
                 init();
             }
@@ -38,11 +38,11 @@ class RequestManager {
         initIsRunning = true;
         apiHelper
                 .init()
-                .enqueue(new BaseCallback<>(new APIRequestCallback<InitResponse>() {
+                .enqueue(new BaseCallback<>(new APIRequestCallback<SDKSettings>() {
                     @Override
-                    public void onSuccess(int responseCode, InitResponse serializedResponse) {
+                    public void onSuccess(int responseCode, SDKSettings serializedResponse) {
                         initIsRunning = false;
-                        GlobalDataManager.getInstance().setInitResponse(serializedResponse);
+                        GlobalDataManager.getInstance().setSDKSettings(serializedResponse);
                         runDelayedRequests();
                     }
 

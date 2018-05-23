@@ -4,7 +4,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"
-                android:padding="20dp"
+                android:padding="@dimen/default_padding"
                 android:layoutDirection="ltr">
 
     <TextView
@@ -13,14 +13,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
-        android:textSize="16sp"
-        android:fontFamily="sans-serif"
-        android:textColor="@color/greyish_brown"/>
+        style="@style/TextView.Title.Small"/>
 
     <ImageView
         android:id="@+id/ivCurrencyChecked"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"/>
+        android:layout_centerVertical="true"
+        android:scaleType="center"/>
 </RelativeLayout>
