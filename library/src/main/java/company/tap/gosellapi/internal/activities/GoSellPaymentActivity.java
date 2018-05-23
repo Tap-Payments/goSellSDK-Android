@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -117,6 +118,11 @@ public class GoSellPaymentActivity
     public void addressOnCardClicked() {
         Intent intent  = new Intent(this, GoSellCardAddressActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void saveCardSwitchClicked(boolean isChecked) {
+
     }
 
     @Override
