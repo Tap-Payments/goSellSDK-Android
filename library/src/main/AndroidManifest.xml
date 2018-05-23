@@ -15,6 +15,9 @@
         <activity
             android:name=".internal.activities.CurrenciesActivity"
             android:theme="@style/GoSellSDKAppTheme"/>
+        <activity
+            android:name=".internal.activities.BaseActionBarActivity"
+            android:theme="@style/GoSellSDKAppTheme"/>
     </application>
 
 </manifest>

@@ -5,6 +5,9 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.BackgroundColorSpan;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -12,6 +15,7 @@ import java.text.NumberFormat;
 import java.util.Currency;
 import java.util.Locale;
 
+import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.api_service.AppInfo;
 
 public class Utils {
@@ -56,21 +60,32 @@ public class Utils {
         return symbol;
     }
 
-    public static String getCurrencySelectionString(String currencyCode) {
-        Currency currency;
+    public static Currency getCurrency(String currencyCode) {
         try {
-            currency = Currency.getInstance(currencyCode);
+            return Currency.getInstance(currencyCode);
         } catch (IllegalArgumentException ex) {
-            return currencyCode;
+            return null;
         }
+    }
 
-        String symbol = currency.getSymbol();
+    public static String getCurrencyName(String currencyCode, Currency currency) {
         String name = "";
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT && currency != null) {
             name = currency.getDisplayName();
         }
-        return currencyCode
-                + (!symbol.isEmpty() && !symbol.equalsIgnoreCase(currencyCode) ? " " + symbol : "")
-                + (!name.isEmpty() ? " (" + name + ")" : "");
+        return name;
+    }
+
+    //for text
+    public static void highlightText(Context context, SpannableStringBuilder sb, int index, String textToHighlight) {
+        BackgroundColorSpan fcs = new BackgroundColorSpan(ContextCompat.getColor(context, R.color.vibrant_green));
+        sb.setSpan(fcs, index, index + textToHighlight.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+    }
+
+    //for single char
+    public static void highlightText(Context context, SpannableStringBuilder sb, int index) {
+        BackgroundColorSpan fcs = new BackgroundColorSpan(ContextCompat.getColor(context, R.color.vibrant_green));
+        sb.setSpan(fcs, index, index + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 }

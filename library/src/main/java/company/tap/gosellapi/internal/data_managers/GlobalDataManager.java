@@ -1,12 +1,12 @@
 package company.tap.gosellapi.internal.data_managers;
 
 import company.tap.gosellapi.internal.api.models.PaymentInfo;
-import company.tap.gosellapi.internal.api.responses.InitResponse;
+import company.tap.gosellapi.internal.api.responses.SDKSettings;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
 
 public class GlobalDataManager {
-    private InitResponse initResponse;
+    private SDKSettings SDKSettings;
     private PaymentInfo paymentInfo;
     private PaymentOptionsDataManager paymentOptionsDataManager;
 
@@ -22,12 +22,12 @@ public class GlobalDataManager {
         return GlobalDataManager.SingletonHolder.INSTANCE;
     }
 
-    public InitResponse getInitResponse() {
-        return initResponse;
+    public SDKSettings getSDKSettings() {
+        return SDKSettings;
     }
 
-    public void setInitResponse(InitResponse initResponse) {
-        this.initResponse = initResponse;
+    public void setSDKSettings(SDKSettings SDKSettings) {
+        this.SDKSettings = SDKSettings;
     }
 
     public PaymentInfo getPaymentInfo() {

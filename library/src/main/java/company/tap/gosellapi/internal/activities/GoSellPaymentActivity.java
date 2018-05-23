@@ -29,6 +29,8 @@ public class GoSellPaymentActivity
         implements PaymentOptionsDataManager.PaymentOptionsDataListener {
     private static final int SCAN_REQUEST_CODE = 123;
     private static final int CURRENCIES_REQUEST_CODE = 124;
+
+    private PaymentOptionsDataManager dataSource;
     private FragmentManager fragmentManager;
     private GoSellPaymentOptionsFragment paymentOptionsFragment;
 
@@ -41,12 +43,13 @@ public class GoSellPaymentActivity
         setContentView(R.layout.gosellapi_activity_main);
 
         fragmentManager = getSupportFragmentManager();
+        dataSource = GlobalDataManager.getInstance().getPaymentOptionsDataManager(this);
 
         initViews();
     }
 
     private void initViews() {
-        paymentOptionsFragment = new GoSellPaymentOptionsFragment();
+        paymentOptionsFragment = GoSellPaymentOptionsFragment.newInstance(dataSource);
         fragmentManager
                 .beginTransaction()
                 .replace(R.id.paymentActivityFragmentContainer, paymentOptionsFragment)
@@ -63,10 +66,10 @@ public class GoSellPaymentActivity
         });
 
         businessIcon = findViewById(R.id.businessIcon);
-        String logoPath = GlobalDataManager.getInstance().getInitResponse().getData().getMerchant().getLogo();
+        String logoPath = GlobalDataManager.getInstance().getSDKSettings().getData().getMerchant().getLogo();
         Glide.with(this).load(logoPath).apply(RequestOptions.circleCropTransform()).into(businessIcon);
 
-        String businessNameString = GlobalDataManager.getInstance().getInitResponse().getData().getMerchant().getName();
+        String businessNameString = GlobalDataManager.getInstance().getSDKSettings().getData().getMerchant().getName();
         TextView businessName = findViewById(R.id.businessName);
         businessName.setText(businessNameString);
     }
@@ -84,7 +87,7 @@ public class GoSellPaymentActivity
     public void startCurrencySelection(HashMap<String, Double> currencies, String selectedCurrency) {
         Intent intent = new Intent(this, CurrenciesActivity.class);
         intent.putExtra(CurrenciesActivity.CURRENCIES_ACTIVITY_DATA, currencies);
-        intent.putExtra(CurrenciesActivity.CURRENCIES_ACTIVITY_SELECTED_CURRENCY, selectedCurrency);
+        intent.putExtra(CurrenciesActivity.CURRENCIES_ACTIVITY_INITIAL_SELECTED_CURRENCY, selectedCurrency);
 
         startActivityForResult(intent, CURRENCIES_REQUEST_CODE);
     }
@@ -162,6 +165,11 @@ public class GoSellPaymentActivity
                 }
             } else {
 //                TapDialog.createToast(this, L.scan_was_canceled.toString(), Toast.LENGTH_LONG);
+            }
+        } else if (requestCode == CURRENCIES_REQUEST_CODE) {
+            String userChoiceCurrency = data.getStringExtra(CurrenciesActivity.CURRENCIES_ACTIVITY_USER_CHOICE_CURRENCY);
+            if (userChoiceCurrency != null) {
+                dataSource.currencySelectedByUser(userChoiceCurrency);
             }
         }
     }
