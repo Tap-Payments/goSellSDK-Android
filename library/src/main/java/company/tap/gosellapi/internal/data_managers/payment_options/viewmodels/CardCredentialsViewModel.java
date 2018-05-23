@@ -20,4 +20,8 @@ public class CardCredentialsViewModel
     public void addressOnCardClicked() {
         parentDataManager.addressOnCardClicked();
     }
+
+    public void saveCardSwitchClicked(boolean state) {
+        parentDataManager.saveCardSwitchCheckedChanged(state);
+    }
 }

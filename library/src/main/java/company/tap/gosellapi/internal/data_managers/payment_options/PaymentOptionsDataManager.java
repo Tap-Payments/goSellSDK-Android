@@ -25,6 +25,7 @@ public class PaymentOptionsDataManager {
         void startWebPayment();
         void startScanCard();
         void cardDetailsFilled(boolean isFilled, CardRawData cardRawData);
+        void saveCardSwitchClicked(boolean isChecked);
         void addressOnCardClicked();
     }
 
@@ -78,8 +79,9 @@ public class PaymentOptionsDataManager {
         listener.startScanCard();
     }
 
-    public void saveCardSwitchCheckedChanged(int position, boolean isChecked) {
+    public void saveCardSwitchCheckedChanged(boolean isChecked) {
         //show or hide save card details by modifying dataSource?
+        listener.saveCardSwitchClicked(isChecked);
     }
 
     public void cardDetailsFilled(boolean isFilled, CardRawData cardRawData) {

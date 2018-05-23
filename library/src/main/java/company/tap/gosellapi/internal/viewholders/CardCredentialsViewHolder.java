@@ -3,8 +3,11 @@ package company.tap.gosellapi.internal.viewholders;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
+import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.Switch;
 
 import java.util.ArrayList;
 
@@ -17,11 +20,13 @@ public class CardCredentialsViewHolder
         extends PaymentOptionsBaseViewHolder<ArrayList<PaymentOption>, CardCredentialsViewHolder, CardCredentialsViewModel> {
     private ImageButton cardScannerButton;
     private View addressOnCardLayout;
+    private Switch saveCardSwitch;
 
     CardCredentialsViewHolder(View view) {
         super(view);
         cardScannerButton = itemView.findViewById(R.id.cardScannerButton);
         addressOnCardLayout = itemView.findViewById(R.id.addressOnCardLayout);
+        saveCardSwitch = itemView.findViewById(R.id.saveCardSwitch);
     }
 
     @Override
@@ -37,6 +42,14 @@ public class CardCredentialsViewHolder
             @Override
             public void onClick(View v) {
                 viewModel.addressOnCardClicked();
+            }
+        });
+
+
+        saveCardSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                viewModel.saveCardSwitchClicked(isChecked);
             }
         });
 
