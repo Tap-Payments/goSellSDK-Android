@@ -35,11 +35,6 @@ public class GoSellPaymentOptionsFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.gosellapi_fragment_main_screen, container, false);
     }
@@ -62,11 +57,6 @@ public class GoSellPaymentOptionsFragment extends Fragment {
         adapter = new PaymentOptionsRecyclerViewAdapter(dataSource);
 
         paymentOptionsRecyclerView.setAdapter(adapter);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
     }
 
     @Override
