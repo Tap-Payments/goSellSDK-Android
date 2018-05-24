@@ -139,14 +139,19 @@ public class PaymentOptionsDataManager {
     }
 
     public void currencySelectedByUser(String userChoiceCurrency) {
-        PaymentOptionsBaseViewModel baseViewModel = getViewModelByType(PaymentType.CURRENCY);
-        if (baseViewModel == null || !(baseViewModel instanceof CurrencyViewModel)) return;
-
-        CurrencyViewModel currencyViewModel = (CurrencyViewModel) baseViewModel;
+        //update currency section
+        CurrencyViewModel currencyViewModel = getCurrencyViewModel();
+        if (currencyViewModel == null) return;
         CurrencySectionData currencySectionData = currencyViewModel.getData();
 
         currencySectionData.setUserChoiceData(userChoiceCurrency, currencySectionData.getData().get(userChoiceCurrency));
         currencyViewModel.updateData();
+
+        //filter payment options
+        CardCredentialsViewModel cardCredentialsViewModel = getCardCredentialsViewModel();
+        if (cardCredentialsViewModel == null) return;
+
+        cardCredentialsViewModel.filterByCurrency(userChoiceCurrency);
     }
 
     private void displaySaveCard(boolean show) {
@@ -159,6 +164,20 @@ public class PaymentOptionsDataManager {
         if (emptyViewModel != null) {
             emptyViewModel.displayEmpty(show);
         }
+    }
+
+    private CurrencyViewModel getCurrencyViewModel() {
+        PaymentOptionsBaseViewModel baseViewModel = getViewModelByType(PaymentType.CURRENCY);
+        if (baseViewModel == null || !(baseViewModel instanceof CurrencyViewModel)) return null;
+
+        return (CurrencyViewModel) baseViewModel;
+    }
+
+    private CardCredentialsViewModel getCardCredentialsViewModel() {
+        PaymentOptionsBaseViewModel baseViewModel = getViewModelByType(PaymentType.CARD);
+        if (baseViewModel == null || !(baseViewModel instanceof CardCredentialsViewModel)) return null;
+
+        return (CardCredentialsViewModel) baseViewModel;
     }
 
     private SaveCardViewModel getSaveCardViewModel() {
