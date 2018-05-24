@@ -133,7 +133,7 @@ public class PaymentOptionsDataManager {
 
             EmptyViewModel emptyViewModel = getEmptyViewModel();
             if (emptyViewModel != null) {
-                emptyViewModel.setSpecifiedHeight(emptyHolderHeight);
+                emptyViewModel.setSpecifiedHeight(emptyHolderHeight > 0 ? emptyHolderHeight : 0);
             }
         }
     }
