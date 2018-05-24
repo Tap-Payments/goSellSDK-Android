@@ -31,7 +31,6 @@ import company.tap.gosellapi.internal.api.models.PaymentInfo;
 import company.tap.gosellapi.internal.api.models.Redirect;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
-import company.tap.gosellapi.internal.exceptions.NoPaymentInfoRequesterProvidedException;
 import gotap.com.tapglkitandroid.gl.Views.TapLoadingView;
 
 public final class GoSellPayLayout extends FrameLayout implements View.OnClickListener {
@@ -336,7 +335,9 @@ public final class GoSellPayLayout extends FrameLayout implements View.OnClickLi
     @Override
     public void onClick(View v) {
         if (paymentInfoRequester == null) {
-            throw new NoPaymentInfoRequesterProvidedException();
+            // TODO: 24.05.2018 remove it after button state is implemented
+            return;
+//            throw new NoPaymentInfoRequesterProvidedException();
         }
 
         int i = v.getId();
