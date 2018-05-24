@@ -5,7 +5,8 @@ public enum PaymentType {
     RECENT(1),
     WEB(2),
     CARD(3),
-    EMPTY(4);
+    SAVE_CARD(4),
+    EMPTY(5);
 
     private int viewType;
 

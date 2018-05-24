@@ -53,7 +53,7 @@ public class PaymentOptionsBaseViewModel<T, K extends PaymentOptionsBaseViewHold
     }
 
     public void updateData() {
-        holder.bind(data);
+        if (holder != null) holder.bind(data);
     }
 
     public void setViewFocused(boolean focused) {

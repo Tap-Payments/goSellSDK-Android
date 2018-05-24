@@ -4,8 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -44,6 +45,15 @@ public class GoSellPaymentActivity
 
         fragmentManager = getSupportFragmentManager();
         dataSource = GlobalDataManager.getInstance().getPaymentOptionsDataManager(this);
+
+        final FrameLayout fragmentContainer = findViewById(R.id.paymentActivityFragmentContainer);
+        fragmentContainer.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                dataSource.setAvailableHeight(fragmentContainer.getHeight());
+                fragmentContainer.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
+        });
 
         initViews();
     }
