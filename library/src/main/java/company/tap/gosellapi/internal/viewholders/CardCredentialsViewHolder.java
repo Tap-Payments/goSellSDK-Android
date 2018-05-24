@@ -2,11 +2,11 @@ package company.tap.gosellapi.internal.viewholders;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
-import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 
 import java.util.ArrayList;
@@ -52,6 +52,10 @@ public class CardCredentialsViewHolder
                 viewModel.saveCardSwitchClicked(isChecked);
             }
         });
+
+        RelativeLayout saveCardSwitchContainer = itemView.findViewById(R.id.saveCardSwitchContainer);
+        saveCardSwitchContainer.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        viewModel.setCardSwitchHeight(saveCardSwitchContainer.getMeasuredHeight());
 
         initCardSystemsRecyclerView(data);
     }

@@ -22,6 +22,10 @@ public class CardCredentialsViewModel
     }
 
     public void saveCardSwitchClicked(boolean state) {
-        parentDataManager.saveCardSwitchCheckedChanged(state);
+        parentDataManager.saveCardSwitchCheckedChanged(state, position + 1);
+    }
+
+    public void setCardSwitchHeight(int cardSwitchHeight) {
+        parentDataManager.setCardSwitchHeight(cardSwitchHeight);
     }
 }
