@@ -22,6 +22,7 @@ import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.W
 public class PaymentOptionsDataManager {
     private int availableHeight;
     private int saveCardHeight;
+    private int cardSwitchHeight;
 
     //outer interface (for fragment, containing recyclerView)
     public interface PaymentOptionsDataListener {
@@ -30,7 +31,7 @@ public class PaymentOptionsDataManager {
         void startWebPayment();
         void startScanCard();
         void cardDetailsFilled(boolean isFilled, CardRawData cardRawData);
-        void saveCardSwitchClicked(boolean isChecked);
+        void saveCardSwitchClicked(boolean isChecked, int saveCardBlockPosition);
         void addressOnCardClicked();
     }
 
@@ -84,9 +85,11 @@ public class PaymentOptionsDataManager {
         listener.startScanCard();
     }
 
-    public void saveCardSwitchCheckedChanged(boolean isChecked) {
+    public void saveCardSwitchCheckedChanged(boolean isChecked, int saveCardBlockPosition) {
         displaySaveCard(isChecked);
-        listener.saveCardSwitchClicked(isChecked);
+        if (isChecked) {
+            listener.saveCardSwitchClicked(isChecked, saveCardBlockPosition);
+        }
     }
 
     public void cardDetailsFilled(boolean isFilled, CardRawData cardRawData) {
@@ -114,14 +117,19 @@ public class PaymentOptionsDataManager {
         applyEmptyHolderHeight();
     }
 
+    public void setCardSwitchHeight(int cardSwitchHeight) {
+        this.cardSwitchHeight = cardSwitchHeight;
+        applyEmptyHolderHeight();
+    }
+
     public void setSaveCardHeight(int neededHeight) {
         saveCardHeight = neededHeight;
         applyEmptyHolderHeight();
     }
 
     private void applyEmptyHolderHeight() {
-        if (availableHeight != 0 && saveCardHeight != 0) {
-            int emptyHolderHeight = availableHeight - saveCardHeight;
+        if (availableHeight != 0 && saveCardHeight != 0 && cardSwitchHeight != 0) {
+            int emptyHolderHeight = availableHeight - saveCardHeight - cardSwitchHeight;
 
             EmptyViewModel emptyViewModel = getEmptyViewModel();
             if (emptyViewModel != null) {
@@ -257,9 +265,7 @@ public class PaymentOptionsDataManager {
 
             for (PaymentOption paymentOption : paymentOptions) {
                 if (paymentOption.getPayment_type().equalsIgnoreCase(CardPaymentType.WEB.getValue())) {
-                    for (int i = 0; i < 20; i++) {
-                        dataList.add(new WebPaymentViewModel(PaymentOptionsDataManager.this, paymentOption, PaymentType.WEB.getViewType()));
-                    }
+                    dataList.add(new WebPaymentViewModel(PaymentOptionsDataManager.this, paymentOption, PaymentType.WEB.getViewType()));
                 }
             }
         }
