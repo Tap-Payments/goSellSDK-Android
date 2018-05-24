@@ -13,11 +13,16 @@ import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
 import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.CardCredentialsViewModel;
 import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.CurrencyViewModel;
+import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.EmptyViewModel;
 import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.PaymentOptionsBaseViewModel;
 import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.RecentSectionViewModel;
+import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.SaveCardViewModel;
 import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.WebPaymentViewModel;
 
 public class PaymentOptionsDataManager {
+    private int availableHeight;
+    private int saveCardHeight;
+
     //outer interface (for fragment, containing recyclerView)
     public interface PaymentOptionsDataListener {
         void startCurrencySelection(HashMap<String, Double> currencies, String selectedCurrency);
@@ -32,8 +37,7 @@ public class PaymentOptionsDataManager {
     private PaymentOptionsDataListener listener;
 
     private PaymentOptionsResponse paymentOptionsResponse;
-    private ArrayList<PaymentOptionsBaseViewModel> dataListOriginal;
-    private ArrayList<PaymentOptionsBaseViewModel> dataListFiltered;
+    private ArrayList<PaymentOptionsBaseViewModel> dataList;
     private int focusedPosition = Constants.NO_FOCUS;
     
     public PaymentOptionsDataManager(PaymentOptionsResponse paymentOptionsResponse) {
@@ -43,15 +47,15 @@ public class PaymentOptionsDataManager {
 
     //region data for adapter
     public int getSize() {
-        return dataListFiltered.size();
+        return dataList.size();
     }
 
     public int getItemViewType(int position) {
-        return dataListFiltered.get(position).getModelType();
+        return dataList.get(position).getModelType();
     }
 
     public PaymentOptionsBaseViewModel getViewModel(int position) {
-        return dataListFiltered.get(position);
+        return dataList.get(position);
     }
 
     public PaymentOptionsDataManager setListener(PaymentOptionsDataListener listener) {
@@ -62,7 +66,7 @@ public class PaymentOptionsDataManager {
 
     //region callback actions from child viewModels
     public void currencyHolderClicked(int position, HashMap<String, Double> currencies) {
-        CurrencySectionData currencySectionData = ((CurrencyViewModel)dataListFiltered.get(position)).getData();
+        CurrencySectionData currencySectionData = ((CurrencyViewModel) dataList.get(position)).getData();
         listener.startCurrencySelection(currencies, currencySectionData.getSelectedCurrencyCode());
     }
 
@@ -81,7 +85,7 @@ public class PaymentOptionsDataManager {
     }
 
     public void saveCardSwitchCheckedChanged(boolean isChecked) {
-        //show or hide save card details by modifying dataSource?
+        displaySaveCard(isChecked);
         listener.saveCardSwitchClicked(isChecked);
     }
 
@@ -94,15 +98,36 @@ public class PaymentOptionsDataManager {
     }
     //endregion
 
-    //region update actions from activity
+    //region update actions (from activity mainly)
     private PaymentOptionsBaseViewModel getViewModelByType(PaymentType type) {
-        for (PaymentOptionsBaseViewModel viewModel : dataListFiltered) {
+        for (PaymentOptionsBaseViewModel viewModel : dataList) {
             if (viewModel.getModelType() == type.getViewType()) {
                 return viewModel;
             }
         }
 
         return null;
+    }
+
+    public void setAvailableHeight(int availableHeight) {
+        this.availableHeight = availableHeight;
+        applyEmptyHolderHeight();
+    }
+
+    public void setSaveCardHeight(int neededHeight) {
+        saveCardHeight = neededHeight;
+        applyEmptyHolderHeight();
+    }
+
+    private void applyEmptyHolderHeight() {
+        if (availableHeight != 0 && saveCardHeight != 0) {
+            int emptyHolderHeight = availableHeight - saveCardHeight;
+
+            EmptyViewModel emptyViewModel = getEmptyViewModel();
+            if (emptyViewModel != null) {
+                emptyViewModel.setSpecifiedHeight(emptyHolderHeight);
+            }
+        }
     }
 
     public void currencySelectedByUser(String userChoiceCurrency) {
@@ -115,21 +140,47 @@ public class PaymentOptionsDataManager {
         currencySectionData.setUserChoiceData(userChoiceCurrency, currencySectionData.getData().get(userChoiceCurrency));
         currencyViewModel.updateData();
     }
+
+    private void displaySaveCard(boolean show) {
+        SaveCardViewModel saveCardViewModel = getSaveCardViewModel();
+        if (saveCardViewModel != null) {
+            saveCardViewModel.displaySaveCard(show);
+        }
+
+        EmptyViewModel emptyViewModel = getEmptyViewModel();
+        if (emptyViewModel != null) {
+            emptyViewModel.displayEmpty(show);
+        }
+    }
+
+    private SaveCardViewModel getSaveCardViewModel() {
+        PaymentOptionsBaseViewModel baseViewModel = getViewModelByType(PaymentType.SAVE_CARD);
+        if (baseViewModel == null || !(baseViewModel instanceof SaveCardViewModel)) return null;
+
+        return (SaveCardViewModel) baseViewModel;
+    }
+
+    private EmptyViewModel getEmptyViewModel() {
+        PaymentOptionsBaseViewModel baseViewModel = getViewModelByType(PaymentType.EMPTY);
+        if (baseViewModel == null || !(baseViewModel instanceof EmptyViewModel)) return null;
+
+        return  (EmptyViewModel) baseViewModel;
+    }
     //endregion
 
     //region focus interaction between holders
     private void setFocused(int position) {
         if (focusedPosition != Constants.NO_FOCUS) {
-            dataListFiltered.get(focusedPosition).setViewFocused(false);
+            dataList.get(focusedPosition).setViewFocused(false);
         }
 
         focusedPosition = position;
-        dataListFiltered.get(focusedPosition).setViewFocused(true);
+        dataList.get(focusedPosition).setViewFocused(true);
     }
 
     public void clearFocus() {
         if (focusedPosition != Constants.NO_FOCUS) {
-            dataListFiltered.get(focusedPosition).setViewFocused(false);
+            dataList.get(focusedPosition).setViewFocused(false);
         }
         focusedPosition = Constants.NO_FOCUS;
     }
@@ -141,14 +192,14 @@ public class PaymentOptionsDataManager {
 
     //save/restore state
     public void saveState() {
-        for (PaymentOptionsBaseViewModel viewModel : dataListFiltered) {
+        for (PaymentOptionsBaseViewModel viewModel : dataList) {
             viewModel.saveState();
         }
     }
 
     private final class DataFiller {
         private void fill() {
-            dataListOriginal = new ArrayList<>();
+            dataList = new ArrayList<>();
             for (PaymentType paymentType : PaymentType.values()) {
                 switch (paymentType) {
                     case CURRENCY:
@@ -163,10 +214,14 @@ public class PaymentOptionsDataManager {
                     case CARD:
                         addCard();
                         break;
+                    case SAVE_CARD:
+                        addSaveCard();
+                        break;
+                    case EMPTY:
+                        addEmpty();
+                        break;
                 }
             }
-
-            dataListFiltered = new ArrayList<>(dataListOriginal);
         }
 
         private void addCurrencies() {
@@ -176,7 +231,7 @@ public class PaymentOptionsDataManager {
                 double initialAmount = GlobalDataManager.getInstance().getPaymentInfo().getTotal_amount();
                 CurrencySectionData currencySectionData = new CurrencySectionData(supportedCurrencies, initialCurrency, initialAmount);
 
-                dataListOriginal.add(new CurrencyViewModel(PaymentOptionsDataManager.this, currencySectionData, PaymentType.CURRENCY.getViewType()));
+                dataList.add(new CurrencyViewModel(PaymentOptionsDataManager.this, currencySectionData, PaymentType.CURRENCY.getViewType()));
             }
         }
 
@@ -189,7 +244,7 @@ public class PaymentOptionsDataManager {
             }
 
             if (recentCards != null && recentCards.size() > 0) {
-                dataListOriginal.add(new RecentSectionViewModel(PaymentOptionsDataManager.this, recentCards, PaymentType.RECENT.getViewType()));
+                dataList.add(new RecentSectionViewModel(PaymentOptionsDataManager.this, recentCards, PaymentType.RECENT.getViewType()));
             }
         }
 
@@ -203,7 +258,7 @@ public class PaymentOptionsDataManager {
             for (PaymentOption paymentOption : paymentOptions) {
                 if (paymentOption.getPayment_type().equalsIgnoreCase(CardPaymentType.WEB.getValue())) {
                     for (int i = 0; i < 20; i++) {
-                        dataListOriginal.add(new WebPaymentViewModel(PaymentOptionsDataManager.this, paymentOption, PaymentType.WEB.getViewType()));
+                        dataList.add(new WebPaymentViewModel(PaymentOptionsDataManager.this, paymentOption, PaymentType.WEB.getViewType()));
                     }
                 }
             }
@@ -224,11 +279,19 @@ public class PaymentOptionsDataManager {
             }
 
             if (paymentOptionsCards.size() > 0) {
-                dataListOriginal.add(new CardCredentialsViewModel(PaymentOptionsDataManager.this, paymentOptionsCards, PaymentType.CARD.getViewType()));
+                dataList.add(new CardCredentialsViewModel(PaymentOptionsDataManager.this, paymentOptionsCards, PaymentType.CARD.getViewType()));
             }
         }
 
-        // TODO remove after real data will be received
+        private void addSaveCard() {
+            dataList.add(new SaveCardViewModel(PaymentOptionsDataManager.this, null, PaymentType.SAVE_CARD.getViewType()));
+        }
+
+        private void addEmpty() {
+            dataList.add(new EmptyViewModel(PaymentOptionsDataManager.this, null, PaymentType.EMPTY.getViewType()));
+        }
+
+            // TODO remove after real data will be received
         private String cardJSONString = "{\n" +
                 "      \"id\": \"crd_q3242434\",\n" +
                 "      \"object\": \"card\",\n" +

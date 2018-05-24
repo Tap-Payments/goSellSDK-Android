@@ -30,6 +30,9 @@ public abstract class PaymentOptionsBaseViewHolder<T, K extends PaymentOptionsBa
             case CARD:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.gosellapi_viewholder_card_credentials, parent, false);
                 return new CardCredentialsViewHolder(view);
+            case SAVE_CARD:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.gosellapi_viewholder_save_card, parent, false);
+                return new SaveCardViewHolder(view);
             default:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.gosellapi_viewholder_empty, parent, false);
                 return new EmptyViewHolder(view);
