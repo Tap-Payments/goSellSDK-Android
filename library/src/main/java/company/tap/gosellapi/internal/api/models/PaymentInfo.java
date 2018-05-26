@@ -22,10 +22,15 @@ public class PaymentInfo {
     @Expose
     private ArrayList<Item> items;
 
-    public PaymentInfo(String currency_code, Customer customer, ArrayList<Item> items) {
+    @SerializedName("shipping")
+    @Expose
+    private ArrayList<ShippingCell> shipping;
+
+    public PaymentInfo(String currency_code, Customer customer, ArrayList<Item> items, ArrayList<ShippingCell> shipping) {
         this.currency_code = currency_code;
-        this.customer = customer;
+//        this.customer = customer;
         this.items = items;
+//        this.shipping = shipping;
 
         calculateTotalAmount();
     }
