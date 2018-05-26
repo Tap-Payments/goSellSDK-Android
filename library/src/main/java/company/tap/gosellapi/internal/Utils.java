@@ -17,6 +17,7 @@ import java.util.Locale;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.api_service.AppInfo;
+import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 
 public class Utils {
     public static Drawable setImageTint(Context context, int drawableId, int colorId) {
@@ -35,11 +36,11 @@ public class Utils {
         }
     }
 
-    public static String getFormattedCurrency(String currencyCode, Number sum){
+    public static String getFormattedCurrency(AmountedCurrency amountedCurrency){
         Locale locale = new Locale(AppInfo.getLocaleString());
         Currency currency;
         try {
-            currency = Currency.getInstance(currencyCode);
+            currency = Currency.getInstance(amountedCurrency.getCurrency_code());
         } catch (IllegalArgumentException ex) {
             return "";
         }
@@ -49,7 +50,7 @@ public class Utils {
         currencyFormat.setMinimumFractionDigits(currency.getDefaultFractionDigits());
         currencyFormat.setMaximumFractionDigits(currency.getDefaultFractionDigits());
 
-        return String.format("%s %s", symbol, currencyFormat.format(sum));
+        return String.format("%s %s", symbol, currencyFormat.format(amountedCurrency.getAmount()));
     }
 
     private static String getOptionallyHardcodedSymbol(String symbol) {

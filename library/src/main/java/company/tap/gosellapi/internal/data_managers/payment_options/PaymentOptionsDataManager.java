@@ -3,14 +3,13 @@ package company.tap.gosellapi.internal.data_managers.payment_options;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import company.tap.gosellapi.internal.Constants;
+import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 import company.tap.gosellapi.internal.api.models.Card;
 import company.tap.gosellapi.internal.api.models.CardRawData;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
-import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
 import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.CardCredentialsViewModel;
 import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.CurrencyViewModel;
 import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.EmptyViewModel;
@@ -26,7 +25,7 @@ public class PaymentOptionsDataManager {
 
     //outer interface (for fragment, containing recyclerView)
     public interface PaymentOptionsDataListener {
-        void startCurrencySelection(HashMap<String, Double> currencies, String selectedCurrency);
+        void startCurrencySelection(ArrayList<AmountedCurrency> currencies, AmountedCurrency selectedCurrency);
         void startOTP();
         void startWebPayment();
         void startScanCard();
@@ -66,9 +65,9 @@ public class PaymentOptionsDataManager {
     //endregion
 
     //region callback actions from child viewModels
-    public void currencyHolderClicked(int position, HashMap<String, Double> currencies) {
+    public void currencyHolderClicked(int position, ArrayList<AmountedCurrency> currencies) {
         CurrencySectionData currencySectionData = ((CurrencyViewModel) dataList.get(position)).getData();
-        listener.startCurrencySelection(currencies, currencySectionData.getSelectedCurrencyCode());
+        listener.startCurrencySelection(currencies, currencySectionData.getSelectedCurrency());
     }
 
     public void recentPaymentItemClicked(int position, Card recentItem) {
@@ -138,20 +137,20 @@ public class PaymentOptionsDataManager {
         }
     }
 
-    public void currencySelectedByUser(String userChoiceCurrency) {
+    public void currencySelectedByUser(AmountedCurrency userChoiceCurrency) {
         //update currency section
         CurrencyViewModel currencyViewModel = getCurrencyViewModel();
         if (currencyViewModel == null) return;
         CurrencySectionData currencySectionData = currencyViewModel.getData();
 
-        currencySectionData.setUserChoiceData(userChoiceCurrency, currencySectionData.getData().get(userChoiceCurrency));
+        currencySectionData.setUserChoiceData(userChoiceCurrency);
         currencyViewModel.updateData();
 
         //filter payment options
         CardCredentialsViewModel cardCredentialsViewModel = getCardCredentialsViewModel();
         if (cardCredentialsViewModel == null) return;
 
-        cardCredentialsViewModel.filterByCurrency(userChoiceCurrency);
+        cardCredentialsViewModel.filterByCurrency(userChoiceCurrency.getCurrency_code());
     }
 
     private void displaySaveCard(boolean show) {
@@ -252,11 +251,10 @@ public class PaymentOptionsDataManager {
         }
 
         private void addCurrencies() {
-            HashMap<String, Double> supportedCurrencies = paymentOptionsResponse.getSupported_currencies();
+            ArrayList<AmountedCurrency> supportedCurrencies = paymentOptionsResponse.getSupported_currencies();
             if (supportedCurrencies != null && supportedCurrencies.size() > 0) {
                 String initialCurrency = paymentOptionsResponse.getCurrency_code();
-                double initialAmount = GlobalDataManager.getInstance().getPaymentInfo().getTotal_amount();
-                CurrencySectionData currencySectionData = new CurrencySectionData(supportedCurrencies, initialCurrency, initialAmount);
+                CurrencySectionData currencySectionData = new CurrencySectionData(supportedCurrencies, initialCurrency);
 
                 dataList.add(new CurrencyViewModel(PaymentOptionsDataManager.this, currencySectionData, PaymentType.CURRENCY.getViewType()));
             }

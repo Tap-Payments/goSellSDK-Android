@@ -14,9 +14,10 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 import company.tap.gosellapi.R;
+import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 import company.tap.gosellapi.internal.api.models.CardRawData;
 import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
@@ -94,7 +95,7 @@ public class GoSellPaymentActivity
     }
 
     @Override
-    public void startCurrencySelection(HashMap<String, Double> currencies, String selectedCurrency) {
+    public void startCurrencySelection(ArrayList<AmountedCurrency> currencies, AmountedCurrency selectedCurrency) {
         Intent intent = new Intent(this, CurrenciesActivity.class);
         intent.putExtra(CurrenciesActivity.CURRENCIES_ACTIVITY_DATA, currencies);
         intent.putExtra(CurrenciesActivity.CURRENCIES_ACTIVITY_INITIAL_SELECTED_CURRENCY, selectedCurrency);
@@ -177,7 +178,7 @@ public class GoSellPaymentActivity
 //                TapDialog.createToast(this, L.scan_was_canceled.toString(), Toast.LENGTH_LONG);
             }
         } else if (requestCode == CURRENCIES_REQUEST_CODE) {
-            String userChoiceCurrency = data.getStringExtra(CurrenciesActivity.CURRENCIES_ACTIVITY_USER_CHOICE_CURRENCY);
+            AmountedCurrency userChoiceCurrency = (AmountedCurrency) data.getSerializableExtra(CurrenciesActivity.CURRENCIES_ACTIVITY_USER_CHOICE_CURRENCY);
             if (userChoiceCurrency != null) {
                 dataSource.currencySelectedByUser(userChoiceCurrency);
             }

@@ -14,11 +14,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.Utils;
 import company.tap.gosellapi.internal.adapters.CurrenciesRecyclerViewAdapter;
+import company.tap.gosellapi.internal.api.models.AmountedCurrency;
+import company.tap.gosellapi.internal.data_managers.payment_options.CurrencySectionData;
 
 public class CurrenciesActivity
         extends BaseActionBarActivity implements CurrenciesRecyclerViewAdapter.CurrenciesAdapterCallback {
@@ -27,8 +28,8 @@ public class CurrenciesActivity
     public static final String CURRENCIES_ACTIVITY_USER_CHOICE_CURRENCY = "currenciesActivityUserChoiceCurrency";
     private SearchView mSearchView;
 
-    private HashMap<String, Double> currencies;
-    private String selectedCurrencyCode;
+    ArrayList<AmountedCurrency> currencies;
+    private AmountedCurrency selectedCurrency;
     private ArrayList<String> dataKeys;
 
     private CurrenciesRecyclerViewAdapter adapter;
@@ -46,15 +47,18 @@ public class CurrenciesActivity
 
     private void getData() {
         //noinspection unchecked
-        currencies = (HashMap<String, Double>) getIntent().getSerializableExtra(CURRENCIES_ACTIVITY_DATA);
-        selectedCurrencyCode = getIntent().getStringExtra(CURRENCIES_ACTIVITY_INITIAL_SELECTED_CURRENCY);
+        currencies = (ArrayList<AmountedCurrency>) getIntent().getSerializableExtra(CURRENCIES_ACTIVITY_DATA);
+        selectedCurrency = (AmountedCurrency) getIntent().getSerializableExtra(CURRENCIES_ACTIVITY_INITIAL_SELECTED_CURRENCY);
 
-        dataKeys = new ArrayList<>(currencies.keySet());
+        dataKeys = new ArrayList<>();
+        for (AmountedCurrency amountedCurrency : currencies) {
+            dataKeys.add(amountedCurrency.getCurrency_code());
+        }
     }
 
     private void initRecycler() {
         RecyclerView recycler = findViewById(R.id.recyclerCurrencies);
-        adapter = new CurrenciesRecyclerViewAdapter(dataKeys, selectedCurrencyCode, this);
+        adapter = new CurrenciesRecyclerViewAdapter(dataKeys, selectedCurrency.getCurrency_code(), this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
         recycler.setLayoutManager(layoutManager);
@@ -69,8 +73,7 @@ public class CurrenciesActivity
     }
 
     private void setTitle() {
-        double selectedAmount = currencies.get(selectedCurrencyCode);
-        setTitle(Utils.getFormattedCurrency(selectedCurrencyCode, selectedAmount));
+        setTitle(Utils.getFormattedCurrency(selectedCurrency));
     }
 
     @Override
@@ -106,15 +109,15 @@ public class CurrenciesActivity
 
     @Override
     public void itemSelected(String currencyCode) {
-        if (!currencyCode.equalsIgnoreCase(selectedCurrencyCode)) {
-            selectedCurrencyCode = currencyCode;
+        if (!this.selectedCurrency.getCurrency_code().equalsIgnoreCase(currencyCode)) {
+            this.selectedCurrency = CurrencySectionData.getAmountedCurrencyByCurrencyCode(currencyCode, currencies);
             setTitle();
         }
     }
 
     @Override
     public void onBackPressed() {
-        setResult(RESULT_OK, new Intent().putExtra(CURRENCIES_ACTIVITY_USER_CHOICE_CURRENCY, selectedCurrencyCode));
+        setResult(RESULT_OK, new Intent().putExtra(CURRENCIES_ACTIVITY_USER_CHOICE_CURRENCY, selectedCurrency));
         super.onBackPressed();
     }
 }
