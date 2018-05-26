@@ -6,8 +6,8 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
+import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 import company.tap.gosellapi.internal.api.models.Card;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 
@@ -37,7 +37,7 @@ public final class PaymentOptionsResponse implements BaseResponse {
 
     @SerializedName("supported_currencies")
     @Expose
-    private HashMap<String, Double> supported_currencies;
+    private ArrayList<AmountedCurrency> supported_currencies;
 
     @SerializedName("cards")
     @Expose
@@ -59,7 +59,7 @@ public final class PaymentOptionsResponse implements BaseResponse {
         return currency_code;
     }
 
-    public HashMap<String, Double> getSupported_currencies() {
+    public ArrayList<AmountedCurrency> getSupported_currencies() {
         return supported_currencies;
     }
 

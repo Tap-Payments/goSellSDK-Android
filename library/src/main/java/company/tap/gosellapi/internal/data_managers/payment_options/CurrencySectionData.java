@@ -1,42 +1,51 @@
 package company.tap.gosellapi.internal.data_managers.payment_options;
 
-import java.util.AbstractMap;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
 import company.tap.gosellapi.internal.Utils;
+import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 
 public class CurrencySectionData {
-    private HashMap<String, Double> data;
-    private Map.Entry<String, Double> initialData;
-    private Map.Entry<String, Double> userChoiceData;
+    private ArrayList<AmountedCurrency> data;
+    private AmountedCurrency initialData;
+    private AmountedCurrency userChoiceData;
 
-    CurrencySectionData(HashMap<String, Double> data, String initialCurrency, double initialAmount) {
+    CurrencySectionData(ArrayList<AmountedCurrency> data, String initialCurrency) {
         this.data = data;
-        this.initialData = new AbstractMap.SimpleEntry<>(initialCurrency, initialAmount);
+        this.initialData = getAmountedCurrencyByCurrencyCode(initialCurrency, data);
     }
 
-    public void setUserChoiceData(String currencyCode, double amount) {
-        if (currencyCode.equalsIgnoreCase(initialData.getKey())) {
+    public void setUserChoiceData(AmountedCurrency userChoiceCurrency) {
+        if (initialData.getCurrency_code().equalsIgnoreCase(userChoiceCurrency.getCurrency_code())) {
             userChoiceData = null;
         } else {
-            userChoiceData = new AbstractMap.SimpleEntry<>(currencyCode, amount);
+            userChoiceData = userChoiceCurrency;
         }
     }
 
-    public HashMap<String, Double> getData() {
+    public ArrayList<AmountedCurrency> getData() {
         return data;
     }
 
+    public static AmountedCurrency getAmountedCurrencyByCurrencyCode(String currencyCode, ArrayList<AmountedCurrency> data) {
+        for (AmountedCurrency amountedCurrency : data) {
+            if (amountedCurrency.getCurrency_code().equalsIgnoreCase(currencyCode)) {
+                return amountedCurrency;
+            }
+        }
+
+        return null;
+    }
+
     public String getInitialData() {
-        return Utils.getFormattedCurrency(initialData.getKey(), initialData.getValue());
+        return Utils.getFormattedCurrency(initialData);
     }
 
     public String getUserChoiceData() {
-        return userChoiceData == null ? null : Utils.getFormattedCurrency(userChoiceData.getKey(), userChoiceData.getValue());
+        return userChoiceData == null ? null : Utils.getFormattedCurrency(userChoiceData);
     }
 
-    public String getSelectedCurrencyCode() {
-        return userChoiceData == null ? initialData.getKey() : userChoiceData.getKey();
+    public AmountedCurrency getSelectedCurrency() {
+        return userChoiceData == null ? initialData : userChoiceData;
     }
 }

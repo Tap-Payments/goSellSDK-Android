@@ -18,7 +18,7 @@
         android:layout_toStartOf="@id/saveCardSwitch"
         android:text="@string/textview_disclaimer_save_card" />
 
-    <Switch
+    <android.support.v7.widget.SwitchCompat
         android:id="@+id/saveCardSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

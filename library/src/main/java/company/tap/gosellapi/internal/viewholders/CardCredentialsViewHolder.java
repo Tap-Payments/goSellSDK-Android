@@ -2,12 +2,12 @@ package company.tap.gosellapi.internal.viewholders;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SwitchCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
-import android.widget.Switch;
 
 import java.util.ArrayList;
 
@@ -20,7 +20,7 @@ public class CardCredentialsViewHolder
         extends PaymentOptionsBaseViewHolder<ArrayList<PaymentOption>, CardCredentialsViewHolder, CardCredentialsViewModel> {
     private ImageButton cardScannerButton;
     private View addressOnCardLayout;
-    private Switch saveCardSwitch;
+    private SwitchCompat saveCardSwitch;
 
     CardCredentialsViewHolder(View view) {
         super(view);
