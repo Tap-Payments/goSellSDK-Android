@@ -28,6 +28,7 @@ public class PaymentInfo {
 
     public PaymentInfo(String currency_code, Customer customer, ArrayList<Item> items, ArrayList<ShippingCell> shipping) {
         this.currency_code = currency_code;
+        // TODO: 26.05.2018 now this is disabled cause backend won't give currency list if customer is passed, need to change later
 //        this.customer = customer;
         this.items = items;
         this.shipping = shipping;
