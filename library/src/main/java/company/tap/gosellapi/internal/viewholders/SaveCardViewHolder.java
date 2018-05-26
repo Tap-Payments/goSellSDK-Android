@@ -15,10 +15,10 @@ public class SaveCardViewHolder
 
     @Override
     public void bind(EmptyType data) {
-        display();
-
         itemView.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         viewModel.setNeededHeight(itemView.getMeasuredHeight());
+
+        display();
     }
 
     private void display() {
