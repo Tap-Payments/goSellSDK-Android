@@ -23,9 +23,9 @@ public class MainActivity extends AppCompatActivity implements GoSellPayLayout.G
                 new Customer("so@me.mail", "+380000000000", "name"),
                 new ArrayList<Item>() {
                     {
-//                        add(new Item("itemFirst", 2, "piece", 53.25));
-//                        add(new Item("itemSecond", 15, "piece", 0.11));
-//                        add(new Item("itemThird", 7.3, "kg", 1_200.00));
+                        add(new Item("itemFirst", 2, "piece", 53.25));
+                        add(new Item("itemSecond", 15, "piece", 0.11));
+                        add(new Item("itemThird", 7.3, "kg", 1_200.00));
                     }
                 },
                 new ArrayList<ShippingCell>() {
