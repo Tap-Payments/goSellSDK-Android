@@ -9,7 +9,7 @@
         android:id="@+id/billIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_basic_enlarged"
+        android:layout_margin="@dimen/margin_basic_23dp"
         android:background="@drawable/ic_bill_normal" />
 
     <View
