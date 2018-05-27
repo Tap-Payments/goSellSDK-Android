@@ -1,5 +1,6 @@
 package company.tap.gosellapi.internal.viewholders;
 
+import android.content.res.Resources;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -15,7 +16,8 @@ public class SaveCardViewHolder
 
     @Override
     public void bind(EmptyType data) {
-        itemView.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        itemView.measure(View.MeasureSpec.makeMeasureSpec(Resources.getSystem().getDisplayMetrics().widthPixels, View.MeasureSpec.AT_MOST),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
         viewModel.setNeededHeight(itemView.getMeasuredHeight());
 
         display();
