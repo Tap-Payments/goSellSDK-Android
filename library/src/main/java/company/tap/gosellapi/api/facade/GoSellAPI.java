@@ -1,17 +1,21 @@
 package company.tap.gosellapi.api.facade;
 
 import company.tap.gosellapi.api.model.BIN;
+import company.tap.gosellapi.api.model.Card;
 import company.tap.gosellapi.api.model.Charge;
 import company.tap.gosellapi.api.model.Customer;
+import company.tap.gosellapi.api.model.Source;
 import company.tap.gosellapi.api.model.Token;
 import company.tap.gosellapi.api.requests.CaptureChargeRequest;
 import company.tap.gosellapi.api.requests.CardRequest;
+import company.tap.gosellapi.api.requests.CreateCardRequest;
 import company.tap.gosellapi.api.requests.CreateChargeRequest;
 import company.tap.gosellapi.api.requests.CreateTokenRequest;
 import company.tap.gosellapi.api.requests.CustomerRequest;
 import company.tap.gosellapi.api.requests.UpdateChargeRequest;
 import company.tap.gosellapi.api.responses.CardResponse;
 import company.tap.gosellapi.api.responses.GeneralDeleteResponse;
+import company.tap.gosellapi.api.responses.RetrieveCardsResponse;
 
 /**
  * Facade class to use Android SDK
@@ -105,6 +109,53 @@ public final class GoSellAPI {
      */
     public void deleteCustomer(final String customerId, final APIRequestCallback<GeneralDeleteResponse> requestCallback) {
         apiHelper.deleteCustomer(customerId)
+                .enqueue(new BaseCallback<>(requestCallback));
+    }
+
+    /**
+     * Creates {@link Card} for customer id with {@link Source}
+     * <br>
+     * @param customerId id field from {@link Customer#getId()} method
+     * @param source {@link Source} instance
+     * @param requestCallback {@link APIRequestCallback} parametrized with {@link Card} model
+     */
+    public void createCard(final String customerId, final Source source, final APIRequestCallback<Card> requestCallback) {
+        apiHelper.createCard(customerId, new CreateCardRequest(source))
+                .enqueue(new BaseCallback<>(requestCallback));
+    }
+
+    /**
+     * Retrieves specific {@link Card} by customer id and card id
+     * <br>
+     * @param customerId Id field from {@link Customer#getId()} method
+     * @param cardId Id field from {@link Card#getId()} method
+     * @param requestCallback {@link APIRequestCallback} parametrized with {@link Card} model
+     */
+    public void retrieveCard(final String customerId, final String cardId, final APIRequestCallback<Card> requestCallback){
+        apiHelper.retrieveCard(customerId, cardId)
+                .enqueue(new BaseCallback<>(requestCallback));
+    }
+
+    /**
+     * Retrieves all {@link Card}s by customer id
+     * <br>
+     * @param customerId Id field from {@link Customer#getId()} method
+     * @param requestCallback {@link APIRequestCallback} parametrized with {@link RetrieveCardsResponse} model
+     */
+    public void retrieveAllCards(final String customerId, final APIRequestCallback<RetrieveCardsResponse> requestCallback){
+        apiHelper.retrieveAllCards(customerId)
+                .enqueue(new BaseCallback<>(requestCallback));
+    }
+
+    /**
+     * Deletes {@link Card} for customer id and card id
+     * <br>
+     * @param customerId Id field from {@link Customer#getId()} method
+     * @param cardId Id field from {@link Card#getId()} method
+     * @param requestCallback {@link APIRequestCallback} parametrized with {@link GeneralDeleteResponse} model
+     */
+    public void deleteCard(final String customerId, final String cardId, final APIRequestCallback<GeneralDeleteResponse> requestCallback) {
+        apiHelper.deleteCard(customerId, cardId)
                 .enqueue(new BaseCallback<>(requestCallback));
     }
 

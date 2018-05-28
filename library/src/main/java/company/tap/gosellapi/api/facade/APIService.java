@@ -1,15 +1,18 @@
 package company.tap.gosellapi.api.facade;
 
 import company.tap.gosellapi.api.model.BIN;
+import company.tap.gosellapi.api.model.Card;
 import company.tap.gosellapi.api.model.Charge;
 import company.tap.gosellapi.api.model.Customer;
 import company.tap.gosellapi.api.model.Token;
 import company.tap.gosellapi.api.requests.CaptureChargeRequest;
+import company.tap.gosellapi.api.requests.CreateCardRequest;
 import company.tap.gosellapi.api.requests.CreateChargeRequest;
 import company.tap.gosellapi.api.requests.CreateTokenRequest;
 import company.tap.gosellapi.api.requests.CustomerRequest;
 import company.tap.gosellapi.api.requests.UpdateChargeRequest;
 import company.tap.gosellapi.api.responses.GeneralDeleteResponse;
+import company.tap.gosellapi.api.responses.RetrieveCardsResponse;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -42,6 +45,18 @@ interface APIService {
 
     @DELETE(API_Constants.CUSTOMERS + "/{" + API_Constants.CUSTOMER_ID + "}")
     Call<GeneralDeleteResponse> deleteCustomer(@Path(API_Constants.CUSTOMER_ID) String customerId);
+
+    @POST(API_Constants.CARD + "/{" + API_Constants.CUSTOMER_ID + "}")
+    Call<Card> createCard(@Path(API_Constants.CUSTOMER_ID) String customerId, @Body CreateCardRequest createCardRequest);
+
+    @GET(API_Constants.CARD + "/{" + API_Constants.CUSTOMER_ID + "}" + "/{" + API_Constants.CARD_ID + "}")
+    Call<Card> retrieveCard(@Path(API_Constants.CUSTOMER_ID) String customerId, @Path(API_Constants.CARD_ID) String cardId);
+
+    @GET(API_Constants.CARD + "/{" + API_Constants.CUSTOMER_ID + "}")
+    Call<RetrieveCardsResponse> retrieveAllCards(@Path(API_Constants.CUSTOMER_ID) String customerId);
+
+    @DELETE(API_Constants.CARD + "/{" + API_Constants.CUSTOMER_ID + "}" + "/{" + API_Constants.CARD_ID + "}")
+    Call<GeneralDeleteResponse> deleteCard(@Path(API_Constants.CUSTOMER_ID) String customerId, @Path(API_Constants.CARD_ID) String cardId);
 
     @POST(API_Constants.CHARGES)
     Call<Charge> createCharge(@Body CreateChargeRequest createChargeRequest);
