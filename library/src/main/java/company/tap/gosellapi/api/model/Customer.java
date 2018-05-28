@@ -54,14 +54,6 @@ public final class Customer implements BaseResponse {
     @Expose
     private String currency;
 
-    @SerializedName("default_source")
-    @Expose
-    private String default_source;
-
-    @SerializedName("sources")
-    @Expose
-    private Sources sources;
-
     /**
      * @return Unique identifier for the object.
      */
@@ -91,13 +83,6 @@ public final class Customer implements BaseResponse {
     }
 
     /**
-     * @return ID of the default source attached to this customer.
-     */
-    public String getDefault_source() {
-        return default_source;
-    }
-
-    /**
      * @return An arbitrary string attached to the object. Often useful for displaying to users.
      */
     public String getDescription() {
@@ -123,13 +108,6 @@ public final class Customer implements BaseResponse {
      */
     public HashMap<String, String> getMetadata() {
         return metadata;
-    }
-
-    /**
-     * @return The customer&#8217;s payment sources, if any.
-     */
-    public Sources getSources() {
-        return sources;
     }
 
     /**

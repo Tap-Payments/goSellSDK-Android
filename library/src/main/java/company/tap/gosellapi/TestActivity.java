@@ -107,8 +107,8 @@ public class TestActivity extends Activity {
                         Log.d(TAG, "onSuccess createCharge: serializedResponse:" + serializedResponse);
                         charge = serializedResponse;
                         captureCharge();
-//                        retrieveCharge();
-//                        updateCharge();
+                        retrieveCharge();
+                        updateCharge();
                     }
 
                     @Override
