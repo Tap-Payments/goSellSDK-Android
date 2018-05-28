@@ -78,39 +78,6 @@ public final class Card implements BaseResponse {
     @Expose
     private String bin;
 
-
-    @SerializedName("country")
-    @Expose
-    private String country;
-
-    @SerializedName("cvc_check")
-    @Expose
-    private int cvc_check;
-
-    @SerializedName("dynamic_last4")
-    @Expose
-    private int dynamic_last4;
-
-    @SerializedName("metadata")
-    @Expose
-    private HashMap<String, String> metadata;
-
-    @SerializedName("tokenization_method")
-    @Expose
-    private String tokenization_method;
-
-    @SerializedName("address_line1_check")
-    @Expose
-    private String address_line1_check;
-
-    @SerializedName("address_state")
-    @Expose
-    private String address_state;
-
-    @SerializedName("address_zip_check")
-    @Expose
-    private String address_zip_check;
-
     /**
      * @return Unique identifier for the object.
      */
@@ -147,24 +114,10 @@ public final class Card implements BaseResponse {
     }
 
     /**
-     * @return If address_line1 was provided, results of the check: pass, fail, unavailable, or unchecked.
-     */
-    public String getAddress_line1_check() {
-        return address_line1_check;
-    }
-
-    /**
      * @return Address line 2 (Apartment/Suite/Unit/Building).
      */
     public String getAddress_line2() {
         return address_line2;
-    }
-
-    /**
-     * @return State/County/Province/Region.
-     */
-    public String getAddress_state() {
-        return address_state;
     }
 
     /**
@@ -175,13 +128,6 @@ public final class Card implements BaseResponse {
     }
 
     /**
-     * @return If address_zip was provided, results of the check: pass, fail, unavailable, or unchecked.
-     */
-    public String getAddress_zip_check() {
-        return address_zip_check;
-    }
-
-    /**
      * @return Card brand. Can be Visa, American Express, MasterCard, Discover, JCB, Diners Club, or Unknown.
      */
     public String getBrand() {
@@ -189,31 +135,10 @@ public final class Card implements BaseResponse {
     }
 
     /**
-     * @return Two-letter ISO code representing the country of the card. You could use this attribute to get a sense of the international breakdown of cards you&#8217;ve collected.
-     */
-    public String getCountry() {
-        return country;
-    }
-
-    /**
      * @return The customer that this card belongs to. This attribute will not be in the card object if the card belongs to an account or recipient instead.
      */
     public Object getCustomer() {
         return customer;
-    }
-
-    /**
-     * @return If a CVC was provided, results of the check: pass, fail, unavailable, or unchecked.
-     */
-    public int getCvc_check() {
-        return cvc_check;
-    }
-
-    /**
-     * @return (For tokenized numbers only.) The last four digits of the device account number.
-     */
-    public int getDynamic_last4() {
-        return dynamic_last4;
     }
 
     /**
@@ -252,24 +177,10 @@ public final class Card implements BaseResponse {
     }
 
     /**
-     * @return HashMap of key/value pairs that you can attach to an object. It can be useful for storing additional information about the object in a structured format.
-     */
-    public HashMap<String, String> getMetadata() {
-        return metadata;
-    }
-
-    /**
      * @return Cardholder name.
      */
     public String getName() {
         return name;
-    }
-
-    /**
-     * @return If the card number is tokenized, this is the method that was used. Can be apple_pay or android_pay.
-     */
-    public String getTokenization_method() {
-        return tokenization_method;
     }
 
     /**
