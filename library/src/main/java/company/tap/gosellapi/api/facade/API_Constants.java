@@ -12,6 +12,9 @@ final class API_Constants {
     static final String TOKENS = "tokens";
     static final String TOKEN_ID = "token_id";
 
+    static final String CUSTOMERS = "customers";
+    static final String CUSTOMER_ID = "customer_id";
+
     static final String CHARGES = "charges";
     static final String CHARGE_ID = "charge_id";
 
