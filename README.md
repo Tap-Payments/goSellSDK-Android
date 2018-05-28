@@ -16,7 +16,7 @@ Add it in your **root** `build.gradle` at the end of repositories:
 Step 2. Add the dependency
 ```groovy
 	dependencies {
-        compile 'com.github.Tap-Payments:goSellSDK-Android:1.1'
+        compile 'com.github.Tap-Payments:goSellSDK-Android:1.1.2'
 	}
 ```
 
@@ -49,9 +49,7 @@ GoSellAPI.getInstance(AUTH_TOKEN).createToken(
     new APIRequestCallback<Token>() {
         @Override
         public void onSuccess(int responseCode, Token serializedResponse) {
-            synchronized (this) {
-                Log.d(TAG, "onSuccess createToken serializedResponse:" + serializedResponse);
-            }
+            Log.d(TAG, "onSuccess createToken serializedResponse:" + serializedResponse);
         }
 
         @Override
@@ -98,32 +96,6 @@ GoSellAPI.getInstance(AUTH_TOKEN).createCharge(
 );
 ```
 
-**Capture charge**
-
-```java
-GoSellAPI.getInstance(AUTH_TOKEN).captureCharge(
-    charge.getId(),
-    new CaptureChargeRequest
-        .Builder()
-        .amount(10)
-        .statement_descriptor("Test Txn 001")
-        .receipt_sms("96598989898")
-        .receipt_email("test@test.com")
-        .build(),
-    new APIRequestCallback<Charge>() {
-        @Override
-        public void onSuccess(int responseCode, Charge serializedResponse) {
-            Log.d(TAG, "onSuccess captureCharge: serializedResponse:" + serializedResponse);
-        }
-
-        @Override
-        public void onFailure(GoSellError errorDetails) {
-            Log.d(TAG, "onFailure captureCharge, errorCode: " + errorDetails.getErrorCode() + ", errorBody: " + errorDetails.getErrorBody() + ", throwable: " + errorDetails.getThrowable());
-        }
-    }
-);
-```
-
 **Create redirect**<br><br>
 Redirect instance can be created in two ways - providing both return and post url, or only return one.
    
@@ -139,6 +111,53 @@ Source instance can be created in a multiple ways - providing token id, static i
 Source source = new Source("your_token_id");
 Source source = new Source("src_kw.knet");
 Source source = new Source("card", "12", "20", "4242424242424242", "123");
+```
+
+**Create customer**
+
+```java
+HashMap<String, String> customerMetadata = new HashMap<>();
+customerMetadata.put("Gender", "Male");
+customerMetadata.put("Nationality", "Kuwaiti");
+GoSellAPI.getInstance(AUTH_TOKEN).createCustomer(
+    new CustomerRequest
+            .Builder("Test User", "0096598989898", "test@test.com")
+            .description("test description")
+            .metadata(customerMetadata)
+            .currency("KWT")
+            .build(),
+    new APIRequestCallback<Customer>() {
+        @Override
+        public void onSuccess(int responseCode, Customer serializedResponse) {
+            Log.d(TAG, "onSuccess createCustomer: ");
+        }
+
+        @Override
+        public void onFailure(GoSellError errorDetails) {
+            Log.d(TAG, "onFailure createCustomer, errorCode: " + errorDetails.getErrorCode() + ", errorBody: " + errorDetails.getErrorBody() + ", throwable: " + errorDetails.getThrowable());
+        }
+    }
+);
+```
+
+**Create card**
+
+```java
+GoSellAPI.getInstance(AUTH_TOKEN).createCard(
+    customer.getId(),
+    new Source("tok_XXXXXXXXXXXXXXXXXXXXXXXX"),
+    new APIRequestCallback<Card>() {
+        @Override
+        public void onSuccess(int responseCode, Card serializedResponse) {
+            Log.d(TAG, "onSuccess createCard: ");
+        }
+
+        @Override
+        public void onFailure(GoSellError errorDetails) {
+            Log.d(TAG, "onFailure createCard, errorCode: " + errorDetails.getErrorCode() + ", errorBody: " + errorDetails.getErrorBody() + ", throwable: " + errorDetails.getThrowable());
+        }
+    }
+);
 ```
 
 **Get bin number details**
