@@ -2,13 +2,17 @@ package company.tap.gosellapi.api.facade;
 
 import company.tap.gosellapi.api.model.BIN;
 import company.tap.gosellapi.api.model.Charge;
+import company.tap.gosellapi.api.model.Customer;
 import company.tap.gosellapi.api.model.Token;
 import company.tap.gosellapi.api.requests.CaptureChargeRequest;
 import company.tap.gosellapi.api.requests.CreateChargeRequest;
 import company.tap.gosellapi.api.requests.CreateTokenRequest;
+import company.tap.gosellapi.api.requests.CustomerRequest;
 import company.tap.gosellapi.api.requests.UpdateChargeRequest;
+import company.tap.gosellapi.api.responses.GeneralDeleteResponse;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -26,6 +30,18 @@ interface APIService {
 
     @GET(API_Constants.TOKENS + "/{" + API_Constants.TOKEN_ID + "}")
     Call<Token> retrieveToken(@Path(API_Constants.TOKEN_ID) String tokenId);
+
+    @POST(API_Constants.CUSTOMERS)
+    Call<Customer> createCustomer(@Body CustomerRequest customerRequest);
+
+    @GET(API_Constants.CUSTOMERS + "/{" + API_Constants.CUSTOMER_ID + "}")
+    Call<Customer> retrieveCustomer(@Path(API_Constants.CUSTOMER_ID) String customerId);
+
+    @PUT(API_Constants.CUSTOMERS + "/{" + API_Constants.CUSTOMER_ID + "}")
+    Call<Customer> updateCustomer(@Path(API_Constants.CUSTOMER_ID) String customerId, @Body CustomerRequest customerRequest);
+
+    @DELETE(API_Constants.CUSTOMERS + "/{" + API_Constants.CUSTOMER_ID + "}")
+    Call<GeneralDeleteResponse> deleteCustomer(@Path(API_Constants.CUSTOMER_ID) String customerId);
 
     @POST(API_Constants.CHARGES)
     Call<Charge> createCharge(@Body CreateChargeRequest createChargeRequest);

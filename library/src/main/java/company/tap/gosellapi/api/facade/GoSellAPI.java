@@ -2,13 +2,16 @@ package company.tap.gosellapi.api.facade;
 
 import company.tap.gosellapi.api.model.BIN;
 import company.tap.gosellapi.api.model.Charge;
+import company.tap.gosellapi.api.model.Customer;
 import company.tap.gosellapi.api.model.Token;
 import company.tap.gosellapi.api.requests.CaptureChargeRequest;
 import company.tap.gosellapi.api.requests.CardRequest;
 import company.tap.gosellapi.api.requests.CreateChargeRequest;
 import company.tap.gosellapi.api.requests.CreateTokenRequest;
+import company.tap.gosellapi.api.requests.CustomerRequest;
 import company.tap.gosellapi.api.requests.UpdateChargeRequest;
 import company.tap.gosellapi.api.responses.CardResponse;
+import company.tap.gosellapi.api.responses.GeneralDeleteResponse;
 
 /**
  * Facade class to use Android SDK
@@ -56,6 +59,52 @@ public final class GoSellAPI {
      */
     public void retrieveToken(final String tokenId, final APIRequestCallback<Token> requestCallback) {
         apiHelper.retrieveToken(tokenId)
+                .enqueue(new BaseCallback<>(requestCallback));
+    }
+
+    /**
+     * Creates {@link Customer} with {@link CustomerRequest}
+     * <br>
+     * @param customerRequest {@link CustomerRequest} instance. Use {@link CustomerRequest.Builder} to obtain this instance
+     * @param requestCallback {@link APIRequestCallback} parametrized with {@link Customer} model
+     */
+    public void createCustomer(final CustomerRequest customerRequest, final APIRequestCallback<Customer> requestCallback) {
+        apiHelper.createCustomer(customerRequest)
+                .enqueue(new BaseCallback<>(requestCallback));
+    }
+
+
+    /**
+     * Retrieves {@link Customer} by id
+     * <br>
+     * @param customerId Id field from {@link Customer#getId()} method
+     * @param requestCallback {@link APIRequestCallback} parametrized with {@link Customer} model
+     */
+    public void retrieveCustomer(final String customerId, final APIRequestCallback<Customer> requestCallback) {
+        apiHelper.retrieveCustomer(customerId)
+                .enqueue(new BaseCallback<>(requestCallback));
+    }
+
+    /**
+     * Updates {@link Customer} by id with {@link CustomerRequest}
+     * <br>
+     * @param customerId Id field from {@link Customer#getId()} method
+     * @param customerRequest {@link CustomerRequest} instance. Use {@link CustomerRequest.Builder} to obtain this instance
+     * @param requestCallback {@link APIRequestCallback} parametrized with {@link Customer} model
+     */
+    public void updateCustomer(final String customerId, final CustomerRequest customerRequest, final APIRequestCallback<Customer> requestCallback) {
+        apiHelper.updateCustomer(customerId, customerRequest)
+                .enqueue(new BaseCallback<>(requestCallback));
+    }
+
+    /**
+     * Deletes {@link Customer} by id
+     * <br>
+     * @param customerId Id field from {@link Customer#getId()} method
+     * @param requestCallback {@link APIRequestCallback} parametrized with {@link GeneralDeleteResponse} model
+     */
+    public void deleteCustomer(final String customerId, final APIRequestCallback<GeneralDeleteResponse> requestCallback) {
+        apiHelper.deleteCustomer(customerId)
                 .enqueue(new BaseCallback<>(requestCallback));
     }
 
