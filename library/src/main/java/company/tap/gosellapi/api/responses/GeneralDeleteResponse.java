@@ -16,7 +16,7 @@ public final class GeneralDeleteResponse implements BaseResponse {
 
     @SerializedName("deleted")
     @Expose
-    private String deleted;
+    private boolean deleted;
 
     /**
      * @return The ID of the deleted object.
@@ -28,7 +28,7 @@ public final class GeneralDeleteResponse implements BaseResponse {
     /**
      * @return True on success
      */
-    public String getDeleted() {
+    public boolean getDeleted() {
         return deleted;
     }
 }
