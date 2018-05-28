@@ -3,8 +3,6 @@ package company.tap.gosellapi.api.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.HashMap;
-
 import company.tap.gosellapi.api.responses.BaseResponse;
 
 /**
