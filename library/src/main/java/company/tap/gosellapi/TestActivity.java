@@ -10,6 +10,7 @@ import company.tap.gosellapi.api.facade.APIRequestCallback;
 import company.tap.gosellapi.api.facade.GoSellAPI;
 import company.tap.gosellapi.api.facade.GoSellError;
 import company.tap.gosellapi.api.model.BIN;
+import company.tap.gosellapi.api.model.Card;
 import company.tap.gosellapi.api.model.Charge;
 import company.tap.gosellapi.api.model.Customer;
 import company.tap.gosellapi.api.model.Redirect;
@@ -21,6 +22,7 @@ import company.tap.gosellapi.api.requests.CreateChargeRequest;
 import company.tap.gosellapi.api.requests.CustomerRequest;
 import company.tap.gosellapi.api.requests.UpdateChargeRequest;
 import company.tap.gosellapi.api.responses.GeneralDeleteResponse;
+import company.tap.gosellapi.api.responses.RetrieveCardsResponse;
 
 public class TestActivity extends Activity {
     private static final String TAG = "TestAct";
@@ -30,6 +32,7 @@ public class TestActivity extends Activity {
     private Token token;
     private Charge charge;
     private Customer customer;
+    private Card card;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,7 +138,8 @@ public class TestActivity extends Activity {
                     public void onSuccess(int responseCode, Customer serializedResponse) {
                         Log.d(TAG, "onSuccess createCustomer: ");
                         customer = serializedResponse;
-                        getCustomer();
+//                        getCustomer();
+                        createCard();
                     }
 
                     @Override
@@ -199,6 +203,82 @@ public class TestActivity extends Activity {
                         Log.d(TAG, "onFailure deleteCustomer, errorCode: " + errorDetails.getErrorCode() + ", errorBody: " + errorDetails.getErrorBody() + ", throwable: " + errorDetails.getThrowable());
                     }
                 });
+    }
+
+    private void createCard() {
+        GoSellAPI.getInstance(AUTH_TOKEN).createCard(
+                customer.getId(),
+                new Source("card", "12", "20", "4242424242424242", "123"),
+                new APIRequestCallback<Card>() {
+                    @Override
+                    public void onSuccess(int responseCode, Card serializedResponse) {
+                        Log.d(TAG, "onSuccess createCard: ");
+                        card = serializedResponse;
+                        retrieveCard();
+                    }
+
+                    @Override
+                    public void onFailure(GoSellError errorDetails) {
+                        Log.d(TAG, "onFailure createCard, errorCode: " + errorDetails.getErrorCode() + ", errorBody: " + errorDetails.getErrorBody() + ", throwable: " + errorDetails.getThrowable());
+                    }
+                }
+        );
+    }
+
+    private void retrieveCard() {
+        GoSellAPI.getInstance(AUTH_TOKEN).retrieveCard(
+                customer.getId(),
+                card.getId(),
+                new APIRequestCallback<Card>() {
+                    @Override
+                    public void onSuccess(int responseCode, Card serializedResponse) {
+                        Log.d(TAG, "onSuccess retrieveCard: ");
+                        card = serializedResponse;
+                        retrieveAllCards();
+                    }
+
+                    @Override
+                    public void onFailure(GoSellError errorDetails) {
+                        Log.d(TAG, "onFailure retrieveCard, errorCode: " + errorDetails.getErrorCode() + ", errorBody: " + errorDetails.getErrorBody() + ", throwable: " + errorDetails.getThrowable());
+                    }
+                }
+        );
+    }
+
+    private void retrieveAllCards() {
+        GoSellAPI.getInstance(AUTH_TOKEN).retrieveAllCards(
+                customer.getId(),
+                new APIRequestCallback<RetrieveCardsResponse>() {
+                    @Override
+                    public void onSuccess(int responseCode, RetrieveCardsResponse serializedResponse) {
+                        Log.d(TAG, "onSuccess retrieveAllCards: ");
+                        deleteCardForCustomer();
+                    }
+
+                    @Override
+                    public void onFailure(GoSellError errorDetails) {
+                        Log.d(TAG, "onFailure retrieveAllCards, errorCode: " + errorDetails.getErrorCode() + ", errorBody: " + errorDetails.getErrorBody() + ", throwable: " + errorDetails.getThrowable());
+                    }
+                }
+        );
+    }
+
+    private void deleteCardForCustomer() {
+        GoSellAPI.getInstance(AUTH_TOKEN).deleteCard(
+                customer.getId(),
+                card.getId(),
+                new APIRequestCallback<GeneralDeleteResponse>() {
+                    @Override
+                    public void onSuccess(int responseCode, GeneralDeleteResponse serializedResponse) {
+                        Log.d(TAG, "onSuccess deleteCard: ");
+                    }
+
+                    @Override
+                    public void onFailure(GoSellError errorDetails) {
+                        Log.d(TAG, "onFailure deleteCard, errorCode: " + errorDetails.getErrorCode() + ", errorBody: " + errorDetails.getErrorBody() + ", throwable: " + errorDetails.getThrowable());
+                    }
+                }
+        );
     }
 
     private void retrieveCharge() {

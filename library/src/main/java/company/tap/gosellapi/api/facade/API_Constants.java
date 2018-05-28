@@ -15,6 +15,9 @@ final class API_Constants {
     static final String CUSTOMERS = "customers";
     static final String CUSTOMER_ID = "customer_id";
 
+    static final String CARD = "card";
+    static final String CARD_ID = "card_id";
+
     static final String CHARGES = "charges";
     static final String CHARGE_ID = "charge_id";
 
