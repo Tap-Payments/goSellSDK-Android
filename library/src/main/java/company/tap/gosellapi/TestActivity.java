@@ -38,8 +38,8 @@
 //    protected void onCreate(Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
 //
-////        createToken();
-//        createCustomer();
+//        createToken();
+////        createCustomer();
 ////        getBINNumberDetails();
 //    }
 //
@@ -61,7 +61,8 @@
 //                        Log.d(TAG, "onSuccess createToken serializedResponse:" + serializedResponse);
 //                        token = serializedResponse;
 ////                        retrieveToken();
-//                        createCharge();
+////                        createCharge();
+//                        createCustomer();
 //                    }
 //
 //                    @Override
@@ -208,7 +209,7 @@
 //    private void createCard() {
 //        GoSellAPI.getInstance(AUTH_TOKEN).createCard(
 //                customer.getId(),
-//                new Source("card", "12", "20", "4242424242424242", "123"),
+//                token.getId(),
 //                new APIRequestCallback<Card>() {
 //                    @Override
 //                    public void onSuccess(int responseCode, Card serializedResponse) {
