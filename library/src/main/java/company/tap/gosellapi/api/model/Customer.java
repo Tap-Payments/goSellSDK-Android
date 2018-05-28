@@ -22,17 +22,13 @@ public final class Customer implements BaseResponse {
     @Expose
     private String object;
 
-    @SerializedName("name")
+    @SerializedName("created")
     @Expose
-    private String name;
+    private long created;
 
-    @SerializedName("currency")
+    @SerializedName("livemode")
     @Expose
-    private String currency;
-
-    @SerializedName("default_source")
-    @Expose
-    private String default_source;
+    private boolean livemode;
 
     @SerializedName("description")
     @Expose
@@ -42,6 +38,10 @@ public final class Customer implements BaseResponse {
     @Expose
     private String email;
 
+    @SerializedName("name")
+    @Expose
+    private String name;
+
     @SerializedName("phone")
     @Expose
     private String phone;
@@ -50,17 +50,17 @@ public final class Customer implements BaseResponse {
     @Expose
     private HashMap<String, String> metadata;
 
+    @SerializedName("currency")
+    @Expose
+    private String currency;
+
+    @SerializedName("default_source")
+    @Expose
+    private String default_source;
+
     @SerializedName("sources")
     @Expose
     private Sources sources;
-
-    @SerializedName("created")
-    @Expose
-    private long created;
-
-    @SerializedName("livemode")
-    @Expose
-    private boolean livemode;
 
     /**
      * @return Unique identifier for the object.
