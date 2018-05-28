@@ -116,10 +116,10 @@ public final class GoSellAPI {
      * Creates {@link Card} for customer id with {@link Source}
      * <br>
      * @param customerId id field from {@link Customer#getId()} method
-     * @param source {@link Source} instance
+     * @param source source identifier
      * @param requestCallback {@link APIRequestCallback} parametrized with {@link Card} model
      */
-    public void createCard(final String customerId, final Source source, final APIRequestCallback<Card> requestCallback) {
+    public void createCard(final String customerId, final String source, final APIRequestCallback<Card> requestCallback) {
         apiHelper.createCard(customerId, new CreateCardRequest(source))
                 .enqueue(new BaseCallback<>(requestCallback));
     }

@@ -3,8 +3,6 @@ package company.tap.gosellapi.api.requests;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import company.tap.gosellapi.api.model.Source;
-
 /**
  * Created by eugene.goltsev on 14.02.2018.
  * <br>
@@ -14,13 +12,13 @@ import company.tap.gosellapi.api.model.Source;
 public final class CreateCardRequest {
     @SerializedName("source")
     @Expose
-    private Source source;
+    private String source;
 
     /**
      * Public constructor
-     * @param source {@link Source} instance.
+     * @param source identifier.
      */
-    public CreateCardRequest(Source source) {
+    public CreateCardRequest(String source) {
         this.source = source;
     }
 }
