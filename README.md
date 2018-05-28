@@ -145,7 +145,7 @@ GoSellAPI.getInstance(AUTH_TOKEN).createCustomer(
 ```java
 GoSellAPI.getInstance(AUTH_TOKEN).createCard(
     customer.getId(),
-    new Source("tok_XXXXXXXXXXXXXXXXXXXXXXXX"),
+    "tok_XXXXXXXXXXXXXXXXXXXXXXXX",
     new APIRequestCallback<Card>() {
         @Override
         public void onSuccess(int responseCode, Card serializedResponse) {
