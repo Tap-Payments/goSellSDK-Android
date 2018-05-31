@@ -11,6 +11,7 @@
 
     <dimen name="pay_btn_text_size">14sp</dimen>
 
+    <dimen name="margin_basic_3dp">3dp</dimen>
     <dimen name="margin_basic_tiny">4dp</dimen>
     <dimen name="margin_basic_small">8dp</dimen>
     <dimen name="margin_basic_9dp">9dp</dimen>

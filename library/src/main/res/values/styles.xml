@@ -82,4 +82,12 @@
         <item name="android:textStyle">normal</item>
     </style>
 
+    <style name="SwitchPrimary" >
+        <item name="colorControlActivated">@color/vibrant_green</item>
+    </style>
+
+    <style name="SwitchSecondary" >
+        <item name="colorControlActivated">@color/azure_radiance</item>
+    </style>
+
 </resources>
