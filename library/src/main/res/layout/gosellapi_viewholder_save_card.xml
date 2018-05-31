@@ -11,20 +11,18 @@
         android:background="@color/white">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginBottom="@dimen/margin_basic"
             android:layout_marginStart="@dimen/margin_basic_23dp"
             android:layout_marginTop="@dimen/margin_basic"
             android:layout_weight="1"
-            android:text="@string/textview_title_save_for_merchant" />
+            android:text="@string/textview_title_save_for_merchant"/>
 
-        <Switch
+        <android.support.v7.widget.SwitchCompat
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="@dimen/margin_basic"
-            android:layout_marginStart="@dimen/margin_basic"
-            android:layout_weight="1" />
+            android:layout_height="wrap_content"
+            android:theme="@style/SwitchPrimary" />
 
     </LinearLayout>
 
@@ -42,24 +40,22 @@
             android:layout_weight="1"
             android:text="@string/textview_title_save_for_gopay" />
 
-        <Switch
+        <android.support.v7.widget.SwitchCompat
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="@dimen/margin_basic"
-            android:layout_marginStart="@dimen/margin_basic"
-            android:layout_weight="1" />
+            android:layout_height="wrap_content"
+            android:theme="@style/SwitchSecondary" />
 
     </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/textview_disclaimer_go_pay_checkouts"/>
+        android:text="@string/textview_disclaimer_go_pay_checkouts" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/textview_title_personal_info"/>
+        android:text="@string/textview_title_personal_info" />
 
     <LinearLayout
         android:layout_width="match_parent"
