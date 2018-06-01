@@ -15,5 +15,12 @@ public class EmptyViewHolder
 
     @Override
     public void bind(EmptyType data) {
+        display();
+    }
+
+    private void display() {
+        ViewGroup.LayoutParams layoutParams = itemView.getLayoutParams();
+        layoutParams.height = viewModel.isShouldBeShown() ? viewModel.getSpecifiedHeight() : 0;
+        itemView.setLayoutParams(layoutParams);
     }
 }
