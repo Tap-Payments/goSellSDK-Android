@@ -12,13 +12,14 @@
     <dimen name="pay_btn_text_size">14sp</dimen>
 
     <dimen name="margin_basic_3dp">3dp</dimen>
-    <dimen name="margin_basic_tiny">4dp</dimen>
-    <dimen name="margin_basic_small">8dp</dimen>
+    <dimen name="margin_basic_4dp">4dp</dimen>
+    <dimen name="margin_basic_8dp">8dp</dimen>
     <dimen name="margin_basic_9dp">9dp</dimen>
-    <dimen name="margin_basic_reduced">10dp</dimen>
+    <dimen name="margin_basic_10dp">10dp</dimen>
+    <dimen name="margin_basic_11dp">11dp</dimen>
     <dimen name="margin_basic_14dp">14dp</dimen>
     <dimen name="margin_basic_15dp">15dp</dimen>
-    <dimen name="margin_basic">16dp</dimen>
+    <dimen name="margin_basic_16dp">16dp</dimen>
     <dimen name="margin_basic_19dp">19dp</dimen>
     <dimen name="margin_basic_23dp">23dp</dimen>
     <dimen name="margin_basic_25dp">25dp</dimen>

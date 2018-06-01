@@ -15,8 +15,8 @@
     <View
         android:layout_width="@dimen/separator_width_basic"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/margin_basic_tiny"
-        android:layout_marginBottom="@dimen/margin_basic_tiny"
+        android:layout_marginTop="@dimen/margin_basic_4dp"
+        android:layout_marginBottom="@dimen/margin_basic_4dp"
         android:background="@color/alto_gray"/>
 
     <LinearLayout
@@ -24,7 +24,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
-        android:layout_marginStart="@dimen/margin_basic"
+        android:layout_marginStart="@dimen/margin_basic_16dp"
         android:layout_weight="1"
         android:animateLayoutChanges="true"
         android:layoutDirection="ltr"
@@ -52,8 +52,8 @@
         android:id="@id/arrowIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_basic"
-        android:layout_marginStart="@dimen/margin_basic"
+        android:layout_marginEnd="@dimen/margin_basic_16dp"
+        android:layout_marginStart="@dimen/margin_basic_16dp"
         android:layout_gravity="center_vertical"
         android:background="@drawable/ic_arrow_right_normal" />
 

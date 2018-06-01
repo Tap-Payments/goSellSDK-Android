@@ -25,8 +25,8 @@
         android:layout_width="@dimen/action_bar_img_width"
         android:layout_height="@dimen/action_bar_default_height"
         android:layout_gravity="center_vertical"
-        android:layout_marginStart="@dimen/margin_basic_small"
-        android:layout_marginEnd="@dimen/margin_basic_small"
+        android:layout_marginStart="@dimen/margin_basic_8dp"
+        android:layout_marginEnd="@dimen/margin_basic_8dp"
         android:scaleType="center"
         android:src="@drawable/cio_ic_amex"/>
 

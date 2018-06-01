@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:paddingTop="@dimen/margin_basic_19dp"
     android:paddingBottom="@dimen/margin_basic_19dp"
-    android:layout_marginStart="@dimen/margin_basic_tiny"
+    android:layout_marginStart="@dimen/margin_basic_4dp"
     android:orientation="horizontal">
 
     <TextView
@@ -24,7 +24,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="@dimen/margin_basic"
-        android:layout_marginStart="@dimen/margin_basic" />
+        android:layout_marginEnd="@dimen/margin_basic_16dp"
+        android:layout_marginStart="@dimen/margin_basic_16dp"
+        android:theme="@style/SwitchPrimary"/>
 
 </RelativeLayout>

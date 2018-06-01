@@ -22,7 +22,7 @@
     <string name="textview_title_resend_again">Resend OTP</string>
     <string name="textview_title_save_for_merchant">Save for %s Checkouts</string>
     <string name="textview_title_save_for_gopay">Save for goPay Checkouts</string>
-    <string name="textview_title_personal_info">Your personal info</string>
+    <string name="textview_title_personal_info">Your Personal Info.</string>
 
     <string name="textview_disclaimer_save_card">For faster and more secure checkout, save your card</string>
     <string name="textview_disclaimer_otp_sent_number">Please enter the OTP that has been sent to %s</string>

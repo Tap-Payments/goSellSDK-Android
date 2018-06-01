@@ -20,8 +20,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginBottom="@dimen/margin_basic"
-        android:layout_marginTop="@dimen/margin_basic"
+        android:layout_marginBottom="@dimen/margin_basic_16dp"
+        android:layout_marginTop="@dimen/margin_basic_16dp"
         android:layout_toEndOf="@id/paymentSystemIcon"
         android:layout_toStartOf="@+id/arrowIcon" />
 
@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="@dimen/margin_basic"
-        android:layout_marginStart="@dimen/margin_basic"
+        android:layout_marginEnd="@dimen/margin_basic_16dp"
+        android:layout_marginStart="@dimen/margin_basic_16dp"
         android:background="@drawable/ic_arrow_right_normal" />
 </RelativeLayout>
