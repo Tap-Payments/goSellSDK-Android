@@ -69,18 +69,18 @@ chargeMetadata.put("Order Number", "ORD-1001");
 
 GoSellAPI.getInstance(AUTH_TOKEN).createCharge(
     new CreateChargeRequest
-        .Builder(1000, "KWD", new Redirect("your_return_url", "your_post_url"))
-        .source(new Source("tok_XXXXXXXXXXXXXXXXXXXXXXXX"))
+        .Builder(10, 
+            "KWD", 
+            new CreateChargeRequest.Customer("some email", "33333333", "first name"),
+            new Redirect("http://return.com/returnurl", "http://return.com/posturl"))
+        .threeDSecure(true)
+        .transaction_reference("Trans ref")
+        .order_reference("Order ref")
         .statement_descriptor("Test Txn 001")
+        .receipt(new CreateChargeRequest.Receipt(true, true))
+        .source(new CreateChargeRequest.Source(token.getId()))
         .description("Test Transaction")
         .metadata(chargeMetadata)
-        .receipt_sms("96598989898")
-        .receipt_email("test@test.com")
-        .capture(true)
-        .threeds(true)
-        .reference("123456")
-        .first_name("John")
-        .last_name("Doe")
         .build(),
     new APIRequestCallback<Charge>() {
         @Override
