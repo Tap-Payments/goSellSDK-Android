@@ -7,7 +7,6 @@ import java.util.HashMap;
 
 import company.tap.gosellapi.api.model.Charge;
 import company.tap.gosellapi.api.model.Redirect;
-import company.tap.gosellapi.api.model.Source;
 
 /**
  * Created by eugene.goltsev on 14.02.2018.
@@ -24,13 +23,33 @@ public final class CreateChargeRequest {
     @Expose
     private String currency;
 
-    @SerializedName("source")
+    @SerializedName("threeDSecure")
     @Expose
-    private Source source;
+    private boolean threeDSecure;
+
+    @SerializedName("transaction_reference")
+    @Expose
+    private String transaction_reference;
+
+    @SerializedName("order_reference")
+    @Expose
+    private String order_reference;
 
     @SerializedName("statement_descriptor")
     @Expose
     private String statement_descriptor;
+
+    @SerializedName("receipt")
+    @Expose
+    private Receipt receipt;
+
+    @SerializedName("customer")
+    @Expose
+    private Customer customer;
+
+    @SerializedName("source")
+    @Expose
+    private Source source;
 
     @SerializedName("redirect")
     @Expose
@@ -44,37 +63,10 @@ public final class CreateChargeRequest {
     @Expose
     private HashMap<String, String> metadata;
 
-    @SerializedName("receipt_sms")
-    @Expose
-    private String receipt_sms;
-
-    @SerializedName("receipt_email")
-    @Expose
-    private String receipt_email;
-
-    @SerializedName("capture")
-    @Expose
-    private boolean capture;
-
-    @SerializedName("threeds")
-    @Expose
-    private boolean threeds;
-
-    @SerializedName("reference")
-    @Expose
-    private String reference;
-
-    @SerializedName("first_name")
-    @Expose
-    private String first_name;
-
-    @SerializedName("last_name")
-    @Expose
-    private String last_name;
-
-    private CreateChargeRequest(double amount, String currency, Redirect redirect) {
+    private CreateChargeRequest(double amount, String currency, Customer customer, Redirect redirect) {
         this.amount = amount;
         this.currency = currency;
+        this.customer = customer;
         this.redirect = redirect;
     }
 
@@ -86,25 +78,36 @@ public final class CreateChargeRequest {
 
         /**
          * Builder constructor with necessary params
-         * @param amount A positive double, representing how much to charge. The minimum amount is $0.50 US or equivalent in charge currency.
-         * @param currency Three-letter ISO currency code, in lowercase. Must be a supported currency.
-         * @param redirect Information related to the {@link Redirect}.
+         * @param amount A positive decimal amount representing how much to charge the card. The minimum amount is KD 0.100 or equivalent in charge currency.
+         * @param currency 3-letter ISO code for currency.
+         * @param customer {@link Customer} Charge Request Model.
+         * @param redirect Information related to the {@link Redirect}. For KNET and 3DSecure transactions, required return url
          */
-        public Builder(double amount, String currency, Redirect redirect) {
-            createChargeRequest = new CreateChargeRequest(amount, currency, redirect);
+        public Builder(double amount, String currency, Customer customer, Redirect redirect) {
+            createChargeRequest = new CreateChargeRequest(amount, currency, customer, redirect);
         }
 
         /**
-         * @param source The source of every charge is a credit or debit card. This hash is then the card object describing that card.
-        <br>
-        If source is null then, default Tap payment page link will be provided.
-        <br>
-        if source.id = "src_kw.knet" then KNET payment page link will be provided.
-        <br>
-        if source.id = "src_visamastercard" then Credit Card payment page link will be provided.
+         * @param threeDSecure Whether 3DSecure applied for this transaction or not (can be dicided by business, however the final decision will be taken by Tap)
          */
-        public Builder source(Source source) {
-            createChargeRequest.source = source;
+        public Builder threeDSecure(boolean threeDSecure) {
+            createChargeRequest.threeDSecure = threeDSecure;
+            return this;
+        }
+
+        /**
+         * @param transaction_reference Merchant Transaction Reference Number
+         */
+        public Builder transaction_reference(String transaction_reference) {
+            createChargeRequest.transaction_reference = transaction_reference;
+            return this;
+        }
+
+        /**
+         * @param order_reference Merchant Order Reference Number
+         */
+        public Builder order_reference(String order_reference) {
+            createChargeRequest.order_reference = order_reference;
             return this;
         }
 
@@ -118,7 +121,31 @@ public final class CreateChargeRequest {
         }
 
         /**
-         * @param description An arbitrary string which you can attach to a Charge object. It is displayed when in the web interface alongside the charge.
+         * @param receipt Whether Receipt email and sms need to be sent or not, default will be true (if customer emil and phone info available, then receipt will be sent)
+         */
+        public Builder receipt(Receipt receipt) {
+            createChargeRequest.receipt = receipt;
+            return this;
+        }
+
+        /**
+         * @param source A payment source to be charged, the source you provide must either be a token id, card id or source id. If you do not pass source, Tap check out url will be provided.
+        <br>
+        If source is null then, default Tap payment page link will be provided.
+        <br>
+        if source.id = "src_kw.knet" then KNET payment page link will be provided.
+        <br>
+        if source.id = "src_card" then Credit Card payment page link will be provided.
+        <br>
+        if source.id = "Card Token ID or Card ID" then Credit Card payment processing page link will be provided.
+         */
+        public Builder source(Source source) {
+            createChargeRequest.source = source;
+            return this;
+        }
+
+        /**
+         * @param description An arbitrary string which you can attach to a Charge object. It is displayed when in the web interface alongside the charge. Note that if you use Tap to send automatic email receipts to your customers, your receipt emails will include the description of the charge(s) that they are describing. optional, default is None
          */
         public Builder description(String description) {
             createChargeRequest.description = description;
@@ -133,64 +160,82 @@ public final class CreateChargeRequest {
             return this;
         }
 
-        /**
-         * @param receipt_sms The mobile number to send this charge&#8217;s receipt to. The receipt will not be sent until the charge is paid. If this charge is for a customer, the mobile number specified here will override the customer&#8217;s mobile number. Receipts will not be sent for test mode charges. If receipt_sms is specified for a charge in live mode, a receipt will be sent regardless of your sms settings. (optional, either receipt_sms or receipt_email is required if customer is not available)
-         */
-        public Builder receipt_sms(String receipt_sms) {
-            createChargeRequest.receipt_sms = receipt_sms;
-            return this;
-        }
-
-        /**
-         * @param receipt_email The email address to send this charge&#8217;s receipt to. The receipt will not be sent until the charge is paid. If this charge is for a customer, the email address specified here will override the customer&#8217;s email address. Receipts will not be sent for test mode charges. If receipt_email is specified for a charge in live mode, a receipt will be sent regardless of your email settings. (optional, either receipt_sms or receipt_email is required if customer is not available)
-         */
-        public Builder receipt_email(String receipt_email) {
-            createChargeRequest.receipt_email = receipt_email;
-            return this;
-        }
-
-        /**
-         * @param capture Whether or not to immediately capture the charge. When false, the charge issues an authorization (or pre-authorization), and will need to be captured later. Uncaptured charges expire in 7 days. For more information, see authorizing charges and settling later. optional, default is true
-         */
-        public Builder capture(boolean capture) {
-            createChargeRequest.capture = capture;
-            return this;
-        }
-
-        /**
-         * @param threeds Defining whether 3D secure transactions or not
-         */
-        public Builder threeds(boolean threeds) {
-            createChargeRequest.threeds = threeds;
-            return this;
-        }
-
-        /**
-         * @param reference Merchant Reference number to track the payment status and payment attempts
-         */
-        public Builder reference(String reference) {
-            createChargeRequest.reference = reference;
-            return this;
-        }
-
-        /**
-         * @param first_name Customer information
-         */
-        public Builder first_name(String first_name) {
-            createChargeRequest.first_name = first_name;
-            return this;
-        }
-
-        /**
-         * @param last_name Customer information
-         */
-        public Builder last_name(String last_name) {
-            createChargeRequest.last_name = last_name;
-            return this;
-        }
-
         public CreateChargeRequest build() {
             return createChargeRequest;
+        }
+    }
+
+    /**
+     * Whether Receipt email and sms need to be sent or not, default will be true (if customer emil and phone info available, then receipt will be sent)
+     */
+    private static final class Receipt {
+        @SerializedName("email")
+        @Expose
+        private boolean email;
+
+        @SerializedName("sms")
+        @Expose
+        private boolean sms;
+
+        /**
+         * Whether Receipt email and sms need to be sent or not, default will be true (if customer emil and phone info available, then receipt will be sent)
+         */
+        public Receipt(boolean email, boolean sms) {
+            this.email = email;
+            this.sms = sms;
+        }
+    }
+
+    /**
+     * Customer Charge Request Model. Either Customer ID or Customer Information is required
+     */
+    private static final class Customer {
+        @SerializedName("id")
+        @Expose
+        private String id;
+
+        @SerializedName("first_name")
+        @Expose
+        private String first_name;
+
+        @SerializedName("last_name")
+        @Expose
+        private String last_name;
+
+        @SerializedName("email_address")
+        @Expose
+        private String email_address;
+
+        @SerializedName("phone_number")
+        @Expose
+        private String phone_number;
+
+        public Customer(String id) {
+            this.id = id;
+        }
+
+        public Customer(String email_address, String phone_number, String first_name) {
+            this(email_address, phone_number, first_name, null);
+        }
+
+        public Customer(String email_address, String phone_number, String first_name, String last_name) {
+            this.email_address = email_address;
+            this.phone_number = phone_number;
+            this.first_name = first_name;
+            this.last_name = last_name;
+        }
+    }
+
+    /**
+     * A payment source to be charged, the source you provide must either be a token id, card id or source id. If you do not pass source, Tap check out url will be provided.
+     */
+    private static final class Source {
+        @SerializedName("id")
+        @Expose
+        private String id;
+
+        public Source(String id) {
+            this.id = id;
         }
     }
 }
