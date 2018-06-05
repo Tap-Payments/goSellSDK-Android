@@ -168,7 +168,7 @@ public final class CreateChargeRequest {
     /**
      * Whether Receipt email and sms need to be sent or not, default will be true (if customer emil and phone info available, then receipt will be sent)
      */
-    private static final class Receipt {
+    public static final class Receipt {
         @SerializedName("email")
         @Expose
         private boolean email;
@@ -189,7 +189,7 @@ public final class CreateChargeRequest {
     /**
      * Customer Charge Request Model. Either Customer ID or Customer Information is required
      */
-    private static final class Customer {
+    public static final class Customer {
         @SerializedName("id")
         @Expose
         private String id;
@@ -229,7 +229,7 @@ public final class CreateChargeRequest {
     /**
      * A payment source to be charged, the source you provide must either be a token id, card id or source id. If you do not pass source, Tap check out url will be provided.
      */
-    private static final class Source {
+    public static final class Source {
         @SerializedName("id")
         @Expose
         private String id;
