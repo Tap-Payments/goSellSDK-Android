@@ -1,12 +1,20 @@
 package company.tap.gosellapi.internal.activities;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Locale;
 
 import company.tap.gosellapi.R;
+import company.tap.gosellapi.internal.adapters.CountriesRecyclerViewAdapter;
 
 public class CountriesActivity extends BaseActionBarActivity {
     private SearchView mSearchView;
@@ -16,6 +24,16 @@ public class CountriesActivity extends BaseActionBarActivity {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.slide_in_left, android.R.anim.fade_out);
         setContentView(R.layout.activity_countries);
+
+        ArrayList<String> countries = new ArrayList<>(Arrays.asList(Locale.getISOCountries()));
+
+        RecyclerView countriesRecyclerView = findViewById(R.id.rvCountries);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        countriesRecyclerView.setLayoutManager(linearLayoutManager);
+
+        CountriesRecyclerViewAdapter adapter = new CountriesRecyclerViewAdapter(countries);
+        countriesRecyclerView.setAdapter(adapter);
     }
 
     @Override

@@ -9,6 +9,7 @@ import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -25,6 +26,7 @@ import company.tap.gosellapi.internal.fragments.GoSellOTPScreenFragment;
 import company.tap.gosellapi.internal.fragments.GoSellPaymentOptionsFragment;
 import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
+import jp.wasabeef.blurry.Blurry;
 
 public class GoSellPaymentActivity
         extends AppCompatActivity
@@ -66,7 +68,7 @@ public class GoSellPaymentActivity
                 .replace(R.id.paymentActivityFragmentContainer, paymentOptionsFragment)
                 .commit();
 
-        // Configure Close button
+        //   Configure Close button
         ImageButton closeButton = findViewById(R.id.closeButton);
 
         closeButton.setOnClickListener(new View.OnClickListener() {
@@ -105,7 +107,10 @@ public class GoSellPaymentActivity
 
     @Override
     public void startWebPayment() {
-        Intent intent = new Intent(this, WebPaymentActivity.class);
+//        Intent intent = new Intent(this, WebPaymentActivity.class);
+//        startActivity(intent);
+
+        Intent intent = new Intent(this, CountriesActivity.class);
         startActivity(intent);
     }
 
@@ -131,7 +136,7 @@ public class GoSellPaymentActivity
 
     @Override
     public void addressOnCardClicked() {
-        Intent intent  = new Intent(this, GoSellCardAddressActivity.class);
+        Intent intent = new Intent(this, GoSellCardAddressActivity.class);
         startActivity(intent);
     }
 

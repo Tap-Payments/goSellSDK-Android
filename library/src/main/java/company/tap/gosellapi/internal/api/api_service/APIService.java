@@ -5,7 +5,6 @@ import company.tap.gosellapi.internal.api.models.PaymentInfo;
 import company.tap.gosellapi.internal.api.models.Token;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
 import company.tap.gosellapi.internal.api.requests.CreateTokenRequest;
-import company.tap.gosellapi.internal.api.requests.UpdateChargeRequest;
 import company.tap.gosellapi.internal.api.responses.SDKSettings;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import retrofit2.Call;

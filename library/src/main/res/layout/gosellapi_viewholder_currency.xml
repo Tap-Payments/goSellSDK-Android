@@ -15,46 +15,44 @@
     <View
         android:layout_width="@dimen/separator_width_basic"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/margin_basic_4dp"
         android:layout_marginBottom="@dimen/margin_basic_4dp"
-        android:background="@color/alto_gray"/>
+        android:layout_marginTop="@dimen/margin_basic_4dp"
+        android:background="@color/alto_gray" />
 
     <LinearLayout
         android:id="@+id/currencyLayout"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:gravity="center_vertical"
         android:layout_marginStart="@dimen/margin_basic_16dp"
         android:layout_weight="1"
         android:animateLayoutChanges="true"
+        android:gravity="center_vertical"
         android:layoutDirection="ltr"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/currencySecondaryText"
+            style="@style/TextView.Title.Header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="start"
-            android:textSize="13sp"
-            android:text="SR 00.000"/>
+            android:textSize="13sp" />
 
         <TextView
             android:id="@+id/currencyMainText"
+            style="@style/TextView.Title.Header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="start"
-            android:textSize="20sp"
-            android:text="KD 00.000" />
+            android:gravity="start" />
     </LinearLayout>
-
 
     <ImageView
         android:id="@id/arrowIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:layout_marginEnd="@dimen/margin_basic_16dp"
         android:layout_marginStart="@dimen/margin_basic_16dp"
-        android:layout_gravity="center_vertical"
         android:background="@drawable/ic_arrow_right_normal" />
 
 </LinearLayout>

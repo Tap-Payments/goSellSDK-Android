@@ -21,6 +21,7 @@ public class CardCredentialsViewHolder
     private ImageButton cardScannerButton;
     private View addressOnCardLayout;
     private SwitchCompat saveCardSwitch;
+    private ArrayList<PaymentOption> data;
 
     CardCredentialsViewHolder(View view) {
         super(view);
@@ -31,10 +32,13 @@ public class CardCredentialsViewHolder
 
     @Override
     public void bind(ArrayList<PaymentOption> data) {
+        this.data = data;
+
         cardScannerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModel.cardScannerButtonClicked();
+//                viewModel.cardScannerButtonClicked();
+                updateCardSystemsRecyclerView();
             }
         });
 
@@ -57,7 +61,7 @@ public class CardCredentialsViewHolder
         saveCardSwitchContainer.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         viewModel.setCardSwitchHeight(saveCardSwitchContainer.getMeasuredHeight());
 
-        initCardSystemsRecyclerView(data);
+        initCardSystemsRecyclerView();
     }
 
     @Override
@@ -65,7 +69,7 @@ public class CardCredentialsViewHolder
         itemView.setSelected(isFocused);
     }
 
-    private void initCardSystemsRecyclerView(ArrayList<PaymentOption> data) {
+    private void initCardSystemsRecyclerView() {
         RecyclerView cardSystemsRecyclerView = itemView.findViewById(R.id.cardSystemsRecyclerView);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.VERTICAL,false);
@@ -73,5 +77,19 @@ public class CardCredentialsViewHolder
 
         CardSystemsRecyclerViewAdapter adapter = new CardSystemsRecyclerViewAdapter(data);
         cardSystemsRecyclerView.setAdapter(adapter);
+    }
+
+    private void updateCardSystemsRecyclerView() {
+        RecyclerView cardSystemsRecyclerView = itemView.findViewById(R.id.cardSystemsRecyclerView);
+        cardSystemsRecyclerView.getAdapter().notifyItemRemoved(0);
+    }
+
+    public void updateAddressOnCardView(boolean isShow) {
+        if(isShow) {
+            addressOnCardLayout.setVisibility(View.VISIBLE);
+        }
+        else {
+            addressOnCardLayout.setVisibility(View.GONE);
+        }
     }
 }
