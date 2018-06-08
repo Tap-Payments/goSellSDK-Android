@@ -18,4 +18,9 @@ public class WebPaymentActivity extends BaseActionBarActivity {
 
         return super.onCreateOptionsMenu(menu);
     }
+
+    private void getWebPaymentLink() {
+
+
+    }
 }

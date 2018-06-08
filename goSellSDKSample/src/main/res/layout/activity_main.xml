@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/azure_radiance"
     tools:context=".MainActivity">
 
     <company.tap.gosellapi.internal.custom_views.GoSellPayLayout

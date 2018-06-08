@@ -42,7 +42,7 @@ public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<Currenci
     @NonNull
     @Override
     public CurrencyCellViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_currencies, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.gosellapi_cell_currencies, parent, false);
         return new CurrencyCellViewHolder(view);
     }
 
