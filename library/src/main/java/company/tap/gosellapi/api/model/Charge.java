@@ -5,7 +5,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.HashMap;
 
-import company.tap.gosellapi.api.requests.CreateChargeRequest;
 import company.tap.gosellapi.api.responses.BaseResponse;
 
 /**
