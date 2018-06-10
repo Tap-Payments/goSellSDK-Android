@@ -23,97 +23,135 @@ public final class Charge implements BaseResponse{
     @Expose
     private String object;
 
-    @SerializedName("amount")
+    @SerializedName("live_mode")
     @Expose
-    private double amount;
-
-    @SerializedName("amount_refunded")
-    @Expose
-    private double amount_refunded;
-
-    @SerializedName("created")
-    @Expose
-    private long created;
-
-    @SerializedName("currency")
-    @Expose
-    private String currency;
-
-    @SerializedName("description")
-    @Expose
-    private String description;
-
-    @SerializedName("failure_code")
-    @Expose
-    private String failure_code;
-
-    @SerializedName("failure_message")
-    @Expose
-    private String failure_message;
-
-    @SerializedName("livemode")
-    @Expose
-    private boolean livemode;
-
-    @SerializedName("metadata")
-    @Expose
-    private HashMap<String, String> metadata;
-
-    @SerializedName("paid")
-    @Expose
-    private boolean paid;
-
-    @SerializedName("receipt_email")
-    @Expose
-    private String receipt_email;
-
-    @SerializedName("receipt_sms")
-    @Expose
-    private String receipt_sms;
-
-    @SerializedName("receipt_number")
-    @Expose
-    private String receipt_number;
-
-    @SerializedName("refunded")
-    @Expose
-    private boolean refunded;
-
-    @SerializedName("source")
-    @Expose
-    private SourceResponse source;
-
-    @SerializedName("statement_descriptor")
-    @Expose
-    private String statement_descriptor;
+    private boolean live_mode;
 
     @SerializedName("status")
     @Expose
     private String status;
 
+    @SerializedName("terminal_id")
+    @Expose
+    private String terminal_id;
+
+    @SerializedName("auth_id")
+    @Expose
+    private String auth_id;
+
+    @SerializedName("threeDSecure")
+    @Expose
+    private boolean threeDSecure;
+
+    @SerializedName("transaction_reference")
+    @Expose
+    private String transaction_reference;
+
+    @SerializedName("order_reference")
+    @Expose
+    private String order_reference;
+
+    @SerializedName("timezone")
+    @Expose
+    private String timezone;
+
+    @SerializedName("created")
+    @Expose
+    private long created;
+
+    @SerializedName("post")
+    @Expose
+    private long post;
+
+    @SerializedName("amount")
+    @Expose
+    private double amount;
+
+    @SerializedName("currency")
+    @Expose
+    private String currency;
+
+    @SerializedName("statement_descriptor")
+    @Expose
+    private String statement_descriptor;
+
+    @SerializedName("chargeback")
+    @Expose
+    private boolean chargeback;
+
+    @SerializedName("response")
+    @Expose
+    private Response response;
+
+    @SerializedName("acquirer")
+    @Expose
+    private Response acquirer;
+
+    @SerializedName("receipt")
+    @Expose
+    private Receipt receipt;
+
+
+
+
+
+    @SerializedName("source")
+    @Expose
+    private SourceResponse source;
+
     @SerializedName("redirect")
     @Expose
     private Redirect redirect;
 
-    @SerializedName("captured")
+    @SerializedName("description")
     @Expose
-    private boolean captured;
+    private String description;
 
-    @SerializedName("threeds")
+    @SerializedName("metadata")
     @Expose
-    private boolean threeds;
+    private HashMap<String, String> metadata;
 
-    @SerializedName("reference")
-    @Expose
-    private String reference;
+    /**
+     * Charges Response Code and Messages from Tap or Acquirer
+     */
+    public static final class Response {
+        @SerializedName("code")
+        @Expose
+        private String code;
 
-    @SerializedName("first_name")
-    @Expose
-    private String first_name;
+        @SerializedName("message")
+        @Expose
+        private String message;
 
-    @SerializedName("last_name")
-    @Expose
-    private String last_name;
+        public String getCode() {
+            return code;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+    }
+
+    /**
+     * Whether Receipt email and sms need to be sent or not, default will be true (if customer emil and phone info available, then receipt will be sent)
+     */
+    public static final class Receipt {
+        @SerializedName("email")
+        @Expose
+        private boolean email;
+
+        @SerializedName("sms")
+        @Expose
+        private boolean sms;
+
+        public boolean isEmail() {
+            return email;
+        }
+
+        public boolean isSms() {
+            return sms;
+        }
+    }
 
     /**
      * @return Unique identifier for the object.
@@ -123,24 +161,66 @@ public final class Charge implements BaseResponse{
     }
 
     /**
-     * @return String representing the object&#8217;s type. Objects of the same type share the same value.
+     * @return String representing the object&#8217;s type. Objects of the same type share the same value. (value is "charge")
      */
     public String getObject() {
         return object;
     }
 
     /**
-     * @return A positive double, representing how much to charge. The minimum amount is $0.50 US or equivalent in charge currency.
+     * @return Flag indicating whether the object exists in live mode or test mode.
      */
-    public double getAmount() {
-        return amount;
+    public boolean isLive_mode() {
+        return live_mode;
     }
 
     /**
-     * @return Amount (can be less than the amount attribute on the charge if a partial refund was issued). Minimum: 0
+     * @return Its a charge status, values can be one of INITIATED, IN_PROGRESS, CANCELLED, FAILED, DECLINED, RESTRICTED, CAPTURED, VOID
      */
-    public double getAmount_refunded() {
-        return amount_refunded;
+    public String getStatus() {
+        return status;
+    }
+
+    /**
+     * @return Terminal ID (Virtual terminal ID or Physical Terminal ID (POS))
+     */
+    public String getTerminal_id() {
+        return terminal_id;
+    }
+
+    /**
+     * @return Transaction Authorization ID issued by Gateway
+     */
+    public String getAuth_id() {
+        return auth_id;
+    }
+
+    /**
+     * @return The 3D Secure request status for a particular charge, values can be one of(true or false)
+     */
+    public boolean isThreeDSecure() {
+        return threeDSecure;
+    }
+
+    /**
+     * @return Merchant Transaction Reference Number
+     */
+    public String getTransaction_reference() {
+        return transaction_reference;
+    }
+
+    /**
+     * @return Merchant Order Reference Number
+     */
+    public String getOrder_reference() {
+        return order_reference;
+    }
+
+    /**
+     * @return Time format of the charge (UTC+3:00)
+     */
+    public String getTimezone() {
+        return timezone;
     }
 
     /**
@@ -151,93 +231,24 @@ public final class Charge implements BaseResponse{
     }
 
     /**
+     * @return Time at which the object was posted into the business statement. Measured in seconds since the Unix epoch.
+     */
+    public long getPost() {
+        return post;
+    }
+
+    /**
+     * @return A positive double, representing how much to charge.
+     */
+    public double getAmount() {
+        return amount;
+    }
+
+    /**
      * @return Three-letter ISO currency code, in lowercase. Must be a supported currency.
      */
     public String getCurrency() {
         return currency;
-    }
-
-    /**
-     * @return An arbitrary string attached to the object. Often useful for displaying to users.
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * @return Error code explaining reason for charge failure if available (see the errors section for a list of codes).
-     */
-    public String getFailure_code() {
-        return failure_code;
-    }
-
-    /**
-     * @return Message to user further explaining reason for charge failure if available.
-     */
-    public String getFailure_message() {
-        return failure_message;
-    }
-
-    /**
-     * @return Flag indicating whether the object exists in live mode or test mode.
-     */
-    public boolean isLivemode() {
-        return livemode;
-    }
-
-    /**
-     * @return HashMap of key/value pairs that you can attach to an object. It can be useful for storing additional information about the object in a structured format.
-     */
-    public HashMap<String, String> getMetadata() {
-        return metadata;
-    }
-
-    /**
-     * @return True if the charge succeeded, or was successfully authorized for later capture.
-     */
-    public boolean isPaid() {
-        return paid;
-    }
-
-    /**
-     * @return This is the email address that the receipt for this charge was sent to.
-     */
-    public String getReceipt_email() {
-        return receipt_email;
-    }
-
-    /**
-     * @return The mobile number to send this charge&#8217;s receipt to. The receipt will not be sent until the charge is paid. If this charge is for a customer, the mobile number specified here will override the customer&#8217;s mobile number. Receipts will not be sent for test mode charges. If receipt_sms is specified for a charge in live mode, a receipt will be sent regardless of your sms settings. (optional, either receipt_sms or receipt_email is required if customer is not available)
-     */
-    public String getReceipt_sms() {
-        return receipt_sms;
-    }
-
-    /**
-     * @return This is the transaction number that appears on email receipts sent for this charge. This attribute will be null until a receipt has been sent.
-     */
-    public String getReceipt_number() {
-        return receipt_number;
-    }
-
-    /**
-     * @return Whether the charge has been fully refunded. If the charge is only partially refunded, this attribute will still be false.
-     */
-    public boolean isRefunded() {
-        return refunded;
-    }
-
-    /**
-     * @return The source of every charge is a credit or debit card. This hash is then the card object describing that card.
-    <br>
-    If source is null then, default Tap payment page link will be provided.
-    <br>
-    if source.id = "src_kw.knet" then KNET payment page link will be provided.
-    <br>
-    if source.id = "src_visamastercard" then Credit Card payment page link will be provided.
-     */
-    public SourceResponse getSource() {
-        return source;
     }
 
     /**
@@ -248,10 +259,38 @@ public final class Charge implements BaseResponse{
     }
 
     /**
-     * @return The status of the payment is either succeeded, pending, or failed
+     * @return Whether chargeback applied or not
      */
-    public String getStatus() {
-        return status;
+    public boolean isChargeback() {
+        return chargeback;
+    }
+
+    /**
+     * @return Charges Response Code and Messages from Tap
+     */
+    public Response getResponse() {
+        return response;
+    }
+
+    /**
+     * @return Charges Response Code and Messages from Acquirer
+     */
+    public Response getAcquirer() {
+        return acquirer;
+    }
+
+    /**
+     * @return Whether Receipt email and sms need to be sent or not, default will be true (if customer emil and phone info available, then receipt will be sent)
+     */
+    public Receipt getReceipt() {
+        return receipt;
+    }
+
+    /**
+     * @return For most Tap users, the source of every charge is a credit or debit card. This hash is then the card object describing that card.
+     */
+    public SourceResponse getSource() {
+        return source;
     }
 
     /**
@@ -262,38 +301,17 @@ public final class Charge implements BaseResponse{
     }
 
     /**
-     * @return Whether the charge was captured.
+     * @return An arbitrary string attached to the object. It is displayed when in the web interface alongside the charge. Note that if you use Tap to send automatic email receipts to your customers, your receipt emails will include the description of the charge(s) that they are describing. optional, default is None
      */
-    public boolean isCaptured() {
-        return captured;
+    public String getDescription() {
+        return description;
     }
 
     /**
-     * @return Defining whether 3D secure transactions or not
+     * @return HashMap of key/value pairs that you can attach to an object. It can be useful for storing additional information about the object in a structured format.
      */
-    public boolean isThreeds() {
-        return threeds;
-    }
-
-    /**
-     * @return Merchant Reference number to track the payment status and payment attempts
-     */
-    public String getReference() {
-        return reference;
-    }
-
-    /**
-     * @return Customer information
-     */
-    public String getFirst_name() {
-        return first_name;
-    }
-
-    /**
-     * @return Customer information
-     */
-    public String getLast_name() {
-        return last_name;
+    public HashMap<String, String> getMetadata() {
+        return metadata;
     }
 
     @Override
@@ -301,29 +319,27 @@ public final class Charge implements BaseResponse{
         return "\nCharge {" +
                 "\n    id =  '" + id + '\'' +
                 "\n    object =  '" + object + '\'' +
-                "\n    amount =  " + amount +
-                "\n    amount_refunded =  " + amount_refunded +
+                "\n    live_mode =  " + live_mode +
+                "\n    status =  " + status +
+                "\n    terminal_id =  " + terminal_id +
+                "\n    auth_id =  " + auth_id +
+                "\n    threeDSecure =  " + threeDSecure +
+                "\n    transaction_reference =  " + transaction_reference +
+                "\n    order_reference =  " + order_reference +
+                "\n    timezone =  " + timezone +
                 "\n    created =  " + created +
+                "\n    post =  " + post +
+                "\n    amount =  " + amount +
                 "\n    currency =  '" + currency + '\'' +
-                "\n    description =  '" + description + '\'' +
-                "\n    failure_code =  '" + failure_code + '\'' +
-                "\n    failure_message =  '" + failure_message + '\'' +
-                "\n    livemode =  " + livemode +
-                "\n    metadata =  " + metadata +
-                "\n    paid =  " + paid +
-                "\n    receipt_email =  '" + receipt_email + '\'' +
-                "\n    receipt_sms =  '" + receipt_sms + '\'' +
-                "\n    receipt_number =  '" + receipt_number + '\'' +
-                "\n    refunded =  " + refunded +
-                "\n    source =  " + source +
                 "\n    statement_descriptor =  '" + statement_descriptor + '\'' +
-                "\n    status =  '" + status + '\'' +
+                "\n    chargeback =  '" + chargeback + '\'' +
+                "\n    response =  '" + response + '\'' +
+                "\n    acquirer =  " + acquirer +
+                "\n    receipt =  " + receipt +
+                "\n    source =  " + source +
                 "\n    redirect =  " + redirect +
-                "\n    captured =  " + captured +
-                "\n    threeds =  " + threeds +
-                "\n    reference =  " + reference +
-                "\n    first_name =  " + first_name +
-                "\n    last_name =  " + last_name +
+                "\n    description =  " + description +
+                "\n    metadata =  " + metadata +
                 "\n}";
     }
 }
