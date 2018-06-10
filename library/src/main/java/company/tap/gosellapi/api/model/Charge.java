@@ -287,7 +287,7 @@ public final class Charge implements BaseResponse{
         }
 
         /**
-         * @return The customer’s email address.
+         * @return The customer&#8217;s email address.
          */
         public String getEmail() {
             return email;
