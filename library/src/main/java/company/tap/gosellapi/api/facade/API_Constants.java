@@ -21,8 +21,6 @@ final class API_Constants {
     static final String CHARGES = "charges";
     static final String CHARGE_ID = "charge_id";
 
-    static final String CAPTURE = "capture";
-
     static final String BIN = "bin";
     static final String NUMBER = "number";
 }

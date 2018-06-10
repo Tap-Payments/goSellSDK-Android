@@ -153,6 +153,11 @@ public final class Charge implements BaseResponse{
         @Expose
         private boolean sms;
 
+        public Receipt(boolean email, boolean sms) {
+            this.email = email;
+            this.sms = sms;
+        }
+
         public boolean isEmail() {
             return email;
         }

@@ -5,7 +5,6 @@ import company.tap.gosellapi.api.model.Card;
 import company.tap.gosellapi.api.model.Charge;
 import company.tap.gosellapi.api.model.Customer;
 import company.tap.gosellapi.api.model.Token;
-import company.tap.gosellapi.api.requests.CaptureChargeRequest;
 import company.tap.gosellapi.api.requests.CreateCardRequest;
 import company.tap.gosellapi.api.requests.CreateChargeRequest;
 import company.tap.gosellapi.api.requests.CreateTokenRequest;
@@ -66,9 +65,6 @@ interface APIService {
 
     @PUT(API_Constants.CHARGES + "/{" + API_Constants.CHARGE_ID + "}")
     Call<Charge> updateCharge(@Path(API_Constants.CHARGE_ID) String chargeId, @Body UpdateChargeRequest updateChargeRequest);
-
-    @POST(API_Constants.CHARGES + "/{" + API_Constants.CHARGE_ID + "}/" + API_Constants.CAPTURE)
-    Call<Charge> captureCharge(@Path(API_Constants.CHARGE_ID) String chargeId, @Body CaptureChargeRequest captureChargeRequest);
 
     @GET(API_Constants.BIN + "/{" + API_Constants.NUMBER + "}")
     Call<BIN> getBINNumberDetails(@Path(API_Constants.NUMBER) String binNumber);

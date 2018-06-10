@@ -6,7 +6,6 @@ import company.tap.gosellapi.api.model.Charge;
 import company.tap.gosellapi.api.model.Customer;
 import company.tap.gosellapi.api.model.Source;
 import company.tap.gosellapi.api.model.Token;
-import company.tap.gosellapi.api.requests.CaptureChargeRequest;
 import company.tap.gosellapi.api.requests.CardRequest;
 import company.tap.gosellapi.api.requests.CreateCardRequest;
 import company.tap.gosellapi.api.requests.CreateChargeRequest;
@@ -191,18 +190,6 @@ public final class GoSellAPI {
      */
     public void updateCharge(final String chargeId, final UpdateChargeRequest updateChargeRequest, final APIRequestCallback<Charge> requestCallback) {
         apiHelper.updateCharge(chargeId, updateChargeRequest)
-                .enqueue(new BaseCallback<>(requestCallback));
-    }
-
-    /**
-     * Captures {@link Charge} by id with {@link CaptureChargeRequest}
-     * <br>
-     * @param chargeId Id field from {@link Charge#getId()} method
-     * @param captureChargeRequest {@link CaptureChargeRequest} instance. Use {@link CaptureChargeRequest.Builder} to obtain this instance
-     * @param requestCallback {@link APIRequestCallback} parametrized with {@link Charge} model
-     */
-    public void captureCharge(final String chargeId, final CaptureChargeRequest captureChargeRequest, final APIRequestCallback<Charge> requestCallback) {
-        apiHelper.captureCharge(chargeId, captureChargeRequest)
                 .enqueue(new BaseCallback<>(requestCallback));
     }
 
