@@ -5,8 +5,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.HashMap;
 
+import company.tap.gosellapi.api.requests.CreateChargeRequest;
 import company.tap.gosellapi.api.responses.BaseResponse;
-import company.tap.gosellapi.api.responses.SourceResponse;
 
 /**
  * Created by eugene.goltsev on 14.02.2018.
@@ -91,9 +91,9 @@ public final class Charge implements BaseResponse{
     @Expose
     private Receipt receipt;
 
-
-
-
+    @SerializedName("customer")
+    @Expose
+    private Customer customer;
 
     @SerializedName("source")
     @Expose
@@ -111,6 +111,7 @@ public final class Charge implements BaseResponse{
     @Expose
     private HashMap<String, String> metadata;
 
+    //inner models
     /**
      * Charges Response Code and Messages from Tap or Acquirer
      */
@@ -129,6 +130,14 @@ public final class Charge implements BaseResponse{
 
         public String getMessage() {
             return message;
+        }
+
+        @Override
+        public String toString() {
+            return "Response {" +
+                    "\n        code =  '" + code + '\'' +
+                    "\n        message =  '" + message + '\'' +
+                    "\n    }";
         }
     }
 
@@ -151,8 +160,156 @@ public final class Charge implements BaseResponse{
         public boolean isSms() {
             return sms;
         }
+
+        @Override
+        public String toString() {
+            return "Receipt {" +
+                    "\n        email =  '" + email + '\'' +
+                    "\n        sms =  '" + sms + '\'' +
+                    "\n    }";
+        }
     }
 
+    public static final class SourceResponse {
+        @SerializedName("object")
+        @Expose
+        private String object;
+
+        @SerializedName("card_last4")
+        @Expose
+        private String card_last4;
+
+        @SerializedName("payment_type")
+        @Expose
+        private String payment_type;
+
+        @SerializedName("id")
+        @Expose
+        private String id;
+
+        /**
+         * @return String representing the object&#8217;s type. Objects of the same type share the same value. (value is "card_id", "token_id", "source_id", or "card")
+         */
+        public String getObject() {
+            return object;
+        }
+
+        /**
+         * @return Credit Card Number Last 4 Digit
+         */
+        public String getCard_last4() {
+            return card_last4;
+        }
+
+        /**
+         * @return Card Type (DEBIT_CARD, CREDIT_CARD, PREPAID_CARD, PREPAID_WALLET)
+         */
+        public String getPayment_type() {
+            return payment_type;
+        }
+
+        /**
+         * @return Source ID or Token ID or Card ID should be provided
+         */
+        public String getId() {
+            return id;
+        }
+
+        @Override
+        public String toString() {
+            return "Source {" +
+                    "\n        object =  '" + object + '\'' +
+                    "\n        card_last4 =  '" + card_last4 + '\'' +
+                    "\n        payment_type =  '" + payment_type + '\'' +
+                    "\n        id =  '" + id + '\'' +
+                    "\n    }";
+        }
+    }
+
+    /**
+     * Customer Charge Response model
+     */
+    public static final class Customer {
+        @SerializedName("object")
+        @Expose
+        private String object;
+
+        @SerializedName("id")
+        @Expose
+        private String id;
+
+        @SerializedName("first_name")
+        @Expose
+        private String first_name;
+
+        @SerializedName("last_name")
+        @Expose
+        private String last_name;
+
+        @SerializedName("email")
+        @Expose
+        private String email;
+
+        @SerializedName("phone")
+        @Expose
+        private String phone;
+
+        /**
+         * @return String representing the object&#8217;s type. Objects of the same type share the same value. (value is "customer")
+         */
+        public String getObject() {
+            return object;
+        }
+
+        /**
+         * @return The ID of an existing customer that will be charged in this request. Either customer id or customer information is required
+         */
+        public String getId() {
+            return id;
+        }
+
+        /**
+         * @return Customer's First Name
+         */
+        public String getFirst_name() {
+            return first_name;
+        }
+
+        /**
+         * @return Customer's Last Name
+         */
+        public String getLast_name() {
+            return last_name;
+        }
+
+        /**
+         * @return The customer’s email address.
+         */
+        public String getEmail() {
+            return email;
+        }
+
+        /**
+         * @return Customer phone (including extension).
+         */
+        public String getPhone() {
+            return phone;
+        }
+
+        @Override
+        public String toString() {
+            return "Customer {" +
+                    "\n        object =  '" + object + '\'' +
+                    "\n        id =  '" + id + '\'' +
+                    "\n        first_name =  '" + first_name + '\'' +
+                    "\n        last_name =  '" + last_name + '\'' +
+                    "\n        email =  '" + email + '\'' +
+                    "\n        phone =  '" + phone + '\'' +
+                    "\n    }";
+        }
+    }
+
+    //getters
     /**
      * @return Unique identifier for the object.
      */
@@ -287,6 +444,13 @@ public final class Charge implements BaseResponse{
     }
 
     /**
+     * @return The ID of an existing customer that will be charged in this request.
+     */
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    /**
      * @return For most Tap users, the source of every charge is a credit or debit card. This hash is then the card object describing that card.
      */
     public SourceResponse getSource() {
@@ -336,6 +500,7 @@ public final class Charge implements BaseResponse{
                 "\n    response =  '" + response + '\'' +
                 "\n    acquirer =  " + acquirer +
                 "\n    receipt =  " + receipt +
+                "\n    customer =  " + customer +
                 "\n    source =  " + source +
                 "\n    redirect =  " + redirect +
                 "\n    description =  " + description +
