@@ -80,7 +80,7 @@ public final class CreateChargeRequest {
          * Builder constructor with necessary params
          * @param amount A positive decimal amount representing how much to charge the card. The minimum amount is KD 0.100 or equivalent in charge currency.
          * @param currency 3-letter ISO code for currency.
-         * @param customer {@link Customer} Charge Request Model.
+         * @param customer {@link Customer} Customer Charge Request Model. Either Customer ID or Customer Information is required.
          * @param redirect Information related to the {@link Redirect}. For KNET and 3DSecure transactions, required return url
          */
         public Builder(double amount, String currency, Customer customer, Redirect redirect) {
@@ -88,7 +88,7 @@ public final class CreateChargeRequest {
         }
 
         /**
-         * @param threeDSecure Whether 3DSecure applied for this transaction or not (can be dicided by business, however the final decision will be taken by Tap)
+         * @param threeDSecure Whether 3DSecure applied for this transaction or not (can be decided by business, however the final decision will be taken by Tap)
          */
         public Builder threeDSecure(boolean threeDSecure) {
             createChargeRequest.threeDSecure = threeDSecure;
@@ -113,7 +113,8 @@ public final class CreateChargeRequest {
 
         /**
          *
-         * @param statement_descriptor An arbitrary string to be displayed on your customer&#8217;s credit card statement. This may be up to 22 characters. As an example, if your website is RunClub and the item you&#8217;re charging for is a race ticket, you may want to specify a statement_descriptor of RunClub 5K race ticket. The statement description must contain at least one letter, may not include &lt;&gt;&#34;&#8217; characters, and will appear on your customer&#8217;s statement in capital letters. Non-ASCII characters are automatically stripped. While most banks and card issuers display this information consistently, some may display it incorrectly or not at all.
+         * @param statement_descriptor An arbitrary string to be displayed on your customer&#8217;s credit card statement. This may be up to 22 characters. As an example, if your website is RunClub and the item you&#8217;re charging for is a race ticket, you may want to specify a statement_descriptor of RunClub 5K race ticket.
+         *                             The statement description must contain at least one letter, may not include &lt;&gt;&#34;&#8217; characters, and will appear on your customer&#8217;s statement in capital letters. Non-ASCII characters are automatically stripped. While most banks and card issuers display this information consistently, some may display it incorrectly or not at all.
          */
         public Builder statement_descriptor(String statement_descriptor) {
             createChargeRequest.statement_descriptor = statement_descriptor;
