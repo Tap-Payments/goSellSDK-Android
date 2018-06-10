@@ -41,7 +41,7 @@ public final class CreateChargeRequest {
 
     @SerializedName("receipt")
     @Expose
-    private Receipt receipt;
+    private Charge.Receipt receipt;
 
     @SerializedName("customer")
     @Expose
@@ -123,7 +123,7 @@ public final class CreateChargeRequest {
         /**
          * @param receipt Whether Receipt email and sms need to be sent or not, default will be true (if customer emil and phone info available, then receipt will be sent)
          */
-        public Builder receipt(Receipt receipt) {
+        public Builder receipt(Charge.Receipt receipt) {
             createChargeRequest.receipt = receipt;
             return this;
         }
@@ -162,27 +162,6 @@ public final class CreateChargeRequest {
 
         public CreateChargeRequest build() {
             return createChargeRequest;
-        }
-    }
-
-    /**
-     * Whether Receipt email and sms need to be sent or not, default will be true (if customer emil and phone info available, then receipt will be sent)
-     */
-    public static final class Receipt {
-        @SerializedName("email")
-        @Expose
-        private boolean email;
-
-        @SerializedName("sms")
-        @Expose
-        private boolean sms;
-
-        /**
-         * Whether Receipt email and sms need to be sent or not, default will be true (if customer emil and phone info available, then receipt will be sent)
-         */
-        public Receipt(boolean email, boolean sms) {
-            this.email = email;
-            this.sms = sms;
         }
     }
 
