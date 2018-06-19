@@ -41,8 +41,8 @@ public final class GoSellAPI {
         requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.retrieveCharge(chargeId), requestCallback));
     }
 
-    public void updateCharge(final String chargeId, final UpdateChargeRequest updateChargeRequest, final APIRequestCallback<Charge> requestCallback) {
-        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.updateCharge(chargeId, updateChargeRequest), requestCallback));
+    public void updateCharge(final String chargeId, final APIRequestCallback<Charge> requestCallback) {
+        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.updateCharge(chargeId), requestCallback));
     }
 
     public void getPaymentTypes(PaymentInfo paymentInfo, final APIRequestCallback<PaymentOptionsResponse> requestCallback) {
