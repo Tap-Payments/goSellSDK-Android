@@ -107,10 +107,7 @@ public class GoSellPaymentActivity
 
     @Override
     public void startWebPayment() {
-//        Intent intent = new Intent(this, WebPaymentActivity.class);
-//        startActivity(intent);
-
-        Intent intent = new Intent(this, CountriesActivity.class);
+        Intent intent = new Intent(this, WebPaymentActivity.class);
         startActivity(intent);
     }
 

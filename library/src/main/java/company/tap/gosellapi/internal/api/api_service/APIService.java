@@ -37,7 +37,7 @@ public interface APIService {
     Call<Charge> retrieveCharge(@Path(API_Constants.CHARGE_ID) String chargeId);
 
     @PUT(API_Constants.CHARGES + "/{" + API_Constants.CHARGE_ID + "}")
-    Call<Charge> updateCharge(@Path(API_Constants.CHARGE_ID) String chargeId, @Body UpdateChargeRequest updateChargeRequest);
+    Call<Charge> updateCharge(@Path(API_Constants.CHARGE_ID) String chargeId);
 
     @POST(API_Constants.PAYMENT_TYPES)
     Call<PaymentOptionsResponse> getPaymentTypes(@Body PaymentInfo paymentInfo);

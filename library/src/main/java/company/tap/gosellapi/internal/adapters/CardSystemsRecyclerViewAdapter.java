@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 
-public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSystemsRecyclerViewAdapter.CardSystemViewHolder> {
+public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSystemViewHolder> {
 
     private ArrayList<PaymentOption> data;
 
@@ -33,23 +33,20 @@ public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSys
     public void onBindViewHolder(@NonNull CardSystemViewHolder holder, int position) {
         PaymentOption option = data.get(position);
         Glide.with(holder.itemView.getContext()).load(option.getImage()).into(holder.cardSystemIcon);
-
-
-
     }
 
     @Override
     public int getItemCount() {
         return data.size();
     }
+}
 
-     class CardSystemViewHolder extends RecyclerView.ViewHolder {
-        ImageView cardSystemIcon;
+class CardSystemViewHolder extends RecyclerView.ViewHolder {
+    ImageView cardSystemIcon;
 
-        CardSystemViewHolder(View itemView) {
-            super(itemView);
+    CardSystemViewHolder(View itemView) {
+        super(itemView);
 
-            cardSystemIcon = itemView.findViewById(R.id.cardSystemIcon);
-        }
+        cardSystemIcon = itemView.findViewById(R.id.cardSystemIcon);
     }
 }
