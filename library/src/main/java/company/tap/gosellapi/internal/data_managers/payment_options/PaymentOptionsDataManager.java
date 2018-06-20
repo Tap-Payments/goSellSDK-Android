@@ -150,7 +150,7 @@ public class PaymentOptionsDataManager {
         CardCredentialsViewModel cardCredentialsViewModel = getCardCredentialsViewModel();
         if (cardCredentialsViewModel == null) return;
 
-        cardCredentialsViewModel.filterByCurrency(userChoiceCurrency.getCurrency_code());
+        cardCredentialsViewModel.filterByCurrency(userChoiceCurrency.getIsoCode());
     }
 
     private void displaySaveCard(boolean show) {
@@ -253,7 +253,7 @@ public class PaymentOptionsDataManager {
         private void addCurrencies() {
             ArrayList<AmountedCurrency> supportedCurrencies = paymentOptionsResponse.getSupported_currencies();
             if (supportedCurrencies != null && supportedCurrencies.size() > 0) {
-                String initialCurrency = paymentOptionsResponse.getCurrency_code();
+                String initialCurrency = paymentOptionsResponse.getCurrencyIsoCode();
                 CurrencySectionData currencySectionData = new CurrencySectionData(supportedCurrencies, initialCurrency);
 
                 dataList.add(new CurrencyViewModel(PaymentOptionsDataManager.this, currencySectionData, PaymentType.CURRENCY.getViewType()));

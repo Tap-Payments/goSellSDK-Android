@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.BackgroundColorSpan;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -37,10 +38,12 @@ public class Utils {
     }
 
     public static String getFormattedCurrency(AmountedCurrency amountedCurrency){
+
         Locale locale = new Locale(AppInfo.getLocaleString());
+
         Currency currency;
         try {
-            currency = Currency.getInstance(amountedCurrency.getCurrency_code());
+            currency = Currency.getInstance(amountedCurrency.getIsoCode());
         } catch (IllegalArgumentException ex) {
             return "";
         }

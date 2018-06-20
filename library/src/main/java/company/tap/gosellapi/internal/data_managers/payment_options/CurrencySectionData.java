@@ -16,7 +16,7 @@ public class CurrencySectionData {
     }
 
     public void setUserChoiceData(AmountedCurrency userChoiceCurrency) {
-        if (initialData.getCurrency_code().equalsIgnoreCase(userChoiceCurrency.getCurrency_code())) {
+        if (initialData.getIsoCode().equalsIgnoreCase(userChoiceCurrency.getIsoCode())) {
             userChoiceData = null;
         } else {
             userChoiceData = userChoiceCurrency;
@@ -29,7 +29,7 @@ public class CurrencySectionData {
 
     public static AmountedCurrency getAmountedCurrencyByCurrencyCode(String currencyCode, ArrayList<AmountedCurrency> data) {
         for (AmountedCurrency amountedCurrency : data) {
-            if (amountedCurrency.getCurrency_code().equalsIgnoreCase(currencyCode)) {
+            if (amountedCurrency.getIsoCode().equalsIgnoreCase(currencyCode)) {
                 return amountedCurrency;
             }
         }
