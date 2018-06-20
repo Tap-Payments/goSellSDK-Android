@@ -31,9 +31,9 @@ public final class PaymentOptionsResponse implements BaseResponse {
     @Expose
     private ArrayList<PaymentOption> payment_options;
 
-    @SerializedName("currency_code")
+    @SerializedName("currency")
     @Expose
-    private String currency_code;
+    private String iso_code;
 
     @SerializedName("supported_currencies")
     @Expose
@@ -55,8 +55,8 @@ public final class PaymentOptionsResponse implements BaseResponse {
         return payment_options;
     }
 
-    public String getCurrency_code() {
-        return currency_code;
+    public String getCurrencyIsoCode() {
+        return iso_code;
     }
 
     public ArrayList<AmountedCurrency> getSupported_currencies() {

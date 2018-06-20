@@ -10,9 +10,9 @@ import java.io.Serializable;
  */
 
 public final class AmountedCurrency implements Serializable{
-    @SerializedName("currency_code")
+    @SerializedName("currency")
     @Expose
-    private String currency_code;
+    private String iso_code;
 
     @SerializedName("symbol")
     @Expose
@@ -22,8 +22,8 @@ public final class AmountedCurrency implements Serializable{
     @Expose
     private double amount;
 
-    public String getCurrency_code() {
-        return currency_code;
+    public String getIsoCode() {
+        return iso_code;
     }
 
     public String getSymbol() {
