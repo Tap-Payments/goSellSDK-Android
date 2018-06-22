@@ -16,7 +16,7 @@ public class PaymentInfo {
 
     @SerializedName("customer")
     @Expose
-    private Customer customer;
+    private CustomerInfo customer;
 
     @SerializedName("items")
     @Expose
@@ -26,10 +26,19 @@ public class PaymentInfo {
     @Expose
     private ArrayList<ShippingCell> shipping;
 
-    public PaymentInfo(String currency_code, Customer customer, ArrayList<Item> items, ArrayList<ShippingCell> shipping) {
-        this.currency_code = currency_code;
-        // TODO: 26.05.2018 now this is disabled cause backend won't give currency list if customer is passed, need to change later
+//    public PaymentInfo(String currency_code, Customer customer, ArrayList<Item> items, ArrayList<ShippingCell> shipping) {
+//        this.currency_code = currency_code;
+//        // TODO: 26.05.2018 now this is disabled cause backend won't give currency list if customer is passed, need to change later
 //        this.customer = customer;
+//        this.items = items;
+//        this.shipping = shipping;
+//
+//        calculateTotalAmount();
+//    }
+
+    public PaymentInfo(String currency_code, CustomerInfo customer, ArrayList<Item> items, ArrayList<ShippingCell> shipping) {
+        this.currency_code = currency_code;
+        this.customer = customer;
         this.items = items;
         this.shipping = shipping;
 
@@ -40,7 +49,7 @@ public class PaymentInfo {
         return total_amount;
     }
 
-    public Customer getCustomer() {
+    public CustomerInfo getCustomer() {
         return customer;
     }
 
