@@ -5,9 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
-import company.tap.gosellapi.internal.api.models.Customer;
+import company.tap.gosellapi.internal.api.models.CustomerInfo;
 import company.tap.gosellapi.internal.api.models.Item;
 import company.tap.gosellapi.internal.api.models.PaymentInfo;
+import company.tap.gosellapi.internal.api.models.PhoneNumber;
 import company.tap.gosellapi.internal.api.models.ShippingCell;
 import company.tap.gosellapi.internal.custom_views.GoSellPayLayout;
 
@@ -19,8 +20,11 @@ public class MainActivity extends AppCompatActivity implements GoSellPayLayout.G
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        PhoneNumber phoneNumber = new PhoneNumber("965", "9316439380");
+
+
         paymentInfo = new PaymentInfo("KWD",
-                new Customer("so@me.mail", "+380000000000", "name"),
+                new CustomerInfo("Customer",  "Customerenko" ,"so@me.mail", phoneNumber),
                 new ArrayList<Item>() {
                     {
                         add(new Item("itemFirst", 2, "piece", 53.25));
