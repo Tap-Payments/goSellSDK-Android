@@ -27,7 +27,7 @@ public final class PaymentOptionsResponse implements BaseResponse {
     @Expose
     private String object;
 
-    @SerializedName("payment_options")
+    @SerializedName("payment_methods")
     @Expose
     private ArrayList<PaymentOption> payment_options;
 
