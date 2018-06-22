@@ -1,5 +1,7 @@
 package company.tap.gosellapi.internal.data_managers.payment_options;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -274,8 +276,10 @@ public class PaymentOptionsDataManager {
         }
 
         private void addWeb() {
+
             ArrayList<PaymentOption> paymentOptions = paymentOptionsResponse.getPayment_options();
 
+            Log.e("DATASOURCE TEST:","PAYMENT OPTIONS - " + paymentOptions);
             if (paymentOptions == null || paymentOptions.size() == 0) {
                 return;
             }
