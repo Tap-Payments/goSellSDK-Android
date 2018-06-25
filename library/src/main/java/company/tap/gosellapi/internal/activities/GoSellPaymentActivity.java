@@ -139,7 +139,7 @@ public class GoSellPaymentActivity
 
     @Override
     public void saveCardSwitchClicked(boolean isChecked, int saveCardBlockPosition) {
-        paymentOptionsFragment.scrollRecyclerToPosition(saveCardBlockPosition);
+//        paymentOptionsFragment.scrollRecyclerToPosition(saveCardBlockPosition);
     }
 
     @Override
