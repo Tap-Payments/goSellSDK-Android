@@ -87,7 +87,7 @@ public class PaymentOptionsDataManager {
     }
 
     public void saveCardSwitchCheckedChanged(boolean isChecked, int saveCardBlockPosition) {
-        displaySaveCard(isChecked);
+//        displaySaveCard(isChecked);
         if (isChecked) {
             listener.saveCardSwitchClicked(isChecked, saveCardBlockPosition);
         }
