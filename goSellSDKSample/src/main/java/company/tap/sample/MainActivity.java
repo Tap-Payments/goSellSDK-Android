@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity implements GoSellPayLayout.G
 
         PhoneNumber phoneNumber = new PhoneNumber("965", "9316439380");
 
-
         paymentInfo = new PaymentInfo("KWD",
                 new CustomerInfo("Customer",  "Customerenko" ,"so@me.mail", phoneNumber),
                 new ArrayList<Item>() {
