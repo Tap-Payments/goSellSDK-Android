@@ -1,5 +1,6 @@
 package company.tap.gosellapi.internal.api.requests;
 
+import android.os.Build;
 import android.support.annotation.RestrictTo;
 
 import com.google.gson.annotations.Expose;
@@ -8,6 +9,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.HashMap;
 
 import company.tap.gosellapi.internal.api.models.Charge;
+import company.tap.gosellapi.internal.api.models.CustomerInfo;
 import company.tap.gosellapi.internal.api.models.Redirect;
 import company.tap.gosellapi.internal.api.models.Source;
 
@@ -54,6 +56,10 @@ public final class CreateChargeRequest {
     @SerializedName("receipt_email")
     @Expose
     private String receipt_email;
+
+    @SerializedName("customer")
+    @Expose
+    private CustomerInfo customer;
 
     private CreateChargeRequest(double amount, String currency, Redirect redirect) {
         this.amount = amount;
@@ -129,6 +135,14 @@ public final class CreateChargeRequest {
          */
         public Builder receipt_email(String receipt_email) {
             createChargeRequest.receipt_email = receipt_email;
+            return this;
+        }
+
+        /**
+         * @param customer The customer info to send this charge&#8217;s receipt to.
+         */
+        public Builder customer(CustomerInfo customer) {
+            createChargeRequest.customer = customer;
             return this;
         }
 
