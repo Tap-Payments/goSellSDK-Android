@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity implements GoSellPayLayout.G
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        PhoneNumber phoneNumber = new PhoneNumber("965", "9316439380");
+        PhoneNumber phoneNumber = new PhoneNumber("380", "93164393");
 
         paymentInfo = new PaymentInfo("KWD",
                 new CustomerInfo("Customer",  "Customerenko" ,"so@me.mail", phoneNumber),

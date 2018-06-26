@@ -1,8 +1,12 @@
 package company.tap.gosellapi.internal.activities;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import java.util.HashMap;
 
@@ -16,6 +20,7 @@ import company.tap.gosellapi.internal.api.models.PhoneNumber;
 import company.tap.gosellapi.internal.api.models.Redirect;
 import company.tap.gosellapi.internal.api.models.Source;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
+import jp.wasabeef.blurry.Blurry;
 
 public class WebPaymentActivity extends BaseActionBarActivity {
 
@@ -23,8 +28,6 @@ public class WebPaymentActivity extends BaseActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_payment);
-
-        createCharge();
     }
 
     @Override
@@ -33,38 +36,5 @@ public class WebPaymentActivity extends BaseActionBarActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    private void getWebPaymentLink() {
 
-        Redirect redirect = new Redirect("", "");
-
-        Source source = new Source("");
-
-    }
-
-    private void createCharge() {
-        HashMap<String, String> chargeMetadata = new HashMap<>();
-        chargeMetadata.put("Order Number", "ORD-1001");
-
-        Source source = new Source("src_kw.knet");
-        PhoneNumber phoneNumber = new PhoneNumber("965", "9316439380");
-
-        GoSellAPI.getInstance().createCharge(
-                new CreateChargeRequest
-                        .Builder(10, "KWD", new Redirect("http://return.com/returnurl", "http://return.com/posturl"))
-                        .customer(new CustomerInfo("Customer",  "Customerenko" ,"so@me.mail", phoneNumber))
-                        .source(source)
-                        .build(),
-                new APIRequestCallback<Charge>() {
-                    @Override
-                    public void onSuccess(int responseCode, Charge serializedResponse) {
-                        Log.d("Web Payment", "onSuccess createCharge: serializedResponse:" + serializedResponse);
-                    }
-
-                    @Override
-                    public void onFailure(GoSellError errorDetails) {
-                        Log.d("Web Payment", "onFailure createCharge, errorCode: " + errorDetails.getErrorCode() + ", errorBody: " + errorDetails.getErrorBody() + ", throwable: " + errorDetails.getThrowable());
-                    }
-                }
-        );
-    }
 }
