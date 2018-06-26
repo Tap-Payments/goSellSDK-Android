@@ -1,9 +1,12 @@
 package company.tap.gosellapi.internal.activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
@@ -16,11 +19,22 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import company.tap.gosellapi.R;
+import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
+import company.tap.gosellapi.internal.api.callbacks.GoSellError;
+import company.tap.gosellapi.internal.api.facade.GoSellAPI;
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 import company.tap.gosellapi.internal.api.models.CardRawData;
+import company.tap.gosellapi.internal.api.models.Charge;
+import company.tap.gosellapi.internal.api.models.CustomerInfo;
+import company.tap.gosellapi.internal.api.models.PhoneNumber;
+import company.tap.gosellapi.internal.api.models.Redirect;
+import company.tap.gosellapi.internal.api.models.Source;
+import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
 import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
+import company.tap.gosellapi.internal.data_managers.LoadingScreenManager;
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
 import company.tap.gosellapi.internal.fragments.GoSellOTPScreenFragment;
 import company.tap.gosellapi.internal.fragments.GoSellPaymentOptionsFragment;
@@ -107,8 +121,37 @@ public class GoSellPaymentActivity
 
     @Override
     public void startWebPayment() {
-        Intent intent = new Intent(this, WebPaymentActivity.class);
-        startActivity(intent);
+        final Intent intent = new Intent(this, WebPaymentActivity.class);
+
+        LoadingScreenManager.getInstance().showLoadingScreen(this);
+
+        HashMap<String, String> chargeMetadata = new HashMap<>();
+        chargeMetadata.put("Order Number", "ORD-1001");
+
+        Source source = new Source("src_kw.knet");
+        PhoneNumber phoneNumber = new PhoneNumber("965", "93164393");
+
+        GoSellAPI.getInstance().createCharge(
+                new CreateChargeRequest
+                        .Builder(10, "KWD", new Redirect("http://return.com/returnurl", "http://return.com/posturl"))
+                        .customer(new CustomerInfo("Customer", "Customerenko", "so@me.mail", phoneNumber))
+                        .source(source)
+                        .build(),
+                new APIRequestCallback<Charge>() {
+                    @Override
+                    public void onSuccess(int responseCode, Charge serializedResponse) {
+                        Log.d("Web Payment", "onSuccess createCharge: serializedResponse:" + serializedResponse);
+                        LoadingScreenManager.getInstance().closeLoadingScreen();
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onFailure(GoSellError errorDetails) {
+                        Log.d("Web Payment", "onFailure createCharge, errorCode: " + errorDetails.getErrorCode() + ", errorBody: " + errorDetails.getErrorBody() + ", throwable: " + errorDetails.getThrowable());
+                        LoadingScreenManager.getInstance().closeLoadingScreen();
+                    }
+                }
+        );
     }
 
     @Override
@@ -193,6 +236,7 @@ public class GoSellPaymentActivity
         super.finish();
         overridePendingTransition(android.R.anim.fade_in, R.anim.slide_out_bottom);
     }
+
 }
 
 
