@@ -6,17 +6,6 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 
 public class PaymentInfo {
-    @SerializedName("total_amount")
-    @Expose
-    private double total_amount;
-
-    @SerializedName("currency_code")
-    @Expose
-    private String currency_code;
-
-    @SerializedName("customer")
-    @Expose
-    private CustomerInfo customer;
 
     @SerializedName("items")
     @Expose
@@ -26,23 +15,36 @@ public class PaymentInfo {
     @Expose
     private ArrayList<ShippingCell> shipping;
 
-//    public PaymentInfo(String currency_code, Customer customer, ArrayList<Item> items, ArrayList<ShippingCell> shipping) {
-//        this.currency_code = currency_code;
-//        // TODO: 26.05.2018 now this is disabled cause backend won't give currency list if customer is passed, need to change later
-//        this.customer = customer;
-//        this.items = items;
-//        this.shipping = shipping;
-//
-//        calculateTotalAmount();
-//    }
+    @SerializedName("taxes")
+    @Expose
+    private ArrayList<Tax> taxes;
 
-    public PaymentInfo(String currency_code, CustomerInfo customer, ArrayList<Item> items, ArrayList<ShippingCell> shipping) {
-        this.currency_code = currency_code;
+    @SerializedName("currency")
+    @Expose
+    private String currencyCode;
+
+    @SerializedName("customer")
+    @Expose
+    private CustomerInfo customer;
+
+    @SerializedName("total_amount")
+    @Expose
+    private double total_amount;
+
+    public PaymentInfo(String currencyCode, CustomerInfo customer, ArrayList<Tax> taxes, ArrayList<Item> items, ArrayList<ShippingCell> shipping) {
+        this.currencyCode = currencyCode;
         this.customer = customer;
         this.items = items;
         this.shipping = shipping;
+        this.taxes = taxes;
 
         calculateTotalAmount();
+    }
+
+    public PaymentInfo(ArrayList<Item> items, String currencyCode, double total_amount) {
+        this.items = items;
+        this.currencyCode = currencyCode;
+        this.total_amount = total_amount;
     }
 
     public double getTotal_amount() {

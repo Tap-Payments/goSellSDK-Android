@@ -23,6 +23,10 @@ public final class PaymentOptionsResponse implements BaseResponse {
     @Expose
     private String id;
 
+    @SerializedName("order_id")
+    @Expose
+    private String orderID;
+
     @SerializedName("object")
     @Expose
     private String object;
@@ -33,7 +37,7 @@ public final class PaymentOptionsResponse implements BaseResponse {
 
     @SerializedName("currency")
     @Expose
-    private String iso_code;
+    private String currencyCode;
 
     @SerializedName("supported_currencies")
     @Expose
@@ -47,6 +51,10 @@ public final class PaymentOptionsResponse implements BaseResponse {
         return id;
     }
 
+    public String getOrderID() {
+        return orderID;
+    }
+
     public String getObject() {
         return object;
     }
@@ -55,8 +63,8 @@ public final class PaymentOptionsResponse implements BaseResponse {
         return payment_options;
     }
 
-    public String getCurrencyIsoCode() {
-        return iso_code;
+    public String getCurrencyCode() {
+        return currencyCode;
     }
 
     public ArrayList<AmountedCurrency> getSupported_currencies() {

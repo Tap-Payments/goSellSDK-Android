@@ -347,36 +347,6 @@ public final class GoSellPayLayout extends FrameLayout implements View.OnClickLi
         }
     }
 
-    private void createCharge() {
-        HashMap<String, String> chargeMetadata = new HashMap<>();
-        chargeMetadata.put("Order Number", "ORD-1001");
-
-        GoSellAPI.getInstance().createCharge(
-                new CreateChargeRequest
-                        .Builder(10, "KWD", new Redirect("http://return.com/returnurl", "http://return.com/posturl"))
-                        .statement_descriptor("Test Txn 001")
-                        .description("Test Transaction")
-                        .metadata(chargeMetadata)
-                        .receipt_sms("96598989898")
-                        .receipt_email("test@test.com")
-                        .build(),
-                new APIRequestCallback<Charge>() {
-                    @Override
-                    public void onSuccess(int responseCode, Charge serializedResponse) {
-                        Log.d(TAG, "onSuccess createCharge: serializedResponse:" + serializedResponse);
-                    }
-
-                    @Override
-                    public void onFailure(GoSellError errorDetails) {
-                        Log.d(TAG, "onFailure createCharge, errorCode: " + errorDetails.getErrorCode() + ", errorBody: " + errorDetails.getErrorBody() + ", throwable: " + errorDetails.getThrowable());
-                    }
-                }
-        );
-
-        Intent intent = new Intent(getContext(), GoSellPaymentActivity.class);
-        getContext().startActivity(intent);
-    }
-
     private void getPaymentTypes() {
         loadingView.start();
         GoSellAPI.getInstance().getPaymentTypes(paymentInfoRequester.getPaymentInfo(),

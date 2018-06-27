@@ -69,7 +69,7 @@ public final class SDKSettings implements BaseResponse {
             @Expose
             private String logo;
 
-            @SerializedName("currency_code")
+            @SerializedName("currency")
             @Expose
             private String currency_code;
 

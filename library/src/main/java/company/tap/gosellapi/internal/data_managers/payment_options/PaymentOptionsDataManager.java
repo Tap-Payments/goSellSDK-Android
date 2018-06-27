@@ -25,14 +25,24 @@ public class PaymentOptionsDataManager {
     private int saveCardHeight;
     private int cardSwitchHeight;
 
+    public PaymentOptionsResponse getPaymentOptionsResponse() {
+        return paymentOptionsResponse;
+    }
+
     //outer interface (for fragment, containing recyclerView)
     public interface PaymentOptionsDataListener {
         void startCurrencySelection(ArrayList<AmountedCurrency> currencies, AmountedCurrency selectedCurrency);
+
         void startOTP();
+
         void startWebPayment();
+
         void startScanCard();
+
         void cardDetailsFilled(boolean isFilled, CardRawData cardRawData);
+
         void saveCardSwitchClicked(boolean isChecked, int saveCardBlockPosition);
+
         void addressOnCardClicked();
     }
 
@@ -41,7 +51,7 @@ public class PaymentOptionsDataManager {
     private PaymentOptionsResponse paymentOptionsResponse;
     private ArrayList<PaymentOptionsBaseViewModel> dataList;
     private int focusedPosition = Constants.NO_FOCUS;
-    
+
     public PaymentOptionsDataManager(PaymentOptionsResponse paymentOptionsResponse) {
         this.paymentOptionsResponse = paymentOptionsResponse;
         new DataFiller().fill();
@@ -176,7 +186,8 @@ public class PaymentOptionsDataManager {
 
     private CardCredentialsViewModel getCardCredentialsViewModel() {
         PaymentOptionsBaseViewModel baseViewModel = getViewModelByType(PaymentType.CARD);
-        if (baseViewModel == null || !(baseViewModel instanceof CardCredentialsViewModel)) return null;
+        if (baseViewModel == null || !(baseViewModel instanceof CardCredentialsViewModel))
+            return null;
 
         return (CardCredentialsViewModel) baseViewModel;
     }
@@ -192,7 +203,7 @@ public class PaymentOptionsDataManager {
         PaymentOptionsBaseViewModel baseViewModel = getViewModelByType(PaymentType.EMPTY);
         if (baseViewModel == null || !(baseViewModel instanceof EmptyViewModel)) return null;
 
-        return  (EmptyViewModel) baseViewModel;
+        return (EmptyViewModel) baseViewModel;
     }
     //endregion
 
@@ -255,7 +266,7 @@ public class PaymentOptionsDataManager {
         private void addCurrencies() {
             ArrayList<AmountedCurrency> supportedCurrencies = paymentOptionsResponse.getSupported_currencies();
             if (supportedCurrencies != null && supportedCurrencies.size() > 0) {
-                String initialCurrency = paymentOptionsResponse.getCurrencyIsoCode();
+                String initialCurrency = paymentOptionsResponse.getCurrencyCode();
                 CurrencySectionData currencySectionData = new CurrencySectionData(supportedCurrencies, initialCurrency);
 
                 dataList.add(new CurrencyViewModel(PaymentOptionsDataManager.this, currencySectionData, PaymentType.CURRENCY.getViewType()));
@@ -266,7 +277,7 @@ public class PaymentOptionsDataManager {
             ArrayList<Card> recentCards = new ArrayList<>();//paymentOptionsResponse.getCards();
 
             // TODO - temporary Card filler
-            for(int i = 0; i < 20; i++) {
+            for (int i = 0; i < 20; i++) {
                 recentCards.add(createCardData());
             }
 
@@ -279,7 +290,6 @@ public class PaymentOptionsDataManager {
 
             ArrayList<PaymentOption> paymentOptions = paymentOptionsResponse.getPayment_options();
 
-            Log.e("DATASOURCE TEST:","PAYMENT OPTIONS - " + paymentOptions);
             if (paymentOptions == null || paymentOptions.size() == 0) {
                 return;
             }
@@ -318,7 +328,7 @@ public class PaymentOptionsDataManager {
             dataList.add(new EmptyViewModel(PaymentOptionsDataManager.this, null, PaymentType.EMPTY.getViewType()));
         }
 
-            // TODO remove after real data will be received
+        // TODO remove after real data will be received
         private String cardJSONString = "{\n" +
                 "      \"id\": \"crd_q3242434\",\n" +
                 "      \"object\": \"card\",\n" +
