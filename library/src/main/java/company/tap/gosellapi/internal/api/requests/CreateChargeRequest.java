@@ -1,6 +1,5 @@
 package company.tap.gosellapi.internal.api.requests;
 
-import android.os.Build;
 import android.support.annotation.RestrictTo;
 
 import com.google.gson.annotations.Expose;
@@ -8,9 +7,13 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.HashMap;
 
+import company.tap.gosellapi.internal.adapters.RecentPaymentsRecyclerViewAdapter;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.models.CustomerInfo;
+import company.tap.gosellapi.internal.api.models.Order;
+import company.tap.gosellapi.internal.api.models.Receipt;
 import company.tap.gosellapi.internal.api.models.Redirect;
+import company.tap.gosellapi.internal.api.models.Reference;
 import company.tap.gosellapi.internal.api.models.Source;
 
 /**
@@ -29,17 +32,25 @@ public final class CreateChargeRequest {
     @Expose
     private String currency;
 
-    @SerializedName("source")
+    @SerializedName("customer")
     @Expose
-    private Source source;
+    private CustomerInfo customer;
 
-    @SerializedName("statement_descriptor")
+    @SerializedName("fee")
     @Expose
-    private String statement_descriptor;
+    private double fee;
+
+    @SerializedName("order")
+    @Expose
+    private Order order;
 
     @SerializedName("redirect")
     @Expose
     private Redirect redirect;
+
+    @SerializedName("source")
+    @Expose
+    private Source source;
 
     @SerializedName("description")
     @Expose
@@ -49,22 +60,31 @@ public final class CreateChargeRequest {
     @Expose
     private HashMap<String, String> metadata;
 
-    @SerializedName("receipt_sms")
+    @SerializedName("reference")
     @Expose
-    private String receipt_sms;
+    private Reference reference;
 
-    @SerializedName("receipt_email")
+    @SerializedName("save_card")
     @Expose
-    private String receipt_email;
+    private boolean saveCard;
 
-    @SerializedName("customer")
+    @SerializedName("statement_descriptor")
     @Expose
-    private CustomerInfo customer;
+    private String statementDescriptor;
 
-    private CreateChargeRequest(double amount, String currency, Redirect redirect) {
+    @SerializedName("threeDSecure")
+    @Expose
+    private boolean threeDSecure = true;
+
+    @SerializedName("receipt")
+    @Expose
+    private Receipt receipt;
+
+    private CreateChargeRequest(double amount, String currency, double fee, boolean saveCard) {
         this.amount = amount;
         this.currency = currency;
-        this.redirect = redirect;
+        this.fee = fee;
+        this.saveCard = saveCard;
     }
 
     /**
@@ -77,10 +97,11 @@ public final class CreateChargeRequest {
          * Builder constructor with necessary params
          * @param amount A positive double, representing how much to charge. The minimum amount is $0.50 US or equivalent in charge currency.
          * @param currency Three-letter ISO currency code, in lowercase. Must be a supported currency.
-         * @param redirect Information related to the {@link Redirect}.
+         * @param fee Extra fee amount (if any). Is available only in SDK
+         * @param saveCard Parameter which defines whether to save the card. Is available only in SDK
          */
-        public Builder(double amount, String currency, Redirect redirect) {
-            createChargeRequest = new CreateChargeRequest(amount, currency, redirect);
+        public Builder(double amount, String currency, double fee, boolean saveCard) {
+            createChargeRequest = new CreateChargeRequest(amount, currency, fee, saveCard);
         }
 
         /**
@@ -94,15 +115,6 @@ public final class CreateChargeRequest {
          */
         public Builder source(Source source) {
             createChargeRequest.source = source;
-            return this;
-        }
-
-        /**
-         *
-         * @param statement_descriptor An arbitrary string to be displayed on your customer&#8217;s credit card statement. This may be up to 22 characters. As an example, if your website is RunClub and the item you&#8217;re charging for is a race ticket, you may want to specify a statement_descriptor of RunClub 5K race ticket. The statement description must contain at least one letter, may not include &lt;&gt;&#34;&#8217; characters, and will appear on your customer&#8217;s statement in capital letters. Non-ASCII characters are automatically stripped. While most banks and card issuers display this information consistently, some may display it incorrectly or not at all.
-         */
-        public Builder statement_descriptor(String statement_descriptor) {
-            createChargeRequest.statement_descriptor = statement_descriptor;
             return this;
         }
 
@@ -123,26 +135,58 @@ public final class CreateChargeRequest {
         }
 
         /**
-         * @param receipt_sms The mobile number to send this charge&#8217;s receipt to. The receipt will not be sent until the charge is paid. If this charge is for a customer, the mobile number specified here will override the customer&#8217;s mobile number. Receipts will not be sent for test mode charges. If receipt_sms is specified for a charge in live mode, a receipt will be sent regardless of your sms settings. (optional, either receipt_sms or receipt_email is required if customer is not available)
-         */
-        public Builder receipt_sms(String receipt_sms) {
-            createChargeRequest.receipt_sms = receipt_sms;
-            return this;
-        }
-
-        /**
-         * @param receipt_email The email address to send this charge&#8217;s receipt to. The receipt will not be sent until the charge is paid. If this charge is for a customer, the email address specified here will override the customer&#8217;s email address. Receipts will not be sent for test mode charges. If receipt_email is specified for a charge in live mode, a receipt will be sent regardless of your email settings. (optional, either receipt_sms or receipt_email is required if customer is not available)
-         */
-        public Builder receipt_email(String receipt_email) {
-            createChargeRequest.receipt_email = receipt_email;
-            return this;
-        }
-
-        /**
          * @param customer The customer info to send this charge&#8217;s receipt to.
          */
         public Builder customer(CustomerInfo customer) {
             createChargeRequest.customer = customer;
+            return this;
+        }
+
+        /**
+         * @param redirect Information related to the {@link Redirect}.
+         */
+        public Builder redirect(Redirect redirect) {
+            createChargeRequest.redirect = redirect;
+            return this;
+        }
+
+        /**
+         * @param order Order containing identifier (from payment options response)
+         */
+        public Builder order(Order order) {
+            createChargeRequest.order = order;
+            return this;
+        }
+
+        /**
+         * @param reference Merchant reference object, more information in {@link Reference}
+         */
+        public Builder reference(Reference reference) {
+            createChargeRequest.reference = reference;
+            return this;
+        }
+
+        /**
+         * @param statement_descriptor An arbitrary string to be displayed on your customer&#8217;s credit card statement. This may be up to 22 characters. As an example, if your website is RunClub and the item you&#8217;re charging for is a race ticket, you may want to specify a statement_descriptor of RunClub 5K race ticket. The statement description must contain at least one letter, may not include &lt;&gt;&#34;&#8217; characters, and will appear on your customer&#8217;s statement in capital letters. Non-ASCII characters are automatically stripped. While most banks and card issuers display this information consistently, some may display it incorrectly or not at all.
+         */
+        public Builder statementDescriptor(String statement_descriptor) {
+            createChargeRequest.statementDescriptor = statement_descriptor;
+            return this;
+        }
+
+        /**
+         * @param threeDSecure Defines if 3D secure is required. Default is true
+         */
+        public Builder threeDSecure(boolean threeDSecure) {
+            createChargeRequest.threeDSecure = threeDSecure;
+            return this;
+        }
+
+        /**
+         * @param receipt Receipt settings
+         */
+        public Builder receipt(Receipt receipt) {
+            createChargeRequest.receipt = receipt;
             return this;
         }
 

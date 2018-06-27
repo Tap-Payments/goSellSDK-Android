@@ -1,8 +1,6 @@
 package company.tap.gosellapi.internal.activities;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +10,6 @@ import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -29,10 +26,13 @@ import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 import company.tap.gosellapi.internal.api.models.CardRawData;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.models.CustomerInfo;
+import company.tap.gosellapi.internal.api.models.Order;
+import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.api.models.PhoneNumber;
 import company.tap.gosellapi.internal.api.models.Redirect;
 import company.tap.gosellapi.internal.api.models.Source;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
+import company.tap.gosellapi.internal.custom_views.GoSellPayLayout;
 import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
 import company.tap.gosellapi.internal.data_managers.LoadingScreenManager;
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
@@ -40,7 +40,6 @@ import company.tap.gosellapi.internal.fragments.GoSellOTPScreenFragment;
 import company.tap.gosellapi.internal.fragments.GoSellPaymentOptionsFragment;
 import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
-import jp.wasabeef.blurry.Blurry;
 
 public class GoSellPaymentActivity
         extends AppCompatActivity
@@ -99,6 +98,15 @@ public class GoSellPaymentActivity
         String businessNameString = GlobalDataManager.getInstance().getSDKSettings().getData().getMerchant().getName();
         TextView businessName = findViewById(R.id.businessName);
         businessName.setText(businessNameString);
+
+        GoSellPayLayout payButton = findViewById(R.id.payButtonId);
+
+        payButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("PAY", "PAY MOTHEFUCKER!!");
+            }
+        });
     }
 
     @Override
@@ -125,33 +133,40 @@ public class GoSellPaymentActivity
 
         LoadingScreenManager.getInstance().showLoadingScreen(this);
 
-        HashMap<String, String> chargeMetadata = new HashMap<>();
-        chargeMetadata.put("Order Number", "ORD-1001");
-
+        // Configure request body
         Source source = new Source("src_kw.knet");
-        PhoneNumber phoneNumber = new PhoneNumber("965", "93164393");
+        PhoneNumber phoneNumber = new PhoneNumber("965", "77777777");
+        CustomerInfo customerInfo = new CustomerInfo("Customer", "Customerenko", "so@me.mail", phoneNumber);
+        Redirect redirect = new Redirect("gosellsdk://return_url");
 
-        GoSellAPI.getInstance().createCharge(
-                new CreateChargeRequest
-                        .Builder(10, "KWD", new Redirect("http://return.com/returnurl", "http://return.com/posturl"))
-                        .customer(new CustomerInfo("Customer", "Customerenko", "so@me.mail", phoneNumber))
-                        .source(source)
-                        .build(),
-                new APIRequestCallback<Charge>() {
-                    @Override
-                    public void onSuccess(int responseCode, Charge serializedResponse) {
-                        Log.d("Web Payment", "onSuccess createCharge: serializedResponse:" + serializedResponse);
-                        LoadingScreenManager.getInstance().closeLoadingScreen();
-                        startActivity(intent);
-                    }
+        Order order = new Order(dataSource.getPaymentOptionsResponse().getOrderID());
 
-                    @Override
-                    public void onFailure(GoSellError errorDetails) {
-                        Log.d("Web Payment", "onFailure createCharge, errorCode: " + errorDetails.getErrorCode() + ", errorBody: " + errorDetails.getErrorBody() + ", throwable: " + errorDetails.getThrowable());
-                        LoadingScreenManager.getInstance().closeLoadingScreen();
-                    }
-                }
-        );
+        CreateChargeRequest request = new CreateChargeRequest
+                .Builder(100, "KWD", 20, false)
+                .customer(customerInfo)
+                .order(order)
+                .redirect(redirect)
+                .source(source)
+                .build();
+
+        // Configure request callbacks
+        APIRequestCallback<Charge> requestCallback = new APIRequestCallback<Charge>() {
+            @Override
+            public void onSuccess(int responseCode, Charge serializedResponse) {
+                Log.d("Web Payment", "onSuccess createCharge: serializedResponse:" + serializedResponse);
+                LoadingScreenManager.getInstance().closeLoadingScreen();
+                startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(GoSellError errorDetails) {
+                Log.d("Web Payment", "onFailure createCharge, errorCode: " + errorDetails.getErrorCode() + ", errorBody: " + errorDetails.getErrorBody() + ", throwable: " + errorDetails.getThrowable());
+                LoadingScreenManager.getInstance().closeLoadingScreen();
+            }
+        };
+
+        // Create charge
+        GoSellAPI.getInstance().createCharge(request, requestCallback);
     }
 
     @Override

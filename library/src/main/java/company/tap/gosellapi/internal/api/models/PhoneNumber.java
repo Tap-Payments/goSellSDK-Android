@@ -5,21 +5,21 @@ import com.google.gson.annotations.SerializedName;
 
 public class PhoneNumber {
 
-    @SerializedName("ISDNumber")
+    @SerializedName("country_code")
     @Expose
-    private String ISDNumber;
+    private String countryCode;
 
     @SerializedName("number")
     @Expose
     private String number;
 
     public PhoneNumber(String ISDNumber, String number) {
-        this.ISDNumber = ISDNumber;
+        this.countryCode = ISDNumber;
         this.number = number;
     }
 
-    public String getISDNumber() {
-        return ISDNumber;
+    public String getCountryCode() {
+        return countryCode;
     }
 
     public String getNumber() {
