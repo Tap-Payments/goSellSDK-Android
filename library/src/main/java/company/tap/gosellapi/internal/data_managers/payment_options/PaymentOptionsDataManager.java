@@ -295,7 +295,7 @@ public class PaymentOptionsDataManager {
             }
 
             for (PaymentOption paymentOption : paymentOptions) {
-                if (paymentOption.getPayment_type().equalsIgnoreCase(CardPaymentType.WEB.getValue())) {
+                if (paymentOption.getPaymentType() == company.tap.gosellapi.internal.api.enums.PaymentType.WEB) {
                     dataList.add(new WebPaymentViewModel(PaymentOptionsDataManager.this, paymentOption, PaymentType.WEB.getViewType()));
                 }
             }
@@ -310,7 +310,7 @@ public class PaymentOptionsDataManager {
             }
 
             for (PaymentOption paymentOption : paymentOptions) {
-                if (paymentOption.getPayment_type().equalsIgnoreCase(CardPaymentType.CARD.getValue())) {
+                if (paymentOption.getPaymentType().equals(company.tap.gosellapi.internal.api.enums.PaymentType.CARD)) {
                     paymentOptionsCards.add(paymentOption);
                 }
             }

@@ -7,6 +7,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
+import company.tap.gosellapi.internal.api.enums.PaymentType;
+import company.tap.tapcardvalidator_android.CardBrand;
+
 /**
  * Created by eugene.goltsev on 27.04.2018.
  * <br>
@@ -28,7 +31,7 @@ public final class PaymentOption implements Comparable<PaymentOption>{
 
     @SerializedName("payment_type")
     @Expose
-    private String payment_type;
+    private PaymentType paymentType;
 
     @SerializedName("currency_code")
     @Expose
@@ -36,7 +39,7 @@ public final class PaymentOption implements Comparable<PaymentOption>{
 
     @SerializedName("supported_card_brands")
     @Expose
-    private ArrayList<String> supported_card_brands;
+    private ArrayList<CardBrand> supportedCardBrands;
 
     @SerializedName("extra_fees")
     @Expose
@@ -62,16 +65,16 @@ public final class PaymentOption implements Comparable<PaymentOption>{
         return image;
     }
 
-    public String getPayment_type() {
-        return payment_type;
+    public PaymentType getPaymentType() {
+        return paymentType;
     }
 
     public String getCurrency_code() {
         return currency_code;
     }
 
-    public ArrayList<String> getSupported_card_brands() {
-        return supported_card_brands;
+    public ArrayList<CardBrand> getSupportedCardBrands() {
+        return supportedCardBrands;
     }
 
     public ArrayList<ExtraFee> getExtra_fees() {

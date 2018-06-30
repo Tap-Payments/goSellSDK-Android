@@ -1,20 +1,22 @@
 package company.tap.gosellapi.internal.api.enums;
 
+import com.google.gson.annotations.SerializedName;
+
 public enum MeasurementUnit {
-    KILOGRAMS,
-    GRAMS,
-    DECIGRAMS,
-    CENTIGRAMS,
-    MILLIGRAMS,
-    MICROGRAMS,
-    NANOGRAMS,
-    PICOGRAMS,
-    OUNCES,
-    POUNDS,
-    STONES,
-    METRIC_TONS,
-    SHORT_TONS,
-    CARATS,
-    OUNCES_TROY,
-    SLUGS
+    @SerializedName("kilograms") KILOGRAMS,
+    @SerializedName("grams") GRAMS,
+    @SerializedName("decigrams") DECIGRAMS,
+    @SerializedName("centigrams") CENTIGRAMS,
+    @SerializedName("milligrams") MILLIGRAMS,
+    @SerializedName("micrograms") MICROGRAMS,
+    @SerializedName("nanograms") NANOGRAMS,
+    @SerializedName("picograms") PICOGRAMS,
+    @SerializedName("ounces") OUNCES,
+    @SerializedName("pounds") POUNDS,
+    @SerializedName("stones") STONES,
+    @SerializedName("metric_tons") METRIC_TONS,
+    @SerializedName("short_tons") SHORT_TONS,
+    @SerializedName("carats") CARATS,
+    @SerializedName("ounces_troy") OUNCES_TROY,
+    @SerializedName("slugs") SLUGS
 }

@@ -5,8 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -20,6 +22,7 @@ import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.CardCredentialsViewModel;
 import company.tap.tapcardvalidator_android.CardBrand;
 import company.tap.tapcardvalidator_android.CardValidator;
+import company.tap.tapcardvalidator_android.DefinedCardBrand;
 
 public class CardCredentialsViewHolder
         extends PaymentOptionsBaseViewHolder<ArrayList<PaymentOption>, CardCredentialsViewHolder, CardCredentialsViewModel> {
@@ -42,24 +45,26 @@ public class CardCredentialsViewHolder
         saveCardSwitch = itemView.findViewById(R.id.saveCardSwitch);
 
         // Configure edit fields
+        cardNumberField = itemView.findViewById(R.id.cardNumberField);
 
         // Card number field
-//        cardNumberField.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//
-//            }
-//        });
+        cardNumberField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                validateCardNumber(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         // CVVField
 //        CVVField.addTextChangedListener(new TextWatcher() {
@@ -114,8 +119,7 @@ public class CardCredentialsViewHolder
         cardScannerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                viewModel.cardScannerButtonClicked();
-                updateCardSystemsRecyclerView();
+                viewModel.cardScannerButtonClicked();
             }
         });
 
@@ -154,12 +158,13 @@ public class CardCredentialsViewHolder
 
         CardSystemsRecyclerViewAdapter adapter = new CardSystemsRecyclerViewAdapter(data);
         cardSystemsRecyclerView.setAdapter(adapter);
-
     }
 
-    private void updateCardSystemsRecyclerView() {
+    private void updateCardSystemsRecyclerView(CardBrand brand) {
         RecyclerView cardSystemsRecyclerView = itemView.findViewById(R.id.cardSystemsRecyclerView);
-        cardSystemsRecyclerView.getAdapter().notifyItemRemoved(0);
+
+        CardSystemsRecyclerViewAdapter adapter = (CardSystemsRecyclerViewAdapter) cardSystemsRecyclerView.getAdapter();
+        adapter.updateForCardBrand(brand);
     }
 
     public void updateAddressOnCardView(boolean isShow) {
@@ -176,7 +181,7 @@ public class CardCredentialsViewHolder
     }
 
     private void validateCardNumber(String cardNumber) {
-
-        CardValidator.validate(cardNumber);
+        DefinedCardBrand brand = CardValidator.validate(cardNumber);
+        updateCardSystemsRecyclerView(brand.getCardBrand());
     }
 }
