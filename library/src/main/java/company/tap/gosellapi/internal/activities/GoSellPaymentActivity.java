@@ -155,6 +155,7 @@ public class GoSellPaymentActivity
             public void onSuccess(int responseCode, Charge serializedResponse) {
                 Log.d("Web Payment", "onSuccess createCharge: serializedResponse:" + serializedResponse);
                 LoadingScreenManager.getInstance().closeLoadingScreen();
+                intent.putExtra("URL", serializedResponse.getRedirect().getUrl());
                 startActivity(intent);
             }
 

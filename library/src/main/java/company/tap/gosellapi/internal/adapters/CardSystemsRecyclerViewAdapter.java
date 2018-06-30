@@ -2,6 +2,7 @@ package company.tap.gosellapi.internal.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
+import company.tap.tapcardvalidator_android.CardBrand;
 
 public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSystemViewHolder> {
 
@@ -32,12 +34,19 @@ public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSys
     @Override
     public void onBindViewHolder(@NonNull CardSystemViewHolder holder, int position) {
         PaymentOption option = data.get(position);
+
+        Log.e("CARD SYSTEMS RV", "PAYMENT TYPE " + option.getPaymentType());
         Glide.with(holder.itemView.getContext()).load(option.getImage()).into(holder.cardSystemIcon);
     }
 
     @Override
     public int getItemCount() {
         return data.size();
+    }
+
+    public void updateForCardBrand(CardBrand brand) {
+
+        Log.e("CARD SYSTEMS RV", "BRAND " + brand);
     }
 }
 
