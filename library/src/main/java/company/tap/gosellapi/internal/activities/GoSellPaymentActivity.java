@@ -16,7 +16,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
@@ -27,7 +26,6 @@ import company.tap.gosellapi.internal.api.models.CardRawData;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.models.CustomerInfo;
 import company.tap.gosellapi.internal.api.models.Order;
-import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.api.models.PhoneNumber;
 import company.tap.gosellapi.internal.api.models.Redirect;
 import company.tap.gosellapi.internal.api.models.Source;
@@ -104,9 +102,15 @@ public class GoSellPaymentActivity
         payButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("PAY", "PAY MOTHEFUCKER!!");
+                makePayment();
             }
         });
+    }
+
+    private void makePayment() {
+
+
+
     }
 
     @Override

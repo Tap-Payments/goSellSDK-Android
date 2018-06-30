@@ -36,6 +36,8 @@ public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSys
         PaymentOption option = data.get(position);
 
         Log.e("CARD SYSTEMS RV", "PAYMENT TYPE " + option.getPaymentType());
+        Log.e("CARD SYSTEMS RV", "SUPPORTED CARD BRANDS" + option.getSupportedCardBrands());
+
         Glide.with(holder.itemView.getContext()).load(option.getImage()).into(holder.cardSystemIcon);
     }
 

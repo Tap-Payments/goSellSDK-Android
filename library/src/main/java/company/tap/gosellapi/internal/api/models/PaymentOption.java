@@ -33,10 +33,6 @@ public final class PaymentOption implements Comparable<PaymentOption>{
     @Expose
     private PaymentType paymentType;
 
-    @SerializedName("currency_code")
-    @Expose
-    private String currency_code;
-
     @SerializedName("supported_card_brands")
     @Expose
     private ArrayList<CardBrand> supportedCardBrands;
@@ -67,10 +63,6 @@ public final class PaymentOption implements Comparable<PaymentOption>{
 
     public PaymentType getPaymentType() {
         return paymentType;
-    }
-
-    public String getCurrency_code() {
-        return currency_code;
     }
 
     public ArrayList<CardBrand> getSupportedCardBrands() {
