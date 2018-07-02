@@ -44,6 +44,7 @@ public class GoSellPaymentActivity
         implements PaymentOptionsDataManager.PaymentOptionsDataListener {
     private static final int SCAN_REQUEST_CODE = 123;
     private static final int CURRENCIES_REQUEST_CODE = 124;
+    private static final int WEB_PAYMENT_REQUEST_CODE = 125;
 
     private PaymentOptionsDataManager dataSource;
     private FragmentManager fragmentManager;
@@ -159,8 +160,11 @@ public class GoSellPaymentActivity
             public void onSuccess(int responseCode, Charge serializedResponse) {
                 Log.d("Web Payment", "onSuccess createCharge: serializedResponse:" + serializedResponse);
                 LoadingScreenManager.getInstance().closeLoadingScreen();
+
+                intent.putExtra("id", serializedResponse.getId());
                 intent.putExtra("URL", serializedResponse.getRedirect().getUrl());
-                startActivity(intent);
+
+                startActivityForResult(intent, WEB_PAYMENT_REQUEST_CODE);
             }
 
             @Override
@@ -208,6 +212,7 @@ public class GoSellPaymentActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        finish();
 
         if (requestCode == SCAN_REQUEST_CODE) {
             String resultDisplayStr;
