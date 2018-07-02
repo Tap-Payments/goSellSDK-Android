@@ -7,7 +7,6 @@ import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,7 +22,7 @@ public class CountriesActivity extends BaseActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.slide_in_left, android.R.anim.fade_out);
-        setContentView(R.layout.activity_countries);
+        setContentView(R.layout.gosellapi_activity_countries);
 
         ArrayList<String> countries = new ArrayList<>(Arrays.asList(Locale.getISOCountries()));
 

@@ -23,7 +23,7 @@ public class BaseActionBarActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        actionBarCustomView = LayoutInflater.from(this).inflate(R.layout.action_bar_custom_view, null);
+        actionBarCustomView = LayoutInflater.from(this).inflate(R.layout.gosellapi_action_bar_custom_view, null);
         prepareActionBar();
     }
 
