@@ -38,7 +38,7 @@ public class CurrenciesActivity
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.slide_in_left, android.R.anim.fade_out);
-        setContentView(R.layout.activity_currencies);
+        setContentView(R.layout.gosellapi_activity_currencies);
 
         getData();
         initRecycler();
