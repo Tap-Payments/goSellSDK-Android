@@ -14,7 +14,7 @@ public class WebPaymentActivity extends BaseActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_web_payment);
+        setContentView(R.layout.gosellapi_activity_web_payment);
 
         Bundle extras = getIntent().getExtras();
 
