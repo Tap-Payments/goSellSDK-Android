@@ -3,13 +3,26 @@ package company.tap.gosellapi.internal.activities;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import company.tap.gosellapi.R;
+import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
+import company.tap.gosellapi.internal.api.callbacks.GoSellError;
+import company.tap.gosellapi.internal.api.facade.GoSellAPI;
+import company.tap.gosellapi.internal.api.models.Charge;
+import company.tap.gosellapi.internal.data_managers.PaymentResultToastManager;
 
 public class WebPaymentActivity extends BaseActionBarActivity {
+    private String chargeID;
+    private String pageUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,10 +32,12 @@ public class WebPaymentActivity extends BaseActionBarActivity {
         Bundle extras = getIntent().getExtras();
 
         if(extras != null) {
-            String url = extras.getString("URL");
+            pageUrl = extras.getString("URL");
             WebView webView = findViewById(R.id.webPaymentWebView);
             webView.setWebViewClient(new WebPaymentWebViewClient());
-            webView.loadUrl(url);
+            webView.loadUrl(pageUrl);
+
+            chargeID = extras.getString("id");
         }
     }
 
@@ -38,14 +53,40 @@ public class WebPaymentActivity extends BaseActionBarActivity {
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
 
-            Log.e("WEBVIEW", "PAGE STARTED URL " + url);
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
 
-            Log.e("WEBVIEW", "PAGE FINISHED URL " + url);
+            Log.e("OkHttp", "PAGE FINISHED URL " + url);
+            Log.e("OkHttp", "STORED URL " + pageUrl);
+//            if(url.equals(pageUrl)) {
+                retrieveCharge();
+//            }
         }
     }
+
+    private void retrieveCharge() {
+        Log.e("OkHttp", "RETREIVE CHARGE CALLED");
+
+        GoSellAPI.getInstance().retrieveCharge(chargeID, new APIRequestCallback<Charge>() {
+            @Override
+            public void onSuccess(int responseCode, Charge serializedResponse) {
+
+                Log.e("OkHttp", "STATUS " + serializedResponse.getRedirect().getStatus());
+
+                String message = serializedResponse.getRedirect().getStatus();
+                PaymentResultToastManager.getInstance().showPaymentResult(getLayoutInflater(), getApplicationContext(), message);
+
+                finish();
+            }
+
+            @Override
+            public void onFailure(GoSellError errorDetails) {
+
+            }
+        });
+    }
+
 }

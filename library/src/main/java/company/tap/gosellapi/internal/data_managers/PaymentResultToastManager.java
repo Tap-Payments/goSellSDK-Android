@@ -1,0 +1,51 @@
+package company.tap.gosellapi.internal.data_managers;
+
+import android.content.Context;
+import android.support.v7.widget.AppCompatImageButton;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import company.tap.gosellapi.R;
+
+public class PaymentResultToastManager {
+
+    private PaymentResultToastManager() {
+    }
+
+    private static class SingletonHolder {
+        private static final PaymentResultToastManager INSTANCE = new PaymentResultToastManager();
+    }
+
+    public static PaymentResultToastManager getInstance() {
+        return SingletonHolder.INSTANCE;
+    }
+
+    public void showPaymentResult(LayoutInflater inflater, Context context, String message) {
+
+        View toastLayout = inflater.inflate(R.layout.gosellapi_toast_success, null);
+
+        TextView statusTextView = toastLayout.findViewById(R.id.statusTextView);
+        statusTextView.setText(message);
+
+        final Toast toast = new Toast(context);
+        toast.setGravity(Gravity.TOP | Gravity.FILL_HORIZONTAL, 0, 0);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(toastLayout);
+        toast.show();
+
+        AppCompatImageButton closeButton = toastLayout.findViewById(R.id.closeButton);
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Log.e("TOAST", "CANCEL");
+                toast.cancel();
+            }
+        });
+    }
+}
