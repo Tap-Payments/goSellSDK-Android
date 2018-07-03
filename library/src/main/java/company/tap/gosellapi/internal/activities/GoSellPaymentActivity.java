@@ -163,6 +163,7 @@ public class GoSellPaymentActivity
 
                 intent.putExtra("id", serializedResponse.getId());
                 intent.putExtra("URL", serializedResponse.getRedirect().getUrl());
+                intent.putExtra("returnURL", serializedResponse.getRedirect().getReturn_url());
 
                 startActivityForResult(intent, WEB_PAYMENT_REQUEST_CODE);
             }
@@ -212,7 +213,6 @@ public class GoSellPaymentActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        finish();
 
         if (requestCode == SCAN_REQUEST_CODE) {
             String resultDisplayStr;
@@ -248,11 +248,16 @@ public class GoSellPaymentActivity
             } else {
 //                TapDialog.createToast(this, L.scan_was_canceled.toString(), Toast.LENGTH_LONG);
             }
-        } else if (requestCode == CURRENCIES_REQUEST_CODE) {
+        }
+        else if (requestCode == CURRENCIES_REQUEST_CODE) {
             AmountedCurrency userChoiceCurrency = (AmountedCurrency) data.getSerializableExtra(CurrenciesActivity.CURRENCIES_ACTIVITY_USER_CHOICE_CURRENCY);
             if (userChoiceCurrency != null) {
                 dataSource.currencySelectedByUser(userChoiceCurrency);
             }
+        }
+        else if(requestCode == WEB_PAYMENT_REQUEST_CODE && resultCode == RESULT_OK) {
+            Log.e("TEST", "WEB PAYMENT REQUEST");
+            finish();
         }
     }
 

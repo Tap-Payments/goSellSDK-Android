@@ -1,5 +1,6 @@
 package company.tap.gosellapi.internal.activities;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,7 +23,7 @@ import company.tap.gosellapi.internal.data_managers.PaymentResultToastManager;
 
 public class WebPaymentActivity extends BaseActionBarActivity {
     private String chargeID;
-    private String pageUrl;
+    private String returnURL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +33,12 @@ public class WebPaymentActivity extends BaseActionBarActivity {
         Bundle extras = getIntent().getExtras();
 
         if(extras != null) {
-            pageUrl = extras.getString("URL");
+            String pageUrl = extras.getString("URL");
             WebView webView = findViewById(R.id.webPaymentWebView);
             webView.setWebViewClient(new WebPaymentWebViewClient());
             webView.loadUrl(pageUrl);
 
+            returnURL = extras.getString("returnURL");
             chargeID = extras.getString("id");
         }
     }
@@ -50,35 +52,25 @@ public class WebPaymentActivity extends BaseActionBarActivity {
     private class WebPaymentWebViewClient extends WebViewClient {
 
         @Override
-        public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            super.onPageStarted(view, url, favicon);
-
-        }
-
-        @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
 
-            Log.e("OkHttp", "PAGE FINISHED URL " + url);
-            Log.e("OkHttp", "STORED URL " + pageUrl);
-//            if(url.equals(pageUrl)) {
+            if(url.equals(returnURL)) {
                 retrieveCharge();
-//            }
+            }
         }
     }
 
     private void retrieveCharge() {
-        Log.e("OkHttp", "RETREIVE CHARGE CALLED");
 
         GoSellAPI.getInstance().retrieveCharge(chargeID, new APIRequestCallback<Charge>() {
             @Override
             public void onSuccess(int responseCode, Charge serializedResponse) {
 
-                Log.e("OkHttp", "STATUS " + serializedResponse.getRedirect().getStatus());
-
                 String message = serializedResponse.getRedirect().getStatus();
                 PaymentResultToastManager.getInstance().showPaymentResult(getLayoutInflater(), getApplicationContext(), message);
 
+                setResult(RESULT_OK);
                 finish();
             }
 
@@ -89,4 +81,9 @@ public class WebPaymentActivity extends BaseActionBarActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_CANCELED);
+        super.onBackPressed();
+    }
 }
