@@ -21,7 +21,8 @@
         android:layout_marginBottom="@dimen/margin_basic_16dp"
         android:layout_marginTop="@dimen/margin_basic_16dp"
         android:layout_toEndOf="@id/statusIcon"
-        android:layout_toStartOf="@id/closeButton" />
+        android:layout_toStartOf="@id/closeButton"
+        style="@style/TextView.Title.Header"/>
 
     <android.support.v7.widget.AppCompatImageButton
         android:id="@+id/closeButton"

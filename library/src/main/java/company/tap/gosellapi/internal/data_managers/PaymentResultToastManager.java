@@ -25,8 +25,9 @@ public class PaymentResultToastManager {
         return SingletonHolder.INSTANCE;
     }
 
-    public void showPaymentResult(LayoutInflater inflater, Context context, String message) {
+    public void showPaymentResult(Context context, String message) {
 
+        LayoutInflater inflater = LayoutInflater.from(context);
         View toastLayout = inflater.inflate(R.layout.gosellapi_toast_success, null);
 
         TextView statusTextView = toastLayout.findViewById(R.id.statusTextView);
@@ -37,15 +38,5 @@ public class PaymentResultToastManager {
         toast.setDuration(Toast.LENGTH_LONG);
         toast.setView(toastLayout);
         toast.show();
-
-        AppCompatImageButton closeButton = toastLayout.findViewById(R.id.closeButton);
-        closeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Log.e("TOAST", "CANCEL");
-                toast.cancel();
-            }
-        });
     }
 }

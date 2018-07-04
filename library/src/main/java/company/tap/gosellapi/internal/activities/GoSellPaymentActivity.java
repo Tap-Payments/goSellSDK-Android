@@ -18,18 +18,24 @@ import com.bumptech.glide.request.RequestOptions;
 import java.util.ArrayList;
 
 import company.tap.gosellapi.R;
+import company.tap.gosellapi.internal.api.api_service.APIService;
 import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.facade.GoSellAPI;
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 import company.tap.gosellapi.internal.api.models.CardRawData;
 import company.tap.gosellapi.internal.api.models.Charge;
+import company.tap.gosellapi.internal.api.models.CreateTokenCard;
 import company.tap.gosellapi.internal.api.models.CustomerInfo;
 import company.tap.gosellapi.internal.api.models.Order;
 import company.tap.gosellapi.internal.api.models.PhoneNumber;
 import company.tap.gosellapi.internal.api.models.Redirect;
 import company.tap.gosellapi.internal.api.models.Source;
+import company.tap.gosellapi.internal.api.models.Token;
+import company.tap.gosellapi.internal.api.requests.CardRequest;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
+import company.tap.gosellapi.internal.api.requests.CreateTokenWithEncryptedCardDataRequest;
+import company.tap.gosellapi.internal.api.requests.CreateTokenWithExistingCardDataRequest;
 import company.tap.gosellapi.internal.custom_views.GoSellPayLayout;
 import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
 import company.tap.gosellapi.internal.data_managers.LoadingScreenManager;
@@ -100,27 +106,54 @@ public class GoSellPaymentActivity
 
         GoSellPayLayout payButton = findViewById(R.id.payButtonId);
 
-        payButton.setOnClickListener(new View.OnClickListener() {
+    }
+
+    private void makePayment() {
+        // 1a. Create token with encrypted
+        // 1b. Create token with existing card (RECENT)
+        // 2. Create charge
+
+        // if SUCCESS -> close SDK, show Toast with success message
+        // if FAILURE -> close SDK, show Toast with failure message
+        // if REDIRECT -> open WebPaymentActivity with url
+        // if OTP -> launch OTP screen
+
+        Log.e("TEST", "TEST");
+
+        String cardNumber = "4000000000000077";
+        String expMonth = "04";
+        String expYear = "35";
+        String cvc = "123";
+        String encryptionKey = GlobalDataManager.getInstance().getSDKSettings().getData().getEncryption_key();
+
+        CardRequest cardRequest = new CardRequest.Builder(cardNumber, expMonth, expYear, cvc, encryptionKey).build();
+
+        String cryptedData = cardRequest.getCryptedData();
+
+        CreateTokenCard createTokenCard = new CreateTokenCard(cryptedData);
+        CreateTokenWithEncryptedCardDataRequest request = new CreateTokenWithEncryptedCardDataRequest.Builder(createTokenCard).build();
+
+        GoSellAPI.getInstance().createTokenWithEncryptedCard(request, new APIRequestCallback<Token>() {
             @Override
-            public void onClick(View v) {
-                makePayment();
+            public void onSuccess(int responseCode, Token serializedResponse) {
+                Log.e("TEST", "SERIALIZED RESPONSE " + serializedResponse.toString());
+            }
+
+            @Override
+            public void onFailure(GoSellError errorDetails) {
+                Log.e("TEST", "FAILURE");
             }
         });
     }
 
-    private void makePayment() {
-
-
-
-    }
-
     @Override
     public void startOTP() {
-        fragmentManager
-                .beginTransaction()
-                .replace(R.id.paymentActivityFragmentContainer, new GoSellOTPScreenFragment())
-                .addToBackStack("")
-                .commit();
+        makePayment();
+//        fragmentManager
+//                .beginTransaction()
+//                .replace(R.id.paymentActivityFragmentContainer, new GoSellOTPScreenFragment())
+//                .addToBackStack("")
+//                .commit();
     }
 
     @Override
