@@ -8,7 +8,10 @@ import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.models.PaymentInfo;
+import company.tap.gosellapi.internal.api.models.Token;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
+import company.tap.gosellapi.internal.api.requests.CreateTokenWithEncryptedCardDataRequest;
+import company.tap.gosellapi.internal.api.requests.CreateTokenWithExistingCardDataRequest;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
 
@@ -43,6 +46,15 @@ public final class GoSellAPI {
 
     public void updateCharge(final String chargeId, final APIRequestCallback<Charge> requestCallback) {
         requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.updateCharge(chargeId), requestCallback));
+
+    }
+
+    public void createTokenWithEncryptedCard(final CreateTokenWithEncryptedCardDataRequest createTokenWithEncryptedCardDataRequest, final APIRequestCallback<Token> requestCallback) {
+        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.createTokenWithEncryptedCard(createTokenWithEncryptedCardDataRequest), requestCallback));
+    }
+
+    public void createTokenWithExistingCard(final CreateTokenWithExistingCardDataRequest createTokenWithExistingCardDataRequest, final APIRequestCallback<Token> requestCallback) {
+        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.createTokenWithExistingCard(createTokenWithExistingCardDataRequest), requestCallback));
     }
 
     public void getPaymentTypes(PaymentInfo paymentInfo, final APIRequestCallback<PaymentOptionsResponse> requestCallback) {

@@ -5,6 +5,7 @@ import android.support.annotation.RestrictTo;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import company.tap.gosellapi.internal.api.enums.TokenType;
 import company.tap.gosellapi.internal.api.responses.BaseResponse;
 import company.tap.gosellapi.internal.api.responses.CardResponse;
 
@@ -42,7 +43,7 @@ public final class Token implements BaseResponse {
 
     @SerializedName("type")
     @Expose
-    private String type;
+    private TokenType type;
 
     @SerializedName("used")
     @Expose
@@ -101,7 +102,7 @@ public final class Token implements BaseResponse {
     /**
      * @return Type of the token: card
      */
-    public String getType() {
+    public TokenType getType() {
         return type;
     }
 

@@ -4,6 +4,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -47,6 +48,8 @@ public class CardCredentialsViewHolder
         // Configure edit fields
         cardNumberField = itemView.findViewById(R.id.cardNumberField);
 
+         final char space = ' ';
+
         // Card number field
         cardNumberField.addTextChangedListener(new TextWatcher() {
             @Override
@@ -62,6 +65,7 @@ public class CardCredentialsViewHolder
 
             @Override
             public void afterTextChanged(Editable s) {
+
 
             }
         });

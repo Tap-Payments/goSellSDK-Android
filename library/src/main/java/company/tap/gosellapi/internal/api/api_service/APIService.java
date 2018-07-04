@@ -5,6 +5,8 @@ import company.tap.gosellapi.internal.api.models.PaymentInfo;
 import company.tap.gosellapi.internal.api.models.Token;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
 import company.tap.gosellapi.internal.api.requests.CreateTokenRequest;
+import company.tap.gosellapi.internal.api.requests.CreateTokenWithEncryptedCardDataRequest;
+import company.tap.gosellapi.internal.api.requests.CreateTokenWithExistingCardDataRequest;
 import company.tap.gosellapi.internal.api.responses.SDKSettings;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import retrofit2.Call;
@@ -26,6 +28,12 @@ public interface APIService {
 
     @POST(API_Constants.TOKEN)
     Call<Token> createToken(@Body CreateTokenRequest createTokenRequest);
+
+    @POST(API_Constants.TOKEN)
+    Call<Token> createTokenWithEncryptedCard(@Body CreateTokenWithEncryptedCardDataRequest createTokenWithEncryptedDataRequest);
+
+    @POST(API_Constants.TOKEN)
+    Call<Token> createTokenWithExistingCard(@Body CreateTokenWithExistingCardDataRequest createTokenWithExistingCardDataRequest);
 
     @GET(API_Constants.TOKENS + "/{" + API_Constants.TOKEN_ID + "}")
     Call<Token> retrieveToken(@Path(API_Constants.TOKEN_ID) String tokenId);

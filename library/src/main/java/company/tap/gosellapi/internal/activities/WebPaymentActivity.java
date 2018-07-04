@@ -1,18 +1,9 @@
 package company.tap.gosellapi.internal.activities;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
@@ -68,7 +59,7 @@ public class WebPaymentActivity extends BaseActionBarActivity {
             public void onSuccess(int responseCode, Charge serializedResponse) {
 
                 String message = serializedResponse.getRedirect().getStatus();
-                PaymentResultToastManager.getInstance().showPaymentResult(getLayoutInflater(), getApplicationContext(), message);
+                PaymentResultToastManager.getInstance().showPaymentResult(getApplicationContext(), message);
 
                 setResult(RESULT_OK);
                 finish();

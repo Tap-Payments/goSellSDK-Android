@@ -25,10 +25,11 @@ public class CardRequest {
 
         /**
          * Builder constructor with necessary params
-         * @param number The card number, as a string without any separators.
-         * @param exp_month Two digit number representing the card's expiration month.
-         * @param exp_year Two or four digit number representing the card's expiration year.
-         * @param cvc Card's security code.
+         *
+         * @param number        The card number, as a string without any separators.
+         * @param exp_month     Two digit number representing the card's expiration month.
+         * @param exp_year      Two or four digit number representing the card's expiration year.
+         * @param cvc           Card's security code.
          * @param encryptionKey Encryption key to protect card data.
          */
         public Builder(String number, String exp_month, String exp_year, String cvc, String encryptionKey) {
@@ -144,33 +145,41 @@ public class CardRequest {
         cryptedDataInternal.name = name;
     }
 
-        //helper class to encrypt data
-        private final class CryptedData {
-            @SerializedName("number")
-            @Expose
-            private String number;
+    //helper class to encrypt data
+    private final class CryptedData {
+        @SerializedName("number")
+        @Expose
+        private String number;
 
-            @SerializedName("exp_month")
-            @Expose
-            private String exp_month;
+        @SerializedName("exp_month")
+        @Expose
+        private String exp_month;
 
-            @SerializedName("exp_year")
-            @Expose
-            private String exp_year;
+        @SerializedName("exp_year")
+        @Expose
+        private String exp_year;
 
-            @SerializedName("cvc")
-            @Expose
-            private String cvc;
+        @SerializedName("cvc")
+        @Expose
+        private String cvc;
 
-            @SerializedName("name")
-            @Expose
-            private String name;
+        @SerializedName("name")
+        @Expose
+        private String name;
 
-            private CryptedData(String number, String exp_month, String exp_year, String cvc) {
-                this.number = number;
-                this.exp_month = exp_month;
-                this.exp_year = exp_year;
-                this.cvc = cvc;
-            }
+        private CryptedData(String number, String exp_month, String exp_year, String cvc) {
+            this.number = number;
+            this.exp_month = exp_month;
+            this.exp_year = exp_year;
+            this.cvc = cvc;
         }
+    }
+
+    public CryptedData getCryptedDataInternal() {
+        return cryptedDataInternal;
+    }
+
+    public String getCryptedData() {
+        return cryptedData;
+    }
 }
