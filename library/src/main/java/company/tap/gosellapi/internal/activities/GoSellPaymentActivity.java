@@ -42,12 +42,13 @@ import company.tap.gosellapi.internal.data_managers.LoadingScreenManager;
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
 import company.tap.gosellapi.internal.fragments.GoSellOTPScreenFragment;
 import company.tap.gosellapi.internal.fragments.GoSellPaymentOptionsFragment;
+import company.tap.gosellapi.internal.interfaces.CardRequestInterface;
 import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
 
 public class GoSellPaymentActivity
         extends AppCompatActivity
-        implements PaymentOptionsDataManager.PaymentOptionsDataListener {
+        implements PaymentOptionsDataManager.PaymentOptionsDataListener, CardRequestInterface {
     private static final int SCAN_REQUEST_CODE = 123;
     private static final int CURRENCIES_REQUEST_CODE = 124;
     private static final int WEB_PAYMENT_REQUEST_CODE = 125;
@@ -112,7 +113,6 @@ public class GoSellPaymentActivity
         // 1a. Create token with encrypted
         // 1b. Create token with existing card (RECENT)
         // 2. Create charge
-
         // if SUCCESS -> close SDK, show Toast with success message
         // if FAILURE -> close SDK, show Toast with failure message
         // if REDIRECT -> open WebPaymentActivity with url
@@ -120,30 +120,35 @@ public class GoSellPaymentActivity
 
         Log.e("TEST", "TEST");
 
+        //==============================================
+
         String cardNumber = "4000000000000077";
         String expMonth = "04";
         String expYear = "35";
-        String cvc = "123";
-        String encryptionKey = GlobalDataManager.getInstance().getSDKSettings().getData().getEncryption_key();
+        String cvv = "123";
 
-        CardRequest cardRequest = new CardRequest.Builder(cardNumber, expMonth, expYear, cvc, encryptionKey).build();
+        GlobalDataManager.getInstance().createTokenWithEncryptedCardData(cardNumber, expMonth, expYear, cvv, this);
+        //==============================================
+    }
 
-        String cryptedData = cardRequest.getCryptedData();
+    @Override
+    public void onCardRequestSuccess() {
+        Log.e("CARD REQUEST", "SUCCESS");
+    }
 
-        CreateTokenCard createTokenCard = new CreateTokenCard(cryptedData);
-        CreateTokenWithEncryptedCardDataRequest request = new CreateTokenWithEncryptedCardDataRequest.Builder(createTokenCard).build();
+    @Override
+    public void onCardRequestFailure() {
+        Log.e("CARD REQUEST", "FAILURE");
+    }
 
-        GoSellAPI.getInstance().createTokenWithEncryptedCard(request, new APIRequestCallback<Token>() {
-            @Override
-            public void onSuccess(int responseCode, Token serializedResponse) {
-                Log.e("TEST", "SERIALIZED RESPONSE " + serializedResponse.toString());
-            }
+    @Override
+    public void onCardRequestOTP() {
+        Log.e("CARD REQUEST", "OTP");
+    }
 
-            @Override
-            public void onFailure(GoSellError errorDetails) {
-                Log.e("TEST", "FAILURE");
-            }
-        });
+    @Override
+    public void onCardRequestRedirect() {
+        Log.e("CARD REQUEST", "REDIRECT");
     }
 
     @Override

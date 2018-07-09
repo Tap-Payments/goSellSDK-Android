@@ -1,12 +1,14 @@
 package company.tap.gosellapi.internal.data_managers;
 
+import android.app.ActionBar;
 import android.content.Context;
-import android.support.v7.widget.AppCompatImageButton;
-import android.util.Log;
+import android.text.Layout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageButton;
+
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
