@@ -4,6 +4,7 @@ import android.util.Log;
 
 import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
+import company.tap.gosellapi.internal.api.enums.ChargeStatus;
 import company.tap.gosellapi.internal.api.facade.GoSellAPI;
 import company.tap.gosellapi.internal.api.models.Card;
 import company.tap.gosellapi.internal.api.models.Charge;
@@ -83,18 +84,18 @@ public class GlobalDataManager {
         GoSellAPI.getInstance().createTokenWithEncryptedCard(request, new APIRequestCallback<Token>() {
             @Override
             public void onSuccess(int responseCode, Token serializedResponse) {
-                Log.e("TEST", "SERIALIZED RESPONSE " + serializedResponse.toString());
+                Log.e("CARD REQUEST", "SUCCESS");
                 createCharge(cardRequestInterface);
             }
 
             @Override
             public void onFailure(GoSellError errorDetails) {
-                Log.e("TEST", "FAILURE");
+                Log.e("CARD REQUEST", "FAILURE");
             }
         });
     }
 
-    public void createCharge(CardRequestInterface cardRequestInterface) {
+    public void createCharge(final CardRequestInterface cardRequestInterface) {
 
         // Configure request body
         Source source = new Source("src_kw.knet");
@@ -116,12 +117,13 @@ public class GlobalDataManager {
         APIRequestCallback<Charge> requestCallback = new APIRequestCallback<Charge>() {
             @Override
             public void onSuccess(int responseCode, Charge serializedResponse) {
-                Log.d("Web Payment", "onSuccess createCharge: serializedResponse:" + serializedResponse);
+                Log.e("CARD REQUEST", "CHARGE SUCCEEDED");
+                checkChargeStatus(serializedResponse, cardRequestInterface);
             }
 
             @Override
             public void onFailure(GoSellError errorDetails) {
-                Log.d("Web Payment", "onFailure createCharge, errorCode: " + errorDetails.getErrorCode() + ", errorBody: " + errorDetails.getErrorBody() + ", throwable: " + errorDetails.getThrowable());
+                Log.e("CARD REQUEST", "CHARGE FAILED");
             }
         };
 
@@ -129,4 +131,32 @@ public class GlobalDataManager {
         GoSellAPI.getInstance().createCharge(request, requestCallback);
     }
 
+    private void checkChargeStatus(Charge response, CardRequestInterface cardRequestInterface) {
+
+        Log.e("CARD REQUEST", "CHECKING CHARGE STATUS " + response.getStatus());
+
+        switch (response.getStatus()) {
+
+            case INITIATED:
+
+                Log.e("CARD REQUEST", "RESPONSE AUTHENTICATE " + response.getAuthenticate());
+
+                if(response.getAuthenticate() == null) {
+                    cardRequestInterface.onCardRequestRedirect();
+                }
+                else {
+                    cardRequestInterface.onCardRequestOTP();
+                }
+
+                break;
+
+            case FAILED:
+                cardRequestInterface.onCardRequestFailure();
+                break;
+
+            case CAPTURED:
+                cardRequestInterface.onCardRequestSuccess();
+                break;
+        }
+    }
 }

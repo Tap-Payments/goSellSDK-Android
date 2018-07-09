@@ -44,4 +44,89 @@ public class Authenticate {
     @SerializedName("authenticated")
     @Expose
     private long authenticated;
+
+    @SerializedName("count")
+    @Expose
+    private int count;
+
+    @SerializedName("value")
+    @Expose
+    private String value;
+
+    /**
+     * @return Unique authentication identifier.
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * @return Object type. Here "authenticate" always.
+     */
+    public String getObject() {
+        return object;
+    }
+
+    /**
+     * @return Authentication type.
+     */
+    public AuthenticationType getType() {
+        return type;
+    }
+
+    /**
+     * @return Defines the initiator of the authentication.
+     */
+    public AuthenticationRequirer getBy() {
+        return by;
+    }
+
+    /**
+     * @return Authentication status.
+     */
+    public AuthenticationStatus getStatus() {
+        return status;
+    }
+
+    /**
+     * @return Number of attempts per code.
+     */
+    public int getRetryAttempt() {
+        return retryAttempt;
+    }
+
+    /**
+     * @return The URL to perform the authentication.
+     */
+    public String getUrl() {
+        return url;
+    }
+
+    /**
+     * @return Authentication creation date.
+     */
+    public long getCreated() {
+        return created;
+    }
+
+    /**
+     * @return Authentication date (when was authenticated)
+     */
+    public long getAuthenticated() {
+        return authenticated;
+    }
+
+    /**
+     * @return Number of used authentication attempts.
+     */
+    public int getCount() {
+        return count;
+    }
+
+    /**
+     * @return In case of OTP - masked mobile number where SMS was dispatched.
+     */
+    public String getValue() {
+        return value;
+    }
 }
