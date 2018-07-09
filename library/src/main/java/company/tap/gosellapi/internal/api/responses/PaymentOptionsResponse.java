@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 import company.tap.gosellapi.internal.api.models.Card;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
+import company.tap.gosellapi.internal.api.models.SavedCard;
 
 /**
  * Created by eugene.goltsev on 17.04.2018.
@@ -45,7 +46,7 @@ public final class PaymentOptionsResponse implements BaseResponse {
 
     @SerializedName("cards")
     @Expose
-    private ArrayList<Card> cards;
+    private ArrayList<SavedCard> cards;
 
     public String getId() {
         return id;
@@ -71,7 +72,7 @@ public final class PaymentOptionsResponse implements BaseResponse {
         return supported_currencies;
     }
 
-    public ArrayList<Card> getCards() {
+    public ArrayList<SavedCard> getCards() {
         return cards;
     }
 }

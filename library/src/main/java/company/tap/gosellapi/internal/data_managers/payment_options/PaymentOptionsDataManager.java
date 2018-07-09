@@ -11,6 +11,7 @@ import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 import company.tap.gosellapi.internal.api.models.Card;
 import company.tap.gosellapi.internal.api.models.CardRawData;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
+import company.tap.gosellapi.internal.api.models.SavedCard;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.CardCredentialsViewModel;
 import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.CurrencyViewModel;
@@ -82,7 +83,7 @@ public class PaymentOptionsDataManager {
         listener.startCurrencySelection(currencies, currencySectionData.getSelectedCurrency());
     }
 
-    public void recentPaymentItemClicked(int position, Card recentItem) {
+    public void recentPaymentItemClicked(int position, SavedCard recentItem) {
         setFocused(position);
         listener.startOTP();
     }
@@ -274,12 +275,8 @@ public class PaymentOptionsDataManager {
         }
 
         private void addRecent() {
-            ArrayList<Card> recentCards = new ArrayList<>();//paymentOptionsResponse.getCards();
 
-            // TODO - temporary Card filler
-            for (int i = 0; i < 20; i++) {
-                recentCards.add(createCardData());
-            }
+            ArrayList<SavedCard> recentCards = paymentOptionsResponse.getCards();
 
             if (recentCards != null && recentCards.size() > 0) {
                 dataList.add(new RecentSectionViewModel(PaymentOptionsDataManager.this, recentCards, PaymentType.RECENT.getViewType()));
@@ -326,23 +323,6 @@ public class PaymentOptionsDataManager {
 
         private void addEmpty() {
             dataList.add(new EmptyViewModel(PaymentOptionsDataManager.this, null, PaymentType.EMPTY.getViewType()));
-        }
-
-        // TODO remove after real data will be received
-        private String cardJSONString = "{\n" +
-                "      \"id\": \"crd_q3242434\",\n" +
-                "      \"object\": \"card\",\n" +
-                "      \"last4\": \"1025\",\n" +
-                "      \"exp_month\": \"02\",\n" +
-                "      \"exp_year\": \"25\",\n" +
-                "      \"brand\": \"VISA\",\n" +
-                "      \"name\": \"test\",\n" +
-                "      \"bin\": \"415254\"\n" +
-                "    }";
-
-        private Card createCardData() {
-            Gson mapper = new Gson();
-            return mapper.fromJson(cardJSONString, Card.class);
         }
     }
 }
