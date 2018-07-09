@@ -9,6 +9,7 @@ import company.tap.gosellapi.internal.api.facade.GoSellAPI;
 import company.tap.gosellapi.internal.api.models.Card;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.models.CreateTokenCard;
+import company.tap.gosellapi.internal.api.models.CreateTokenSavedCard;
 import company.tap.gosellapi.internal.api.models.CustomerInfo;
 import company.tap.gosellapi.internal.api.models.Order;
 import company.tap.gosellapi.internal.api.models.PaymentInfo;
@@ -19,6 +20,7 @@ import company.tap.gosellapi.internal.api.models.Token;
 import company.tap.gosellapi.internal.api.requests.CardRequest;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
 import company.tap.gosellapi.internal.api.requests.CreateTokenWithEncryptedCardDataRequest;
+import company.tap.gosellapi.internal.api.requests.CreateTokenWithExistingCardDataRequest;
 import company.tap.gosellapi.internal.api.responses.SDKSettings;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
@@ -67,6 +69,14 @@ public class GlobalDataManager {
 
     // Managing requests
     public void createTokenWithExistingCardData() {
+
+    }
+
+    public void createTokenWithExistedCard(final CardRequestInterface cardRequestInterface) {
+
+//        CreateTokenSavedCard createTokenSavedCard = new CreateTokenSavedCard();
+
+//        CreateTokenWithExistingCardDataRequest request = new CreateTokenWithExistingCardDataRequest();
 
     }
 

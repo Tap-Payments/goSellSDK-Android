@@ -12,4 +12,23 @@ public class CreateTokenSavedCard {
     @SerializedName("")
     @Expose
     private String customerId;
+
+    public CreateTokenSavedCard(String cardId, String customerId) {
+        this.cardId = cardId;
+        this.customerId = customerId;
+    }
+
+    /**
+     * @return Card identifier.
+     */
+    public String getCardId() {
+        return cardId;
+    }
+
+    /**
+     * @return Customer identifier.
+     */
+    public String getCustomerId() {
+        return customerId;
+    }
 }

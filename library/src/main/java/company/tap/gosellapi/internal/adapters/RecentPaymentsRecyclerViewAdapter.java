@@ -14,19 +14,20 @@ import java.util.ArrayList;
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.Constants;
 import company.tap.gosellapi.internal.api.models.Card;
+import company.tap.gosellapi.internal.api.models.SavedCard;
 
 public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<RecentPaymentsRecyclerViewAdapter.RecentPaymentsViewHolder> {
     public interface RecentPaymentsRecyclerViewAdapterListener {
         void recentPaymentItemClicked(int position);
     }
 
-    private ArrayList<Card> datasource;
+    private ArrayList<SavedCard> datasource;
     private RecyclerView parent;
 
     private RecentPaymentsRecyclerViewAdapterListener listener;
     private int focusedPosition = Constants.NO_FOCUS;
 
-    public RecentPaymentsRecyclerViewAdapter(ArrayList<Card> datasource, RecentPaymentsRecyclerViewAdapterListener listener) {
+    public RecentPaymentsRecyclerViewAdapter(ArrayList<SavedCard> datasource, RecentPaymentsRecyclerViewAdapterListener listener) {
         this.datasource = datasource;
         this.listener = listener;
     }
@@ -40,7 +41,7 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
 
     @Override
     public void onBindViewHolder(@NonNull RecentPaymentsViewHolder holder, int position) {
-        Card card = datasource.get(position);
+        SavedCard card = datasource.get(position);
         holder.bind(position, card);
         holder.setFocused(position == focusedPosition);
     }
@@ -85,7 +86,7 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
 
     public class RecentPaymentsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private int position;
-        private Card card;
+        private SavedCard card;
         private ImageView itemCheckmark;
         private RelativeLayout recentPaymentsCardViewLayout;
 
@@ -94,13 +95,13 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
             itemView.setOnClickListener(this);
         }
 
-        private void bind(int position, Card card) {
+        private void bind(int position, SavedCard card) {
             this.position = position;
             this.card = card;
 
             recentPaymentsCardViewLayout = itemView.findViewById(R.id.recentPaymentsCardViewLayout);
 
-            String cardNumber = String.format(itemView.getResources().getString(R.string.textview_placeholder_last_four_digits), card.getLast4());
+            String cardNumber = String.format(itemView.getResources().getString(R.string.textview_placeholder_last_four_digits), card.getLastFour());
             TextView cardLastDigits = itemView.findViewById(R.id.cardLastDigits);
             cardLastDigits.setText(cardNumber);
 
