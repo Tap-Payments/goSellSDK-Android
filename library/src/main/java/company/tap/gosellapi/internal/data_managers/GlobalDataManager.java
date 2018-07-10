@@ -127,13 +127,11 @@ public class GlobalDataManager {
         APIRequestCallback<Charge> requestCallback = new APIRequestCallback<Charge>() {
             @Override
             public void onSuccess(int responseCode, Charge serializedResponse) {
-                Log.e("CARD REQUEST", "CHARGE SUCCEEDED");
                 checkChargeStatus(serializedResponse, cardRequestInterface);
             }
 
             @Override
             public void onFailure(GoSellError errorDetails) {
-                Log.e("CARD REQUEST", "CHARGE FAILED");
             }
         };
 
@@ -143,29 +141,24 @@ public class GlobalDataManager {
 
     private void checkChargeStatus(Charge response, CardRequestInterface cardRequestInterface) {
 
-        Log.e("CARD REQUEST", "CHECKING CHARGE STATUS " + response.getStatus());
-
         switch (response.getStatus()) {
 
             case INITIATED:
-
-                Log.e("CARD REQUEST", "RESPONSE AUTHENTICATE " + response.getAuthenticate());
-
                 if(response.getAuthenticate() == null) {
-                    cardRequestInterface.onCardRequestRedirect();
+                    cardRequestInterface.onCardRequestRedirect(response);
                 }
                 else {
-                    cardRequestInterface.onCardRequestOTP();
+                    cardRequestInterface.onCardRequestOTP(response);
                 }
 
                 break;
 
             case FAILED:
-                cardRequestInterface.onCardRequestFailure();
+                cardRequestInterface.onCardRequestFailure(response);
                 break;
 
             case CAPTURED:
-                cardRequestInterface.onCardRequestSuccess();
+                cardRequestInterface.onCardRequestSuccess(response);
                 break;
         }
     }
