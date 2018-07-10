@@ -94,7 +94,7 @@ public class GlobalDataManager {
         GoSellAPI.getInstance().createTokenWithEncryptedCard(request, new APIRequestCallback<Token>() {
             @Override
             public void onSuccess(int responseCode, Token serializedResponse) {
-                Log.e("CARD REQUEST", "SUCCESS");
+                Log.e("CARD REQUEST", "SUCCESS" + serializedResponse);
                 createCharge(cardRequestInterface);
             }
 
@@ -140,6 +140,8 @@ public class GlobalDataManager {
     }
 
     private void checkChargeStatus(Charge response, CardRequestInterface cardRequestInterface) {
+
+        Log.e("CARD REQUEST", "RESPONSE STATUS " + response.getStatus());
 
         switch (response.getStatus()) {
 
