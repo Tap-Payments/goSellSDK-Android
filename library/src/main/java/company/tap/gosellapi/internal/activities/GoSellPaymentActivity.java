@@ -18,27 +18,22 @@ import com.bumptech.glide.request.RequestOptions;
 import java.util.ArrayList;
 
 import company.tap.gosellapi.R;
-import company.tap.gosellapi.internal.api.api_service.APIService;
 import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.facade.GoSellAPI;
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 import company.tap.gosellapi.internal.api.models.CardRawData;
 import company.tap.gosellapi.internal.api.models.Charge;
-import company.tap.gosellapi.internal.api.models.CreateTokenCard;
 import company.tap.gosellapi.internal.api.models.CustomerInfo;
 import company.tap.gosellapi.internal.api.models.Order;
 import company.tap.gosellapi.internal.api.models.PhoneNumber;
 import company.tap.gosellapi.internal.api.models.Redirect;
 import company.tap.gosellapi.internal.api.models.Source;
-import company.tap.gosellapi.internal.api.models.Token;
-import company.tap.gosellapi.internal.api.requests.CardRequest;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
-import company.tap.gosellapi.internal.api.requests.CreateTokenWithEncryptedCardDataRequest;
-import company.tap.gosellapi.internal.api.requests.CreateTokenWithExistingCardDataRequest;
 import company.tap.gosellapi.internal.custom_views.GoSellPayLayout;
 import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
 import company.tap.gosellapi.internal.data_managers.LoadingScreenManager;
+import company.tap.gosellapi.internal.data_managers.PaymentResultToastManager;
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
 import company.tap.gosellapi.internal.fragments.GoSellOTPScreenFragment;
 import company.tap.gosellapi.internal.fragments.GoSellPaymentOptionsFragment;
@@ -48,14 +43,13 @@ import io.card.payment.CreditCard;
 
 public class GoSellPaymentActivity
         extends AppCompatActivity
-        implements PaymentOptionsDataManager.PaymentOptionsDataListener, CardRequestInterface {
+        implements PaymentOptionsDataManager.PaymentOptionsDataListener {
     private static final int SCAN_REQUEST_CODE = 123;
     private static final int CURRENCIES_REQUEST_CODE = 124;
     private static final int WEB_PAYMENT_REQUEST_CODE = 125;
 
     private PaymentOptionsDataManager dataSource;
     private FragmentManager fragmentManager;
-    private GoSellPaymentOptionsFragment paymentOptionsFragment;
 
     private ImageView businessIcon;
 
@@ -81,7 +75,7 @@ public class GoSellPaymentActivity
     }
 
     private void initViews() {
-        paymentOptionsFragment = GoSellPaymentOptionsFragment.newInstance(dataSource);
+        GoSellPaymentOptionsFragment paymentOptionsFragment = GoSellPaymentOptionsFragment.newInstance(dataSource);
         fragmentManager
                 .beginTransaction()
                 .replace(R.id.paymentActivityFragmentContainer, paymentOptionsFragment)
@@ -105,60 +99,10 @@ public class GoSellPaymentActivity
         TextView businessName = findViewById(R.id.businessName);
         businessName.setText(businessNameString);
 
-        GoSellPayLayout payButton = findViewById(R.id.payButtonId);
-
-    }
-
-    private void makePayment() {
-        // 1a. Create token with encrypted
-        // 1b. Create token with existing card (RECENT)
-        // 2. Create charge
-        // if SUCCESS -> close SDK, show Toast with success message
-        // if FAILURE -> close SDK, show Toast with failure message
-        // if REDIRECT -> open WebPaymentActivity with url
-        // if OTP -> launch OTP screen
-
-        Log.e("TEST", "TEST");
-
-        //==============================================
-
-        String cardNumber = "4000000000000077";
-        String expMonth = "04";
-        String expYear = "35";
-        String cvv = "123";
-
-        GlobalDataManager.getInstance().createTokenWithEncryptedCardData(cardNumber, expMonth, expYear, cvv, this);
-        //==============================================
-    }
-
-    @Override
-    public void onCardRequestSuccess() {
-        Log.e("CARD REQUEST", "SUCCESS");
-    }
-
-    @Override
-    public void onCardRequestFailure() {
-        Log.e("CARD REQUEST", "FAILURE");
-    }
-
-    @Override
-    public void onCardRequestOTP() {
-        Log.e("CARD REQUEST", "OTP");
-    }
-
-    @Override
-    public void onCardRequestRedirect() {
-        Log.e("CARD REQUEST", "REDIRECT");
     }
 
     @Override
     public void startOTP() {
-        makePayment();
-//        fragmentManager
-//                .beginTransaction()
-//                .replace(R.id.paymentActivityFragmentContainer, new GoSellOTPScreenFragment())
-//                .addToBackStack("")
-//                .commit();
     }
 
     @Override
@@ -286,15 +230,12 @@ public class GoSellPaymentActivity
             } else {
 //                TapDialog.createToast(this, L.scan_was_canceled.toString(), Toast.LENGTH_LONG);
             }
-        }
-        else if (requestCode == CURRENCIES_REQUEST_CODE) {
+        } else if (requestCode == CURRENCIES_REQUEST_CODE) {
             AmountedCurrency userChoiceCurrency = (AmountedCurrency) data.getSerializableExtra(CurrenciesActivity.CURRENCIES_ACTIVITY_USER_CHOICE_CURRENCY);
             if (userChoiceCurrency != null) {
                 dataSource.currencySelectedByUser(userChoiceCurrency);
             }
-        }
-        else if(requestCode == WEB_PAYMENT_REQUEST_CODE && resultCode == RESULT_OK) {
-            Log.e("TEST", "WEB PAYMENT REQUEST");
+        } else if (requestCode == WEB_PAYMENT_REQUEST_CODE && resultCode == RESULT_OK) {
             finish();
         }
     }
@@ -304,7 +245,6 @@ public class GoSellPaymentActivity
         super.finish();
         overridePendingTransition(android.R.anim.fade_in, R.anim.slide_out_bottom);
     }
-
 }
 
 

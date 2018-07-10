@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -18,22 +19,24 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import java.util.HashMap;
-
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.Utils;
 import company.tap.gosellapi.internal.activities.GoSellPaymentActivity;
+import company.tap.gosellapi.internal.activities.WebPaymentActivity;
 import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.facade.GoSellAPI;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.models.PaymentInfo;
 import company.tap.gosellapi.internal.api.models.Redirect;
-import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
+import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
+import company.tap.gosellapi.internal.data_managers.PaymentResultToastManager;
+import company.tap.gosellapi.internal.fragments.GoSellOTPScreenFragment;
+import company.tap.gosellapi.internal.interfaces.CardRequestInterface;
 import gotap.com.tapglkitandroid.gl.Views.TapLoadingView;
 
-public final class GoSellPayLayout extends FrameLayout implements View.OnClickListener {
+public final class GoSellPayLayout extends FrameLayout implements View.OnClickListener, CardRequestInterface {
     public interface GoSellPaymentInfoRequester {
         PaymentInfo getPaymentInfo();
     }
@@ -59,7 +62,7 @@ public final class GoSellPayLayout extends FrameLayout implements View.OnClickLi
     private int mPaddingStart;
     private int mPaddingRight;
     private int mPaddingEnd;
-    
+
     private int mTextSize;
     private int mTextColor;
     private int mTextStyle;
@@ -139,7 +142,7 @@ public final class GoSellPayLayout extends FrameLayout implements View.OnClickLi
         mTextSize = context.getResources().getDimensionPixelSize(R.dimen.pay_btn_text_size);
         mTextColor = ContextCompat.getColor(context, R.color.white);
         mTextStyle = Typeface.BOLD;
-        
+
         mBackground = ContextCompat.getDrawable(context, R.drawable.btn_pay_selector);
         mGravity = Gravity.CENTER;
         mText = context.getResources().getString(R.string.pay);
@@ -326,21 +329,20 @@ public final class GoSellPayLayout extends FrameLayout implements View.OnClickLi
         }
     }
 
-    //goSell handles clicks
+    //    //goSell handles clicks
     @Override
     public final void setOnClickListener(@Nullable OnClickListener l) {
     }
 
-
     @Override
     public void onClick(View v) {
         if (paymentInfoRequester == null) {
-            // TODO: 24.05.2018 remove it after button state is implemented
+            makePayment();
             return;
-//            throw new NoPaymentInfoRequesterProvidedException();
         }
 
         int i = v.getId();
+
         if (i == layoutId || i == R.id.pay_button_id) {
             getPaymentTypes();
         } else if (i == R.id.pay_security_icon_id) {
@@ -371,5 +373,73 @@ public final class GoSellPayLayout extends FrameLayout implements View.OnClickLi
     private void startMainActivity() {
         Intent intent = new Intent(getContext(), GoSellPaymentActivity.class);
         getContext().startActivity(intent);
+    }
+
+    private void makePayment() {
+        loadingView.start();
+        // SUCCESS CARD
+        String cardNumber = "4000000000000077";
+        String expMonth = "04";
+        String expYear = "35";
+        String cvv = "123";
+
+//        GlobalDataManager.getInstance().createTokenWithEncryptedCardData(cardNumber, expMonth, expYear, cvv, this);
+
+        // FAILURE CARD
+        String cardNumber2 = "4000000000000002";
+        String expMonth2 = "05";
+        String expYear2 = "35";
+        String cvv2 = "123";
+
+        GlobalDataManager.getInstance().createTokenWithEncryptedCardData(cardNumber2, expMonth2, expYear2, cvv2, this);
+    }
+
+    @Override
+    public void onCardRequestSuccess(Charge response) {
+        loadingView.setForceStop(true);
+
+        Log.e("TEST", "SUCCESS");
+        PaymentResultToastManager.getInstance().showPaymentResult(getContext(), "Success");
+        AppCompatActivity activity = (AppCompatActivity) getContext();
+        activity.finish();
+    }
+
+    @Override
+    public void onCardRequestFailure(Charge response) {
+        loadingView.setForceStop(true);
+
+        Log.e("TEST","FAILURE");
+        AppCompatActivity activity = (AppCompatActivity) getContext();
+        PaymentResultToastManager.getInstance().showPaymentResult(getContext(), "Failure");
+        activity.finish();
+    }
+
+    @Override
+    public void onCardRequestOTP(Charge response) {
+        loadingView.setForceStop(true);
+
+        Log.e("TEST", "OTP");
+        AppCompatActivity activity = (AppCompatActivity) getContext();
+
+        activity.getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.paymentActivityFragmentContainer, new GoSellOTPScreenFragment())
+                .addToBackStack("")
+                .commit();
+    }
+
+    @Override
+    public void onCardRequestRedirect(Charge response) {
+        loadingView.setForceStop(true);
+
+        Intent intent = new Intent(getContext(), WebPaymentActivity.class);
+
+        intent.putExtra("id", response.getId());
+        intent.putExtra("URL", response.getRedirect().getUrl());
+        intent.putExtra("returnURL", response.getRedirect().getReturn_url());
+
+        AppCompatActivity activity = (AppCompatActivity) getContext();
+        final int WEB_PAYMENT_REQUEST_CODE = 125;
+        activity.startActivityForResult(intent, WEB_PAYMENT_REQUEST_CODE);
     }
 }
