@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatTextView;
@@ -421,8 +422,9 @@ public final class GoSellPayLayout extends FrameLayout implements View.OnClickLi
         Log.e("TEST", "OTP");
         AppCompatActivity activity = (AppCompatActivity) getContext();
 
-        activity.getSupportFragmentManager()
-                .beginTransaction()
+        FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_out_top, R.anim.slide_out_bottom, R.anim.slide_in_top);
+        fragmentTransaction
                 .replace(R.id.paymentActivityFragmentContainer, new GoSellOTPScreenFragment())
                 .addToBackStack("")
                 .commit();
@@ -432,6 +434,7 @@ public final class GoSellPayLayout extends FrameLayout implements View.OnClickLi
     public void onCardRequestRedirect(Charge response) {
         loadingView.setForceStop(true);
 
+        Log.e("TEST", "REDIRECT");
         Intent intent = new Intent(getContext(), WebPaymentActivity.class);
 
         intent.putExtra("id", response.getId());
