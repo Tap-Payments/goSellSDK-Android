@@ -38,6 +38,8 @@ public class CardCredentialsViewHolder
     private EditText dateField;
     private EditText nameOnCard;
 
+    private String cardNumber = "";
+
     CardCredentialsViewHolder(View view) {
         super(view);
 
@@ -48,10 +50,9 @@ public class CardCredentialsViewHolder
         // Configure edit fields
         cardNumberField = itemView.findViewById(R.id.cardNumberField);
 
-         final char space = ' ';
-
         // Card number field
         cardNumberField.addTextChangedListener(new TextWatcher() {
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -157,7 +158,7 @@ public class CardCredentialsViewHolder
     private void initCardSystemsRecyclerView() {
         RecyclerView cardSystemsRecyclerView = itemView.findViewById(R.id.cardSystemsRecyclerView);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.VERTICAL,false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.VERTICAL, false);
         cardSystemsRecyclerView.setLayoutManager(linearLayoutManager);
 
         CardSystemsRecyclerViewAdapter adapter = new CardSystemsRecyclerViewAdapter(data);
@@ -172,10 +173,9 @@ public class CardCredentialsViewHolder
     }
 
     public void updateAddressOnCardView(boolean isShow) {
-        if(isShow) {
+        if (isShow) {
             addressOnCardLayout.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             addressOnCardLayout.setVisibility(View.GONE);
         }
     }
