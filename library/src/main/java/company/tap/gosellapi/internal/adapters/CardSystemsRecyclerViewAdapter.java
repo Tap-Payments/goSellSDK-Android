@@ -16,12 +16,15 @@ import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.tapcardvalidator_android.CardBrand;
 
+
 public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSystemViewHolder> {
 
     private ArrayList<PaymentOption> data;
+    private final ArrayList<PaymentOption> initialData;
 
     public CardSystemsRecyclerViewAdapter(ArrayList<PaymentOption> data) {
         this.data = data;
+        this.initialData = data;
     }
 
     @NonNull
@@ -34,10 +37,6 @@ public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSys
     @Override
     public void onBindViewHolder(@NonNull CardSystemViewHolder holder, int position) {
         PaymentOption option = data.get(position);
-
-        Log.e("CARD SYSTEMS RV", "PAYMENT TYPE " + option.getPaymentType());
-        Log.e("CARD SYSTEMS RV", "SUPPORTED CARD BRANDS" + option.getSupportedCardBrands());
-
         Glide.with(holder.itemView.getContext()).load(option.getImage()).into(holder.cardSystemIcon);
     }
 
@@ -48,7 +47,26 @@ public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSys
 
     public void updateForCardBrand(CardBrand brand) {
 
-        Log.e("CARD SYSTEMS RV", "BRAND " + brand);
+        Log.e("TEST", "CURRENT CARD BRAND " + brand);
+
+        if(brand == null) {
+            data = new ArrayList<>(initialData);
+            notifyDataSetChanged();
+            return;
+        }
+
+        for(PaymentOption option : data) {
+
+           ArrayList<CardBrand> cardBrands = option.getSupportedCardBrands();
+
+           if(cardBrands.contains(brand)) {
+               data.clear();
+               data.add(option);
+               break;
+           }
+        }
+
+        notifyDataSetChanged();
     }
 }
 
