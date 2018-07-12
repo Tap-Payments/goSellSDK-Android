@@ -4,12 +4,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -19,7 +17,11 @@ import java.util.ArrayList;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.adapters.CardSystemsRecyclerViewAdapter;
+import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
+import company.tap.gosellapi.internal.api.callbacks.GoSellError;
+import company.tap.gosellapi.internal.api.facade.GoSellAPI;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
+import company.tap.gosellapi.internal.api.responses.BINLookupResponse;
 import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.CardCredentialsViewModel;
 import company.tap.tapcardvalidator_android.CardBrand;
 import company.tap.tapcardvalidator_android.CardValidator;
@@ -60,13 +62,11 @@ public class CardCredentialsViewHolder
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
                 validateCardNumber(s.toString());
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
 
             }
         });
@@ -187,5 +187,23 @@ public class CardCredentialsViewHolder
     private void validateCardNumber(String cardNumber) {
         DefinedCardBrand brand = CardValidator.validate(cardNumber);
         updateCardSystemsRecyclerView(brand.getCardBrand());
+
+        Log.e("TEST", "IS VALID " + brand.getValidationState());
+        Log.e("TEST", "LENGTH " + cardNumber.length());
+
+//        if (cardNumber.length() == 6) {
+//            Log.e("TEST", "BIN NUMBER " + cardNumber);
+//
+//            GoSellAPI.getInstance().retrieveBINLookupBINLookup(cardNumber, new APIRequestCallback<BINLookupResponse>() {
+//                @Override
+//                public void onSuccess(int responseCode, BINLookupResponse serializedResponse) {
+//                }
+//
+//                @Override
+//                public void onFailure(GoSellError errorDetails) {
+//                }
+//            });
+//        }
     }
+
 }

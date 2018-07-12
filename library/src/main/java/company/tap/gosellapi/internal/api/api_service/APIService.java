@@ -7,6 +7,7 @@ import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
 import company.tap.gosellapi.internal.api.requests.CreateTokenRequest;
 import company.tap.gosellapi.internal.api.requests.CreateTokenWithEncryptedCardDataRequest;
 import company.tap.gosellapi.internal.api.requests.CreateTokenWithExistingCardDataRequest;
+import company.tap.gosellapi.internal.api.responses.BINLookupResponse;
 import company.tap.gosellapi.internal.api.responses.SDKSettings;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import retrofit2.Call;
@@ -26,6 +27,15 @@ public interface APIService {
     @GET(API_Constants.INIT)
     Call<SDKSettings> init();
 
+    @GET(API_Constants.TOKENS + "/{" + API_Constants.TOKEN_ID + "}")
+    Call<Token> retrieveToken(@Path(API_Constants.TOKEN_ID) String tokenId);
+
+    @GET(API_Constants.CHARGES + "/{" + API_Constants.CHARGE_ID + "}")
+    Call<Charge> retrieveCharge(@Path(API_Constants.CHARGE_ID) String chargeId);
+
+    @GET(API_Constants.BIN + "/{" + API_Constants.BIN_LOOKUP + "}")
+    Call<BINLookupResponse> retrieveBINLookup(@Path(API_Constants.BIN_LOOKUP) String binNumber);
+
     @POST(API_Constants.TOKEN)
     Call<Token> createToken(@Body CreateTokenRequest createTokenRequest);
 
@@ -35,18 +45,14 @@ public interface APIService {
     @POST(API_Constants.TOKEN)
     Call<Token> createTokenWithExistingCard(@Body CreateTokenWithExistingCardDataRequest createTokenWithExistingCardDataRequest);
 
-    @GET(API_Constants.TOKENS + "/{" + API_Constants.TOKEN_ID + "}")
-    Call<Token> retrieveToken(@Path(API_Constants.TOKEN_ID) String tokenId);
-
     @POST(API_Constants.CHARGES)
     Call<Charge> createCharge(@Body CreateChargeRequest createChargeRequest);
 
-    @GET(API_Constants.CHARGES + "/{" + API_Constants.CHARGE_ID + "}")
-    Call<Charge> retrieveCharge(@Path(API_Constants.CHARGE_ID) String chargeId);
+    @POST(API_Constants.PAYMENT_TYPES)
+    Call<PaymentOptionsResponse> getPaymentTypes(@Body PaymentInfo paymentInfo);
 
     @PUT(API_Constants.CHARGES + "/{" + API_Constants.CHARGE_ID + "}")
     Call<Charge> updateCharge(@Path(API_Constants.CHARGE_ID) String chargeId);
 
-    @POST(API_Constants.PAYMENT_TYPES)
-    Call<PaymentOptionsResponse> getPaymentTypes(@Body PaymentInfo paymentInfo);
+
 }
