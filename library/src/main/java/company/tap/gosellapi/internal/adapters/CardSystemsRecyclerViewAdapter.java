@@ -47,8 +47,6 @@ public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSys
 
     public void updateForCardBrand(CardBrand brand) {
 
-        Log.e("TEST", "CURRENT CARD BRAND " + brand);
-
         if(brand == null) {
             data = new ArrayList<>(initialData);
             notifyDataSetChanged();

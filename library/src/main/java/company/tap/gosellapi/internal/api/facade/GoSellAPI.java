@@ -12,6 +12,7 @@ import company.tap.gosellapi.internal.api.models.Token;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
 import company.tap.gosellapi.internal.api.requests.CreateTokenWithEncryptedCardDataRequest;
 import company.tap.gosellapi.internal.api.requests.CreateTokenWithExistingCardDataRequest;
+import company.tap.gosellapi.internal.api.responses.BINLookupResponse;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
 
@@ -47,6 +48,10 @@ public final class GoSellAPI {
     public void updateCharge(final String chargeId, final APIRequestCallback<Charge> requestCallback) {
         requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.updateCharge(chargeId), requestCallback));
 
+    }
+
+    public void retrieveBINLookupBINLookup(String binNumber, APIRequestCallback<BINLookupResponse> requestCallback) {
+        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.retrieveBINLookup(binNumber), requestCallback));
     }
 
     public void createTokenWithEncryptedCard(final CreateTokenWithEncryptedCardDataRequest createTokenWithEncryptedCardDataRequest, final APIRequestCallback<Token> requestCallback) {
