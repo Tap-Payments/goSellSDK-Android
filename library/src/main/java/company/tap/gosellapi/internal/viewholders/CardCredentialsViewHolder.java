@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
+import com.aigestudio.wheelpicker.widgets.WheelDatePicker;
+
 import java.util.ArrayList;
 
 import company.tap.gosellapi.R;
@@ -37,7 +39,7 @@ public class CardCredentialsViewHolder
 
     private EditText cardNumberField;
     private EditText CVVField;
-    private EditText dateField;
+    private EditText expirationDateField;
     private EditText nameOnCard;
 
     private String cardNumber = "";
@@ -90,12 +92,14 @@ public class CardCredentialsViewHolder
 //        });
 
         // Date field
-//        dateField.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
+        expirationDateField = itemView.findViewById(R.id.expirationDateField);
+
+        expirationDateField.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewModel.cardExpirationDateClicked();
+            }
+        });
 
         // Name on card
 //        nameOnCard.addTextChangedListener(new TextWatcher() {
@@ -180,10 +184,6 @@ public class CardCredentialsViewHolder
         }
     }
 
-    private void openDatePicker() {
-
-    }
-
     private void validateCardNumber(String cardNumber) {
         DefinedCardBrand brand = CardValidator.validate(cardNumber);
         updateCardSystemsRecyclerView(brand.getCardBrand());
@@ -191,19 +191,18 @@ public class CardCredentialsViewHolder
         Log.e("TEST", "IS VALID " + brand.getValidationState());
         Log.e("TEST", "LENGTH " + cardNumber.length());
 
-//        if (cardNumber.length() == 6) {
-//            Log.e("TEST", "BIN NUMBER " + cardNumber);
-//
-//            GoSellAPI.getInstance().retrieveBINLookupBINLookup(cardNumber, new APIRequestCallback<BINLookupResponse>() {
-//                @Override
-//                public void onSuccess(int responseCode, BINLookupResponse serializedResponse) {
-//                }
-//
-//                @Override
-//                public void onFailure(GoSellError errorDetails) {
-//                }
-//            });
-//        }
-    }
+        if (cardNumber.length() == 6) {
+            Log.e("TEST", "BIN NUMBER " + cardNumber);
 
+            GoSellAPI.getInstance().retrieveBINLookupBINLookup(cardNumber, new APIRequestCallback<BINLookupResponse>() {
+                @Override
+                public void onSuccess(int responseCode, BINLookupResponse serializedResponse) {
+                }
+
+                @Override
+                public void onFailure(GoSellError errorDetails) {
+                }
+            });
+        }
+    }
 }

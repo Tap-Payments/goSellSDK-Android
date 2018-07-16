@@ -45,6 +45,8 @@ public class PaymentOptionsDataManager {
         void saveCardSwitchClicked(boolean isChecked, int saveCardBlockPosition);
 
         void addressOnCardClicked();
+
+        void cardExpirationDateClicked();
     }
 
     private PaymentOptionsDataListener listener;
@@ -111,6 +113,11 @@ public class PaymentOptionsDataManager {
     public void addressOnCardClicked() {
         listener.addressOnCardClicked();
     }
+
+    public void cardExpirationDateClicked() {
+        listener.cardExpirationDateClicked();
+    }
+
     //endregion
 
     //region update actions (from activity mainly)
