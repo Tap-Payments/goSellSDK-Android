@@ -27,6 +27,10 @@ public class CardCredentialsViewModel
         parentDataManager.saveCardSwitchCheckedChanged(state, position + 1);
     }
 
+    public void cardExpirationDateClicked() {
+        parentDataManager.cardExpirationDateClicked();
+    }
+
     public void setCardSwitchHeight(int cardSwitchHeight) {
         parentDataManager.setCardSwitchHeight(cardSwitchHeight);
     }

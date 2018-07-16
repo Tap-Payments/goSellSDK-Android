@@ -30,14 +30,11 @@ import company.tap.gosellapi.internal.api.models.PhoneNumber;
 import company.tap.gosellapi.internal.api.models.Redirect;
 import company.tap.gosellapi.internal.api.models.Source;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
-import company.tap.gosellapi.internal.custom_views.GoSellPayLayout;
+import company.tap.gosellapi.internal.custom_views.TapDialog;
 import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
 import company.tap.gosellapi.internal.data_managers.LoadingScreenManager;
-import company.tap.gosellapi.internal.data_managers.PaymentResultToastManager;
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
-import company.tap.gosellapi.internal.fragments.GoSellOTPScreenFragment;
 import company.tap.gosellapi.internal.fragments.GoSellPaymentOptionsFragment;
-import company.tap.gosellapi.internal.interfaces.CardRequestInterface;
 import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
 
@@ -159,6 +156,17 @@ public class GoSellPaymentActivity
 
         // Create charge
         GoSellAPI.getInstance().createCharge(request, requestCallback);
+    }
+
+    @Override
+    public void cardExpirationDateClicked() {
+
+        TapDialog.expireDate(this, new TapDialog.TapDialogListener() {
+            @Override
+            public void expirationDateSelected(String date) {
+
+            }
+        });
     }
 
     @Override
