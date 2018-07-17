@@ -13,8 +13,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
-import com.aigestudio.wheelpicker.widgets.WheelDatePicker;
-
 import java.util.ArrayList;
 
 import company.tap.gosellapi.R;
@@ -31,6 +29,7 @@ import company.tap.tapcardvalidator_android.DefinedCardBrand;
 
 public class CardCredentialsViewHolder
         extends PaymentOptionsBaseViewHolder<ArrayList<PaymentOption>, CardCredentialsViewHolder, CardCredentialsViewModel> {
+    private final static int BIN_NUMBER_LENGTH = 6;
 
     ImageButton cardScannerButton;
     private View addressOnCardLayout;
@@ -41,8 +40,6 @@ public class CardCredentialsViewHolder
     private EditText CVVField;
     private EditText expirationDateField;
     private EditText nameOnCard;
-
-    private String cardNumber = "";
 
     CardCredentialsViewHolder(View view) {
         super(view);
@@ -94,10 +91,14 @@ public class CardCredentialsViewHolder
         // Date field
         expirationDateField = itemView.findViewById(R.id.expirationDateField);
 
-        expirationDateField.setOnClickListener(new View.OnClickListener() {
+        expirationDateField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onClick(View v) {
-                viewModel.cardExpirationDateClicked();
+            public void onFocusChange(View v, boolean hasFocus) {
+
+                if (hasFocus) {
+                    viewModel.cardExpirationDateClicked();
+                    expirationDateField.clearFocus();
+                }
             }
         });
 
@@ -139,13 +140,17 @@ public class CardCredentialsViewHolder
             }
         });
 
-
         saveCardSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 viewModel.saveCardSwitchClicked(isChecked);
             }
         });
+
+        if(!viewModel.getExpirationMonth().isEmpty() && !viewModel.getExpirationYear().isEmpty()) {
+            String expirationDate = viewModel.getExpirationMonth() + "/" + viewModel.getExpirationYear();
+            expirationDateField.setText(expirationDate);
+        }
 
         RelativeLayout saveCardSwitchContainer = itemView.findViewById(R.id.saveCardSwitchContainer);
         saveCardSwitchContainer.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -188,11 +193,7 @@ public class CardCredentialsViewHolder
         DefinedCardBrand brand = CardValidator.validate(cardNumber);
         updateCardSystemsRecyclerView(brand.getCardBrand());
 
-        Log.e("TEST", "IS VALID " + brand.getValidationState());
-        Log.e("TEST", "LENGTH " + cardNumber.length());
-
-        if (cardNumber.length() == 6) {
-            Log.e("TEST", "BIN NUMBER " + cardNumber);
+        if (cardNumber.length() == BIN_NUMBER_LENGTH) {
 
             GoSellAPI.getInstance().retrieveBINLookupBINLookup(cardNumber, new APIRequestCallback<BINLookupResponse>() {
                 @Override

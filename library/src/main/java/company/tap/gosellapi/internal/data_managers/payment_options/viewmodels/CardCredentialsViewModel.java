@@ -2,6 +2,7 @@ package company.tap.gosellapi.internal.data_managers.payment_options.viewmodels;
 
 import java.util.ArrayList;
 
+import company.tap.gosellapi.internal.api.models.Card;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
 import company.tap.gosellapi.internal.viewholders.CardCredentialsViewHolder;
@@ -9,6 +10,13 @@ import company.tap.gosellapi.internal.viewholders.CardCredentialsViewHolder;
 public class CardCredentialsViewModel
         extends PaymentOptionsBaseViewModel<ArrayList<PaymentOption>, CardCredentialsViewHolder, CardCredentialsViewModel> {
     private ArrayList<PaymentOption> dataOriginal;
+
+    // Card credentials fields
+    private String cardNumber = "";
+    private String expirationMonth = "";
+    private String expirationYear = "";
+    private String CVVnumber = "";
+    private String nameOnCard = "";
 
     public CardCredentialsViewModel(PaymentOptionsDataManager parentDataManager, ArrayList<PaymentOption> data, int modelType) {
         super(parentDataManager, data, modelType);
@@ -44,5 +52,45 @@ public class CardCredentialsViewModel
         }
 
         updateData();
+    }
+
+    public String getCardNumber() {
+        return cardNumber;
+    }
+
+    public String getExpirationMonth() {
+        return expirationMonth;
+    }
+
+    public String getExpirationYear() {
+        return expirationYear;
+    }
+
+    public String getCVVnumber() {
+        return CVVnumber;
+    }
+
+    public String getNameOnCard() {
+        return nameOnCard;
+    }
+
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
+    }
+
+    public void setExpirationMonth(String expirationMonth) {
+        this.expirationMonth = expirationMonth;
+    }
+
+    public void setExpirationYear(String expirationYear) {
+        this.expirationYear = expirationYear;
+    }
+
+    public void setCVVnumber(String CVVnumber) {
+        this.CVVnumber = CVVnumber;
+    }
+
+    public void setNameOnCard(String nameOnCard) {
+        this.nameOnCard = nameOnCard;
     }
 }
