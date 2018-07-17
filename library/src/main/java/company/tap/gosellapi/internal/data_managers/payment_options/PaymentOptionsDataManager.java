@@ -173,6 +173,16 @@ public class PaymentOptionsDataManager {
         cardCredentialsViewModel.filterByCurrency(userChoiceCurrency.getIsoCode());
     }
 
+    public void cardExpirationDateSelected(String month, String year) {
+        CardCredentialsViewModel cardCredentialsViewModel = getCardCredentialsViewModel();
+        if(cardCredentialsViewModel == null) return;
+
+        cardCredentialsViewModel.setExpirationMonth(month);
+        cardCredentialsViewModel.setExpirationYear(year);
+
+        cardCredentialsViewModel.updateData();
+    }
+
     private void displaySaveCard(boolean show) {
         SaveCardViewModel saveCardViewModel = getSaveCardViewModel();
         if (saveCardViewModel != null) {

@@ -23,7 +23,7 @@ import company.tap.gosellapi.R;
 public class TapDialog {
 
     public interface TapDialogListener{
-        void expirationDateSelected(String date);
+        void expirationDateSelected(String month, String year);
     }
 
     public static String expirationData = null;
@@ -61,7 +61,7 @@ public class TapDialog {
                         String month = npMonth.getData().get(npMonth.getCurrentItemPosition()).toString();
                         String year = npYear.getData().get(npYear.getCurrentItemPosition()).toString();
 
-                        l.expirationDateSelected(month + "/" + year);
+                        l.expirationDateSelected(month, year);
                     }
                 })
                 .negativeText("Cancel")

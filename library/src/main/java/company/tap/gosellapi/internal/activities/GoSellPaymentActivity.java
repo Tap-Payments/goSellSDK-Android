@@ -163,8 +163,8 @@ public class GoSellPaymentActivity
 
         TapDialog.expireDate(this, new TapDialog.TapDialogListener() {
             @Override
-            public void expirationDateSelected(String date) {
-
+            public void expirationDateSelected(String month, String year) {
+                dataSource.cardExpirationDateSelected(month, year);
             }
         });
     }
