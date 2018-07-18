@@ -12,15 +12,21 @@ public class CardCredentialsViewModel
     private ArrayList<PaymentOption> dataOriginal;
 
     // Card credentials fields
-    private String cardNumber = "";
-    private String expirationMonth = "";
-    private String expirationYear = "";
-    private String CVVnumber = "";
-    private String nameOnCard = "";
+    private String cardNumber;
+    private String expirationMonth;
+    private String expirationYear;
+    private String CVVnumber;
+    private String nameOnCard;
 
     public CardCredentialsViewModel(PaymentOptionsDataManager parentDataManager, ArrayList<PaymentOption> data, int modelType) {
         super(parentDataManager, data, modelType);
         dataOriginal = new ArrayList<>(data);
+
+        this.cardNumber = "";
+        this.expirationMonth = "";
+        this.expirationYear = "";
+        this.CVVnumber = "";
+        this.nameOnCard = "";
     }
 
     public void cardScannerButtonClicked() {

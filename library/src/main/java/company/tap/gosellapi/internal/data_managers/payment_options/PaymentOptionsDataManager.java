@@ -20,6 +20,7 @@ import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.P
 import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.RecentSectionViewModel;
 import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.SaveCardViewModel;
 import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.WebPaymentViewModel;
+import io.card.payment.CreditCard;
 
 public class PaymentOptionsDataManager {
     private int availableHeight;
@@ -179,6 +180,19 @@ public class PaymentOptionsDataManager {
 
         cardCredentialsViewModel.setExpirationMonth(month);
         cardCredentialsViewModel.setExpirationYear(year);
+
+        cardCredentialsViewModel.updateData();
+    }
+
+    public void cardScanned(CreditCard card) {
+        CardCredentialsViewModel cardCredentialsViewModel = getCardCredentialsViewModel();
+        if(cardCredentialsViewModel == null) return;
+
+        cardCredentialsViewModel.setCardNumber(card.cardNumber);
+        cardCredentialsViewModel.setExpirationYear(String.valueOf(card.expiryYear));
+        cardCredentialsViewModel.setExpirationMonth(String.valueOf(card.expiryMonth));
+        cardCredentialsViewModel.setCVVnumber(card.cvv);
+        cardCredentialsViewModel.setNameOnCard(card.cardholderName);
 
         cardCredentialsViewModel.updateData();
     }

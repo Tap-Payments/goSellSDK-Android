@@ -39,7 +39,7 @@ public class CardCredentialsViewHolder
     private EditText cardNumberField;
     private EditText CVVField;
     private EditText expirationDateField;
-    private EditText nameOnCard;
+    private EditText nameOnCardField;
 
     CardCredentialsViewHolder(View view) {
         super(view);
@@ -71,22 +71,7 @@ public class CardCredentialsViewHolder
         });
 
         // CVVField
-//        CVVField.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//
-//            }
-//        });
+        CVVField = itemView.findViewById(R.id.CVVField);
 
         // Date field
         expirationDateField = itemView.findViewById(R.id.expirationDateField);
@@ -103,22 +88,7 @@ public class CardCredentialsViewHolder
         });
 
         // Name on card
-//        nameOnCard.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//
-//            }
-//        });
+        nameOnCardField = itemView.findViewById(R.id.nameOnCardField);
     }
 
     @Override
@@ -147,10 +117,26 @@ public class CardCredentialsViewHolder
             }
         });
 
-        if(!viewModel.getExpirationMonth().isEmpty() && !viewModel.getExpirationYear().isEmpty()) {
+        Log.e("TEST", "CARD NUMBER " + viewModel.getCardNumber());
+        if (!viewModel.getCardNumber().isEmpty()) {
+            cardNumberField.setText(viewModel.getCardNumber());
+        }
+
+        Log.e("TEST", "EXPIRATION DATE " + viewModel.getExpirationMonth() + "/" + viewModel.getExpirationYear());
+        if (!viewModel.getExpirationMonth().isEmpty() && !viewModel.getExpirationYear().isEmpty()) {
             String expirationDate = viewModel.getExpirationMonth() + "/" + viewModel.getExpirationYear();
             expirationDateField.setText(expirationDate);
         }
+
+        Log.e("TEST", "CVV NUMBER " + viewModel.getCVVnumber());
+//        if (!viewModel.getCVVnumber().isEmpty()) {
+//            CVVField.setText(viewModel.getCVVnumber());
+//        }
+
+        Log.e("TEST", "NAME ON CARD " + viewModel.getNameOnCard());
+//        if (!viewModel.getNameOnCard().isEmpty()) {
+//            nameOnCardField.setText(viewModel.getNameOnCard());
+//        }
 
         RelativeLayout saveCardSwitchContainer = itemView.findViewById(R.id.saveCardSwitchContainer);
         saveCardSwitchContainer.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
