@@ -205,36 +205,9 @@ public class GoSellPaymentActivity
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == SCAN_REQUEST_CODE) {
-            String resultDisplayStr;
             if (data != null && data.hasExtra(CardIOActivity.EXTRA_SCAN_RESULT)) {
                 CreditCard scanResult = data.getParcelableExtra(CardIOActivity.EXTRA_SCAN_RESULT);
-
-                // Never log a raw card number. Avoid displaying it, but if necessary use getFormattedCardNumber()
-                resultDisplayStr = scanResult.cardNumber;
-//                etCardNumber.setText(resultDisplayStr);
-//
-//                setTypeFromNumber(resultDisplayStr);
-                // Do something with the raw number, e.g.:
-                // myService.setCardNumber( scanResult.cardNumber );
-
-                if (scanResult.isExpiryValid()) {
-                    String month;
-                    if (scanResult.expiryMonth < 10) {
-                        month = "0" + scanResult.expiryMonth;
-                    } else {
-                        month = scanResult.expiryMonth + "";
-                    }
-                    int year = scanResult.expiryYear - 2000;
-//                    etDate.setText(month + "/" + year);
-                }
-
-                if (scanResult.cvv != null) {
-//                    etCVV.setText(scanResult.cvv);
-                }
-
-                if (scanResult.postalCode != null) {
-                    resultDisplayStr += "Postal Code: " + scanResult.postalCode + "\n";
-                }
+                dataSource.cardScanned(scanResult);
             } else {
 //                TapDialog.createToast(this, L.scan_was_canceled.toString(), Toast.LENGTH_LONG);
             }
