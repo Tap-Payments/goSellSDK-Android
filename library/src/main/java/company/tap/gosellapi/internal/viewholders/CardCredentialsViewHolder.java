@@ -4,6 +4,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
+import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -17,13 +18,10 @@ import java.util.ArrayList;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.adapters.CardSystemsRecyclerViewAdapter;
-import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
-import company.tap.gosellapi.internal.api.callbacks.GoSellError;
-import company.tap.gosellapi.internal.api.facade.GoSellAPI;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
-import company.tap.gosellapi.internal.api.responses.BINLookupResponse;
 import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.CardCredentialsViewModel;
 import company.tap.tapcardvalidator_android.CardBrand;
+import company.tap.tapcardvalidator_android.CardValidationState;
 import company.tap.tapcardvalidator_android.CardValidator;
 import company.tap.tapcardvalidator_android.DefinedCardBrand;
 
@@ -51,6 +49,8 @@ public class CardCredentialsViewHolder
         // Configure edit fields
         cardNumberField = itemView.findViewById(R.id.cardNumberField);
 
+
+
         // Card number field
         cardNumberField.addTextChangedListener(new TextWatcher() {
 
@@ -61,7 +61,53 @@ public class CardCredentialsViewHolder
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                validateCardNumber(s.toString());
+
+                DefinedCardBrand brand = validateCardNumber(s.toString());
+                CardBrand cardBrand = brand.getCardBrand();
+
+                int[] spacings;
+                if (cardBrand != CardBrand.americanExpress) {
+                    spacings = new int[] {4, 8, 12};
+                }
+                else {
+                    spacings = new int[] {3, 9};
+                }
+
+                String text = s.toString();
+                text = text.replace(" ", "");
+                SpannableStringBuilder cardNumber = new SpannableStringBuilder(text);
+
+                for(int i = spacings.length - 1; i >= 0; i--) {
+
+                    int space = spacings[i];
+
+                    if(space < text.length()) {
+                        cardNumber.insert(space, " ");
+                    }
+                }
+
+                cardNumberField.removeTextChangedListener(this);
+                cardNumberField.setText(cardNumber.toString());
+
+                int selectionIndex = start + count;
+
+                for(int i = 0; i < spacings.length; i++) {
+
+                    int space = spacings[i];
+
+                    int incrementedSpace = space + i;
+
+                    if(start <= incrementedSpace && incrementedSpace < start + count) {
+                        selectionIndex++;
+                    }
+
+                    if(start - 1 == incrementedSpace && count == 0) {
+                        selectionIndex--;
+                    }
+                }
+
+                cardNumberField.setSelection(selectionIndex);
+                cardNumberField.addTextChangedListener(this);
             }
 
             @Override
@@ -117,23 +163,19 @@ public class CardCredentialsViewHolder
             }
         });
 
-        Log.e("TEST", "CARD NUMBER " + viewModel.getCardNumber());
         if (!viewModel.getCardNumber().isEmpty()) {
             cardNumberField.setText(viewModel.getCardNumber());
         }
 
-        Log.e("TEST", "EXPIRATION DATE " + viewModel.getExpirationMonth() + "/" + viewModel.getExpirationYear());
         if (!viewModel.getExpirationMonth().isEmpty() && !viewModel.getExpirationYear().isEmpty()) {
             String expirationDate = viewModel.getExpirationMonth() + "/" + viewModel.getExpirationYear();
             expirationDateField.setText(expirationDate);
         }
 
-        Log.e("TEST", "CVV NUMBER " + viewModel.getCVVnumber());
 //        if (!viewModel.getCVVnumber().isEmpty()) {
 //            CVVField.setText(viewModel.getCVVnumber());
 //        }
 
-        Log.e("TEST", "NAME ON CARD " + viewModel.getNameOnCard());
 //        if (!viewModel.getNameOnCard().isEmpty()) {
 //            nameOnCardField.setText(viewModel.getNameOnCard());
 //        }
@@ -175,21 +217,31 @@ public class CardCredentialsViewHolder
         }
     }
 
-    private void validateCardNumber(String cardNumber) {
+    private DefinedCardBrand validateCardNumber(String cardNumber) {
+
         DefinedCardBrand brand = CardValidator.validate(cardNumber);
         updateCardSystemsRecyclerView(brand.getCardBrand());
 
-        if (cardNumber.length() == BIN_NUMBER_LENGTH) {
-
-            GoSellAPI.getInstance().retrieveBINLookupBINLookup(cardNumber, new APIRequestCallback<BINLookupResponse>() {
-                @Override
-                public void onSuccess(int responseCode, BINLookupResponse serializedResponse) {
-                }
-
-                @Override
-                public void onFailure(GoSellError errorDetails) {
-                }
-            });
+        if (brand.getValidationState().equals(CardValidationState.invalid)) {
+            cardNumberField.setTextColor(itemView.getResources().getColor(R.color.red));
+        } else {
+            cardNumberField.setTextColor(itemView.getResources().getColor(R.color.greyish_brown));
         }
+
+//        if (cardNumber.length() == BIN_NUMBER_LENGTH) {
+//
+//            GoSellAPI.getInstance().retrieveBINLookupBINLookup(cardNumber, new APIRequestCallback<BINLookupResponse>() {
+//                @Override
+//                public void onSuccess(int responseCode, BINLookupResponse serializedResponse) {
+//                    updateAddressOnCardView(serializedResponse.isAddressRequired());
+//                }
+//
+//                @Override
+//                public void onFailure(GoSellError errorDetails) {
+//                }
+//            });
+//        }
+
+        return brand;
     }
 }
