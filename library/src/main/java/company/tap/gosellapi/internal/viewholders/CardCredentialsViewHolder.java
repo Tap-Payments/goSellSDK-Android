@@ -106,7 +106,13 @@ public class CardCredentialsViewHolder
                     }
                 }
 
-                cardNumberField.setSelection(selectionIndex);
+                try {
+                    cardNumberField.setSelection(selectionIndex);
+                }
+                catch (Exception e) {
+                    cardNumberField.setSelection(cardNumber.length());
+                }
+
                 cardNumberField.addTextChangedListener(this);
             }
 
