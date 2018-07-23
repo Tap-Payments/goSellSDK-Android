@@ -2,6 +2,7 @@ package company.tap.gosellapi.internal.activities;
 
 import android.os.Bundle;
 import android.view.Menu;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -28,6 +29,9 @@ public class WebPaymentActivity extends BaseActionBarActivity {
             WebView webView = findViewById(R.id.webPaymentWebView);
             webView.setWebViewClient(new WebPaymentWebViewClient());
             webView.loadUrl(pageUrl);
+
+            WebSettings settings = webView.getSettings();
+            settings.setJavaScriptEnabled(true);
 
             returnURL = extras.getString("returnURL");
             chargeID = extras.getString("id");
