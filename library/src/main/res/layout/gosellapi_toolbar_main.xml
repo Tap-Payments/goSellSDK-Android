@@ -32,16 +32,6 @@
             android:layout_toEndOf="@+id/businessIcon"
             android:layout_toStartOf="@+id/closeButton" />
 
-        <ImageButton
-            android:id="@+id/closeButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="@dimen/margin_basic_16dp"
-            android:layout_marginStart="@dimen/margin_basic_16dp"
-            android:background="@drawable/btn_close_normal" />
-
     </RelativeLayout>
 
 
