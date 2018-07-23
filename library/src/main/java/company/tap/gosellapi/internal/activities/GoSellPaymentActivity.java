@@ -78,16 +78,6 @@ public class GoSellPaymentActivity
                 .replace(R.id.paymentActivityFragmentContainer, paymentOptionsFragment)
                 .commit();
 
-        //   Configure Close button
-        ImageButton closeButton = findViewById(R.id.closeButton);
-
-        closeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
         businessIcon = findViewById(R.id.businessIcon);
         String logoPath = GlobalDataManager.getInstance().getSDKSettings().getData().getMerchant().getLogo();
         Glide.with(this).load(logoPath).apply(RequestOptions.circleCropTransform()).into(businessIcon);
