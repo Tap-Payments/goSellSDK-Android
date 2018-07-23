@@ -21,5 +21,7 @@ final class API_Constants {
     static final String BIN = "bin";
     static final String BIN_LOOKUP = "bin_number";
 
+    static final String BILLING_ADDRESS = "billing_address";
+
     static final String PAYMENT_TYPES = "payment/types";
 }

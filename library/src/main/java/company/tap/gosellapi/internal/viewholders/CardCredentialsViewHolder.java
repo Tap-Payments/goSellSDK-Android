@@ -18,7 +18,11 @@ import java.util.ArrayList;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.adapters.CardSystemsRecyclerViewAdapter;
+import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
+import company.tap.gosellapi.internal.api.callbacks.GoSellError;
+import company.tap.gosellapi.internal.api.facade.GoSellAPI;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
+import company.tap.gosellapi.internal.api.responses.BINLookupResponse;
 import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.CardCredentialsViewModel;
 import company.tap.tapcardvalidator_android.CardBrand;
 import company.tap.tapcardvalidator_android.CardValidationState;
@@ -225,6 +229,9 @@ public class CardCredentialsViewHolder
 
     private DefinedCardBrand validateCardNumber(String cardNumber) {
 
+        // 415254 - test bin number
+        cardNumber = cardNumber.replace(" ", "");
+
         DefinedCardBrand brand = CardValidator.validate(cardNumber);
         updateCardSystemsRecyclerView(brand.getCardBrand());
 
@@ -234,19 +241,19 @@ public class CardCredentialsViewHolder
             cardNumberField.setTextColor(itemView.getResources().getColor(R.color.greyish_brown));
         }
 
-//        if (cardNumber.length() == BIN_NUMBER_LENGTH) {
-//
-//            GoSellAPI.getInstance().retrieveBINLookupBINLookup(cardNumber, new APIRequestCallback<BINLookupResponse>() {
-//                @Override
-//                public void onSuccess(int responseCode, BINLookupResponse serializedResponse) {
-//                    updateAddressOnCardView(serializedResponse.isAddressRequired());
-//                }
-//
-//                @Override
-//                public void onFailure(GoSellError errorDetails) {
-//                }
-//            });
-//        }
+        if (cardNumber.length() == BIN_NUMBER_LENGTH) {
+
+            GoSellAPI.getInstance().retrieveBINLookupBINLookup(cardNumber, new APIRequestCallback<BINLookupResponse>() {
+                @Override
+                public void onSuccess(int responseCode, BINLookupResponse serializedResponse) {
+                    updateAddressOnCardView(serializedResponse.isAddressRequired());
+                }
+
+                @Override
+                public void onFailure(GoSellError errorDetails) {
+                }
+            });
+        }
 
         return brand;
     }

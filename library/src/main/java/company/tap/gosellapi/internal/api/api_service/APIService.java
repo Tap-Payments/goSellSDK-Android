@@ -3,10 +3,12 @@ package company.tap.gosellapi.internal.api.api_service;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.models.PaymentInfo;
 import company.tap.gosellapi.internal.api.models.Token;
+import company.tap.gosellapi.internal.api.requests.AddressFormatsRequest;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
 import company.tap.gosellapi.internal.api.requests.CreateTokenRequest;
 import company.tap.gosellapi.internal.api.requests.CreateTokenWithEncryptedCardDataRequest;
 import company.tap.gosellapi.internal.api.requests.CreateTokenWithExistingCardDataRequest;
+import company.tap.gosellapi.internal.api.responses.AddressFormatsResponse;
 import company.tap.gosellapi.internal.api.responses.BINLookupResponse;
 import company.tap.gosellapi.internal.api.responses.SDKSettings;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
@@ -35,6 +37,9 @@ public interface APIService {
 
     @GET(API_Constants.BIN + "/{" + API_Constants.BIN_LOOKUP + "}")
     Call<BINLookupResponse> retrieveBINLookup(@Path(API_Constants.BIN_LOOKUP) String binNumber);
+
+    @GET(API_Constants.BILLING_ADDRESS)
+    Call<AddressFormatsResponse> retrieveAddressFormats();
 
     @POST(API_Constants.TOKEN)
     Call<Token> createToken(@Body CreateTokenRequest createTokenRequest);
