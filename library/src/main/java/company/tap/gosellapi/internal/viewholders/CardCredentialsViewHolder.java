@@ -1,16 +1,19 @@
 package company.tap.gosellapi.internal.viewholders;
 
+import android.graphics.Typeface;
 import android.hardware.camera2.CameraDevice;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.InputFilter;
+import android.text.InputType;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -132,6 +135,9 @@ public class CardCredentialsViewHolder
 
         // CVVField
         CVVField = itemView.findViewById(R.id.CVVField);
+        CVVField.setTypeface(Typeface.DEFAULT);
+        CVVField.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        CVVField.setTransformationMethod(new PasswordTransformationMethod());
 
         CVVField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -142,22 +148,22 @@ public class CardCredentialsViewHolder
             }
         });
 
-        CVVField.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
+//        CVVField.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//
+//            }
+//        });
 
         // Date field
         expirationDateField = itemView.findViewById(R.id.expirationDateField);
