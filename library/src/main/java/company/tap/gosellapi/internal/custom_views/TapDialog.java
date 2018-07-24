@@ -1,7 +1,6 @@
 package company.tap.gosellapi.internal.custom_views;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,14 +37,16 @@ public class TapDialog {
         final WheelPicker npMonth = view.findViewById(R.id.npMonthPicker);
         final WheelPicker npYear = view.findViewById(R.id.npYearPicker);
 
-        List<String> monthes = Arrays.asList("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12");
+        List<String> months = Arrays.asList("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12");
         int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
-        npMonth.setData(monthes);
+        npMonth.setData(months);
         npMonth.setSelectedItemPosition(currentMonth);
 
         List<String> years = new ArrayList<>();
-        for (int i = Calendar.getInstance().get(Calendar.YEAR) - 2000; i < 100; i++) {
-            years.add(String.valueOf(i));
+
+        for (int i = 0; i < 100; i++) {
+            String year = String.valueOf(Calendar.getInstance().get(Calendar.YEAR) + i);
+            years.add(year);
         }
         npYear.setData(years);
 
