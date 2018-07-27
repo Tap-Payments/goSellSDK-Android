@@ -2,6 +2,8 @@
     <string name="app_name">GoSellAPI</string>
     <string name="pay">Pay</string>
 
+    <string name="actionbar_title_address_on_card">Address on card</string>
+
     <string name="edittext_hint_card_number">Card number</string>
     <string name="edittext_hint_expiration_date">MM/YY</string>
     <string name="edittext_hint_CVV">CVV</string>

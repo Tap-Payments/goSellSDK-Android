@@ -256,6 +256,11 @@ public class CardCredentialsViewHolder
             expirationDateField.setText(expirationDate);
         }
 
+        if (viewModel.isShowAddressOnCardCell()) {
+            addressOnCardLayout.setVisibility(View.VISIBLE);
+        } else {
+            addressOnCardLayout.setVisibility(View.GONE);
+        }
 //        if (!viewModel.getCVVnumber().isEmpty()) {
 //            CVVField.setText(viewModel.getCVVnumber());
 //        }
@@ -315,24 +320,13 @@ public class CardCredentialsViewHolder
         }
 
         if (cardNumber.length() == BIN_NUMBER_LENGTH) {
-
-            GoSellAPI.getInstance().retrieveBINLookupBINLookup(cardNumber, new APIRequestCallback<BINLookupResponse>() {
-                @Override
-                public void onSuccess(int responseCode, BINLookupResponse serializedResponse) {
-                    updateAddressOnCardView(serializedResponse.isAddressRequired());
-                }
-
-                @Override
-                public void onFailure(GoSellError errorDetails) {
-                }
-            });
+            viewModel.binNumberEntered(cardNumber);
         }
 
         return brand;
     }
 
     private void validateCardCVV(String CVVNumber) {
-
 
     }
 }

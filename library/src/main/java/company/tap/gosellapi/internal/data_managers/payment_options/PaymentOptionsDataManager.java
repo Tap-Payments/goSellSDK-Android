@@ -48,6 +48,8 @@ public class PaymentOptionsDataManager {
         void addressOnCardClicked();
 
         void cardExpirationDateClicked();
+
+        void binNumberEntered(String binNumber);
     }
 
     private PaymentOptionsDataListener listener;
@@ -114,6 +116,8 @@ public class PaymentOptionsDataManager {
     public void addressOnCardClicked() {
         listener.addressOnCardClicked();
     }
+
+    public void binNumberEntered(String binNumber) { listener.binNumberEntered(binNumber); }
 
     public void cardExpirationDateClicked() {
         listener.cardExpirationDateClicked();
@@ -194,6 +198,15 @@ public class PaymentOptionsDataManager {
         cardCredentialsViewModel.setCVVnumber(card.cvv);
         cardCredentialsViewModel.setNameOnCard(card.cardholderName);
 
+        cardCredentialsViewModel.updateData();
+    }
+
+    public void showAddressOnCardCell(boolean isShow) {
+
+        CardCredentialsViewModel cardCredentialsViewModel = getCardCredentialsViewModel();
+        if(cardCredentialsViewModel == null) return;
+
+        cardCredentialsViewModel.showAddressOnCardCell(isShow);
         cardCredentialsViewModel.updateData();
     }
 

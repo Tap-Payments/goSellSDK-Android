@@ -9,15 +9,15 @@ public class AddressField {
 
     @SerializedName("name")
     @Expose
-    String name;
+    private String name;
 
     @SerializedName("type")
     @Expose
-    AddressFieldInputType type;
+    private AddressFieldInputType type;
 
     @SerializedName("place_holder")
     @Expose
-    String placeholder;
+    private String placeholder;
 
     public String getName() {
         return name;

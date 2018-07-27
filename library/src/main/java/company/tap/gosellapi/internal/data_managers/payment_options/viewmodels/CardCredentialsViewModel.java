@@ -11,6 +11,8 @@ public class CardCredentialsViewModel
         extends PaymentOptionsBaseViewModel<ArrayList<PaymentOption>, CardCredentialsViewHolder, CardCredentialsViewModel> {
     private ArrayList<PaymentOption> dataOriginal;
 
+    private boolean isShowAddressOnCardCell = false;
+
     // Card credentials fields
     private String cardNumber;
     private String expirationMonth;
@@ -60,6 +62,8 @@ public class CardCredentialsViewModel
         updateData();
     }
 
+    public void binNumberEntered(String binNumber) { parentDataManager.binNumberEntered(binNumber);}
+
     public String getCardNumber() {
         return cardNumber;
     }
@@ -72,12 +76,20 @@ public class CardCredentialsViewModel
         return expirationYear;
     }
 
+    public boolean isShowAddressOnCardCell() {
+        return isShowAddressOnCardCell;
+    }
+
     public String getCVVnumber() {
         return CVVnumber;
     }
 
     public String getNameOnCard() {
         return nameOnCard;
+    }
+
+    public void showAddressOnCardCell(boolean isShow) {
+        this.isShowAddressOnCardCell = isShow;
     }
 
     public void setCardNumber(String cardNumber) {

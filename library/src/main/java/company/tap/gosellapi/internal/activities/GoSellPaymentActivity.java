@@ -30,6 +30,7 @@ import company.tap.gosellapi.internal.api.models.PhoneNumber;
 import company.tap.gosellapi.internal.api.models.Redirect;
 import company.tap.gosellapi.internal.api.models.Source;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
+import company.tap.gosellapi.internal.api.responses.BINLookupResponse;
 import company.tap.gosellapi.internal.custom_views.TapDialog;
 import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
 import company.tap.gosellapi.internal.data_managers.LoadingScreenManager;
@@ -181,13 +182,37 @@ public class GoSellPaymentActivity
 
     @Override
     public void addressOnCardClicked() {
+        BINLookupResponse binLookupResponse = GlobalDataManager.getInstance().getBinLookupResponse();
+        if(binLookupResponse == null) return;
+
+        Log.e("TAG", "COUNTRY " + binLookupResponse.getCountry());
+
         Intent intent = new Intent(this, GoSellCardAddressActivity.class);
+        intent.putExtra(GoSellCardAddressActivity.INTENT_EXTRA_KEY_COUNTRY, binLookupResponse.getCountry());
         startActivity(intent);
     }
 
     @Override
     public void saveCardSwitchClicked(boolean isChecked, int saveCardBlockPosition) {
 //        paymentOptionsFragment.scrollRecyclerToPosition(saveCardBlockPosition);
+    }
+
+    @Override
+    public void binNumberEntered(String binNumber) {
+
+        GoSellAPI.getInstance().retrieveBINLookupBINLookup(binNumber, new APIRequestCallback<BINLookupResponse>() {
+            @Override
+            public void onSuccess(int responseCode, BINLookupResponse serializedResponse) {
+                dataSource.showAddressOnCardCell(true);
+                GlobalDataManager.getInstance().setBinLookupResponse(serializedResponse);
+            }
+
+            @Override
+            public void onFailure(GoSellError errorDetails) {
+                dataSource.showAddressOnCardCell(false);
+                GlobalDataManager.getInstance().setBinLookupResponse(null);
+            }
+        });
     }
 
     @Override
@@ -198,8 +223,6 @@ public class GoSellPaymentActivity
             if (data != null && data.hasExtra(CardIOActivity.EXTRA_SCAN_RESULT)) {
                 CreditCard scanResult = data.getParcelableExtra(CardIOActivity.EXTRA_SCAN_RESULT);
                 dataSource.cardScanned(scanResult);
-            } else {
-//                TapDialog.createToast(this, L.scan_was_canceled.toString(), Toast.LENGTH_LONG);
             }
         } else if (requestCode == CURRENCIES_REQUEST_CODE) {
             AmountedCurrency userChoiceCurrency = (AmountedCurrency) data.getSerializableExtra(CurrenciesActivity.CURRENCIES_ACTIVITY_USER_CHOICE_CURRENCY);

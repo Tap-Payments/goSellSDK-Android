@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,43 +47,63 @@ public class LoadingScreenManager {
     }
 
     public void closeLoadingScreen() {
-        if (loadingView != null) {
+        if (loadingLayout == null) return;
 
-            loadingView.setForceStop(true, new TapLoadingView.FullProgressListener() {
-                @Override
-                public void onFullProgress() {
+        final ViewGroup insertPoint = hostActivity.findViewById(android.R.id.content);
 
-                    hostActivity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            loadingView.setVisibility(View.GONE);
-                            loadingView = null;
-                        }
-                    });
+        loadingView.setForceStop(true);
 
-                    final ViewGroup insertPoint = hostActivity.findViewById(android.R.id.content);
+        loadingLayout.animate()
+                .alpha(0.0f)
+                .setDuration(ANIMATION_DURATION)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
 
-                    if (loadingLayout != null) {
-
-                        loadingLayout.animate()
-                                .alpha(0.0f)
-                                .setDuration(ANIMATION_DURATION)
-                                .setListener(new AnimatorListenerAdapter() {
-                                    @Override
-                                    public void onAnimationEnd(Animator animation) {
-                                        super.onAnimationEnd(animation);
-
-                                        insertPoint.removeView(loadingLayout);
-                                        loadingLayout = null;
-                                        hostActivity = null;
-                                    }
-                                });
+                        insertPoint.removeView(loadingLayout);
+                        loadingLayout = null;
+                        hostActivity = null;
                     }
+                });
 
-                }
-            });
+//            loadingView.setForceStop(true, new TapLoadingView.FullProgressListener() {
+//                @Override
+//                public void onFullProgress() {
+//
+//                    hostActivity.runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            Log.e("TEST", "CHECKPOINT 1 - LOADING VIEW DELETED");
+//                            loadingView.setVisibility(View.GONE);
+//                            loadingView = null;
+//
+//                            final ViewGroup insertPoint = hostActivity.findViewById(android.R.id.content);
+//
+//                            if (loadingLayout != null) {
+//
+//                                loadingLayout.animate()
+//                                        .alpha(0.0f)
+//                                        .setDuration(ANIMATION_DURATION)
+//                                        .setListener(new AnimatorListenerAdapter() {
+//                                            @Override
+//                                            public void onAnimationEnd(Animator animation) {
+//                                                super.onAnimationEnd(animation);
+//
+//                                                insertPoint.removeView(loadingLayout);
+//                                                loadingLayout = null;
+//                                                hostActivity = null;
+//                                                Log.e("TEST", "CHECKPOINT 2 - LOADING LAYOUT DELETED");
+//                                            }
+//                                        });
+//                            }
+//                        }
+//                    });
+//
+//
+//                }
+//            });
 
-        }
     }
 
     private void createLoadingScreen() {
