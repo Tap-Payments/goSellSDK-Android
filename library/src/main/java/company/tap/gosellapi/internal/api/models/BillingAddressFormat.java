@@ -15,4 +15,12 @@ public class BillingAddressFormat {
     @SerializedName("fields")
     @Expose
     ArrayList<BillingAddressField> fields;
+
+    public AddressFormat getName() {
+        return name;
+    }
+
+    public ArrayList<BillingAddressField> getFields() {
+        return fields;
+    }
 }

@@ -31,6 +31,9 @@ public class BaseActionBarActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
 
         if (actionBar != null && actionBar.getCustomView() == null) {
+            actionBar.setBackgroundDrawable(getResources().getDrawable(R.color.alabaster));
+
+            actionBar.setElevation(2.0f);
             actionBar.setDisplayShowHomeEnabled(false);
             actionBar.setDisplayHomeAsUpEnabled(false);
             actionBar.setDisplayShowCustomEnabled(true);

@@ -21,6 +21,7 @@ import company.tap.gosellapi.internal.api.requests.CardRequest;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
 import company.tap.gosellapi.internal.api.requests.CreateTokenWithEncryptedCardDataRequest;
 import company.tap.gosellapi.internal.api.requests.CreateTokenWithExistingCardDataRequest;
+import company.tap.gosellapi.internal.api.responses.BINLookupResponse;
 import company.tap.gosellapi.internal.api.responses.SDKSettings;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
@@ -30,6 +31,7 @@ public class GlobalDataManager {
     private SDKSettings SDKSettings;
     private PaymentInfo paymentInfo;
     private PaymentOptionsDataManager paymentOptionsDataManager;
+    private BINLookupResponse binLookupResponse;
 
     private GlobalDataManager() {
 
@@ -55,8 +57,16 @@ public class GlobalDataManager {
         return paymentInfo;
     }
 
+    public BINLookupResponse getBinLookupResponse() {
+        return binLookupResponse;
+    }
+
     public void setPaymentInfo(PaymentInfo paymentInfo) {
         this.paymentInfo = paymentInfo;
+    }
+
+    public void setBinLookupResponse(BINLookupResponse binLookupResponse) {
+        this.binLookupResponse = binLookupResponse;
     }
 
     public void createPaymentOptionsDataManager(PaymentOptionsResponse paymentOptionsResponse) {

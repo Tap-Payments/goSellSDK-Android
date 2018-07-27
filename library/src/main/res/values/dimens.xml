@@ -13,10 +13,12 @@
 
     <dimen name="margin_basic_3dp">3dp</dimen>
     <dimen name="margin_basic_4dp">4dp</dimen>
+    <dimen name="margin_basic_6dp">4dp</dimen>
     <dimen name="margin_basic_8dp">8dp</dimen>
     <dimen name="margin_basic_9dp">9dp</dimen>
     <dimen name="margin_basic_10dp">10dp</dimen>
     <dimen name="margin_basic_11dp">11dp</dimen>
+    <dimen name="margin_basic_13dp">16dp</dimen>
     <dimen name="margin_basic_14dp">14dp</dimen>
     <dimen name="margin_basic_15dp">15dp</dimen>
     <dimen name="margin_basic_16dp">16dp</dimen>
@@ -54,5 +56,6 @@
     <dimen name="font_size_17sp">17sp</dimen>
     <dimen name="font_size_20sp">20sp</dimen>
 
+    <dimen name="recycler_view_bottom_offset">29dp</dimen>
 </resources>
 
