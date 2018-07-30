@@ -18,7 +18,8 @@
         <activity
             android:name=".internal.activities.BaseActionBarActivity"
             android:theme="@style/GoSellSDKAppTheme" />
-        <activity android:name=".internal.activities.WebPaymentActivity" />
+        <activity android:name=".internal.activities.WebPaymentActivity"
+            android:theme="@style/GoSellSDKAppTheme"/>
         <activity
             android:name=".internal.activities.CountriesActivity"
             android:theme="@style/GoSellSDKAppTheme" />

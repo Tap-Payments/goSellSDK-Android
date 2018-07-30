@@ -12,6 +12,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
 import company.tap.gosellapi.R;
 
 public class BaseActionBarActivity extends AppCompatActivity {
@@ -65,5 +68,10 @@ public class BaseActionBarActivity extends AppCompatActivity {
     @Override
     public void setTitle(CharSequence title) {
         actionBarTitle.setText(title);
+    }
+
+    public void setImage(String source) {
+        actionBarImage.setVisibility(View.VISIBLE);
+        Glide.with(this).load(source).into(actionBarImage);
     }
 }
