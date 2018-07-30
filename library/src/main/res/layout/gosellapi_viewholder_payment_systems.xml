@@ -3,6 +3,8 @@
     android:id="@+id/paymentSystemsViewHolderLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_basic_24dp"
+    android:layout_marginBottom="@dimen/margin_basic_24dp"
     android:background="@drawable/selector_payment_options_viewholder">
 
     <ImageView

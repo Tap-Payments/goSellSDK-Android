@@ -20,12 +20,14 @@ import java.util.ArrayList;
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
+import company.tap.gosellapi.internal.api.enums.PaymentType;
 import company.tap.gosellapi.internal.api.facade.GoSellAPI;
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 import company.tap.gosellapi.internal.api.models.CardRawData;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.models.CustomerInfo;
 import company.tap.gosellapi.internal.api.models.Order;
+import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.api.models.PhoneNumber;
 import company.tap.gosellapi.internal.api.models.Redirect;
 import company.tap.gosellapi.internal.api.models.Source;
@@ -104,49 +106,22 @@ public class GoSellPaymentActivity
 
     @Override
     public void startWebPayment() {
-        final Intent intent = new Intent(this, WebPaymentActivity.class);
 
-        LoadingScreenManager.getInstance().showLoadingScreen(this);
+        Intent intent = new Intent(this, WebPaymentActivity.class);
 
-        // Configure request body
-        Source source = new Source("src_kw.knet");
-        PhoneNumber phoneNumber = new PhoneNumber("965", "77777777");
-        CustomerInfo customerInfo = new CustomerInfo("Customer", "Customerenko", "so@me.mail", phoneNumber);
-        Redirect redirect = new Redirect("gosellsdk://return_url");
+        PaymentOption webPaymentOption = new PaymentOption();
+        for(PaymentOption option : dataSource.getPaymentOptionsResponse().getPayment_options()) {
 
-        Order order = new Order(dataSource.getPaymentOptionsResponse().getOrderID());
-
-        CreateChargeRequest request = new CreateChargeRequest
-                .Builder(100, "KWD", 20, false)
-                .customer(customerInfo)
-                .order(order)
-                .redirect(redirect)
-                .source(source)
-                .build();
-
-        // Configure request callbacks
-        APIRequestCallback<Charge> requestCallback = new APIRequestCallback<Charge>() {
-            @Override
-            public void onSuccess(int responseCode, Charge serializedResponse) {
-                Log.d("Web Payment", "onSuccess createCharge: serializedResponse:" + serializedResponse);
-                LoadingScreenManager.getInstance().closeLoadingScreen();
-
-                intent.putExtra("id", serializedResponse.getId());
-                intent.putExtra("URL", serializedResponse.getRedirect().getUrl());
-                intent.putExtra("returnURL", serializedResponse.getRedirect().getReturn_url());
-
-                startActivityForResult(intent, WEB_PAYMENT_REQUEST_CODE);
+            if (option.getPaymentType().equals(PaymentType.WEB)) {
+                webPaymentOption = option;
+                break;
             }
+        }
 
-            @Override
-            public void onFailure(GoSellError errorDetails) {
-                Log.d("Web Payment", "onFailure createCharge, errorCode: " + errorDetails.getErrorCode() + ", errorBody: " + errorDetails.getErrorBody() + ", throwable: " + errorDetails.getThrowable());
-                LoadingScreenManager.getInstance().closeLoadingScreen();
-            }
-        };
+        intent.putExtra(WebPaymentActivity.INTENT_EXTRA_KEY_IMAGE, webPaymentOption.getImage());
+        intent.putExtra(WebPaymentActivity.INTENT_EXTRA_KEY_NAME, webPaymentOption.getName());
 
-        // Create charge
-        GoSellAPI.getInstance().createCharge(request, requestCallback);
+        startActivityForResult(intent, WEB_PAYMENT_REQUEST_CODE);
     }
 
     @Override
@@ -184,9 +159,6 @@ public class GoSellPaymentActivity
     public void addressOnCardClicked() {
         BINLookupResponse binLookupResponse = GlobalDataManager.getInstance().getBinLookupResponse();
         if(binLookupResponse == null) return;
-
-        Log.e("TAG", "COUNTRY " + binLookupResponse.getCountry());
-
         Intent intent = new Intent(this, GoSellCardAddressActivity.class);
         intent.putExtra(GoSellCardAddressActivity.INTENT_EXTRA_KEY_COUNTRY, binLookupResponse.getCountry());
         startActivity(intent);

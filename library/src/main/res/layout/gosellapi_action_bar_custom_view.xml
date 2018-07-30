@@ -21,13 +21,11 @@
 
     <ImageView
         android:id="@+id/actionBarImage"
-        android:layout_width="@dimen/action_bar_img_width"
-        android:layout_height="@dimen/action_bar_default_height"
+        android:layout_width="@dimen/icon_height_basic"
+        android:layout_height="@dimen/icon_height_basic"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="@dimen/margin_basic_8dp"
-        android:layout_marginEnd="@dimen/margin_basic_8dp"
-        android:scaleType="center"
-        android:src="@drawable/cio_ic_amex"/>
+        android:scaleType="center" />
 
     <TextView
         android:id="@+id/actionBarTitle"

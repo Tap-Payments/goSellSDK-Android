@@ -91,19 +91,13 @@ public class AddressOnCardRecyclerViewAdapter extends RecyclerView.Adapter {
         if(holder instanceof CardAddressNumberInputViewHolder) {
             ((CardAddressNumberInputViewHolder) holder).tilNumberInput.setHint(placeholder);
 
-            if(inputFieldsText.get(position) != null) {
-                String text = inputFieldsText.get(position);
-                ((CardAddressNumberInputViewHolder) holder).etNumberInput.setText(text);
-            }
+
         }
 
         if(holder instanceof CardAddressTextInputViewHolder) {
             ((CardAddressTextInputViewHolder) holder).tilTextInput.setHint(placeholder);
 
-            if(inputFieldsText.get(position) != null) {
-                String text = inputFieldsText.get(position);
-                ((CardAddressTextInputViewHolder) holder).etTextInput.setText(text);
-            }
+
         }
     }
 

@@ -2,20 +2,38 @@ package company.tap.gosellapi.internal.activities;
 
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import java.util.ArrayList;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.facade.GoSellAPI;
+import company.tap.gosellapi.internal.api.models.AmountedCurrency;
+import company.tap.gosellapi.internal.api.models.CardRawData;
 import company.tap.gosellapi.internal.api.models.Charge;
+import company.tap.gosellapi.internal.api.models.CustomerInfo;
+import company.tap.gosellapi.internal.api.models.Order;
+import company.tap.gosellapi.internal.api.models.PaymentOption;
+import company.tap.gosellapi.internal.api.models.PhoneNumber;
+import company.tap.gosellapi.internal.api.models.Redirect;
+import company.tap.gosellapi.internal.api.models.Source;
+import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
+import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
+import company.tap.gosellapi.internal.data_managers.LoadingScreenManager;
 import company.tap.gosellapi.internal.data_managers.PaymentResultToastManager;
+import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
 
-public class WebPaymentActivity extends BaseActionBarActivity {
+public class WebPaymentActivity extends BaseActionBarActivity implements PaymentOptionsDataManager.PaymentOptionsDataListener {
     private String chargeID;
     private String returnURL;
+
+    public static final String INTENT_EXTRA_KEY_NAME = "name";
+    public static final String INTENT_EXTRA_KEY_IMAGE = "image";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,18 +42,61 @@ public class WebPaymentActivity extends BaseActionBarActivity {
 
         Bundle extras = getIntent().getExtras();
 
-        if(extras != null) {
-            String pageUrl = extras.getString("URL");
-            WebView webView = findViewById(R.id.webPaymentWebView);
-            webView.setWebViewClient(new WebPaymentWebViewClient());
-            webView.loadUrl(pageUrl);
+        if (extras != null) {
 
-            WebSettings settings = webView.getSettings();
-            settings.setJavaScriptEnabled(true);
+            String title = extras.getString(INTENT_EXTRA_KEY_NAME);
+            setTitle(title);
 
-            returnURL = extras.getString("returnURL");
-            chargeID = extras.getString("id");
+            String source = extras.getString(INTENT_EXTRA_KEY_IMAGE);
+            setImage(source);
         }
+
+        View view = getWindow().getDecorView().findViewById(android.R.id.content);
+        view.post(new Runnable() {
+            @Override
+            public void run() {
+                getData();
+            }
+        });
+    }
+
+    private void getData() {
+
+        LoadingScreenManager.getInstance().showLoadingScreen(this);
+
+        PaymentOptionsDataManager dataSource = GlobalDataManager.getInstance().getPaymentOptionsDataManager(this);
+
+        // Configure request body
+        Source source = new Source("src_kw.knet");
+        PhoneNumber phoneNumber = new PhoneNumber("965", "77777777");
+        CustomerInfo customerInfo = GlobalDataManager.getInstance().getPaymentInfo().getCustomer();
+        Redirect redirect = new Redirect("gosellsdk://return_url");
+
+        Order order = new Order(dataSource.getPaymentOptionsResponse().getOrderID());
+
+        CreateChargeRequest request = new CreateChargeRequest
+                .Builder(100, "KWD", 20, false)
+                .customer(customerInfo)
+                .order(order)
+                .redirect(redirect)
+                .source(source)
+                .build();
+
+        // Configure request callbacks
+        APIRequestCallback<Charge> requestCallback = new APIRequestCallback<Charge>() {
+            @Override
+            public void onSuccess(int responseCode, Charge serializedResponse) {
+                LoadingScreenManager.getInstance().closeLoadingScreen();
+            }
+
+            @Override
+            public void onFailure(GoSellError errorDetails) {
+                LoadingScreenManager.getInstance().closeLoadingScreen();
+            }
+        };
+
+        // Create charge
+        GoSellAPI.getInstance().createCharge(request, requestCallback);
     }
 
     @Override
@@ -80,5 +141,50 @@ public class WebPaymentActivity extends BaseActionBarActivity {
     public void onBackPressed() {
         setResult(RESULT_CANCELED);
         super.onBackPressed();
+    }
+
+    @Override
+    public void startCurrencySelection(ArrayList<AmountedCurrency> currencies, AmountedCurrency selectedCurrency) {
+
+    }
+
+    @Override
+    public void startOTP() {
+
+    }
+
+    @Override
+    public void startWebPayment() {
+
+    }
+
+    @Override
+    public void startScanCard() {
+
+    }
+
+    @Override
+    public void cardDetailsFilled(boolean isFilled, CardRawData cardRawData) {
+
+    }
+
+    @Override
+    public void saveCardSwitchClicked(boolean isChecked, int saveCardBlockPosition) {
+
+    }
+
+    @Override
+    public void addressOnCardClicked() {
+
+    }
+
+    @Override
+    public void cardExpirationDateClicked() {
+
+    }
+
+    @Override
+    public void binNumberEntered(String binNumber) {
+
     }
 }
