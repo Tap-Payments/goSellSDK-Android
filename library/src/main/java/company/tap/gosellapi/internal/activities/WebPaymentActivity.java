@@ -1,6 +1,7 @@
 package company.tap.gosellapi.internal.activities;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.webkit.WebSettings;
@@ -87,16 +88,25 @@ public class WebPaymentActivity extends BaseActionBarActivity implements Payment
             @Override
             public void onSuccess(int responseCode, Charge serializedResponse) {
                 LoadingScreenManager.getInstance().closeLoadingScreen();
+                Log.e("TAG", "SUCCESS");
+                updateWebView();
             }
 
             @Override
             public void onFailure(GoSellError errorDetails) {
                 LoadingScreenManager.getInstance().closeLoadingScreen();
+                Log.e("TAG", "FAILURE");
+                updateWebView();
             }
         };
 
         // Create charge
         GoSellAPI.getInstance().createCharge(request, requestCallback);
+    }
+
+    private void updateWebView() {
+        WebView webView = findViewById(R.id.webPaymentWebView);
+        webView.setVisibility(View.VISIBLE);
     }
 
     @Override

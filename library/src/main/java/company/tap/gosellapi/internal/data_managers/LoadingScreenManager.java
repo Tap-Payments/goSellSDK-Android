@@ -19,6 +19,10 @@ import jp.wasabeef.blurry.Blurry;
 
 public class LoadingScreenManager {
 
+    public interface LoadingScreenListener {
+        void onLoadingScreenClosed();
+    }
+
     // Constants
     private static final int BLUR_RADIUS = 40;
     private static final long ANIMATION_DURATION = 300;
@@ -28,6 +32,7 @@ public class LoadingScreenManager {
     private static final int loadingLayoutID = R.layout.gosellapi_layout_loading;
     private TapLoadingView loadingView;
     private View loadingLayout;
+    private LoadingScreenListener listener;
 
     private LoadingScreenManager() {
 
@@ -47,6 +52,15 @@ public class LoadingScreenManager {
     }
 
     public void closeLoadingScreen() {
+       removeLoadingView();
+    }
+
+    public void closeLoadingScreenWithListener(LoadingScreenListener listener) {
+        this.listener = listener;
+        removeLoadingView();
+    }
+
+    private void removeLoadingView() {
         if (loadingLayout == null) return;
 
         final ViewGroup insertPoint = hostActivity.findViewById(android.R.id.content);
@@ -64,46 +78,13 @@ public class LoadingScreenManager {
                         insertPoint.removeView(loadingLayout);
                         loadingLayout = null;
                         hostActivity = null;
+
+                        if(listener  != null) {
+                            listener.onLoadingScreenClosed();
+                            listener = null;
+                        }
                     }
                 });
-
-//            loadingView.setForceStop(true, new TapLoadingView.FullProgressListener() {
-//                @Override
-//                public void onFullProgress() {
-//
-//                    hostActivity.runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            Log.e("TEST", "CHECKPOINT 1 - LOADING VIEW DELETED");
-//                            loadingView.setVisibility(View.GONE);
-//                            loadingView = null;
-//
-//                            final ViewGroup insertPoint = hostActivity.findViewById(android.R.id.content);
-//
-//                            if (loadingLayout != null) {
-//
-//                                loadingLayout.animate()
-//                                        .alpha(0.0f)
-//                                        .setDuration(ANIMATION_DURATION)
-//                                        .setListener(new AnimatorListenerAdapter() {
-//                                            @Override
-//                                            public void onAnimationEnd(Animator animation) {
-//                                                super.onAnimationEnd(animation);
-//
-//                                                insertPoint.removeView(loadingLayout);
-//                                                loadingLayout = null;
-//                                                hostActivity = null;
-//                                                Log.e("TEST", "CHECKPOINT 2 - LOADING LAYOUT DELETED");
-//                                            }
-//                                        });
-//                            }
-//                        }
-//                    });
-//
-//
-//                }
-//            });
-
     }
 
     private void createLoadingScreen() {
