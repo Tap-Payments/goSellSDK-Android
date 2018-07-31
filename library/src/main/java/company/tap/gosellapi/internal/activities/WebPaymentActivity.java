@@ -1,56 +1,47 @@
 package company.tap.gosellapi.internal.activities;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
-import java.util.ArrayList;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
+import company.tap.gosellapi.internal.api.enums.PaymentType;
 import company.tap.gosellapi.internal.api.facade.GoSellAPI;
-import company.tap.gosellapi.internal.api.models.AmountedCurrency;
-import company.tap.gosellapi.internal.api.models.CardRawData;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.models.CustomerInfo;
 import company.tap.gosellapi.internal.api.models.Order;
+import company.tap.gosellapi.internal.api.models.PaymentInfo;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
-import company.tap.gosellapi.internal.api.models.PhoneNumber;
-import company.tap.gosellapi.internal.api.models.Redirect;
 import company.tap.gosellapi.internal.api.models.Source;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
+import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
 import company.tap.gosellapi.internal.data_managers.LoadingScreenManager;
-import company.tap.gosellapi.internal.data_managers.PaymentResultToastManager;
-import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
 
-public class WebPaymentActivity extends BaseActionBarActivity implements PaymentOptionsDataManager.PaymentOptionsDataListener {
-    private String chargeID;
-    private String returnURL;
-
-    public static final String INTENT_EXTRA_KEY_NAME = "name";
-    public static final String INTENT_EXTRA_KEY_IMAGE = "image";
+public class WebPaymentActivity extends BaseActionBarActivity {
+    private final PaymentOptionsResponse paymentOptionsResponse = GlobalDataManager.getInstance().getPaymentOptionsDataManager().getPaymentOptionsResponse();;
+    private PaymentOption webPaymentOption;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gosellapi_activity_web_payment);
 
-        Bundle extras = getIntent().getExtras();
+        webPaymentOption = new PaymentOption();
+        for(PaymentOption option : paymentOptionsResponse.getPayment_options()) {
 
-        if (extras != null) {
-
-            String title = extras.getString(INTENT_EXTRA_KEY_NAME);
-            setTitle(title);
-
-            String source = extras.getString(INTENT_EXTRA_KEY_IMAGE);
-            setImage(source);
+            if (option.getPaymentType().equals(PaymentType.WEB)) {
+                webPaymentOption = option;
+                break;
+            }
         }
+
+        setTitle(webPaymentOption.getName());
+        setImage(webPaymentOption.getImage());
 
         View view = getWindow().getDecorView().findViewById(android.R.id.content);
         view.post(new Runnable() {
@@ -62,24 +53,24 @@ public class WebPaymentActivity extends BaseActionBarActivity implements Payment
     }
 
     private void getData() {
-
         LoadingScreenManager.getInstance().showLoadingScreen(this);
 
-        PaymentOptionsDataManager dataSource = GlobalDataManager.getInstance().getPaymentOptionsDataManager(this);
+        PaymentInfo paymentInfo = GlobalDataManager.getInstance().getPaymentInfo();
 
         // Configure request body
-        Source source = new Source("src_kw.knet");
-        PhoneNumber phoneNumber = new PhoneNumber("965", "77777777");
-        CustomerInfo customerInfo = GlobalDataManager.getInstance().getPaymentInfo().getCustomer();
-        Redirect redirect = new Redirect("gosellsdk://return_url");
+        Source source = new Source(webPaymentOption.getSourceId());
 
-        Order order = new Order(dataSource.getPaymentOptionsResponse().getOrderID());
+        String customerIdentifier = paymentInfo.getCustomerIdentifier();
+        CustomerInfo customerInfo = new CustomerInfo(customerIdentifier);
+
+//        Redirect redirect = new Redirect("gosellsdk://return_url");
+
+        Order order = new Order(paymentOptionsResponse.getOrderID());
 
         CreateChargeRequest request = new CreateChargeRequest
-                .Builder(100, "KWD", 20, false)
-                .customer(customerInfo)
+                .Builder(paymentInfo.getTotal_amount(), paymentInfo.getCurrencyCode(), 20, false)
                 .order(order)
-                .redirect(redirect)
+                .customer(customerInfo)
                 .source(source)
                 .build();
 
@@ -88,14 +79,12 @@ public class WebPaymentActivity extends BaseActionBarActivity implements Payment
             @Override
             public void onSuccess(int responseCode, Charge serializedResponse) {
                 LoadingScreenManager.getInstance().closeLoadingScreen();
-                Log.e("TAG", "SUCCESS");
                 updateWebView();
             }
 
             @Override
             public void onFailure(GoSellError errorDetails) {
                 LoadingScreenManager.getInstance().closeLoadingScreen();
-                Log.e("TAG", "FAILURE");
                 updateWebView();
             }
         };
@@ -121,80 +110,35 @@ public class WebPaymentActivity extends BaseActionBarActivity implements Payment
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
 
-            if(url.equals(returnURL)) {
-                retrieveCharge();
-            }
+//            if(url.equals(returnURL)) {
+//                retrieveCharge();
+//            }
         }
     }
 
     private void retrieveCharge() {
 
-        GoSellAPI.getInstance().retrieveCharge(chargeID, new APIRequestCallback<Charge>() {
-            @Override
-            public void onSuccess(int responseCode, Charge serializedResponse) {
-
-                String message = serializedResponse.getRedirect().getStatus();
-                PaymentResultToastManager.getInstance().showPaymentResult(getApplicationContext(), message);
-
-                setResult(RESULT_OK);
-                finish();
-            }
-
-            @Override
-            public void onFailure(GoSellError errorDetails) {
-
-            }
-        });
+//        GoSellAPI.getInstance().retrieveCharge(chargeID, new APIRequestCallback<Charge>() {
+//            @Override
+//            public void onSuccess(int responseCode, Charge serializedResponse) {
+//
+//                String message = serializedResponse.getRedirect().getStatus();
+//                PaymentResultToastManager.getInstance().showPaymentResult(getApplicationContext(), message);
+//
+//                setResult(RESULT_OK);
+//                finish();
+//            }
+//
+//            @Override
+//            public void onFailure(GoSellError errorDetails) {
+//
+//            }
+//        });
     }
 
     @Override
     public void onBackPressed() {
         setResult(RESULT_CANCELED);
         super.onBackPressed();
-    }
-
-    @Override
-    public void startCurrencySelection(ArrayList<AmountedCurrency> currencies, AmountedCurrency selectedCurrency) {
-
-    }
-
-    @Override
-    public void startOTP() {
-
-    }
-
-    @Override
-    public void startWebPayment() {
-
-    }
-
-    @Override
-    public void startScanCard() {
-
-    }
-
-    @Override
-    public void cardDetailsFilled(boolean isFilled, CardRawData cardRawData) {
-
-    }
-
-    @Override
-    public void saveCardSwitchClicked(boolean isChecked, int saveCardBlockPosition) {
-
-    }
-
-    @Override
-    public void addressOnCardClicked() {
-
-    }
-
-    @Override
-    public void cardExpirationDateClicked() {
-
-    }
-
-    @Override
-    public void binNumberEntered(String binNumber) {
-
     }
 }

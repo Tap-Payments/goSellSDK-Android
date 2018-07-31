@@ -21,6 +21,10 @@ public final class PaymentOption implements Comparable<PaymentOption>{
     @Expose
     private String id;
 
+    @SerializedName("source_id")
+    @Expose
+    private String sourceId;
+
     @SerializedName("name")
     @Expose
     private String name;
@@ -51,6 +55,10 @@ public final class PaymentOption implements Comparable<PaymentOption>{
 
     public String getId() {
         return id;
+    }
+
+    public String getSourceId() {
+        return sourceId;
     }
 
     public String getName() {

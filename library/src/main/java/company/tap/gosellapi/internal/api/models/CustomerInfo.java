@@ -29,6 +29,10 @@ public class CustomerInfo {
     @Expose
     private PhoneNumber phone;
 
+    public CustomerInfo(String id) {
+        this.identifier = id;
+    }
+
     public CustomerInfo(String firstName, String lastName, String email, PhoneNumber phone) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -74,6 +78,8 @@ public class CustomerInfo {
                 "\n        first_name =  '" + firstName + '\'' +
                 "\n        middle_name =  '" + middleName + '\'' +
                 "\n        last_name =  '" + lastName + '\'' +
+                "\n        phone  country code =  '" + phone.getCountryCode() + '\'' +
+                "\n        phone number =  '" + phone.getNumber() + '\'' +
                 "\n    }";
     }
 }

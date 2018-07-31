@@ -77,6 +77,10 @@ public class GlobalDataManager {
         return paymentOptionsDataManager.setListener(dataListener);
     }
 
+    public PaymentOptionsDataManager getPaymentOptionsDataManager() {
+        return paymentOptionsDataManager;
+    }
+
     // Managing requests
     public void createTokenWithExistingCardData() {
 

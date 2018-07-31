@@ -25,15 +25,15 @@ public class PaymentInfo {
 
     @SerializedName("customer")
     @Expose
-    private CustomerInfo customer;
+    private String customerIdentifier;
 
     @SerializedName("total_amount")
     @Expose
     private double total_amount;
 
-    public PaymentInfo(String currencyCode, CustomerInfo customer, ArrayList<Tax> taxes, ArrayList<Item> items, ArrayList<ShippingCell> shipping) {
+    public PaymentInfo(String currencyCode, String customerIdentifier, ArrayList<Tax> taxes, ArrayList<Item> items, ArrayList<ShippingCell> shipping) {
         this.currencyCode = currencyCode;
-        this.customer = customer;
+        this.customerIdentifier = customerIdentifier;
         this.items = items;
         this.shipping = shipping;
         this.taxes = taxes;
@@ -51,13 +51,17 @@ public class PaymentInfo {
         return total_amount;
     }
 
-    public CustomerInfo getCustomer() {
-        return customer;
+    public String getCustomerIdentifier() {
+        return customerIdentifier;
     }
 
     private void calculateTotalAmount() {
         for (Item item : items) {
             total_amount += item.getTotal_amount();
         }
+    }
+
+    public String getCurrencyCode() {
+        return currencyCode;
     }
 }
