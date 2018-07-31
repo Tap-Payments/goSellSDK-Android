@@ -4,11 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,22 +17,12 @@ import java.util.ArrayList;
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
-import company.tap.gosellapi.internal.api.enums.PaymentType;
 import company.tap.gosellapi.internal.api.facade.GoSellAPI;
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 import company.tap.gosellapi.internal.api.models.CardRawData;
-import company.tap.gosellapi.internal.api.models.Charge;
-import company.tap.gosellapi.internal.api.models.CustomerInfo;
-import company.tap.gosellapi.internal.api.models.Order;
-import company.tap.gosellapi.internal.api.models.PaymentOption;
-import company.tap.gosellapi.internal.api.models.PhoneNumber;
-import company.tap.gosellapi.internal.api.models.Redirect;
-import company.tap.gosellapi.internal.api.models.Source;
-import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
 import company.tap.gosellapi.internal.api.responses.BINLookupResponse;
 import company.tap.gosellapi.internal.custom_views.TapDialog;
 import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
-import company.tap.gosellapi.internal.data_managers.LoadingScreenManager;
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
 import company.tap.gosellapi.internal.fragments.GoSellPaymentOptionsFragment;
 import io.card.payment.CardIOActivity;
@@ -88,7 +75,6 @@ public class GoSellPaymentActivity
         String businessNameString = GlobalDataManager.getInstance().getSDKSettings().getData().getMerchant().getName();
         TextView businessName = findViewById(R.id.businessName);
         businessName.setText(businessNameString);
-
     }
 
     @Override
@@ -106,21 +92,7 @@ public class GoSellPaymentActivity
 
     @Override
     public void startWebPayment() {
-
         Intent intent = new Intent(this, WebPaymentActivity.class);
-
-        PaymentOption webPaymentOption = new PaymentOption();
-        for(PaymentOption option : dataSource.getPaymentOptionsResponse().getPayment_options()) {
-
-            if (option.getPaymentType().equals(PaymentType.WEB)) {
-                webPaymentOption = option;
-                break;
-            }
-        }
-
-        intent.putExtra(WebPaymentActivity.INTENT_EXTRA_KEY_IMAGE, webPaymentOption.getImage());
-        intent.putExtra(WebPaymentActivity.INTENT_EXTRA_KEY_NAME, webPaymentOption.getName());
-
         startActivityForResult(intent, WEB_PAYMENT_REQUEST_CODE);
     }
 
@@ -166,7 +138,6 @@ public class GoSellPaymentActivity
 
     @Override
     public void saveCardSwitchClicked(boolean isChecked, int saveCardBlockPosition) {
-//        paymentOptionsFragment.scrollRecyclerToPosition(saveCardBlockPosition);
     }
 
     @Override
@@ -191,18 +162,24 @@ public class GoSellPaymentActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == SCAN_REQUEST_CODE) {
-            if (data != null && data.hasExtra(CardIOActivity.EXTRA_SCAN_RESULT)) {
-                CreditCard scanResult = data.getParcelableExtra(CardIOActivity.EXTRA_SCAN_RESULT);
-                dataSource.cardScanned(scanResult);
-            }
-        } else if (requestCode == CURRENCIES_REQUEST_CODE) {
-            AmountedCurrency userChoiceCurrency = (AmountedCurrency) data.getSerializableExtra(CurrenciesActivity.CURRENCIES_ACTIVITY_USER_CHOICE_CURRENCY);
-            if (userChoiceCurrency != null) {
-                dataSource.currencySelectedByUser(userChoiceCurrency);
-            }
-        } else if (requestCode == WEB_PAYMENT_REQUEST_CODE && resultCode == RESULT_OK) {
-            finish();
+        switch (requestCode) {
+            case SCAN_REQUEST_CODE:
+                if (data != null && data.hasExtra(CardIOActivity.EXTRA_SCAN_RESULT)) {
+                    CreditCard scanResult = data.getParcelableExtra(CardIOActivity.EXTRA_SCAN_RESULT);
+                    dataSource.cardScanned(scanResult);
+                }
+                break;
+
+            case CURRENCIES_REQUEST_CODE:
+                AmountedCurrency userChoiceCurrency = (AmountedCurrency) data.getSerializableExtra(CurrenciesActivity.CURRENCIES_ACTIVITY_USER_CHOICE_CURRENCY);
+                if (userChoiceCurrency != null) {
+                    dataSource.currencySelectedByUser(userChoiceCurrency);
+                }
+                break;
+
+            case WEB_PAYMENT_REQUEST_CODE:
+                if(resultCode == RESULT_OK) finish();
+                break;
         }
     }
 
