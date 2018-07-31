@@ -6,6 +6,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -23,7 +24,7 @@ import company.tap.gosellapi.internal.api.models.BillingAddressFormat;
 import company.tap.gosellapi.internal.api.responses.AddressFormatsResponse;
 import company.tap.gosellapi.internal.data_managers.LoadingScreenManager;
 
-public class GoSellCardAddressActivity extends BaseActionBarActivity implements AddressOnCardRecyclerViewAdapter.AddressonCardRecyclerViewInterface {
+public class GoSellCardAddressActivity extends BaseActionBarActivity implements AddressOnCardRecyclerViewAdapter.AddressonCardRecyclerViewInterface, LoadingScreenManager.LoadingScreenListener {
 
     public static final String INTENT_EXTRA_KEY_COUNTRY = "Country";
 
@@ -57,14 +58,10 @@ public class GoSellCardAddressActivity extends BaseActionBarActivity implements 
         GoSellAPI.getInstance().retrieveAddressFormats(new APIRequestCallback<AddressFormatsResponse>() {
             @Override
             public void onSuccess(int responseCode, AddressFormatsResponse serializedResponse) {
-                LoadingScreenManager.getInstance().closeLoadingScreen();
-
                 currentResponse = serializedResponse;
                 initAddressRecyclerView(currentResponse);
 
-
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                if(imm != null) imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,0);
+                LoadingScreenManager.getInstance().closeLoadingScreenWithListener(GoSellCardAddressActivity.this);
             }
 
             @Override
@@ -172,6 +169,12 @@ public class GoSellCardAddressActivity extends BaseActionBarActivity implements 
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 if(imm != null) imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,0);
             }
+    }
+
+    @Override
+    public void onLoadingScreenClosed() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if(imm != null) imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,0);
     }
 }
 
