@@ -1,6 +1,7 @@
 package company.tap.gosellapi.internal.data_managers;
 
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
