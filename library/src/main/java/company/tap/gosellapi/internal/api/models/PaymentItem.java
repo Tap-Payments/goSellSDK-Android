@@ -1,5 +1,7 @@
 package company.tap.gosellapi.internal.api.models;
 
+import android.support.annotation.Nullable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -43,60 +45,67 @@ public final class PaymentItem {
     @Expose
     private double total_amount;
 
-    private static class Quantity {
-        @SerializedName("value")
-        @Expose
-        private double value;
+    public PaymentItem(String name, Quantity quantity, double amountPerUnit) {
 
-        @SerializedName("unit_of_measurement")
-        @Expose
-        private String unit_of_measurement;
-
-        private Quantity(double value, String unit_of_measurement) {
-            this.value = value;
-            this.unit_of_measurement = unit_of_measurement;
-        }
+        this(name, null, quantity, amountPerUnit);
     }
 
-    /**
-     * Constructor with all fields
-     */
-    public PaymentItem(String name, double value, String unitOfMeasurement, double amountPerUnit) {
-        this.name = name;
-        this.quantity = new Quantity(value, unitOfMeasurement);
-        this.amountPerUnit = amountPerUnit;
+    public PaymentItem(String name, @Nullable String description, Quantity quantity, double amountPerUnit) {
+
+        this(name, description, quantity, amountPerUnit,null);
     }
 
-    public PaymentItem(String name, String description, Quantity quantity, double amountPerUnit, AmountModificator discount, ArrayList<Tax> taxes) {
-        this.name = name;
-        this.description = description;
-        this.quantity = quantity;
-        this.amountPerUnit = amountPerUnit;
-        this.discount = discount;
-        this.taxes = taxes;
+    public PaymentItem(String name, @Nullable String description, Quantity quantity, double amountPerUnit, @Nullable AmountModificator discount) {
+
+        this(name, description, quantity, amountPerUnit, discount, null);
+    }
+
+    public PaymentItem(String name, @Nullable String description, Quantity quantity, double amountPerUnit, @Nullable AmountModificator discount, @Nullable ArrayList<Tax> taxes) {
+
+        this.name           = name;
+        this.description    = description;
+        this.quantity       = quantity;
+        this.amountPerUnit  = amountPerUnit;
+        this.discount       = discount;
+        this.taxes          = taxes;
+    }
+
+    public double getAmountPerUnit() {
+
+        return amountPerUnit;
+    }
+
+    public Quantity getQuantity() {
+
+        return quantity;
+    }
+
+    public AmountModificator getDiscount() {
+
+        return discount;
     }
 
     public double getPlainAmount() {
 
-        return this.amountPerUnit * this.quantity.value;
+        return this.getAmountPerUnit() * this.getQuantity().getValue();
     }
 
     public double getDiscountAmount() {
 
-        if (this.discount == null) {
+        if (this.getDiscount() == null) {
 
             return 0.0;
         }
 
-        switch (this.discount.getType()) {
+        switch (this.getDiscount().getType()) {
 
             case PERCENTAGE:
 
-                return this.getPlainAmount() * this.discount.getNormalizedValue();
+                return this.getPlainAmount() * this.getDiscount().getNormalizedValue();
 
             case FIXED:
 
-                return this.discount.getValue();
+                return this.getDiscount().getValue();
 
             default: return 0.0f;
         }

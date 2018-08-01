@@ -1,4 +1,4 @@
-package company.tap.gosellapi.internal.api.enums;
+package company.tap.gosellapi.internal.api.enums.measurements;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -3,8 +3,8 @@ package company.tap.gosellapi.internal.api.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import company.tap.gosellapi.internal.api.enums.Measurement;
-import company.tap.gosellapi.internal.api.enums.MeasurementUnit;
+import company.tap.gosellapi.internal.api.enums.measurements.Measurement;
+import company.tap.gosellapi.internal.api.enums.measurements.MeasurementUnit;
 
 public class Quantity {
     @SerializedName("measurement_group")
@@ -19,15 +19,18 @@ public class Quantity {
     @Expose
     private double value;
 
-    public Measurement getMeasurementGroup() {
-        return measurementGroup;
-    }
-
     public MeasurementUnit getMeasurementUnit() {
         return measurementUnit;
     }
 
     public double getValue() {
         return value;
+    }
+
+    public Quantity(MeasurementUnit measurementUnit, double value) {
+
+        this.measurementGroup = measurementUnit.getMeasurementGroup();
+        this.measurementUnit = measurementUnit;
+        this.value = value;
     }
 }
