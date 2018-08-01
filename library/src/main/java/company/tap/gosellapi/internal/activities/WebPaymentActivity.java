@@ -10,14 +10,9 @@ import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.enums.PaymentType;
-import company.tap.gosellapi.internal.api.facade.GoSellAPI;
 import company.tap.gosellapi.internal.api.models.Charge;
-import company.tap.gosellapi.internal.api.models.CustomerInfo;
-import company.tap.gosellapi.internal.api.models.Order;
-import company.tap.gosellapi.internal.api.models.PaymentOptionsRequest;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.api.models.Source;
-import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
 import company.tap.gosellapi.internal.data_managers.LoadingScreenManager;
@@ -32,7 +27,7 @@ public class WebPaymentActivity extends BaseActionBarActivity {
         setContentView(R.layout.gosellapi_activity_web_payment);
 
         webPaymentOption = new PaymentOption();
-        for(PaymentOption option : paymentOptionsResponse.getPayment_options()) {
+        for(PaymentOption option : paymentOptionsResponse.getPaymentOptions()) {
 
             if (option.getPaymentType().equals(PaymentType.WEB)) {
                 webPaymentOption = option;

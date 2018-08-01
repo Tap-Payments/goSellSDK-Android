@@ -1,9 +1,11 @@
 package company.tap.gosellapi.internal.api.models;
 
+import android.support.annotation.Nullable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Tax {
+public final class Tax {
 
     @SerializedName("name")
     @Expose
@@ -11,13 +13,13 @@ public class Tax {
 
     @SerializedName("description")
     @Expose
-    private String description;
+    @Nullable private String description;
 
     @SerializedName("amount")
     @Expose
     private AmountModificator amount;
 
-    public Tax(String name, String description, AmountModificator amount) {
+    public Tax(String name, @Nullable String description, AmountModificator amount) {
         this.name = name;
         this.description = description;
         this.amount = amount;
@@ -27,7 +29,7 @@ public class Tax {
         return name;
     }
 
-    public String getDescription() {
+    @Nullable public String getDescription() {
         return description;
     }
 

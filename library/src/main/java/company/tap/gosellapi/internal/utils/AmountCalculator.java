@@ -10,6 +10,12 @@ import company.tap.gosellapi.internal.api.models.Tax;
 
 public abstract class AmountCalculator {
 
+    public static double calculateTotalAmountOf(PaymentItem item) {
+
+        double result = item.getPlainAmount() - item.getDiscountAmount() + item.getTaxesAmount();
+        return result;
+    }
+
     public static double calculateTotalAmountOf(ArrayList<PaymentItem> items, ArrayList<Tax> taxes, ArrayList<Shipping> shippings) {
 
         double itemsPlainAmount = 0.0f;
@@ -95,7 +101,7 @@ public abstract class AmountCalculator {
 
         for ( AmountedCurrency amountedCurrency : amountedCurrencies ) {
 
-            if (amountedCurrency.getIsoCode().equals(currency)) {
+            if (amountedCurrency.getCurrency().equals(currency)) {
 
                 return amountedCurrency;
             }

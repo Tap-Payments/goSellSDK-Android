@@ -16,7 +16,7 @@ import company.tap.gosellapi.internal.api.models.CreateTokenCard;
 import company.tap.gosellapi.internal.api.models.CustomerInfo;
 import company.tap.gosellapi.internal.api.models.Order;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
-import company.tap.gosellapi.internal.api.models.PaymentOptionsRequest;
+import company.tap.gosellapi.internal.api.requests.PaymentOptionsRequest;
 import company.tap.gosellapi.internal.api.models.Receipt;
 import company.tap.gosellapi.internal.api.models.Redirect;
 import company.tap.gosellapi.internal.api.models.Reference;
@@ -131,13 +131,13 @@ public class GlobalDataManager {
         saveCard = saveCard == null ? false : saveCard;
 
         PaymentOptionsResponse paymentOptionsResponse = getPaymentOptionsDataManager().getPaymentOptionsResponse();
-        ArrayList<AmountedCurrency> supportedCurrencies = paymentOptionsResponse.getSupported_currencies();
+        ArrayList<AmountedCurrency> supportedCurrencies = paymentOptionsResponse.getSupportedCurrencies();
 
         CustomerInfo customer = this.dataSource.getCustomerInfo();
         String orderID = this.getPaymentOptionsDataManager().getPaymentOptionsResponse().getOrderID();
 
         AmountedCurrency amountedCurrency = this.getPaymentOptionsDataManager().getSelectedCurrency();
-        double fee = AmountCalculator.calculateExtraFeesAmount(paymentOption.getExtra_fees(), supportedCurrencies, amountedCurrency);
+        double fee = AmountCalculator.calculateExtraFeesAmount(paymentOption.getExtraFees(), supportedCurrencies, amountedCurrency);
         Order order = new Order(orderID);
         Redirect redirect = new Redirect(Constants.RETURN_URL, this.dataSource.getPostURL());
         String paymentDescription = this.dataSource.getPaymentDescription();
@@ -150,7 +150,7 @@ public class GlobalDataManager {
         CreateChargeRequest request = new CreateChargeRequest(
 
                 amountedCurrency.getAmount(),
-                amountedCurrency.getIsoCode(),
+                amountedCurrency.getCurrency(),
                 customer,
                 fee,
                 order,

@@ -12,10 +12,11 @@ import company.tap.gosellapi.internal.utils.AmountCalculator;
 /**
  * Created by eugene.goltsev on 27.04.2018.
  * <br>
- * Model for Customer object
+ * Model for Payment Item object
  */
 
 public final class PaymentItem {
+
     @SerializedName("name")
     @Expose
     private String name;
@@ -23,7 +24,7 @@ public final class PaymentItem {
 
     @SerializedName("description")
     @Expose
-    private String description;
+    @Nullable private String description;
 
     @SerializedName("quantity")
     @Expose
@@ -35,15 +36,15 @@ public final class PaymentItem {
 
     @SerializedName("discount")
     @Expose
-    private AmountModificator discount;
+    @Nullable private AmountModificator discount;
 
     @SerializedName("taxes")
     @Expose
-    private ArrayList<Tax> taxes;
+    @Nullable private ArrayList<Tax> taxes;
 
     @SerializedName("total_amount")
     @Expose
-    private double total_amount;
+    private double totalAmount;
 
     public PaymentItem(String name, Quantity quantity, double amountPerUnit) {
 
@@ -68,6 +69,7 @@ public final class PaymentItem {
         this.amountPerUnit  = amountPerUnit;
         this.discount       = discount;
         this.taxes          = taxes;
+        this.totalAmount    = AmountCalculator.calculateTotalAmountOf(this);
     }
 
     public double getAmountPerUnit() {

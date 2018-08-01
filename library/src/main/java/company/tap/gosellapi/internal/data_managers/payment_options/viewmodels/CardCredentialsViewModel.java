@@ -2,7 +2,6 @@ package company.tap.gosellapi.internal.data_managers.payment_options.viewmodels;
 
 import java.util.ArrayList;
 
-import company.tap.gosellapi.internal.api.models.Card;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
 import company.tap.gosellapi.internal.viewholders.CardCredentialsViewHolder;
@@ -54,7 +53,7 @@ public class CardCredentialsViewModel
     public void filterByCurrency(String currencyCode) {
         data = new ArrayList<>();
         for (PaymentOption paymentOption : dataOriginal) {
-            if (paymentOption.getSupported_currencies().contains(currencyCode)) {
+            if (paymentOption.getSupportedCurrencies().contains(currencyCode)) {
                 data.add(paymentOption);
             }
         }

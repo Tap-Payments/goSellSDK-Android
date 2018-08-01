@@ -21,7 +21,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import company.tap.gosellapi.R;
-import company.tap.gosellapi.internal.api.models.PaymentOptionsRequest;
+import company.tap.gosellapi.internal.api.requests.PaymentOptionsRequest;
 import company.tap.gosellapi.internal.utils.Utils;
 import company.tap.gosellapi.internal.activities.GoSellPaymentActivity;
 import company.tap.gosellapi.internal.activities.WebPaymentActivity;

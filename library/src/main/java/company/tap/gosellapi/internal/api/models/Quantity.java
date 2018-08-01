@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import company.tap.gosellapi.internal.api.enums.measurements.Measurement;
 import company.tap.gosellapi.internal.api.enums.measurements.MeasurementUnit;
 
-public class Quantity {
+public final class Quantity {
     @SerializedName("measurement_group")
     @Expose
     private Measurement measurementGroup;

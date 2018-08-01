@@ -1,13 +1,16 @@
-package company.tap.gosellapi.internal.api.models;
+package company.tap.gosellapi.internal.api.requests;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
+import company.tap.gosellapi.internal.api.models.PaymentItem;
+import company.tap.gosellapi.internal.api.models.Shipping;
+import company.tap.gosellapi.internal.api.models.Tax;
 import company.tap.gosellapi.internal.utils.AmountCalculator;
 
-public class PaymentOptionsRequest {
+public final class PaymentOptionsRequest {
 
     @SerializedName("items")
     @Expose
@@ -23,7 +26,7 @@ public class PaymentOptionsRequest {
 
     @SerializedName("currency")
     @Expose
-    private String currencyCode;
+    private String currency;
 
     @SerializedName("customer")
     @Expose
@@ -33,12 +36,12 @@ public class PaymentOptionsRequest {
     @Expose
     private double totalAmount;
 
-    public PaymentOptionsRequest(ArrayList<PaymentItem> items, ArrayList<Shipping> shipping, ArrayList<Tax> taxes, String currencyCode, String customerIdentifier) {
+    public PaymentOptionsRequest(ArrayList<PaymentItem> items, ArrayList<Shipping> shipping, ArrayList<Tax> taxes, String currency, String customerIdentifier) {
 
         this.items              = items;
         this.shipping           = shipping;
         this.taxes              = taxes;
-        this.currencyCode       = currencyCode;
+        this.currency = currency;
         this.customerIdentifier = customerIdentifier;
         this.totalAmount        = AmountCalculator.calculateTotalAmountOf(items, taxes, shipping);
     }
