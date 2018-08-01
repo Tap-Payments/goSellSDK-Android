@@ -41,7 +41,7 @@ public class GoSellOTPScreenFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        resendConfirmationCodeTimeout = GlobalDataManager.getInstance().getSDKSettings().getData().getInternalSdk_settings().getResend_interval() * TICK_LENGTH;
+        resendConfirmationCodeTimeout = (int)(GlobalDataManager.getInstance().getSDKSettings().getData().getInternalSDKSettings().getOtpResendInterval() * (double)TICK_LENGTH);
     }
 
     @Override

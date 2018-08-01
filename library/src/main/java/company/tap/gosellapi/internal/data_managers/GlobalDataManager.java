@@ -101,7 +101,7 @@ public class GlobalDataManager {
     // Managing requests
     public void createTokenWithEncryptedCardData(String cardNumber, String expMonth, String expYear, String cvv, String nameOnCard, final boolean saveCard, final PaymentOption paymentOption, final APIRequestCallback<Charge> callback) {
 
-        String encryptionKey = GlobalDataManager.getInstance().getSDKSettings().getData().getEncryption_key();
+        String encryptionKey = GlobalDataManager.getInstance().getSDKSettings().getData().getEncryptionKey();
 
         CardRequest cardRequest = new CardRequest.Builder(cardNumber, expMonth, expYear, cvv, encryptionKey).build();
 
