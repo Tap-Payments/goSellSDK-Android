@@ -24,6 +24,7 @@ import company.tap.gosellapi.internal.api.models.Source;
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 public final class CreateChargeRequest {
+
     @SerializedName("amount")
     @Expose
     private double amount;
@@ -79,6 +80,23 @@ public final class CreateChargeRequest {
     @SerializedName("receipt")
     @Expose
     private Receipt receipt;
+
+    public CreateChargeRequest(double amount, String currency, CustomerInfo customer, double fee, Order order, Redirect redirect, Source source, String description, HashMap<String, String> metadata, Reference reference, boolean saveCard, String statementDescriptor, boolean threeDSecure, Receipt receipt) {
+        this.amount = amount;
+        this.currency = currency;
+        this.customer = customer;
+        this.fee = fee;
+        this.order = order;
+        this.redirect = redirect;
+        this.source = source;
+        this.description = description;
+        this.metadata = metadata;
+        this.reference = reference;
+        this.saveCard = saveCard;
+        this.statementDescriptor = statementDescriptor;
+        this.threeDSecure = threeDSecure;
+        this.receipt = receipt;
+    }
 
     private CreateChargeRequest(double amount, String currency, double fee, boolean saveCard) {
         this.amount = amount;

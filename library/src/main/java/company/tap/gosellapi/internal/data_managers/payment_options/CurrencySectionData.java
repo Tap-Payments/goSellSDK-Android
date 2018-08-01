@@ -2,7 +2,7 @@ package company.tap.gosellapi.internal.data_managers.payment_options;
 
 import java.util.ArrayList;
 
-import company.tap.gosellapi.internal.Utils;
+import company.tap.gosellapi.internal.utils.Utils;
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 
 public class CurrencySectionData {

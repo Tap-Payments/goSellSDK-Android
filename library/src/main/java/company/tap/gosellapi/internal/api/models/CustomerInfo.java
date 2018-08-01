@@ -40,6 +40,15 @@ public class CustomerInfo {
         this.phone = phone;
     }
 
+    public CustomerInfo(String identifier, String firstName, String middleName, String lastName, String email, PhoneNumber phone) {
+        this.identifier = identifier;
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
+    }
+
     public CustomerInfo(String firstName, String email, PhoneNumber phone) {
         this.firstName = firstName;
         this.email = email;

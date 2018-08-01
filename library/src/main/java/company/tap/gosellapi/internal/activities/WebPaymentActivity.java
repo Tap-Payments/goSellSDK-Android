@@ -14,7 +14,7 @@ import company.tap.gosellapi.internal.api.facade.GoSellAPI;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.models.CustomerInfo;
 import company.tap.gosellapi.internal.api.models.Order;
-import company.tap.gosellapi.internal.api.models.PaymentInfo;
+import company.tap.gosellapi.internal.api.models.PaymentOptionsRequest;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.api.models.Source;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
@@ -55,26 +55,8 @@ public class WebPaymentActivity extends BaseActionBarActivity {
     private void getData() {
         LoadingScreenManager.getInstance().showLoadingScreen(this);
 
-        PaymentInfo paymentInfo = GlobalDataManager.getInstance().getPaymentInfo();
-
-        // Configure request body
         Source source = new Source(webPaymentOption.getSourceId());
 
-        String customerIdentifier = paymentInfo.getCustomerIdentifier();
-        CustomerInfo customerInfo = new CustomerInfo(customerIdentifier);
-
-//        Redirect redirect = new Redirect("gosellsdk://return_url");
-
-        Order order = new Order(paymentOptionsResponse.getOrderID());
-
-        CreateChargeRequest request = new CreateChargeRequest
-                .Builder(paymentInfo.getTotal_amount(), paymentInfo.getCurrencyCode(), 20, false)
-                .order(order)
-                .customer(customerInfo)
-                .source(source)
-                .build();
-
-        // Configure request callbacks
         APIRequestCallback<Charge> requestCallback = new APIRequestCallback<Charge>() {
             @Override
             public void onSuccess(int responseCode, Charge serializedResponse) {
@@ -89,8 +71,7 @@ public class WebPaymentActivity extends BaseActionBarActivity {
             }
         };
 
-        // Create charge
-        GoSellAPI.getInstance().createCharge(request, requestCallback);
+        GlobalDataManager.getInstance().callChargeAPI(source, webPaymentOption,null, requestCallback);
     }
 
     private void updateWebView() {

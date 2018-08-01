@@ -79,6 +79,4 @@ public class Address {
     @SerializedName("postal_code")
     @Expose
     private String postalCode;
-
-
 }

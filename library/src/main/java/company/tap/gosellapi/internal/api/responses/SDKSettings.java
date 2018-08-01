@@ -7,6 +7,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
+import company.tap.gosellapi.internal.api.enums.Permission;
+
 /**
  * Created by eugene.goltsev on 17.04.2018.
  * <br>
@@ -26,7 +28,7 @@ public final class SDKSettings implements BaseResponse {
 
         @SerializedName("permissions")
         @Expose
-        private ArrayList<String> permissions;
+        private ArrayList<Permission> permissions;
 
         @SerializedName("encryption_key")
         @Expose
@@ -44,7 +46,7 @@ public final class SDKSettings implements BaseResponse {
             return livemode;
         }
 
-        public ArrayList<String> getPermissions() {
+        public ArrayList<Permission> getPermissions() {
             return permissions;
         }
 

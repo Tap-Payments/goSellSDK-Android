@@ -1,9 +1,8 @@
 package company.tap.gosellapi.internal.api.api_service;
 
 import company.tap.gosellapi.internal.api.models.Charge;
-import company.tap.gosellapi.internal.api.models.PaymentInfo;
+import company.tap.gosellapi.internal.api.models.PaymentOptionsRequest;
 import company.tap.gosellapi.internal.api.models.Token;
-import company.tap.gosellapi.internal.api.requests.AddressFormatsRequest;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
 import company.tap.gosellapi.internal.api.requests.CreateTokenRequest;
 import company.tap.gosellapi.internal.api.requests.CreateTokenWithEncryptedCardDataRequest;
@@ -54,7 +53,7 @@ public interface APIService {
     Call<Charge> createCharge(@Body CreateChargeRequest createChargeRequest);
 
     @POST(API_Constants.PAYMENT_TYPES)
-    Call<PaymentOptionsResponse> getPaymentTypes(@Body PaymentInfo paymentInfo);
+    Call<PaymentOptionsResponse> getPaymentTypes(@Body PaymentOptionsRequest paymentOptionsRequest);
 
     @PUT(API_Constants.CHARGES + "/{" + API_Constants.CHARGE_ID + "}")
     Call<Charge> updateCharge(@Path(API_Constants.CHARGE_ID) String chargeId);

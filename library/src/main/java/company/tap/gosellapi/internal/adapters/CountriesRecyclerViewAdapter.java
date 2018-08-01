@@ -2,7 +2,6 @@ package company.tap.gosellapi.internal.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,7 @@ import java.util.Collections;
 import java.util.Locale;
 
 import company.tap.gosellapi.R;
-import company.tap.gosellapi.internal.Utils;
+import company.tap.gosellapi.internal.utils.Utils;
 
 public class CountriesRecyclerViewAdapter extends RecyclerView.Adapter<CountriesRecyclerViewAdapter.CountriesCellViewHolder> {
     public interface CountriesRecyclerViewAdapterCallback {

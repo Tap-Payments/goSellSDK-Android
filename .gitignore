@@ -7,3 +7,7 @@
 /build
 /captures
 .externalNativeBuild
+.idea/caches
+.idea/codeStyles/Project.xml
+library/src/main/java/company/tap/gosellapi/internal/StagingURL.java
+.idea/vcs.xml
