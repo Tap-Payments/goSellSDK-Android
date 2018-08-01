@@ -15,6 +15,11 @@ public class AmountModificator {
     @Expose
     private double value;
 
+    public AmountModificator(AmountModificatorType type, double value) {
+        this.type = type;
+        this.value = value;
+    }
+
     public AmountModificatorType getType() {
         return type;
     }

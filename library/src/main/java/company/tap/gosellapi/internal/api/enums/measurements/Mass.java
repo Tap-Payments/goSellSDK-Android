@@ -1,8 +1,9 @@
-package company.tap.gosellapi.internal.api.enums;
+package company.tap.gosellapi.internal.api.enums.measurements;
 
 import com.google.gson.annotations.SerializedName;
 
-public enum MeasurementUnit {
+public enum Mass implements MeasurementUnit {
+
     @SerializedName("kilograms") KILOGRAMS,
     @SerializedName("grams") GRAMS,
     @SerializedName("decigrams") DECIGRAMS,
@@ -18,5 +19,11 @@ public enum MeasurementUnit {
     @SerializedName("short_tons") SHORT_TONS,
     @SerializedName("carats") CARATS,
     @SerializedName("ounces_troy") OUNCES_TROY,
-    @SerializedName("slugs") SLUGS
+    @SerializedName("slugs") SLUGS;
+
+    @Override
+    public Measurement getMeasurementGroup() {
+
+        return Measurement.MASS;
+    }
 }

@@ -52,4 +52,13 @@ public class Reference {
     public String getOrder() {
         return order;
     }
+
+    public Reference(String acquirer, String gateway, String payment, String track, String transaction, String order) {
+        this.acquirer = acquirer;
+        this.gateway = gateway;
+        this.payment = payment;
+        this.track = track;
+        this.transaction = transaction;
+        this.order = order;
+    }
 }
