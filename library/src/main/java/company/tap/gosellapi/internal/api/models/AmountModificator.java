@@ -9,11 +9,11 @@ public class AmountModificator {
 
     @SerializedName("type")
     @Expose
-    AmountModificatorType type;
+    private AmountModificatorType type;
 
     @SerializedName("value")
     @Expose
-    double value;
+    private double value;
 
     public AmountModificatorType getType() {
         return type;
@@ -21,5 +21,15 @@ public class AmountModificator {
 
     public double getValue() {
         return value;
+    }
+
+    public double getNormalizedValue() {
+
+        if (this.type != AmountModificatorType.PERCENTAGE) {
+
+            return this.value;
+        }
+
+        return this.value * 0.01f;
     }
 }

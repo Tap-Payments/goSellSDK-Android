@@ -1,4 +1,4 @@
-package company.tap.gosellapi.internal;
+package company.tap.gosellapi.internal.utils;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
@@ -13,12 +13,16 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Currency;
 import java.util.Locale;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.api_service.AppInfo;
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
+import company.tap.gosellapi.internal.api.models.PaymentItem;
+import company.tap.gosellapi.internal.api.models.Shipping;
+import company.tap.gosellapi.internal.api.models.Tax;
 
 public class Utils {
     public static Drawable setImageTint(Context context, int drawableId, int colorId) {

@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.Currency;
 
 import company.tap.gosellapi.R;
-import company.tap.gosellapi.internal.Utils;
+import company.tap.gosellapi.internal.utils.Utils;
 
 public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<CurrenciesRecyclerViewAdapter.CurrencyCellViewHolder> {
     public interface CurrenciesAdapterCallback {

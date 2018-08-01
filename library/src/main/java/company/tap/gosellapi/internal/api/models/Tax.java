@@ -15,9 +15,9 @@ public class Tax {
 
     @SerializedName("amount")
     @Expose
-    private String amount;
+    private AmountModificator amount;
 
-    public Tax(String name, String description, String amount) {
+    public Tax(String name, String description, AmountModificator amount) {
         this.name = name;
         this.description = description;
         this.amount = amount;
@@ -31,7 +31,7 @@ public class Tax {
         return description;
     }
 
-    public String getAmount() {
+    public AmountModificator getAmount() {
         return amount;
     }
 }

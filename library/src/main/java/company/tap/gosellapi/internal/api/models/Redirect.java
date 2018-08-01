@@ -5,6 +5,8 @@ import android.support.annotation.RestrictTo;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.net.URL;
+
 /**
  * Created by eugene.goltsev on 14.02.2018.
  * <br>
@@ -23,19 +25,16 @@ public final class Redirect {
 
     @SerializedName("return_url")
     @Expose
-    private String return_url;
+    private String returnURL;
 
     @SerializedName("post_url")
     @Expose
-    private String post_url;
+    private String postURL;
 
-    public Redirect(String return_url, String post_url) {
-        this.return_url = return_url;
-        this.post_url = post_url;
-    }
+    public Redirect(String returnURL, String postURL) {
 
-    public Redirect(String return_url) {
-        this.return_url = return_url;
+        this.returnURL = returnURL;
+        this.postURL = postURL;
     }
 
     /**
@@ -55,15 +54,13 @@ public final class Redirect {
     /**
      * @return The URL you provide to redirect the customer to after they completed their payment. The status of the payment is either succeeded, pending, or failed. Also "payload" (charge response) will be posted to the return_url
      */
-    public String getReturn_url() {
-        return return_url;
-    }
+    public String getReturnURL() {  return returnURL; }
 
     /**
      * @return The URL you provide to post the charge response after completion of payment. The status of the payment is either succeeded, pending, or failed
      */
-    public String getPost_url() {
-        return post_url;
+    public String getPostURL() {
+        return postURL;
     }
 
     @Override
@@ -71,8 +68,8 @@ public final class Redirect {
         return "Redirect {" +
                 "\n        status =  '" + status + '\'' +
                 "\n        url =  '" + url + '\'' +
-                "\n        return_url =  '" + return_url + '\'' +
-                "\n        post_url =  '" + post_url + '\'' +
+                "\n        return_url =  '" + returnURL + '\'' +
+                "\n        post_url =  '" + postURL + '\'' +
                 "\n    }";
     }
 }

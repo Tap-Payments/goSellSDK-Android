@@ -1,35 +1,43 @@
 package company.tap.gosellapi.internal.data_managers;
 
-import android.util.Log;
+import android.support.annotation.Nullable;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import company.tap.gosellapi.internal.Constants;
 import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
-import company.tap.gosellapi.internal.api.enums.ChargeStatus;
+import company.tap.gosellapi.internal.api.enums.Permission;
 import company.tap.gosellapi.internal.api.facade.GoSellAPI;
-import company.tap.gosellapi.internal.api.models.Card;
+import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.models.CreateTokenCard;
-import company.tap.gosellapi.internal.api.models.CreateTokenSavedCard;
 import company.tap.gosellapi.internal.api.models.CustomerInfo;
 import company.tap.gosellapi.internal.api.models.Order;
-import company.tap.gosellapi.internal.api.models.PaymentInfo;
-import company.tap.gosellapi.internal.api.models.PhoneNumber;
+import company.tap.gosellapi.internal.api.models.PaymentOption;
+import company.tap.gosellapi.internal.api.models.PaymentOptionsRequest;
+import company.tap.gosellapi.internal.api.models.Receipt;
 import company.tap.gosellapi.internal.api.models.Redirect;
+import company.tap.gosellapi.internal.api.models.Reference;
 import company.tap.gosellapi.internal.api.models.Source;
 import company.tap.gosellapi.internal.api.models.Token;
 import company.tap.gosellapi.internal.api.requests.CardRequest;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
 import company.tap.gosellapi.internal.api.requests.CreateTokenWithEncryptedCardDataRequest;
-import company.tap.gosellapi.internal.api.requests.CreateTokenWithExistingCardDataRequest;
 import company.tap.gosellapi.internal.api.responses.BINLookupResponse;
 import company.tap.gosellapi.internal.api.responses.SDKSettings;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
-import company.tap.gosellapi.internal.interfaces.CardRequestInterface;
+import company.tap.gosellapi.internal.interfaces.GoSellPaymentDataSource;
+import company.tap.gosellapi.internal.utils.AmountCalculator;
 
 public class GlobalDataManager {
+
+    private GoSellPaymentDataSource dataSource;
+
     private SDKSettings SDKSettings;
-    private PaymentInfo paymentInfo;
+    private PaymentOptionsRequest paymentOptionsRequest;
     private PaymentOptionsDataManager paymentOptionsDataManager;
     private BINLookupResponse binLookupResponse;
 
@@ -45,6 +53,14 @@ public class GlobalDataManager {
         return GlobalDataManager.SingletonHolder.INSTANCE;
     }
 
+    public GoSellPaymentDataSource getDataSource() {
+        return dataSource;
+    }
+
+    public void setDataSource(GoSellPaymentDataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
     public SDKSettings getSDKSettings() {
         return SDKSettings;
     }
@@ -53,16 +69,16 @@ public class GlobalDataManager {
         this.SDKSettings = SDKSettings;
     }
 
-    public PaymentInfo getPaymentInfo() {
-        return paymentInfo;
+    public PaymentOptionsRequest getPaymentOptionsRequest() {
+        return paymentOptionsRequest;
     }
 
     public BINLookupResponse getBinLookupResponse() {
         return binLookupResponse;
     }
 
-    public void setPaymentInfo(PaymentInfo paymentInfo) {
-        this.paymentInfo = paymentInfo;
+    public void setPaymentOptionsRequest(PaymentOptionsRequest paymentOptionsRequest) {
+        this.paymentOptionsRequest = paymentOptionsRequest;
     }
 
     public void setBinLookupResponse(BINLookupResponse binLookupResponse) {
@@ -82,19 +98,7 @@ public class GlobalDataManager {
     }
 
     // Managing requests
-    public void createTokenWithExistingCardData() {
-
-    }
-
-    public void createTokenWithExistedCard(final CardRequestInterface cardRequestInterface) {
-
-//        CreateTokenSavedCard createTokenSavedCard = new CreateTokenSavedCard();
-
-//        CreateTokenWithExistingCardDataRequest request = new CreateTokenWithExistingCardDataRequest();
-
-    }
-
-    public void createTokenWithEncryptedCardData(String cardNumber, String expMonth, String expYear, String cvv, final CardRequestInterface cardRequestInterface) {
+    public void createTokenWithEncryptedCardData(String cardNumber, String expMonth, String expYear, String cvv, String nameOnCard, final boolean saveCard, final PaymentOption paymentOption, final APIRequestCallback<Charge> callback) {
 
         String encryptionKey = GlobalDataManager.getInstance().getSDKSettings().getData().getEncryption_key();
 
@@ -105,77 +109,67 @@ public class GlobalDataManager {
         CreateTokenCard createTokenCard = new CreateTokenCard(cryptedData);
         CreateTokenWithEncryptedCardDataRequest request = new CreateTokenWithEncryptedCardDataRequest.Builder(createTokenCard).build();
 
-        GoSellAPI.getInstance().createTokenWithEncryptedCard(request, new APIRequestCallback<Token>() {
+        APIRequestCallback<Token> tokenRequestCallback = new APIRequestCallback<Token>() {
             @Override
             public void onSuccess(int responseCode, Token serializedResponse) {
-                Log.e("CARD REQUEST", "SUCCESS" + serializedResponse);
-                createCharge(cardRequestInterface);
+
+                Source source = new Source(serializedResponse.getId());
+                callChargeAPI(source, paymentOption, saveCard, callback);
             }
 
             @Override
             public void onFailure(GoSellError errorDetails) {
-                Log.e("CARD REQUEST", "FAILURE");
-            }
-        });
-    }
 
-    public void createCharge(final CardRequestInterface cardRequestInterface) {
-
-        // Configure request body
-        Source source = new Source("src_kw.knet");
-        PhoneNumber phoneNumber = new PhoneNumber("965", "77777777");
-        CustomerInfo customerInfo = new CustomerInfo("Customer", "Customerenko", "so@me.mail", phoneNumber);
-        Redirect redirect = new Redirect("gosellsdk://return_url");
-
-//        Order order = new Order(dataSource.getPaymentOptionsResponse().getOrderID());
-
-        CreateChargeRequest request = new CreateChargeRequest
-                .Builder(100, "KWD", 20, false)
-                .customer(customerInfo)
-//                .order(order)
-                .redirect(redirect)
-                .source(source)
-                .build();
-
-        // Configure request callbacks
-        APIRequestCallback<Charge> requestCallback = new APIRequestCallback<Charge>() {
-            @Override
-            public void onSuccess(int responseCode, Charge serializedResponse) {
-                checkChargeStatus(serializedResponse, cardRequestInterface);
-            }
-
-            @Override
-            public void onFailure(GoSellError errorDetails) {
             }
         };
 
-        // Create charge
-        GoSellAPI.getInstance().createCharge(request, requestCallback);
+        GoSellAPI.getInstance().createTokenWithEncryptedCard(request, tokenRequestCallback);
     }
 
-    private void checkChargeStatus(Charge response, CardRequestInterface cardRequestInterface) {
+    public void callChargeAPI(Source source, PaymentOption paymentOption, @Nullable Boolean saveCard, APIRequestCallback<Charge> callback) {
 
-        Log.e("CARD REQUEST", "RESPONSE STATUS " + response.getStatus());
+        saveCard = saveCard == null ? false : saveCard;
 
-        switch (response.getStatus()) {
+        PaymentOptionsResponse paymentOptionsResponse = getPaymentOptionsDataManager().getPaymentOptionsResponse();
+        ArrayList<AmountedCurrency> supportedCurrencies = paymentOptionsResponse.getSupported_currencies();
 
-            case INITIATED:
-                if(response.getAuthenticate() == null) {
-                    cardRequestInterface.onCardRequestRedirect(response);
-                }
-                else {
-                    cardRequestInterface.onCardRequestOTP(response);
-                }
+        CustomerInfo customer = this.dataSource.getCustomerInfo();
+        String orderID = this.getPaymentOptionsDataManager().getPaymentOptionsResponse().getOrderID();
 
-                break;
+        AmountedCurrency amountedCurrency = this.getPaymentOptionsDataManager().getSelectedCurrency();
+        double fee = AmountCalculator.calculateExtraFeesAmount(paymentOption.getExtra_fees(), supportedCurrencies, amountedCurrency);
+        Order order = new Order(orderID);
+        Redirect redirect = new Redirect(Constants.RETURN_URL, this.dataSource.getPostURL());
+        String paymentDescription = this.dataSource.getPaymentDescription();
+        HashMap<String, String> paymentMetadata = this.dataSource.getPaymentMetadata();
+        Reference reference = this.dataSource.getPaymentReference();
+        String statementDescriptor = this.dataSource.getPaymentStatementDescriptor();
+        boolean require3DSecure = this.dataSource.getRequires3DSecure() || this.chargeRequires3DSecure();
+        Receipt receiptSettings = this.dataSource.getReceiptSettings();
 
-            case FAILED:
-                cardRequestInterface.onCardRequestFailure(response);
-                break;
+        CreateChargeRequest request = new CreateChargeRequest(
 
-            case CAPTURED:
-                cardRequestInterface.onCardRequestSuccess(response);
-                break;
-        }
+                amountedCurrency.getAmount(),
+                amountedCurrency.getIsoCode(),
+                customer,
+                fee,
+                order,
+                redirect,
+                source,
+                paymentDescription,
+                paymentMetadata,
+                reference,
+                saveCard,
+                statementDescriptor,
+                require3DSecure,
+                receiptSettings
+        );
+
+        GoSellAPI.getInstance().createCharge(request, callback);
+    }
+
+    private boolean chargeRequires3DSecure() {
+
+        return !this.getSDKSettings().getData().getPermissions().contains(Permission.THREEDSECURE_DISABLED);
     }
 }

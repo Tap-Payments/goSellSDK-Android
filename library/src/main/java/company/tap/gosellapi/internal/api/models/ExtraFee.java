@@ -9,36 +9,13 @@ import com.google.gson.annotations.SerializedName;
  * Model for Customer object
  */
 
-public final class ExtraFee {
-    @SerializedName("merchant_id")
+public final class ExtraFee extends AmountModificator {
+
+    @SerializedName("currency")
     @Expose
-    private String merchant_id;
+    private String currency;
 
-    @SerializedName("fee")
-    @Expose
-    private double fee;
-
-    @SerializedName("fee_type")
-    @Expose
-    private String fee_type;
-
-    @SerializedName("currency_code")
-    @Expose
-    private String currency_code;
-
-    public String getMerchant_id() {
-        return merchant_id;
-    }
-
-    public double getFee() {
-        return fee;
-    }
-
-    public String getFee_type() {
-        return fee_type;
-    }
-
-    public String getCurrency_code() {
-        return currency_code;
+    public String getCurrency() {
+        return currency;
     }
 }

@@ -7,7 +7,7 @@ import company.tap.gosellapi.internal.api.api_service.RetrofitHelper;
 import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.models.Charge;
-import company.tap.gosellapi.internal.api.models.PaymentInfo;
+import company.tap.gosellapi.internal.api.models.PaymentOptionsRequest;
 import company.tap.gosellapi.internal.api.models.Token;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
 import company.tap.gosellapi.internal.api.requests.CreateTokenWithEncryptedCardDataRequest;
@@ -67,9 +67,9 @@ public final class GoSellAPI {
         requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.createTokenWithExistingCard(createTokenWithExistingCardDataRequest), requestCallback));
     }
 
-    public void getPaymentTypes(PaymentInfo paymentInfo, final APIRequestCallback<PaymentOptionsResponse> requestCallback) {
-        GlobalDataManager.getInstance().setPaymentInfo(paymentInfo);
-        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.getPaymentTypes(paymentInfo), new APIRequestCallback<PaymentOptionsResponse>() {
+    public void getPaymentTypes(PaymentOptionsRequest paymentOptionsRequest, final APIRequestCallback<PaymentOptionsResponse> requestCallback) {
+        GlobalDataManager.getInstance().setPaymentOptionsRequest(paymentOptionsRequest);
+        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.getPaymentTypes(paymentOptionsRequest), new APIRequestCallback<PaymentOptionsResponse>() {
             @Override
             public void onSuccess(int responseCode, PaymentOptionsResponse serializedResponse) {
                 GlobalDataManager.getInstance().createPaymentOptionsDataManager(serializedResponse);

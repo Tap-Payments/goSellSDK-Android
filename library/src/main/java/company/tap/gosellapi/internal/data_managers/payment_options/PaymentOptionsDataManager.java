@@ -26,6 +26,7 @@ public class PaymentOptionsDataManager {
     private int availableHeight;
     private int saveCardHeight;
     private int cardSwitchHeight;
+    private AmountedCurrency selectedCurrency;
 
     public PaymentOptionsResponse getPaymentOptionsResponse() {
         return paymentOptionsResponse;
@@ -66,6 +67,32 @@ public class PaymentOptionsDataManager {
     //region data for adapter
     public int getSize() {
         return dataList.size();
+    }
+
+    public AmountedCurrency getSelectedCurrency() {
+
+        if(this.selectedCurrency == null) {
+
+           this.selectedCurrency = defaultAmountedCurrency();
+        }
+
+        return selectedCurrency;
+    }
+
+    private AmountedCurrency defaultAmountedCurrency() {
+
+        String currencyCode = paymentOptionsResponse.getCurrencyCode();
+
+        for(AmountedCurrency amountedCurrency : paymentOptionsResponse.getSupported_currencies()) {
+
+            if(amountedCurrency.getIsoCode().equals(currencyCode)) return amountedCurrency;
+        }
+
+        return null;
+    }
+
+    public void setSelectedCurrency(AmountedCurrency selectedCurrency) {
+        this.selectedCurrency = selectedCurrency;
     }
 
     public int getItemViewType(int position) {
@@ -163,6 +190,8 @@ public class PaymentOptionsDataManager {
     }
 
     public void currencySelectedByUser(AmountedCurrency userChoiceCurrency) {
+        selectedCurrency = userChoiceCurrency;
+
         //update currency section
         CurrencyViewModel currencyViewModel = getCurrencyViewModel();
         if (currencyViewModel == null) return;
