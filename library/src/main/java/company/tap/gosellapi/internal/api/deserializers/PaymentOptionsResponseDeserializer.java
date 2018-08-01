@@ -18,8 +18,8 @@ public class PaymentOptionsResponseDeserializer implements JsonDeserializer<Paym
         Gson gson = new Gson();
         PaymentOptionsResponse paymentOptionsResponse = gson.fromJson(json, PaymentOptionsResponse.class);
 
-        if (paymentOptionsResponse.getPayment_options() != null) {
-            Collections.sort(paymentOptionsResponse.getPayment_options());
+        if (paymentOptionsResponse.getPaymentOptions() != null) {
+            Collections.sort(paymentOptionsResponse.getPaymentOptions());
         }
 
         return paymentOptionsResponse;

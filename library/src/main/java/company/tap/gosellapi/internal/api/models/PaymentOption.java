@@ -21,10 +21,6 @@ public final class PaymentOption implements Comparable<PaymentOption>{
     @Expose
     private String id;
 
-    @SerializedName("source_id")
-    @Expose
-    private String sourceId;
-
     @SerializedName("name")
     @Expose
     private String name;
@@ -37,21 +33,25 @@ public final class PaymentOption implements Comparable<PaymentOption>{
     @Expose
     private PaymentType paymentType;
 
+    @SerializedName("source_id")
+    @Expose
+    private String sourceId;
+
     @SerializedName("supported_card_brands")
     @Expose
     private ArrayList<CardBrand> supportedCardBrands;
 
     @SerializedName("extra_fees")
     @Expose
-    private ArrayList<ExtraFee> extra_fees;
+    private ArrayList<ExtraFee> extraFees;
 
     @SerializedName("supported_currencies")
     @Expose
-    private ArrayList<String> supported_currencies;
+    private ArrayList<String> supportedCurrencies;
 
     @SerializedName("order_by")
     @Expose
-    private int order_by;
+    private int orderBy;
 
     public String getId() {
         return id;
@@ -77,20 +77,20 @@ public final class PaymentOption implements Comparable<PaymentOption>{
         return supportedCardBrands;
     }
 
-    public ArrayList<ExtraFee> getExtra_fees() {
-        return extra_fees;
+    public ArrayList<ExtraFee> getExtraFees() {
+        return extraFees;
     }
 
-    public ArrayList<String> getSupported_currencies() {
-        return supported_currencies;
+    public ArrayList<String> getSupportedCurrencies() {
+        return supportedCurrencies;
     }
 
-    public int getOrder_by() {
-        return order_by;
+    public int getOrderBy() {
+        return orderBy;
     }
 
     @Override
     public int compareTo(@NonNull PaymentOption o) {
-        return order_by - o.order_by;
+        return orderBy - o.orderBy;
     }
 }

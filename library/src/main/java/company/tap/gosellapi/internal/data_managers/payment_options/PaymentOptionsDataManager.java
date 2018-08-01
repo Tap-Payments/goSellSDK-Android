@@ -1,14 +1,9 @@
 package company.tap.gosellapi.internal.data_managers.payment_options;
 
-import android.util.Log;
-
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
 
 import company.tap.gosellapi.internal.Constants;
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
-import company.tap.gosellapi.internal.api.models.Card;
 import company.tap.gosellapi.internal.api.models.CardRawData;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.api.models.SavedCard;
@@ -81,11 +76,11 @@ public class PaymentOptionsDataManager {
 
     private AmountedCurrency defaultAmountedCurrency() {
 
-        String currencyCode = paymentOptionsResponse.getCurrencyCode();
+        String currencyCode = paymentOptionsResponse.getCurrency();
 
-        for(AmountedCurrency amountedCurrency : paymentOptionsResponse.getSupported_currencies()) {
+        for(AmountedCurrency amountedCurrency : paymentOptionsResponse.getSupportedCurrencies()) {
 
-            if(amountedCurrency.getIsoCode().equals(currencyCode)) return amountedCurrency;
+            if(amountedCurrency.getCurrency().equals(currencyCode)) return amountedCurrency;
         }
 
         return null;
@@ -204,7 +199,7 @@ public class PaymentOptionsDataManager {
         CardCredentialsViewModel cardCredentialsViewModel = getCardCredentialsViewModel();
         if (cardCredentialsViewModel == null) return;
 
-        cardCredentialsViewModel.filterByCurrency(userChoiceCurrency.getIsoCode());
+        cardCredentialsViewModel.filterByCurrency(userChoiceCurrency.getCurrency());
     }
 
     public void cardExpirationDateSelected(String month, String year) {
@@ -338,9 +333,9 @@ public class PaymentOptionsDataManager {
         }
 
         private void addCurrencies() {
-            ArrayList<AmountedCurrency> supportedCurrencies = paymentOptionsResponse.getSupported_currencies();
+            ArrayList<AmountedCurrency> supportedCurrencies = paymentOptionsResponse.getSupportedCurrencies();
             if (supportedCurrencies != null && supportedCurrencies.size() > 0) {
-                String initialCurrency = paymentOptionsResponse.getCurrencyCode();
+                String initialCurrency = paymentOptionsResponse.getCurrency();
                 CurrencySectionData currencySectionData = new CurrencySectionData(supportedCurrencies, initialCurrency);
 
                 dataList.add(new CurrencyViewModel(PaymentOptionsDataManager.this, currencySectionData, PaymentType.CURRENCY.getViewType()));
@@ -358,7 +353,7 @@ public class PaymentOptionsDataManager {
 
         private void addWeb() {
 
-            ArrayList<PaymentOption> paymentOptions = paymentOptionsResponse.getPayment_options();
+            ArrayList<PaymentOption> paymentOptions = paymentOptionsResponse.getPaymentOptions();
 
             if (paymentOptions == null || paymentOptions.size() == 0) {
                 return;
@@ -372,7 +367,7 @@ public class PaymentOptionsDataManager {
         }
 
         private void addCard() {
-            ArrayList<PaymentOption> paymentOptions = paymentOptionsResponse.getPayment_options();
+            ArrayList<PaymentOption> paymentOptions = paymentOptionsResponse.getPaymentOptions();
             ArrayList<PaymentOption> paymentOptionsCards = new ArrayList<>();
 
             if (paymentOptions == null || paymentOptions.size() == 0) {

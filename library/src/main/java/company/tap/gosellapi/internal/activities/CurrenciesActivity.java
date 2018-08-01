@@ -54,13 +54,13 @@ public class CurrenciesActivity
 
         dataKeys = new ArrayList<>();
         for (AmountedCurrency amountedCurrency : currencies) {
-            dataKeys.add(amountedCurrency.getIsoCode());
+            dataKeys.add(amountedCurrency.getCurrency());
         }
     }
 
     private void initRecycler() {
         RecyclerView recycler = findViewById(R.id.recyclerCurrencies);
-        adapter = new CurrenciesRecyclerViewAdapter(dataKeys, selectedCurrency.getIsoCode(), this);
+        adapter = new CurrenciesRecyclerViewAdapter(dataKeys, selectedCurrency.getCurrency(), this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
         recycler.setLayoutManager(layoutManager);
@@ -111,7 +111,7 @@ public class CurrenciesActivity
 
     @Override
     public void itemSelected(String currencyCode) {
-        if (!this.selectedCurrency.getIsoCode().equalsIgnoreCase(currencyCode)) {
+        if (!this.selectedCurrency.getCurrency().equalsIgnoreCase(currencyCode)) {
             this.selectedCurrency = CurrencySectionData.getAmountedCurrencyByCurrencyCode(currencyCode, currencies);
             setTitle();
         }

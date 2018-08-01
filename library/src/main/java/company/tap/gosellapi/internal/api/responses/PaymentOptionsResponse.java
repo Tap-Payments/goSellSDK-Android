@@ -1,5 +1,6 @@
 package company.tap.gosellapi.internal.api.responses;
 
+import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 
 import com.google.gson.annotations.Expose;
@@ -8,7 +9,6 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
-import company.tap.gosellapi.internal.api.models.Card;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.api.models.SavedCard;
 
@@ -20,6 +20,7 @@ import company.tap.gosellapi.internal.api.models.SavedCard;
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 public final class PaymentOptionsResponse implements BaseResponse {
+
     @SerializedName("id")
     @Expose
     private String id;
@@ -34,19 +35,19 @@ public final class PaymentOptionsResponse implements BaseResponse {
 
     @SerializedName("payment_methods")
     @Expose
-    private ArrayList<PaymentOption> payment_options;
+    private ArrayList<PaymentOption> paymentOptions;
 
     @SerializedName("currency")
     @Expose
-    private String currencyCode;
+    private String currency;
 
     @SerializedName("supported_currencies")
     @Expose
-    private ArrayList<AmountedCurrency> supported_currencies;
+    private ArrayList<AmountedCurrency> supportedCurrencies;
 
     @SerializedName("cards")
     @Expose
-    private ArrayList<SavedCard> cards;
+    @Nullable private ArrayList<SavedCard> cards;
 
     public String getId() {
         return id;
@@ -60,19 +61,19 @@ public final class PaymentOptionsResponse implements BaseResponse {
         return object;
     }
 
-    public ArrayList<PaymentOption> getPayment_options() {
-        return payment_options;
+    public ArrayList<PaymentOption> getPaymentOptions() {
+        return paymentOptions;
     }
 
-    public String getCurrencyCode() {
-        return currencyCode;
+    public String getCurrency() {
+        return currency;
     }
 
-    public ArrayList<AmountedCurrency> getSupported_currencies() {
-        return supported_currencies;
+    public ArrayList<AmountedCurrency> getSupportedCurrencies() {
+        return supportedCurrencies;
     }
 
-    public ArrayList<SavedCard> getCards() {
+    @Nullable public ArrayList<SavedCard> getCards() {
         return cards;
     }
 }

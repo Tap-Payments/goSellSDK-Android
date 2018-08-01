@@ -22,7 +22,7 @@ public final class SDKSettings implements BaseResponse {
     private Data data;
 
     public static final class Data {
-        @SerializedName("livemode")
+        @SerializedName("live_mode")
         @Expose
         private boolean livemode;
 
@@ -32,7 +32,7 @@ public final class SDKSettings implements BaseResponse {
 
         @SerializedName("encryption_key")
         @Expose
-        private String encryption_key;
+        private String encryptionKey;
 
         @SerializedName("merchant")
         @Expose
@@ -40,7 +40,7 @@ public final class SDKSettings implements BaseResponse {
 
         @SerializedName("sdk_settings")
         @Expose
-        private InternalSDKSettings internalSdk_settings;
+        private InternalSDKSettings internalSDKSettings;
 
         public boolean isLivemode() {
             return livemode;
@@ -50,19 +50,20 @@ public final class SDKSettings implements BaseResponse {
             return permissions;
         }
 
-        public String getEncryption_key() {
-            return encryption_key;
+        public String getEncryptionKey() {
+            return encryptionKey;
         }
 
         public Merchant getMerchant() {
             return merchant;
         }
 
-        public InternalSDKSettings getInternalSdk_settings() {
-            return internalSdk_settings;
+        public InternalSDKSettings getInternalSDKSettings() {
+            return internalSDKSettings;
         }
 
         public static final class Merchant {
+
             @SerializedName("name")
             @Expose
             private String name;
@@ -71,14 +72,6 @@ public final class SDKSettings implements BaseResponse {
             @Expose
             private String logo;
 
-            @SerializedName("currency")
-            @Expose
-            private String currency_code;
-
-            @SerializedName("supported_currencies")
-            @Expose
-            private ArrayList<String> supported_currencies;
-
             public String getName() {
                 return name;
             }
@@ -86,39 +79,32 @@ public final class SDKSettings implements BaseResponse {
             public String getLogo() {
                 return logo;
             }
-
-            public String getCurrency_code() {
-                return currency_code;
-            }
-
-            public ArrayList<String> getSupported_currencies() {
-                return supported_currencies;
-            }
         }
 
         public static final class InternalSDKSettings {
-            @SerializedName("status_popup_duration")
-            @Expose
-            private int status_popup_duration;
 
-            @SerializedName("resend_interval")
+            @SerializedName("status_display_duration")
             @Expose
-            private int resend_interval;
+            private int statusDisplayDuration;
 
-            @SerializedName("resend_number_attempts")
+            @SerializedName("otp_resend_interval")
             @Expose
-            private int resend_number_attempts;
+            private double otpResendInterval;
 
-            public int getStatus_popup_duration() {
-                return status_popup_duration;
+            @SerializedName("otp_resend_attempts")
+            @Expose
+            private int otpResendAttempts;
+
+            public double getStatusDisplayDuration() {
+                return statusDisplayDuration;
             }
 
-            public int getResend_interval() {
-                return resend_interval;
+            public double getOtpResendInterval() {
+                return otpResendInterval;
             }
 
-            public int getResend_number_attempts() {
-                return resend_number_attempts;
+            public int getOtpResendAttempts() {
+                return otpResendAttempts;
             }
         }
     }

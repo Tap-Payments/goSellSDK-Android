@@ -3,7 +3,8 @@ package company.tap.gosellapi.internal.api.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ExpirationDate {
+public final class ExpirationDate {
+
     @SerializedName("month")
     @Expose
     private String month;

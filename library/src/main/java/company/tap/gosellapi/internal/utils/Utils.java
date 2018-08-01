@@ -8,21 +8,16 @@ import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.BackgroundColorSpan;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.Currency;
 import java.util.Locale;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.api_service.AppInfo;
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
-import company.tap.gosellapi.internal.api.models.PaymentItem;
-import company.tap.gosellapi.internal.api.models.Shipping;
-import company.tap.gosellapi.internal.api.models.Tax;
 
 public class Utils {
     public static Drawable setImageTint(Context context, int drawableId, int colorId) {
@@ -47,7 +42,7 @@ public class Utils {
 
         Currency currency;
         try {
-            currency = Currency.getInstance(amountedCurrency.getIsoCode());
+            currency = Currency.getInstance(amountedCurrency.getCurrency());
         } catch (IllegalArgumentException ex) {
             return "";
         }
