@@ -1,10 +1,14 @@
 package company.tap.gosellapi.internal.activities;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import java.nio.file.WatchEvent;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
@@ -16,20 +20,31 @@ import company.tap.gosellapi.internal.api.models.CustomerInfo;
 import company.tap.gosellapi.internal.api.models.Order;
 import company.tap.gosellapi.internal.api.models.PaymentOptionsRequest;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
+import company.tap.gosellapi.internal.api.models.Redirect;
 import company.tap.gosellapi.internal.api.models.Source;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
 import company.tap.gosellapi.internal.data_managers.LoadingScreenManager;
+import company.tap.gosellapi.internal.data_managers.PaymentResultToastManager;
 
 public class WebPaymentActivity extends BaseActionBarActivity {
     private final PaymentOptionsResponse paymentOptionsResponse = GlobalDataManager.getInstance().getPaymentOptionsDataManager().getPaymentOptionsResponse();;
     private PaymentOption webPaymentOption;
 
+    private WebView webView;
+
+    String returnURL;
+    private String chargeID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gosellapi_activity_web_payment);
+
+        webView = findViewById(R.id.webPaymentWebView);
+        WebSettings settings = webView.getSettings();
+        settings.setJavaScriptEnabled(true);
 
         webPaymentOption = new PaymentOption();
         for(PaymentOption option : paymentOptionsResponse.getPayment_options()) {
@@ -61,6 +76,10 @@ public class WebPaymentActivity extends BaseActionBarActivity {
             @Override
             public void onSuccess(int responseCode, Charge serializedResponse) {
                 LoadingScreenManager.getInstance().closeLoadingScreen();
+
+                returnURL = serializedResponse.getRedirect().getReturnURL();
+                chargeID = serializedResponse.getId();
+
                 updateWebView();
             }
 
@@ -76,7 +95,11 @@ public class WebPaymentActivity extends BaseActionBarActivity {
 
     private void updateWebView() {
         WebView webView = findViewById(R.id.webPaymentWebView);
+        webView.setWebViewClient(new WebPaymentWebViewClient());
         webView.setVisibility(View.VISIBLE);
+
+        if(returnURL == null) return;
+        webView.loadUrl(returnURL);
     }
 
     @Override
@@ -91,30 +114,34 @@ public class WebPaymentActivity extends BaseActionBarActivity {
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
 
-//            if(url.equals(returnURL)) {
+            if(url.equals(returnURL)) {
 //                retrieveCharge();
-//            }
+            }
         }
     }
 
     private void retrieveCharge() {
 
-//        GoSellAPI.getInstance().retrieveCharge(chargeID, new APIRequestCallback<Charge>() {
-//            @Override
-//            public void onSuccess(int responseCode, Charge serializedResponse) {
-//
-//                String message = serializedResponse.getRedirect().getStatus();
-//                PaymentResultToastManager.getInstance().showPaymentResult(getApplicationContext(), message);
-//
-//                setResult(RESULT_OK);
-//                finish();
-//            }
-//
-//            @Override
-//            public void onFailure(GoSellError errorDetails) {
-//
-//            }
-//        });
+        if(chargeID == null) return;
+
+        APIRequestCallback<Charge> callback = new APIRequestCallback<Charge>() {
+            @Override
+            public void onSuccess(int responseCode, Charge serializedResponse) {
+
+                String message = serializedResponse.getRedirect().getStatus();
+                PaymentResultToastManager.getInstance().showPaymentResult(getApplicationContext(), message);
+
+                setResult(RESULT_OK);
+                finish();
+            }
+
+            @Override
+            public void onFailure(GoSellError errorDetails) {
+
+            }
+        };
+
+        GoSellAPI.getInstance().retrieveCharge(chargeID, callback);
     }
 
     @Override
