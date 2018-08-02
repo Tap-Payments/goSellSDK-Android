@@ -1,11 +1,14 @@
 package company.tap.gosellapi.internal.api.responses;
 
+import android.support.annotation.Nullable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import company.tap.tapcardvalidator_android.CardBrand;
 
-public class BINLookupResponse implements BaseResponse {
+public final class BINLookupResponse implements BaseResponse {
+
     @SerializedName("address_required")
     @Expose
     private boolean addressRequired;
@@ -16,7 +19,7 @@ public class BINLookupResponse implements BaseResponse {
 
     @SerializedName("bank_logo")
     @Expose
-    private String bank_logo;
+    @Nullable private String bankLogo;
 
     @SerializedName("bin")
     @Expose
@@ -49,8 +52,8 @@ public class BINLookupResponse implements BaseResponse {
     /**
      * @return Bank logo URL.
      */
-    public String getBank_logo() {
-        return bank_logo;
+    public String getBankLogo() {
+        return bankLogo;
     }
 
     /**

@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import company.tap.gosellapi.internal.api.models.CreateTokenSavedCard;
 
-public class CreateTokenWithExistingCardDataRequest {
+public final class CreateTokenWithExistingCardDataRequest {
 
     @SerializedName("saved_card")
     @Expose

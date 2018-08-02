@@ -1,5 +1,6 @@
 package company.tap.gosellapi.internal.api.models;
 
+import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 
 import com.google.gson.annotations.Expose;
@@ -7,7 +8,6 @@ import com.google.gson.annotations.SerializedName;
 
 import company.tap.gosellapi.internal.api.enums.TokenType;
 import company.tap.gosellapi.internal.api.responses.BaseResponse;
-import company.tap.gosellapi.internal.api.responses.CardResponse;
 
 /**
  Created by eugene.goltsev on 12.02.2018.
@@ -27,23 +27,23 @@ public final class Token implements BaseResponse {
 
     @SerializedName("card")
     @Expose
-    private CardResponse card;
+    private TokenizedCard card;
 
-    @SerializedName("client_ip")
+    @SerializedName("type")
     @Expose
-    private String client_ip;
+    private TokenType type;
 
     @SerializedName("created")
     @Expose
     private long created;
 
+    @SerializedName("client_ip")
+    @Expose
+    @Nullable private String client_ip;
+
     @SerializedName("livemode")
     @Expose
     private boolean livemode;
-
-    @SerializedName("type")
-    @Expose
-    private TokenType type;
 
     @SerializedName("used")
     @Expose
@@ -72,9 +72,9 @@ public final class Token implements BaseResponse {
     }
 
     /**
-     * @return {@link CardResponse} object used to make the charge
+     * @return {@link TokenizedCard} object used to make the charge
      */
-    public CardResponse getCard() {
+    public TokenizedCard getCard() {
         return card;
     }
 
