@@ -21,6 +21,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import company.tap.gosellapi.R;
+import company.tap.gosellapi.internal.api.enums.ChargeStatus;
 import company.tap.gosellapi.internal.api.requests.PaymentOptionsRequest;
 import company.tap.gosellapi.internal.utils.Utils;
 import company.tap.gosellapi.internal.activities.GoSellPaymentActivity;
@@ -410,7 +411,8 @@ public final class GoSellPayButtonLayout extends FrameLayout implements View.OnC
         loadingView.setForceStop(true);
 
         Log.e("TEST", "SUCCESS");
-        PaymentResultToastManager.getInstance().showPaymentResult(getContext(), "Success");
+        // TODO: Check real charge status here.
+        PaymentResultToastManager.getInstance().showPaymentResult(getContext(), ChargeStatus.CAPTURED);
         AppCompatActivity activity = (AppCompatActivity) getContext();
         activity.finish();
     }
@@ -421,7 +423,8 @@ public final class GoSellPayButtonLayout extends FrameLayout implements View.OnC
 
         Log.e("TEST","FAILURE");
         AppCompatActivity activity = (AppCompatActivity) getContext();
-        PaymentResultToastManager.getInstance().showPaymentResult(getContext(), "Failure");
+        // TODO: Check real charge status here.
+        PaymentResultToastManager.getInstance().showPaymentResult(getContext(), ChargeStatus.FAILED);
         activity.finish();
     }
 

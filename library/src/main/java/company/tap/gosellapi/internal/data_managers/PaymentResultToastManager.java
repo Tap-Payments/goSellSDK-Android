@@ -13,6 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import company.tap.gosellapi.R;
+import company.tap.gosellapi.internal.api.enums.ChargeStatus;
+import company.tap.gosellapi.internal.api.enums.RedirectStatus;
 
 public class PaymentResultToastManager {
 
@@ -27,13 +29,13 @@ public class PaymentResultToastManager {
         return SingletonHolder.INSTANCE;
     }
 
-    public void showPaymentResult(Context context, String message) {
+    public void showPaymentResult(Context context, ChargeStatus message) {
 
         LayoutInflater inflater = LayoutInflater.from(context);
         View toastLayout = inflater.inflate(R.layout.gosellapi_toast_success, null);
 
         TextView statusTextView = toastLayout.findViewById(R.id.statusTextView);
-        statusTextView.setText(message);
+        statusTextView.setText(message.toString());
 
         final Toast toast = new Toast(context);
         toast.setGravity(Gravity.TOP | Gravity.FILL_HORIZONTAL, 0, 0);

@@ -13,7 +13,9 @@ import java.nio.file.WatchEvent;
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
+import company.tap.gosellapi.internal.api.enums.ChargeStatus;
 import company.tap.gosellapi.internal.api.enums.PaymentType;
+import company.tap.gosellapi.internal.api.enums.RedirectStatus;
 import company.tap.gosellapi.internal.api.facade.GoSellAPI;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
@@ -124,8 +126,9 @@ public class WebPaymentActivity extends BaseActionBarActivity {
             @Override
             public void onSuccess(int responseCode, Charge serializedResponse) {
 
-                String message = serializedResponse.getRedirect().getStatus();
-                PaymentResultToastManager.getInstance().showPaymentResult(getApplicationContext(), message);
+                // TODO: Check real charge status here.
+                ChargeStatus status = serializedResponse.getStatus();
+                PaymentResultToastManager.getInstance().showPaymentResult(getApplicationContext(), status);
 
                 setResult(RESULT_OK);
                 finish();
