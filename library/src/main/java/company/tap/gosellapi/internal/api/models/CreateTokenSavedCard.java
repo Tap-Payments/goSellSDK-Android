@@ -3,13 +3,13 @@ package company.tap.gosellapi.internal.api.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class CreateTokenSavedCard {
+public final class CreateTokenSavedCard {
 
     @SerializedName("card_id")
     @Expose
     private String cardId;
 
-    @SerializedName("")
+    @SerializedName("customer_id")
     @Expose
     private String customerId;
 

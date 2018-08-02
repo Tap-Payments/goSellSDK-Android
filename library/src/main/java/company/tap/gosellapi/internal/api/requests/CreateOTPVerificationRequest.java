@@ -7,7 +7,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-public class CreateOTPVerificationRequest {
+public final class CreateOTPVerificationRequest {
 
     @SerializedName("id")
     @Expose

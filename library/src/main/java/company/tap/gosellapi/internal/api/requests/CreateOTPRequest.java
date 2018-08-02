@@ -6,7 +6,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-public class CreateOTPRequest {
+public final class CreateOTPRequest {
 
     @SerializedName("id")
     @Expose

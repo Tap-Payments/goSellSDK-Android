@@ -6,7 +6,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-public class BINLookupRequest {
+public final class BINLookupRequest {
 
     @SerializedName("bin_number")
     @Expose

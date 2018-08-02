@@ -15,7 +15,7 @@ import company.tap.gosellapi.internal.api.crypto.CryptoUtil;
  */
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-public class CardRequest {
+public final class CardRequest {
     /**
      * Builder to create {@link CardRequest} instance
      */

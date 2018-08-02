@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import company.tap.gosellapi.internal.api.enums.AddressFormat;
 import company.tap.gosellapi.internal.api.enums.AddressType;
 
-public class Address {
+public final class Address {
 
     @SerializedName("format")
     @Expose
@@ -24,7 +24,7 @@ public class Address {
     @Expose
     private String line1;
 
-    @SerializedName("line 2")
+    @SerializedName("line2")
     @Expose
     private String line2;
 

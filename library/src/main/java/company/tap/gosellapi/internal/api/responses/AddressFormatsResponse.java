@@ -10,7 +10,7 @@ import company.tap.gosellapi.internal.api.enums.AddressFormat;
 import company.tap.gosellapi.internal.api.models.AddressField;
 import company.tap.gosellapi.internal.api.models.BillingAddressFormat;
 
-public class AddressFormatsResponse implements BaseResponse {
+public final class AddressFormatsResponse implements BaseResponse {
     @SerializedName("formats")
     @Expose
     ArrayList<BillingAddressFormat> formats;

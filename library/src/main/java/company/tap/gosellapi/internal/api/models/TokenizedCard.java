@@ -1,11 +1,13 @@
 package company.tap.gosellapi.internal.api.models;
 
+import android.support.annotation.Nullable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import company.tap.tapcardvalidator_android.CardBrand;
 
-public class TokenizedCard {
+public final class TokenizedCard {
 
     @SerializedName("id")
     @Expose
@@ -38,11 +40,11 @@ public class TokenizedCard {
     private String name;
 
     @SerializedName("customer")
-    private String customer;
+    @Nullable private String customer;
 
     @SerializedName("fingerprint")
     private String fingerprint;
 
     @SerializedName("address")
-    private Address address;
+    @Nullable private Address address;
 }

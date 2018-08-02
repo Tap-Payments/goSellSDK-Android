@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import company.tap.gosellapi.internal.api.enums.AddressFieldInputType;
 
-public class AddressField {
+public final class AddressField {
 
     @SerializedName("name")
     @Expose
