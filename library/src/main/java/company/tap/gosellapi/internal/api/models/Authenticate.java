@@ -1,5 +1,7 @@
 package company.tap.gosellapi.internal.api.models;
 
+import android.support.annotation.Nullable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -7,7 +9,7 @@ import company.tap.gosellapi.internal.api.enums.AuthenticationRequirer;
 import company.tap.gosellapi.internal.api.enums.AuthenticationStatus;
 import company.tap.gosellapi.internal.api.enums.AuthenticationType;
 
-public class Authenticate {
+public final class Authenticate {
 
     @SerializedName("id")
     @Expose
@@ -35,7 +37,7 @@ public class Authenticate {
 
     @SerializedName("url")
     @Expose
-    private String url;
+    @Nullable private String url;
 
     @SerializedName("created")
     @Expose
@@ -43,7 +45,7 @@ public class Authenticate {
 
     @SerializedName("authenticated")
     @Expose
-    private long authenticated;
+    @Nullable private Long authenticated;
 
     @SerializedName("count")
     @Expose

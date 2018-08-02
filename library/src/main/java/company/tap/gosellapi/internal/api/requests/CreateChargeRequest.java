@@ -1,5 +1,6 @@
 package company.tap.gosellapi.internal.api.requests;
 
+import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 
 import com.google.gson.annotations.Expose;
@@ -55,15 +56,15 @@ public final class CreateChargeRequest {
 
     @SerializedName("description")
     @Expose
-    private String description;
+    @Nullable private String description;
 
     @SerializedName("metadata")
     @Expose
-    private HashMap<String, String> metadata;
+    @Nullable private HashMap<String, String> metadata;
 
     @SerializedName("reference")
     @Expose
-    private Reference reference;
+    @Nullable private Reference reference;
 
     @SerializedName("save_card")
     @Expose
@@ -71,15 +72,15 @@ public final class CreateChargeRequest {
 
     @SerializedName("statement_descriptor")
     @Expose
-    private String statementDescriptor;
+    @Nullable private String statementDescriptor;
 
     @SerializedName("threeDSecure")
     @Expose
-    private boolean threeDSecure = true;
+    @Nullable private Boolean threeDSecure = true;
 
     @SerializedName("receipt")
     @Expose
-    private Receipt receipt;
+    @Nullable private Receipt receipt;
 
     public CreateChargeRequest(double amount, String currency, CustomerInfo customer, double fee, Order order, Redirect redirect, Source source, String description, HashMap<String, String> metadata, Reference reference, boolean saveCard, String statementDescriptor, boolean threeDSecure, Receipt receipt) {
         this.amount = amount;

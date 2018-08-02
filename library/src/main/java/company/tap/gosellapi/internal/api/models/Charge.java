@@ -1,5 +1,6 @@
 package company.tap.gosellapi.internal.api.models;
 
+import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 
 import com.google.gson.annotations.Expose;
@@ -44,7 +45,7 @@ public final class Charge implements BaseResponse{
 
     @SerializedName("authenticate")
     @Expose
-    private Authenticate authenticate;
+    @Nullable private Authenticate authenticate;
 
     @SerializedName("redirect")
     @Expose
@@ -68,27 +69,27 @@ public final class Charge implements BaseResponse{
 
     @SerializedName("description")
     @Expose
-    private String description;
+    @Nullable private String description;
 
     @SerializedName("metadata")
     @Expose
-    private HashMap<String, String> metadata;
+    @Nullable private HashMap<String, String> metadata;
 
     @SerializedName("reference")
     @Expose
-    private Reference reference;
+    @Nullable private Reference reference;
 
     @SerializedName("receipt")
     @Expose
-    private Receipt receipt;
+    @Nullable private Receipt receipt;
 
     @SerializedName("response")
     @Expose
-    private Response response;
+    @Nullable private Response response;
 
     @SerializedName("statement_descriptor")
     @Expose
-    private String statementDescriptor;
+    @Nullable private String statementDescriptor;
 
     /**
      * @return Charge identifier.

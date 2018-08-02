@@ -1,13 +1,15 @@
 package company.tap.gosellapi.internal.api.models;
 
+import android.support.annotation.Nullable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Receipt {
+public final class Receipt {
 
     @SerializedName("id")
     @Expose
-    private String id;
+    @Nullable private String id;
 
     @SerializedName("email")
     @Expose

@@ -1,59 +1,62 @@
 package company.tap.gosellapi.internal.api.models;
 
+import android.support.annotation.Nullable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Reference {
+public final class Reference {
 
     @SerializedName("acquirer")
     @Expose
-    private String acquirer;
+    @Nullable private String acquirer;
 
     @SerializedName("gateway")
     @Expose
-    private String gateway;
+    @Nullable private String gateway;
 
     @SerializedName("payment")
     @Expose
-    private String payment;
+    @Nullable private String payment;
 
     @SerializedName("track")
     @Expose
-    private String track;
+    @Nullable private String track;
 
     @SerializedName("transaction")
     @Expose
-    private String transaction;
+    @Nullable private String transaction;
 
     @SerializedName("order")
     @Expose
-    private String order;
+    @Nullable private String order;
 
-    public String getAcquirer() {
+    @Nullable public String getAcquirer() {
         return acquirer;
     }
 
-    public String getGateway() {
+    @Nullable public String getGateway() {
         return gateway;
     }
 
-    public String getPayment() {
+    @Nullable public String getPayment() {
         return payment;
     }
 
-    public String getTrack() {
+    @Nullable public String getTrack() {
         return track;
     }
 
-    public String getTransaction() {
+    @Nullable public String getTransaction() {
         return transaction;
     }
 
-    public String getOrder() {
+    @Nullable public String getOrder() {
         return order;
     }
 
-    public Reference(String acquirer, String gateway, String payment, String track, String transaction, String order) {
+    public Reference(@Nullable String acquirer, @Nullable String gateway, @Nullable String payment, @Nullable String track, @Nullable String transaction, @Nullable String order) {
+
         this.acquirer = acquirer;
         this.gateway = gateway;
         this.payment = payment;

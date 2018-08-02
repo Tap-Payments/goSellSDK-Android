@@ -1,11 +1,14 @@
 package company.tap.gosellapi.internal.api.models;
 
+import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.net.URL;
+
+import company.tap.gosellapi.internal.api.enums.RedirectStatus;
 
 /**
  * Created by eugene.goltsev on 14.02.2018.
@@ -15,21 +18,22 @@ import java.net.URL;
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 public final class Redirect {
+
     @SerializedName("status")
     @Expose
-    private String status;
+    @Nullable private RedirectStatus status;
 
     @SerializedName("url")
     @Expose
-    private String url;
+    @Nullable private String url;
 
     @SerializedName("return_url")
     @Expose
-    private String returnURL;
+    @Nullable private String returnURL;
 
     @SerializedName("post_url")
     @Expose
-    private String postURL;
+    @Nullable private String postURL;
 
     public Redirect(String returnURL, String postURL) {
 
@@ -40,7 +44,7 @@ public final class Redirect {
     /**
      * @return The status of the payment, is either succeeded, pending, or failed
      */
-    public String getStatus() {
+    public RedirectStatus getStatus() {
         return status;
     }
 
