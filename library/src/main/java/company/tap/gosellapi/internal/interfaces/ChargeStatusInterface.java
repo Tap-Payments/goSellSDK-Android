@@ -2,7 +2,7 @@ package company.tap.gosellapi.internal.interfaces;
 
 import company.tap.gosellapi.internal.api.models.Charge;
 
-public interface CardRequestInterface {
+public interface ChargeStatusInterface {
     void onCardRequestSuccess(Charge response);
     void onCardRequestFailure(Charge response);
     void onCardRequestOTP(Charge response);
