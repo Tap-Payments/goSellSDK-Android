@@ -7,12 +7,9 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -21,24 +18,20 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import company.tap.gosellapi.R;
-import company.tap.gosellapi.internal.api.enums.ChargeStatus;
+import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.api.requests.PaymentOptionsRequest;
+import company.tap.gosellapi.internal.interfaces.ChargeObserver;
 import company.tap.gosellapi.internal.utils.Utils;
 import company.tap.gosellapi.internal.activities.GoSellPaymentActivity;
-import company.tap.gosellapi.internal.activities.WebPaymentActivity;
 import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.facade.GoSellAPI;
-import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
-import company.tap.gosellapi.internal.data_managers.PaymentResultToastManager;
-import company.tap.gosellapi.internal.fragments.GoSellOTPScreenFragment;
-import company.tap.gosellapi.internal.interfaces.ChargeStatusInterface;
 import company.tap.gosellapi.internal.interfaces.GoSellPaymentDataSource;
 import gotap.com.tapglkitandroid.gl.Views.TapLoadingView;
 
-public final class GoSellPayButtonLayout extends FrameLayout implements View.OnClickListener, ChargeStatusInterface {
+public final class GoSellPayButtonLayout extends FrameLayout implements View.OnClickListener {
 
     private static final int VALUE_IS_MISSING = -11111;
     private static final String TAG = "GoSellPayLayout TAG";
@@ -77,6 +70,9 @@ public final class GoSellPayButtonLayout extends FrameLayout implements View.OnC
     private TapLoadingView loadingView;
     private ImageView securityIconView;
 
+    private PaymentOption paymentOption;
+    private ChargeObserver observer;
+
     public GoSellPayButtonLayout(Context context) {
         super(context);
         init(context, null);
@@ -91,6 +87,14 @@ public final class GoSellPayButtonLayout extends FrameLayout implements View.OnC
 
         GlobalDataManager.getInstance().setDataSource(paymentDataSource);
         this.paymentDataSource = paymentDataSource;
+    }
+
+    public void setPaymentOption(PaymentOption paymentOption) {
+        this.paymentOption = paymentOption;
+    }
+
+    public void setObserver(ChargeObserver observer) {
+        this.observer = observer;
     }
 
     @Override
@@ -388,74 +392,8 @@ public final class GoSellPayButtonLayout extends FrameLayout implements View.OnC
 
     private void makePayment() {
         loadingView.start();
-        // SUCCESS CARD
-        String cardNumber = "4000000000000077";
-        String expMonth = "04";
-        String expYear = "35";
-        String cvv = "123";
 
-//        GlobalDataManager.getInstance().createTokenWithEncryptedCardData(cardNumber, expMonth, expYear, cvv, this);
-
-        // FAILURE CARD
-        String cardNumber2 = "4000000000000002";
-        String expMonth2 = "05";
-        String expYear2 = "35";
-        String cvv2 = "123";
-
-//        GlobalDataManager.getInstance().createTokenWithEncryptedCardData(cardNumber2, expMonth2, expYear2, cvv2, this);
-
-    }
-
-    @Override
-    public void onCardRequestSuccess(Charge response) {
-        loadingView.setForceStop(true);
-
-        Log.e("TEST", "SUCCESS");
-        // TODO: Check real charge status here.
-        PaymentResultToastManager.getInstance().showPaymentResult(getContext(), ChargeStatus.CAPTURED);
-        AppCompatActivity activity = (AppCompatActivity) getContext();
-        activity.finish();
-    }
-
-    @Override
-    public void onCardRequestFailure(Charge response) {
-        loadingView.setForceStop(true);
-
-        Log.e("TEST","FAILURE");
-        AppCompatActivity activity = (AppCompatActivity) getContext();
-        // TODO: Check real charge status here.
-        PaymentResultToastManager.getInstance().showPaymentResult(getContext(), ChargeStatus.FAILED);
-        activity.finish();
-    }
-
-    @Override
-    public void onCardRequestOTP(Charge response) {
-        loadingView.setForceStop(true);
-
-        Log.e("TEST", "OTP");
-        AppCompatActivity activity = (AppCompatActivity) getContext();
-
-        FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_out_top, R.anim.slide_out_bottom, R.anim.slide_in_top);
-        fragmentTransaction
-                .replace(R.id.paymentActivityFragmentContainer, new GoSellOTPScreenFragment())
-                .addToBackStack("")
-                .commit();
-    }
-
-    @Override
-    public void onCardRequestRedirect(Charge response) {
-        loadingView.setForceStop(true);
-
-        Log.e("TEST", "REDIRECT");
-        Intent intent = new Intent(getContext(), WebPaymentActivity.class);
-
-        intent.putExtra("id", response.getId());
-        intent.putExtra("URL", response.getRedirect().getUrl());
-        intent.putExtra("returnURL", response.getRedirect().getReturnURL());
-
-        AppCompatActivity activity = (AppCompatActivity) getContext();
-        final int WEB_PAYMENT_REQUEST_CODE = 125;
-        activity.startActivityForResult(intent, WEB_PAYMENT_REQUEST_CODE);
+        if(paymentOption == null && observer == null) return;
+        GlobalDataManager.getInstance().initiatePayment(observer, paymentOption);
     }
 }
