@@ -43,7 +43,7 @@ public class PaymentOptionsDataManager {
 
         void addressOnCardClicked();
 
-        void cardExpirationDateClicked();
+        void cardExpirationDateClicked(CardCredentialsViewModel model);
 
         void binNumberEntered(String binNumber);
     }
@@ -142,7 +142,12 @@ public class PaymentOptionsDataManager {
     public void binNumberEntered(String binNumber) { listener.binNumberEntered(binNumber); }
 
     public void cardExpirationDateClicked() {
-        listener.cardExpirationDateClicked();
+
+        CardCredentialsViewModel model = getCardCredentialsViewModel();
+        if (model != null) {
+
+            listener.cardExpirationDateClicked(model);
+        }
     }
 
     //endregion
@@ -213,14 +218,35 @@ public class PaymentOptionsDataManager {
     }
 
     public void cardScanned(CreditCard card) {
+
         CardCredentialsViewModel cardCredentialsViewModel = getCardCredentialsViewModel();
         if(cardCredentialsViewModel == null) return;
 
-        cardCredentialsViewModel.setCardNumber(card.cardNumber);
-        cardCredentialsViewModel.setExpirationYear(String.valueOf(card.expiryYear));
-        cardCredentialsViewModel.setExpirationMonth(String.valueOf(card.expiryMonth));
-        cardCredentialsViewModel.setCVVnumber(card.cvv);
-        cardCredentialsViewModel.setNameOnCard(card.cardholderName);
+        String cardNumber = card.cardNumber;
+        if ( cardNumber != null  && !cardNumber.isEmpty() ) {
+
+            cardCredentialsViewModel.setCardNumber(cardNumber);
+        }
+
+        int expirationMonth = card.expiryMonth;
+        int expirationYear = card.expiryYear;
+        if (expirationMonth != 0 && expirationYear != 0) {
+
+            cardCredentialsViewModel.setExpirationYear(String.valueOf(expirationYear));
+            cardCredentialsViewModel.setExpirationMonth(String.valueOf(expirationMonth));
+        }
+
+        String cvv = card.cvv;
+        if ( cvv != null && !cvv.isEmpty() ) {
+
+            cardCredentialsViewModel.setCVVnumber(cvv);
+        }
+
+        String cardholderName = card.cardholderName;
+        if ( cardholderName != null && !cardholderName.isEmpty() ) {
+
+            cardCredentialsViewModel.setNameOnCard(card.cardholderName);
+        }
 
         cardCredentialsViewModel.updateData();
     }

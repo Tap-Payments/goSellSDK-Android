@@ -21,9 +21,10 @@ import company.tap.gosellapi.internal.api.facade.GoSellAPI;
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 import company.tap.gosellapi.internal.api.models.CardRawData;
 import company.tap.gosellapi.internal.api.responses.BINLookupResponse;
-import company.tap.gosellapi.internal.custom_views.TapDialog;
+import company.tap.gosellapi.internal.custom_views.DatePicker;
 import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
+import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.CardCredentialsViewModel;
 import company.tap.gosellapi.internal.fragments.GoSellPaymentOptionsFragment;
 import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
@@ -97,11 +98,28 @@ public class GoSellPaymentActivity
     }
 
     @Override
-    public void cardExpirationDateClicked() {
+    public void cardExpirationDateClicked(CardCredentialsViewModel model) {
 
-        TapDialog.expireDate(this, new TapDialog.TapDialogListener() {
+        String selectedMonth = null;
+        String selectedYear = null;
+
+
+        String modelExpirationMonth = model.getExpirationMonth();
+        if (modelExpirationMonth != null && !modelExpirationMonth.isEmpty()) {
+
+            selectedMonth = modelExpirationMonth;
+        }
+
+        String modelExpirationYear = model.getExpirationYear();
+        if (modelExpirationYear != null && !modelExpirationYear.isEmpty()) {
+
+            selectedYear = modelExpirationYear;
+        }
+
+        DatePicker.showInContext(this, selectedMonth, selectedYear, new DatePicker.DatePickerListener() {
             @Override
-            public void expirationDateSelected(String month, String year) {
+            public void dateSelected(String month, String year) {
+
                 dataSource.cardExpirationDateSelected(month, year);
             }
         });
