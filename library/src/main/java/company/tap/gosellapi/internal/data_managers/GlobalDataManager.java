@@ -9,6 +9,7 @@ import java.util.HashMap;
 import company.tap.gosellapi.internal.Constants;
 import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
+import company.tap.gosellapi.internal.api.enums.AuthenticationType;
 import company.tap.gosellapi.internal.api.enums.Permission;
 import company.tap.gosellapi.internal.api.facade.GoSellAPI;
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
@@ -30,10 +31,12 @@ import company.tap.gosellapi.internal.api.responses.BINLookupResponse;
 import company.tap.gosellapi.internal.api.responses.SDKSettings;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
+import company.tap.gosellapi.internal.interfaces.ChargeObservable;
+import company.tap.gosellapi.internal.interfaces.ChargeObserver;
 import company.tap.gosellapi.internal.interfaces.GoSellPaymentDataSource;
 import company.tap.gosellapi.internal.utils.AmountCalculator;
 
-public class GlobalDataManager {
+public class GlobalDataManager implements APIRequestCallback<Charge>, ChargeObservable {
 
     private GoSellPaymentDataSource dataSource;
 
@@ -42,8 +45,12 @@ public class GlobalDataManager {
     private PaymentOptionsDataManager paymentOptionsDataManager;
     private BINLookupResponse binLookupResponse;
 
+    private String currentChargeID;
+    private ArrayList<ChargeObserver> observers;
+
     private GlobalDataManager() {
 
+        observers = new ArrayList<>();
     }
 
     private static class SingletonHolder {
@@ -98,7 +105,33 @@ public class GlobalDataManager {
         return paymentOptionsDataManager;
     }
 
-    // Managing requests
+    public void initiatePayment(ChargeObserver observer, PaymentOption option) {
+        addObserver(observer);
+
+        Log.e("OkHttp", "INITIATE PAYMENT");
+
+        switch (option.getPaymentType()) {
+            case WEB:
+                handleWebPayment(option);
+                break;
+
+            case CARD:
+                handleCardPayment(option);
+                break;
+        }
+    }
+
+    private void handleCardPayment(PaymentOption option) {
+
+    }
+
+    private void handleWebPayment(PaymentOption option) {
+
+        Log.e("OkHttp", "HANDLE WEB PAYMENT");
+        Source source = new Source(option.getSourceId());
+        callChargeAPI(source, option, null);
+    }
+
     public void createTokenWithEncryptedCardData(String cardNumber, String expMonth, String expYear, String cvv, String nameOnCard, final boolean saveCard, final PaymentOption paymentOption, final APIRequestCallback<Charge> callback) {
 
         String encryptionKey = GlobalDataManager.getInstance().getSDKSettings().getData().getEncryptionKey();
@@ -115,7 +148,7 @@ public class GlobalDataManager {
             public void onSuccess(int responseCode, Token serializedResponse) {
 
                 Source source = new Source(serializedResponse.getId());
-                callChargeAPI(source, paymentOption, saveCard, callback);
+                callChargeAPI(source, paymentOption, saveCard);
             }
 
             @Override
@@ -127,7 +160,9 @@ public class GlobalDataManager {
         GoSellAPI.getInstance().createTokenWithEncryptedCard(request, tokenRequestCallback);
     }
 
-    public void callChargeAPI(Source source, PaymentOption paymentOption, @Nullable Boolean saveCard, APIRequestCallback<Charge> callback) {
+    private void callChargeAPI(Source source, PaymentOption paymentOption, @Nullable Boolean saveCard) {
+
+        Log.e("OkHttp", "CALL CHARGE API");
 
         saveCard = saveCard == null ? false : saveCard;
 
@@ -166,11 +201,112 @@ public class GlobalDataManager {
                 receiptSettings
         );
 
-        GoSellAPI.getInstance().createCharge(request, callback);
+        GoSellAPI.getInstance().createCharge(request, this);
+    }
+
+    public void retrieveChargeAPI() {
+
+        Log.e("OkHttp", "RETRIEVE CHARGE API");
+        if (currentChargeID.isEmpty()) return;
+
+        Log.e("OkHttp", "CURRENCT CHARGE ID " + currentChargeID);
+        GoSellAPI.getInstance().retrieveCharge(currentChargeID, this);
+    }
+
+    @Override
+    public void onSuccess(int responseCode, Charge serializedResponse) {
+        Log.e("OkHttp", "ON SUCCESS");
+        currentChargeID = serializedResponse.getId();
+
+        handleResponse(serializedResponse);
+    }
+
+    @Override
+    public void onFailure(GoSellError errorDetails) {
+        Log.e("OkHttp", "ON FAILURE");
     }
 
     private boolean chargeRequires3DSecure() {
 
         return !this.getSDKSettings().getData().getPermissions().contains(Permission.THREEDSECURE_DISABLED);
+    }
+
+    private void handleResponse(Charge response) {
+
+        Log.e("OkHttp", "RESPONSE STATUS " + response.getStatus());
+
+        switch (response.getStatus()) {
+
+            case INITIATED: // Charge initiated. Redirect or authentication required.
+                checkInitiatedStatus(response);
+                break;
+
+            case IN_PROGRESS: // Charge status is unknown. Treat as failure.
+            case ABANDONED: // Charge abandoned. Treat as failure.
+            case CANCELLED: // Charge is cancelled. Treat as failure.
+            case FAILED: // Charge is failed. Treat as failure.
+            case DECLINED: // Charge is declined. Treat as failure.
+            case RESTRICTED: // Charge is restricted. Treat as failure.
+            case VOID: // Charge is voided. Treat as failure.
+
+                notifyObserversResponseFailed();
+                break;
+
+            case CAPTURED: // Charge is successful. Treat as success.
+
+                notifyObserversResponseSucceed();
+                break;
+        }
+    }
+
+    private void checkInitiatedStatus(Charge response) {
+
+        if (response.getAuthenticate() == null) return;
+
+        if (response.getAuthenticate().getType() == AuthenticationType.OTP) {
+
+            notifyObserversOtpScreenNeedToShown();
+        } else {
+
+            notifyObserversWebScreenNeedToShown();
+        }
+    }
+
+    @Override
+    public void addObserver(ChargeObserver observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void removeObserver(ChargeObserver observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObserversOtpScreenNeedToShown() {
+        for (ChargeObserver observer : observers) {
+            observer.otpScreenNeedToShown();
+        }
+    }
+
+    @Override
+    public void notifyObserversWebScreenNeedToShown() {
+        for (ChargeObserver observer : observers) {
+            observer.webScreenNeedToShown();
+        }
+    }
+
+    @Override
+    public void notifyObserversResponseSucceed() {
+        for (ChargeObserver observer : observers) {
+            observer.responseSucceed();
+        }
+    }
+
+    @Override
+    public void notifyObserversResponseFailed() {
+        for (ChargeObserver observer : observers) {
+            observer.responseFailed();
+        }
     }
 }

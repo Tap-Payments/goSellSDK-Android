@@ -34,11 +34,11 @@ import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
 import company.tap.gosellapi.internal.data_managers.PaymentResultToastManager;
 import company.tap.gosellapi.internal.fragments.GoSellOTPScreenFragment;
-import company.tap.gosellapi.internal.interfaces.CardRequestInterface;
+import company.tap.gosellapi.internal.interfaces.ChargeStatusInterface;
 import company.tap.gosellapi.internal.interfaces.GoSellPaymentDataSource;
 import gotap.com.tapglkitandroid.gl.Views.TapLoadingView;
 
-public final class GoSellPayButtonLayout extends FrameLayout implements View.OnClickListener, CardRequestInterface {
+public final class GoSellPayButtonLayout extends FrameLayout implements View.OnClickListener, ChargeStatusInterface {
 
     private static final int VALUE_IS_MISSING = -11111;
     private static final String TAG = "GoSellPayLayout TAG";
