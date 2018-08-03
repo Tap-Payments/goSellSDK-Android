@@ -74,6 +74,11 @@ public class WebPaymentActivity extends BaseActionBarActivity implements ChargeO
 
     }
 
+    private void finishActivityWithResultCodeOK() {
+        setResult(RESULT_OK);
+        finish();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -109,6 +114,7 @@ public class WebPaymentActivity extends BaseActionBarActivity implements ChargeO
 
     @Override
     public void otpScreenNeedToShown() {
+
         Log.e("OkHttp", "OTP NEED TO SHOWN");
     }
 
