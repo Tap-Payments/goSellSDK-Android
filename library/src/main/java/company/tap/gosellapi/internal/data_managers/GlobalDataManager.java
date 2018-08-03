@@ -9,6 +9,7 @@ import java.util.HashMap;
 import company.tap.gosellapi.internal.Constants;
 import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
+import company.tap.gosellapi.internal.api.enums.AuthenticationStatus;
 import company.tap.gosellapi.internal.api.enums.AuthenticationType;
 import company.tap.gosellapi.internal.api.enums.Permission;
 import company.tap.gosellapi.internal.api.facade.GoSellAPI;
@@ -218,6 +219,10 @@ public class GlobalDataManager implements APIRequestCallback<Charge>, ChargeObse
         Log.e("OkHttp", "ON SUCCESS");
         currentChargeID = serializedResponse.getId();
 
+        for (ChargeObserver observer : observers) {
+            observer.dataAcquired(serializedResponse);
+        }
+
         handleResponse(serializedResponse);
     }
 
@@ -225,6 +230,20 @@ public class GlobalDataManager implements APIRequestCallback<Charge>, ChargeObse
     public void onFailure(GoSellError errorDetails) {
         Log.e("OkHttp", "ON FAILURE");
     }
+
+    private final APIRequestCallback<Charge> chargeResponseCallback = new APIRequestCallback<Charge>() {
+
+        @Override
+        public void onSuccess(int responseCode, Charge serializedResponse) {
+
+
+        }
+
+        @Override
+        public void onFailure(GoSellError errorDetails) {
+
+        }
+    };
 
     private boolean chargeRequires3DSecure() {
 
@@ -261,12 +280,23 @@ public class GlobalDataManager implements APIRequestCallback<Charge>, ChargeObse
 
     private void checkInitiatedStatus(Charge response) {
 
-        if (response.getAuthenticate() == null) return;
+        if ( response.getAuthenticate() != null && response.getAuthenticate().getStatus() == AuthenticationStatus.INITIATED ) {
 
-        if (response.getAuthenticate().getType() == AuthenticationType.OTP) {
+            switch (response.getAuthenticate().getType()) {
 
-            notifyObserversOtpScreenNeedToShown();
-        } else {
+                case OTP:
+
+                    notifyObserversOtpScreenNeedToShown();
+
+                case BIOMETRICS:
+
+                    break;
+            }
+            return;
+        }
+
+        String paymentURL = response.getRedirect().getUrl();
+        if (paymentURL != null ) {
 
             notifyObserversWebScreenNeedToShown();
         }
