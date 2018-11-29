@@ -26,7 +26,7 @@ public final class Customer implements BaseResponse {
     @Expose
     private long created;
 
-    @SerializedName("livemode")
+    @SerializedName("live_mode")
     @Expose
     private boolean livemode;
 
