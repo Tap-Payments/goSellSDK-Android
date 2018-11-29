@@ -18,7 +18,7 @@ import company.tap.gosellapi.internal.api.responses.BaseResponse;
  */
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-public final class Charge implements BaseResponse{
+public class Charge implements BaseResponse{
     @SerializedName("id")
     @Expose
     private String id;
@@ -33,7 +33,7 @@ public final class Charge implements BaseResponse{
 
     @SerializedName("customer")
     @Expose
-    private CustomerInfo customer;
+    private Customer customer;
 
     @SerializedName("live_mode")
     @Expose
@@ -49,7 +49,11 @@ public final class Charge implements BaseResponse{
 
     @SerializedName("redirect")
     @Expose
-    private Redirect redirect;
+    private TrackingURL redirect;
+
+    @SerializedName("post")
+    @Expose
+    @Nullable private TrackingURL post;
 
     @SerializedName("source")
     @Expose
@@ -115,7 +119,7 @@ public final class Charge implements BaseResponse{
     /**
      * @return Customer information.
      */
-    public CustomerInfo getCustomer() {
+    public Customer getCustomer() {
         return customer;
     }
 
@@ -143,8 +147,13 @@ public final class Charge implements BaseResponse{
     /**
      * @return Charge redirect.
      */
-    public Redirect getRedirect() {
+    public TrackingURL getRedirect() {
         return redirect;
+    }
+
+    public @Nullable TrackingURL getPost() {
+
+        return post;
     }
 
     /**

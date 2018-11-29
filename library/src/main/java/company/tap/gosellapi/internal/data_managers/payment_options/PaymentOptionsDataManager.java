@@ -1,23 +1,34 @@
 package company.tap.gosellapi.internal.data_managers.payment_options;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import company.tap.gosellapi.internal.Constants;
+import company.tap.gosellapi.internal.api.enums.PaymentType;
+import company.tap.gosellapi.internal.api.enums.Permission;
+import company.tap.gosellapi.internal.api.interfaces.CurrenciesSupport;
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 import company.tap.gosellapi.internal.api.models.CardRawData;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.api.models.SavedCard;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
-import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.CardCredentialsViewModel;
-import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.CurrencyViewModel;
-import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.EmptyViewModel;
-import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.PaymentOptionsBaseViewModel;
-import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.RecentSectionViewModel;
-import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.SaveCardViewModel;
-import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.WebPaymentViewModel;
+import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
+import company.tap.gosellapi.internal.data_managers.payment_options.view_models.CardCredentialsViewModel;
+import company.tap.gosellapi.internal.data_managers.payment_options.view_models.CurrencyViewModel;
+import company.tap.gosellapi.internal.data_managers.payment_options.view_models.EmptyViewModel;
+import company.tap.gosellapi.internal.data_managers.payment_options.view_models.GroupViewModel;
+import company.tap.gosellapi.internal.data_managers.payment_options.view_models.PaymentOptionViewModel;
+import company.tap.gosellapi.internal.data_managers.payment_options.view_models.RecentSectionViewModel;
+import company.tap.gosellapi.internal.data_managers.payment_options.view_models.WebPaymentViewModel;
+import company.tap.gosellapi.internal.data_managers.payment_options.view_models_data.CardCredentialsViewModelData;
+import company.tap.gosellapi.internal.data_managers.payment_options.view_models_data.CurrencyViewModelData;
+import company.tap.gosellapi.internal.data_managers.payment_options.view_models_data.EmptyViewModelData;
+import company.tap.gosellapi.internal.utils.CompoundFilter;
+import company.tap.gosellapi.internal.utils.Utils;
 import io.card.payment.CreditCard;
 
 public class PaymentOptionsDataManager {
+
     private int availableHeight;
     private int saveCardHeight;
     private int cardSwitchHeight;
@@ -29,11 +40,12 @@ public class PaymentOptionsDataManager {
 
     //outer interface (for fragment, containing recyclerView)
     public interface PaymentOptionsDataListener {
+
         void startCurrencySelection(ArrayList<AmountedCurrency> currencies, AmountedCurrency selectedCurrency);
 
         void startOTP();
 
-        void startWebPayment();
+        void startWebPayment(WebPaymentViewModel model);
 
         void startScanCard();
 
@@ -51,30 +63,51 @@ public class PaymentOptionsDataManager {
     private PaymentOptionsDataListener listener;
 
     private PaymentOptionsResponse paymentOptionsResponse;
-    private ArrayList<PaymentOptionsBaseViewModel> dataList;
+    private ViewModelsHandler modelsHandler;
+
+    private ArrayList<PaymentOptionViewModel> viewModels;
+    private ArrayList<PaymentOptionViewModel> visibleViewModels;
+    private String lastFilteredCurrency;
+
+    private ViewModelsHandler getModelsHandler() { return modelsHandler; }
+
+    private ArrayList<PaymentOptionViewModel> getViewModels() {
+
+        return viewModels;
+    }
+
+    private ArrayList<PaymentOptionViewModel> getVisibleViewModels() {
+
+        return visibleViewModels;
+    }
+
     private int focusedPosition = Constants.NO_FOCUS;
 
     public PaymentOptionsDataManager(PaymentOptionsResponse paymentOptionsResponse) {
+
         this.paymentOptionsResponse = paymentOptionsResponse;
-        new DataFiller().fill();
+        this.modelsHandler = new ViewModelsHandler();
+
+        getModelsHandler().generateViewModels();
+        getModelsHandler().filterViewModels(getPaymentOptionsResponse().getCurrency());
     }
 
     //region data for adapter
     public int getSize() {
-        return dataList.size();
+        return getVisibleViewModels().size();
     }
 
     public AmountedCurrency getSelectedCurrency() {
 
         if(this.selectedCurrency == null) {
 
-           this.selectedCurrency = defaultAmountedCurrency();
+           this.selectedCurrency = getTransactionCurrency();
         }
 
         return selectedCurrency;
     }
 
-    private AmountedCurrency defaultAmountedCurrency() {
+    private AmountedCurrency getTransactionCurrency() {
 
         String currencyCode = paymentOptionsResponse.getCurrency();
 
@@ -87,27 +120,39 @@ public class PaymentOptionsDataManager {
     }
 
     public void setSelectedCurrency(AmountedCurrency selectedCurrency) {
+
         this.selectedCurrency = selectedCurrency;
+
+        CurrencyViewModel currencyViewModel = getModelsHandler().findCurrencyModel();
+        CurrencyViewModelData currencyViewModelData = currencyViewModel.getData();
+        currencyViewModelData.setSelectedCurrency(selectedCurrency);
+        currencyViewModel.setData(currencyViewModelData);
     }
 
     public int getItemViewType(int position) {
-        return dataList.get(position).getModelType();
+
+        return getViewModel(position).getType().getViewType();
     }
 
-    public PaymentOptionsBaseViewModel getViewModel(int position) {
-        return dataList.get(position);
+    public PaymentOptionViewModel getViewModel(int position) {
+
+        return getVisibleViewModels().get(position);
     }
 
     public PaymentOptionsDataManager setListener(PaymentOptionsDataListener listener) {
+
         this.listener = listener;
         return this;
     }
     //endregion
 
     //region callback actions from child viewModels
-    public void currencyHolderClicked(int position, ArrayList<AmountedCurrency> currencies) {
-        CurrencySectionData currencySectionData = ((CurrencyViewModel) dataList.get(position)).getData();
-        listener.startCurrencySelection(currencies, currencySectionData.getSelectedCurrency());
+    public void currencyHolderClicked(int position) {
+
+        ArrayList<AmountedCurrency> currencies = getPaymentOptionsResponse().getSupportedCurrencies();
+
+        CurrencyViewModelData currencyViewModelData = ((CurrencyViewModel) viewModels.get(position)).getData();
+        listener.startCurrencySelection(currencies, currencyViewModelData.getSelectedCurrency());
     }
 
     public void recentPaymentItemClicked(int position, SavedCard recentItem) {
@@ -115,9 +160,10 @@ public class PaymentOptionsDataManager {
         listener.startOTP();
     }
 
-    public void webPaymentSystemViewHolderClicked(int position) {
+    public void webPaymentSystemViewHolderClicked(WebPaymentViewModel sender, int position) {
+
         setFocused(position);
-        listener.startWebPayment();
+        listener.startWebPayment(sender);
     }
 
     public void cardScannerButtonClicked() {
@@ -132,6 +178,7 @@ public class PaymentOptionsDataManager {
     }
 
     public void cardDetailsFilled(boolean isFilled, CardRawData cardRawData) {
+
         listener.cardDetailsFilled(isFilled, cardRawData);
     }
 
@@ -143,7 +190,7 @@ public class PaymentOptionsDataManager {
 
     public void cardExpirationDateClicked() {
 
-        CardCredentialsViewModel model = getCardCredentialsViewModel();
+        CardCredentialsViewModel model = getModelsHandler().findCardPaymentModel();
         if (model != null) {
 
             listener.cardExpirationDateClicked(model);
@@ -153,62 +200,68 @@ public class PaymentOptionsDataManager {
     //endregion
 
     //region update actions (from activity mainly)
-    private PaymentOptionsBaseViewModel getViewModelByType(PaymentType type) {
-        for (PaymentOptionsBaseViewModel viewModel : dataList) {
-            if (viewModel.getModelType() == type.getViewType()) {
-                return viewModel;
-            }
-        }
-
-        return null;
-    }
 
     public void setAvailableHeight(int availableHeight) {
+
         this.availableHeight = availableHeight;
         applyEmptyHolderHeight();
     }
 
     public void setCardSwitchHeight(int cardSwitchHeight) {
+
         this.cardSwitchHeight = cardSwitchHeight;
         applyEmptyHolderHeight();
     }
 
     public void setSaveCardHeight(int neededHeight) {
+
         saveCardHeight = neededHeight;
         applyEmptyHolderHeight();
     }
 
     private void applyEmptyHolderHeight() {
-        if (availableHeight != 0 && saveCardHeight != 0 && cardSwitchHeight != 0) {
-            int emptyHolderHeight = availableHeight - saveCardHeight - cardSwitchHeight;
 
-            EmptyViewModel emptyViewModel = getEmptyViewModel();
-            if (emptyViewModel != null) {
-                emptyViewModel.setSpecifiedHeight(emptyHolderHeight > 0 ? emptyHolderHeight : 0);
-            }
-        }
+//        if ( availableHeight == 0 || saveCardHeight == 0 || cardSwitchHeight == 0 ) { return; }
+//
+//        int emptyHolderHeight = availableHeight - saveCardHeight - cardSwitchHeight;
+//
+//
+//
+//
+//            EmptyViewModel emptyViewModel = getEmptyViewModel();
+//            if (emptyViewModel != null) {
+//                emptyViewModel.setSpecifiedHeight(emptyHolderHeight > 0 ? emptyHolderHeight : 0);
+//            }
     }
 
-    public void currencySelectedByUser(AmountedCurrency userChoiceCurrency) {
-        selectedCurrency = userChoiceCurrency;
+    public void currencySelectedByUser(AmountedCurrency selectedCurrency) {
+
+        this.selectedCurrency = selectedCurrency;
 
         //update currency section
-        CurrencyViewModel currencyViewModel = getCurrencyViewModel();
+        CurrencyViewModel currencyViewModel = getModelsHandler().findCurrencyModel();
         if (currencyViewModel == null) return;
-        CurrencySectionData currencySectionData = currencyViewModel.getData();
 
-        currencySectionData.setUserChoiceData(userChoiceCurrency);
+        CurrencyViewModelData currencyViewModelData = currencyViewModel.getData();
+        currencyViewModelData.setSelectedCurrency(selectedCurrency);
         currencyViewModel.updateData();
 
         //filter payment options
-        CardCredentialsViewModel cardCredentialsViewModel = getCardCredentialsViewModel();
+        CardCredentialsViewModel cardCredentialsViewModel = getModelsHandler().findCardPaymentModel();
         if (cardCredentialsViewModel == null) return;
 
-        cardCredentialsViewModel.filterByCurrency(userChoiceCurrency.getCurrency());
+        ArrayList<PaymentOption> paymentOptions = getPaymentOptionsResponse().getPaymentOptions();
+        paymentOptions = Utils.List.filter(paymentOptions, getModelsHandler().<PaymentOption>getCurrenciesFilter(selectedCurrency.getCurrency()));
+
+        CardCredentialsViewModelData cardCredentialsModelData = cardCredentialsViewModel.getData();
+        cardCredentialsModelData.setPaymentOptions(paymentOptions);
+
+        cardCredentialsViewModel.updateData();
     }
 
     public void cardExpirationDateSelected(String month, String year) {
-        CardCredentialsViewModel cardCredentialsViewModel = getCardCredentialsViewModel();
+
+        CardCredentialsViewModel cardCredentialsViewModel = getModelsHandler().findCardPaymentModel();
         if(cardCredentialsViewModel == null) return;
 
         cardCredentialsViewModel.setExpirationMonth(month);
@@ -219,7 +272,7 @@ public class PaymentOptionsDataManager {
 
     public void cardScanned(CreditCard card) {
 
-        CardCredentialsViewModel cardCredentialsViewModel = getCardCredentialsViewModel();
+        CardCredentialsViewModel cardCredentialsViewModel = getModelsHandler().findCardPaymentModel();
         if(cardCredentialsViewModel == null) return;
 
         String cardNumber = card.cardNumber;
@@ -253,68 +306,28 @@ public class PaymentOptionsDataManager {
 
     public void showAddressOnCardCell(boolean isShow) {
 
-        CardCredentialsViewModel cardCredentialsViewModel = getCardCredentialsViewModel();
+        CardCredentialsViewModel cardCredentialsViewModel = getModelsHandler().findCardPaymentModel();
         if(cardCredentialsViewModel == null) return;
 
         cardCredentialsViewModel.showAddressOnCardCell(isShow);
         cardCredentialsViewModel.updateData();
     }
 
-    private void displaySaveCard(boolean show) {
-        SaveCardViewModel saveCardViewModel = getSaveCardViewModel();
-        if (saveCardViewModel != null) {
-            saveCardViewModel.displaySaveCard(show);
-        }
-
-        EmptyViewModel emptyViewModel = getEmptyViewModel();
-        if (emptyViewModel != null) {
-            emptyViewModel.displayEmpty(show);
-        }
-    }
-
-    private CurrencyViewModel getCurrencyViewModel() {
-        PaymentOptionsBaseViewModel baseViewModel = getViewModelByType(PaymentType.CURRENCY);
-        if (baseViewModel == null || !(baseViewModel instanceof CurrencyViewModel)) return null;
-
-        return (CurrencyViewModel) baseViewModel;
-    }
-
-    private CardCredentialsViewModel getCardCredentialsViewModel() {
-        PaymentOptionsBaseViewModel baseViewModel = getViewModelByType(PaymentType.CARD);
-        if (baseViewModel == null || !(baseViewModel instanceof CardCredentialsViewModel))
-            return null;
-
-        return (CardCredentialsViewModel) baseViewModel;
-    }
-
-    private SaveCardViewModel getSaveCardViewModel() {
-        PaymentOptionsBaseViewModel baseViewModel = getViewModelByType(PaymentType.SAVE_CARD);
-        if (baseViewModel == null || !(baseViewModel instanceof SaveCardViewModel)) return null;
-
-        return (SaveCardViewModel) baseViewModel;
-    }
-
-    private EmptyViewModel getEmptyViewModel() {
-        PaymentOptionsBaseViewModel baseViewModel = getViewModelByType(PaymentType.EMPTY);
-        if (baseViewModel == null || !(baseViewModel instanceof EmptyViewModel)) return null;
-
-        return (EmptyViewModel) baseViewModel;
-    }
     //endregion
 
     //region focus interaction between holders
     private void setFocused(int position) {
         if (focusedPosition != Constants.NO_FOCUS) {
-            dataList.get(focusedPosition).setViewFocused(false);
+            viewModels.get(focusedPosition).setViewFocused(false);
         }
 
         focusedPosition = position;
-        dataList.get(focusedPosition).setViewFocused(true);
+        viewModels.get(focusedPosition).setViewFocused(true);
     }
 
     public void clearFocus() {
         if (focusedPosition != Constants.NO_FOCUS) {
-            dataList.get(focusedPosition).setViewFocused(false);
+            viewModels.get(focusedPosition).setViewFocused(false);
         }
         focusedPosition = Constants.NO_FOCUS;
     }
@@ -326,97 +339,333 @@ public class PaymentOptionsDataManager {
 
     //save/restore state
     public void saveState() {
-        for (PaymentOptionsBaseViewModel viewModel : dataList) {
+
+        for (PaymentOptionViewModel viewModel : viewModels) {
             viewModel.saveState();
         }
     }
 
-    private final class DataFiller {
-        private void fill() {
-            dataList = new ArrayList<>();
-            for (PaymentType paymentType : PaymentType.values()) {
-                switch (paymentType) {
-                    case CURRENCY:
-                        addCurrencies();
-                        break;
-                    case RECENT:
-                        addRecent();
-                        break;
-                    case WEB:
-                        addWeb();
-                        break;
-                    case CARD:
-                        addCard();
-                        break;
-                    case SAVE_CARD:
-                        addSaveCard();
-                        break;
-                    case EMPTY:
-                        addEmpty();
-                        break;
-                }
-            }
-        }
+    private final class ViewModelsHandler {
 
-        private void addCurrencies() {
-            ArrayList<AmountedCurrency> supportedCurrencies = paymentOptionsResponse.getSupportedCurrencies();
-            if (supportedCurrencies != null && supportedCurrencies.size() > 0) {
-                String initialCurrency = paymentOptionsResponse.getCurrency();
-                CurrencySectionData currencySectionData = new CurrencySectionData(supportedCurrencies, initialCurrency);
+        private void generateViewModels() {
 
-                dataList.add(new CurrencyViewModel(PaymentOptionsDataManager.this, currencySectionData, PaymentType.CURRENCY.getViewType()));
-            }
-        }
+            ArrayList<PaymentOptionViewModel> result = new ArrayList<>();
 
-        private void addRecent() {
+            CurrencyViewModel currencyViewModel = generateCurrencyModel();
+            result.add(currencyViewModel);
 
-            ArrayList<SavedCard> recentCards = paymentOptionsResponse.getCards();
+            ArrayList<PaymentOption> paymentOptions     = getPaymentOptionsResponse().getPaymentOptions();
+            ArrayList<PaymentOption> webPaymentOptions  = Utils.List.filter(paymentOptions, getPaymentOptionsFilter(PaymentType.WEB));
+            ArrayList<PaymentOption> cardPaymentOptions = Utils.List.filter(paymentOptions, getPaymentOptionsFilter(PaymentType.CARD));
 
-            if (recentCards != null && recentCards.size() > 0) {
-                dataList.add(new RecentSectionViewModel(PaymentOptionsDataManager.this, recentCards, PaymentType.RECENT.getViewType()));
-            }
-        }
+            ArrayList<SavedCard> savedCards = getPaymentOptionsResponse().getCards();
 
-        private void addWeb() {
+            boolean hasSavedCards           = savedCards.size() > 0;
+            boolean hasWebPaymentOptions    = webPaymentOptions.size() > 0;
+            boolean hasCardPaymentOptions   = cardPaymentOptions.size() > 0;
+            boolean hasOtherPaymentOptions  = hasWebPaymentOptions || hasCardPaymentOptions;
+            boolean displaysGroupTitles     = hasSavedCards && hasOtherPaymentOptions;
 
-            ArrayList<PaymentOption> paymentOptions = paymentOptionsResponse.getPaymentOptions();
+            if ( displaysGroupTitles ) {
 
-            if (paymentOptions == null || paymentOptions.size() == 0) {
-                return;
+                GroupViewModel recentGroupModel = generateGroupModel(Constants.recentGroupTitle);
+                result.add(recentGroupModel);
             }
 
-            for (PaymentOption paymentOption : paymentOptions) {
-                if (paymentOption.getPaymentType() == company.tap.gosellapi.internal.api.enums.PaymentType.WEB) {
-                    dataList.add(new WebPaymentViewModel(PaymentOptionsDataManager.this, paymentOption, PaymentType.WEB.getViewType()));
-                }
-            }
-        }
+            if ( hasSavedCards ) {
 
-        private void addCard() {
-            ArrayList<PaymentOption> paymentOptions = paymentOptionsResponse.getPaymentOptions();
-            ArrayList<PaymentOption> paymentOptionsCards = new ArrayList<>();
-
-            if (paymentOptions == null || paymentOptions.size() == 0) {
-                return;
+                RecentSectionViewModel recentCardsModel = generateSavedCardsModel(savedCards);
+                result.add(recentCardsModel);
             }
 
-            for (PaymentOption paymentOption : paymentOptions) {
-                if (paymentOption.getPaymentType().equals(company.tap.gosellapi.internal.api.enums.PaymentType.CARD)) {
-                    paymentOptionsCards.add(paymentOption);
+            if ( displaysGroupTitles ) {
+
+                GroupViewModel othersGroupModel = generateGroupModel(Constants.othersGroupTitle);
+                result.add(othersGroupModel);
+            }
+
+            if ( hasWebPaymentOptions ) {
+
+                EmptyViewModel emptyModel = generateEmptyModel(Constants.spaceBeforeWebPaymentOptionsIdentifier);
+                result.add(emptyModel);
+
+                for ( PaymentOption paymentOption : webPaymentOptions ) {
+
+                    WebPaymentViewModel webPaymentModel = generateWebPaymentModel(paymentOption);
+                    result.add(webPaymentModel);
                 }
             }
 
-            if (paymentOptionsCards.size() > 0) {
-                dataList.add(new CardCredentialsViewModel(PaymentOptionsDataManager.this, paymentOptionsCards, PaymentType.CARD.getViewType()));
+            if ( hasCardPaymentOptions ) {
+
+                EmptyViewModel emptyModel = generateEmptyModel(Constants.spaceBetweenWebAndCardOptionsIdentifier);
+                result.add(emptyModel);
+
+                CardCredentialsViewModel cardPaymentModel = generateCardPaymentModel(cardPaymentOptions);
+                result.add(cardPaymentModel);
             }
+
+            viewModels = result;
         }
 
-        private void addSaveCard() {
-            dataList.add(new SaveCardViewModel(PaymentOptionsDataManager.this, null, PaymentType.SAVE_CARD.getViewType()));
+        private void filterViewModels(String currency) {
+
+            if ( lastFilteredCurrency != null && lastFilteredCurrency.equals(currency) ) { return; }
+
+            ArrayList<PaymentOptionViewModel> result = new ArrayList<>();
+
+            CurrencyViewModel model = findCurrencyModel();
+            result.add(model);
+
+            ArrayList<SavedCard> savedCards = filterByCurrenciesAndSortList(getPaymentOptionsResponse().getCards(), currency);
+
+            ArrayList<PaymentOption> paymentOptions = getPaymentOptionsResponse().getPaymentOptions();
+
+            ArrayList<PaymentOption> webPaymentOptions = filteredByPaymentTypeAndCurrencyAndSortedList(paymentOptions, PaymentType.WEB, currency);
+            ArrayList<PaymentOption> cardPaymentOptions = filteredByPaymentTypeAndCurrencyAndSortedList(paymentOptions, PaymentType.CARD, currency);
+
+            boolean hasSavedCards           = savedCards.size() > 0;
+            boolean hasWebPaymentOptions    = webPaymentOptions.size() > 0;
+            boolean hasCardPaymentOptions   = cardPaymentOptions.size() > 0;
+            boolean hasOtherPaymentOptions  = hasWebPaymentOptions || hasCardPaymentOptions;
+            boolean displaysGroupTitles     = hasSavedCards && hasOtherPaymentOptions;
+
+            if ( displaysGroupTitles ) {
+
+                GroupViewModel recentGroupModel = findGroupModel(Constants.recentGroupTitle);
+                result.add(recentGroupModel);
+            }
+
+            if ( hasSavedCards ) {
+
+                RecentSectionViewModel savedCardsModel = findSavedCardsModel();
+                result.add(savedCardsModel);
+            }
+
+            if ( displaysGroupTitles ) {
+
+                GroupViewModel recentGroupModel = findGroupModel(Constants.othersGroupTitle);
+                result.add(recentGroupModel);
+            }
+
+            if ( hasWebPaymentOptions ) {
+
+                if ( !hasSavedCards ) {
+
+                    EmptyViewModel emptyModel = findEmptyModel(Constants.spaceBeforeWebPaymentOptionsIdentifier);
+                    result.add(emptyModel);
+                }
+
+                for ( PaymentOption paymentOption : webPaymentOptions ) {
+
+                    WebPaymentViewModel webPaymentModel = findWebPaymentModel(paymentOption);
+                    result.add(webPaymentModel);
+                }
+            }
+
+            if ( hasCardPaymentOptions ) {
+
+                if ( hasWebPaymentOptions || !displaysGroupTitles ) {
+
+                    EmptyViewModel emptyModel = findEmptyModel(Constants.spaceBetweenWebAndCardOptionsIdentifier);
+                    result.add(emptyModel);
+                }
+
+                CardCredentialsViewModel cardPaymentModel = findCardPaymentModel();
+                result.add(cardPaymentModel);
+            }
+
+            visibleViewModels = result;
+            lastFilteredCurrency = currency;
         }
 
-        private void addEmpty() {
-            dataList.add(new EmptyViewModel(PaymentOptionsDataManager.this, null, PaymentType.EMPTY.getViewType()));
+        private CurrencyViewModel generateCurrencyModel() {
+
+            CurrencyViewModelData currencyViewModelData = new CurrencyViewModelData(getTransactionCurrency(), getSelectedCurrency());
+
+            return new CurrencyViewModel(PaymentOptionsDataManager.this, currencyViewModelData);
+        }
+
+        private CurrencyViewModel findCurrencyModel() {
+
+            for (PaymentOptionViewModel model : getViewModels() ) {
+
+                if ( model instanceof CurrencyViewModel ) {
+
+                    return (CurrencyViewModel) model;
+                }
+            }
+
+            return null;
+        }
+
+        private GroupViewModel generateGroupModel(String title) {
+
+            return new GroupViewModel(PaymentOptionsDataManager.this, title);
+        }
+
+        private GroupViewModel findGroupModel(String title) {
+
+            for (PaymentOptionViewModel model : getViewModels() ) {
+
+                if ( model instanceof GroupViewModel ) {
+
+                    if ( ((GroupViewModel) model).getData().equals(title) ) {
+
+                        return (GroupViewModel) model;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        private RecentSectionViewModel generateSavedCardsModel(ArrayList<SavedCard> cards) {
+
+            return new RecentSectionViewModel(PaymentOptionsDataManager.this, cards);
+        }
+
+        private RecentSectionViewModel findSavedCardsModel() {
+
+            return findSingleModel(RecentSectionViewModel.class);
+        }
+
+        private EmptyViewModel generateEmptyModel(String identifier) {
+
+            EmptyViewModelData modelData = new EmptyViewModelData(identifier);
+
+            return new EmptyViewModel(PaymentOptionsDataManager.this, modelData);
+        }
+
+        private EmptyViewModel findEmptyModel(String identifier) {
+
+            for ( PaymentOptionViewModel model : getViewModels() ) {
+
+                if ( model instanceof EmptyViewModel ) {
+
+                    if ( ((EmptyViewModel) model).getData().getIdentifier().equals(identifier) ) {
+
+                        return (EmptyViewModel) model;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        private WebPaymentViewModel generateWebPaymentModel(PaymentOption paymentOption) {
+
+            return new WebPaymentViewModel(PaymentOptionsDataManager.this, paymentOption);
+        }
+
+        private WebPaymentViewModel findWebPaymentModel(PaymentOption paymentOption) {
+
+            for ( PaymentOptionViewModel model : getViewModels() ) {
+
+                if ( model instanceof WebPaymentViewModel ) {
+
+                    if ( ((WebPaymentViewModel) model).getData() == paymentOption ) {
+
+                        return (WebPaymentViewModel) model;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        private CardCredentialsViewModel generateCardPaymentModel(ArrayList<PaymentOption> paymentOptions) {
+
+            boolean displaysSaveCardSection = PaymentDataManager.getInstance().getSDKSettings().getData().getPermissions().contains(Permission.MERCHANT_CHECKOUT);
+            CardCredentialsViewModelData data = new CardCredentialsViewModelData(paymentOptions, displaysSaveCardSection);
+
+            return new CardCredentialsViewModel(PaymentOptionsDataManager.this, data);
+        }
+
+        private CardCredentialsViewModel findCardPaymentModel() {
+
+            return findSingleModel(CardCredentialsViewModel.class);
+        }
+
+        private <T extends PaymentOptionViewModel> T findSingleModel(Class modelClass) {
+
+            for ( PaymentOptionViewModel model : getViewModels() ) {
+
+                if ( model.getClass() == modelClass ) {
+
+                    return (T) model;
+                }
+            }
+
+            return null;
+        }
+
+        private Utils.List.Filter<PaymentOption> getPaymentOptionsFilter(final PaymentType paymentType) {
+
+            return new Utils.List.Filter<PaymentOption>() {
+
+                @Override
+                public boolean isIncluded(PaymentOption object) {
+
+                    return object.getPaymentType() == paymentType;
+                }
+            };
+        }
+
+        private <E extends CurrenciesSupport & Comparable<E>> ArrayList<E> filterByCurrenciesAndSortList(ArrayList<E> list, String currency) {
+
+            Utils.List.Filter<E> filter = getCurrenciesFilter(currency);
+
+            ArrayList<E> filtered = Utils.List.filter(list, filter);
+            Collections.sort(filtered);
+
+            return filtered;
+        }
+
+        private ArrayList<PaymentOption> filteredByPaymentTypeAndCurrencyAndSortedList(ArrayList<PaymentOption> list, PaymentType paymentType, String currency) {
+
+            ArrayList<Utils.List.Filter<PaymentOption>> filters = new ArrayList<>();
+            filters.add(this.<PaymentOption>getCurrenciesFilter(currency));
+            filters.add(getPaymentOptionsFilter(paymentType));
+            CompoundFilter<PaymentOption> filter = new CompoundFilter<>(filters);
+
+            ArrayList<PaymentOption> filtered = Utils.List.filter(list, filter);
+            Collections.sort(filtered);
+
+            return filtered;
+        }
+
+        private <E extends CurrenciesSupport> Utils.List.Filter<E> getCurrenciesFilter(final String currency) {
+
+            return new Utils.List.Filter<E>() {
+
+                @Override
+                public boolean isIncluded(E object) {
+
+                    return object.getSupportedCurrencies().contains(currency);
+                }
+            };
+        }
+
+        private Utils.List.Filter<PaymentOptionViewModel> getPaymentOptionViewModelFilter(final Class modelClass) {
+
+            return new Utils.List.Filter<PaymentOptionViewModel>() {
+
+                @Override
+                public boolean isIncluded(PaymentOptionViewModel object) {
+
+                    return object.getClass() == modelClass;
+                }
+            };
+        }
+
+        private final class Constants {
+
+            private static final String recentGroupTitle = "RECENT";
+            private static final String othersGroupTitle = "OTHERS";
+
+            private static final String spaceBeforeWebPaymentOptionsIdentifier  = "space_before_web_payment_options";
+            private static final String spaceBetweenWebAndCardOptionsIdentifier = "space_between_web_and_card_options";
         }
     }
 }

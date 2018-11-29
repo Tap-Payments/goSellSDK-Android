@@ -1,5 +1,6 @@
 package company.tap.gosellapi.internal.utils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
@@ -10,46 +11,47 @@ import company.tap.gosellapi.internal.api.models.Tax;
 
 public abstract class AmountCalculator {
 
-    public static double calculateTotalAmountOf(PaymentItem item) {
+    public static BigDecimal calculateTotalAmountOf(PaymentItem item) {
 
-        double result = item.getPlainAmount() - item.getDiscountAmount() + item.getTaxesAmount();
+        BigDecimal result = item.getPlainAmount().subtract(item.getDiscountAmount()).add(item.getTaxesAmount());
         return result;
     }
 
-    public static double calculateTotalAmountOf(ArrayList<PaymentItem> items, ArrayList<Tax> taxes, ArrayList<Shipping> shippings) {
+    public static BigDecimal calculateTotalAmountOf(ArrayList<PaymentItem> items, ArrayList<Tax> taxes, ArrayList<Shipping> shippings) {
 
-        double itemsPlainAmount = 0.0f;
-        double itemsDiscountAmount = 0.0f;
-        double itemsTaxesAmount = 0.0f;
+        BigDecimal itemsPlainAmount     = BigDecimal.ZERO;
+        BigDecimal itemsDiscountAmount  = BigDecimal.ZERO;
+        BigDecimal itemsTaxesAmount     = BigDecimal.ZERO;
+
         for (PaymentItem item : items) {
 
-            itemsPlainAmount += item.getPlainAmount();
-            itemsDiscountAmount += item.getDiscountAmount();
-            itemsTaxesAmount += item.getTaxesAmount();
+            itemsPlainAmount    = itemsPlainAmount.add(item.getPlainAmount());
+            itemsDiscountAmount = itemsDiscountAmount.add(item.getDiscountAmount());
+            itemsTaxesAmount    = itemsTaxesAmount.add(item.getTaxesAmount());
         }
 
-        double discountedAmount = itemsPlainAmount - itemsDiscountAmount;
+        BigDecimal discountedAmount = itemsPlainAmount.subtract(itemsDiscountAmount);
 
-        double shippingAmount = 0.0;
+        BigDecimal shippingAmount = BigDecimal.ZERO;
         if (shippings != null) {
 
             for (Shipping shipping : shippings) {
 
-                shippingAmount += shipping.getAmount();
+                shippingAmount = shippingAmount.add(shipping.getAmount());
             }
         }
 
-        double taxesAmount = calculateTaxesOn(discountedAmount + shippingAmount, taxes);
-        double totalTaxesAmount = itemsTaxesAmount + taxesAmount;
+        BigDecimal taxesAmount = calculateTaxesOn(discountedAmount.add(shippingAmount), taxes);
+        BigDecimal totalTaxesAmount = itemsTaxesAmount.add(taxesAmount);
 
-        double result = discountedAmount + shippingAmount + totalTaxesAmount;
+        BigDecimal result = discountedAmount.add(shippingAmount).add(totalTaxesAmount);
 
         return result;
     }
 
-    public static double calculateTaxesOn(double amount, ArrayList<Tax> taxes) {
+    public static BigDecimal calculateTaxesOn(BigDecimal amount, ArrayList<Tax> taxes) {
 
-        double result = 0.0f;
+        BigDecimal result = BigDecimal.ZERO;
 
         if (taxes == null) {
 
@@ -62,36 +64,40 @@ public abstract class AmountCalculator {
 
                 case PERCENTAGE:
 
-                    result += amount * tax.getAmount().getNormalizedValue();
+                    result = result.add(amount.multiply(tax.getAmount().getNormalizedValue()));
 
                 case FIXED:
 
-                    result += tax.getAmount().getValue();
+                    result = result.add(tax.getAmount().getValue());
             }
         }
 
         return result;
     }
 
-    public static double calculateExtraFeesAmount(ArrayList<ExtraFee> fees, ArrayList<AmountedCurrency> supportedCurrencies, AmountedCurrency currency) {
+    public static BigDecimal calculateExtraFeesAmount(ArrayList<ExtraFee> fees, ArrayList<AmountedCurrency> supportedCurrencies, AmountedCurrency currency) {
 
-        double result = 0.0f;
+        BigDecimal result = BigDecimal.ZERO;
 
         for (ExtraFee fee : fees) {
+
+            BigDecimal increase = BigDecimal.ZERO;
 
             switch (fee.getType()) {
 
                 case FIXED:
 
                     AmountedCurrency amountedCurrency = getAmountedCurrency(supportedCurrencies, fee.getCurrency());
-                    result += currency.getAmount() * fee.getValue() / amountedCurrency.getAmount();
+                    increase = currency.getAmount().multiply(fee.getValue()).divide(amountedCurrency.getAmount());
                     break;
 
                 case PERCENTAGE:
 
-                    result += currency.getAmount() * fee.getNormalizedValue();
+                    increase = currency.getAmount().multiply(fee.getNormalizedValue());
                     break;
             }
+
+            result = result.add(increase);
         }
 
         return result;

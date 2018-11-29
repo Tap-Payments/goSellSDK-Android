@@ -10,10 +10,14 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import company.tap.gosellapi.BuildConfig;
-import company.tap.gosellapi.StagingURL;
+import company.tap.gosellapi.internal.Constants;
+import company.tap.gosellapi.internal.api.deserializers.AmountedCurrencyDeserializer;
 import company.tap.gosellapi.internal.api.deserializers.PaymentOptionsResponseDeserializer;
+import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
+import company.tap.gosellapi.internal.api.serializers.SecureSerializer;
 import company.tap.gosellapi.internal.exceptions.NoAuthTokenProvidedException;
+import company.tap.gosellapi.internal.interfaces.SecureSerializable;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -35,7 +39,7 @@ public final class RetrofitHelper {
 
             OkHttpClient okHttpClient = getOkHttpClient();
             retrofit = new Retrofit.Builder()
-                    .baseUrl(StagingURL.BASE_URL)
+                    .baseUrl(API_Constants.BASE_URL)
                     .addConverterFactory(buildGsonConverter())
                     .client(okHttpClient)
                     .build();
@@ -53,6 +57,8 @@ public final class RetrofitHelper {
 
         // Adding custom deserializers
         gsonBuilder.registerTypeAdapter(PaymentOptionsResponse.class, new PaymentOptionsResponseDeserializer());
+        gsonBuilder.registerTypeAdapter(AmountedCurrency.class, new AmountedCurrencyDeserializer());
+        gsonBuilder.registerTypeHierarchyAdapter(SecureSerializable.class, new SecureSerializer());
         Gson myGson = gsonBuilder.excludeFieldsWithoutExposeAnnotation().create();
 
         return GsonConverterFactory.create(myGson);

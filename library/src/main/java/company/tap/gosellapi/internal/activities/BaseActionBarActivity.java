@@ -17,7 +17,7 @@ import com.bumptech.glide.request.RequestOptions;
 
 import company.tap.gosellapi.R;
 
-public class BaseActionBarActivity extends AppCompatActivity {
+public class BaseActionBarActivity extends BaseActivity {
     private View actionBarCustomView;
     ImageView actionBarImage;
     private TextView actionBarTitle;

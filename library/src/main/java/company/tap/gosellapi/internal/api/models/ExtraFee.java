@@ -3,6 +3,8 @@ package company.tap.gosellapi.internal.api.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.math.BigDecimal;
+
 import company.tap.gosellapi.internal.api.enums.AmountModificatorType;
 
 /**
@@ -21,7 +23,7 @@ public final class ExtraFee extends AmountModificator {
         return currency;
     }
 
-    public ExtraFee(AmountModificatorType type, double value, String currency) {
+    public ExtraFee(AmountModificatorType type, BigDecimal value, String currency) {
         super(type, value);
         this.currency = currency;
     }

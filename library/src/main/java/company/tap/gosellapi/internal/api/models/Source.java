@@ -18,7 +18,6 @@ import company.tap.tapcardvalidator_android.CardBrand;
  * Model for Source object
  */
 
-@RestrictTo(RestrictTo.Scope.LIBRARY)
 public final class Source {
 
     @SerializedName("id")

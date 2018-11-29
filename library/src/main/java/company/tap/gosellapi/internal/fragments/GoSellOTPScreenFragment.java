@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.utils.Utils;
-import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
+import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 
 public class GoSellOTPScreenFragment extends Fragment {
     private static final int TICK_LENGTH = 1000;
@@ -41,7 +41,7 @@ public class GoSellOTPScreenFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        resendConfirmationCodeTimeout = (int)(GlobalDataManager.getInstance().getSDKSettings().getData().getInternalSDKSettings().getOtpResendInterval() * (double)TICK_LENGTH);
+        resendConfirmationCodeTimeout = (int)(PaymentDataManager.getInstance().getSDKSettings().getData().getInternalSDKSettings().getOtpResendInterval() * (double)TICK_LENGTH);
     }
 
     @Override

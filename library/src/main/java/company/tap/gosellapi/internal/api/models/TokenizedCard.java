@@ -47,4 +47,8 @@ public final class TokenizedCard {
 
     @SerializedName("address")
     @Nullable private Address address;
+
+    public String getFirstSix() {
+        return firstSix;
+    }
 }

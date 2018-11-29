@@ -8,7 +8,7 @@ import company.tap.gosellapi.internal.api.callbacks.BaseCallback;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.responses.BaseResponse;
 import company.tap.gosellapi.internal.api.responses.SDKSettings;
-import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
+import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 import retrofit2.Call;
 
 class RequestManager {
@@ -25,7 +25,7 @@ class RequestManager {
 
     void request(DelayedRequest delayedRequest) {
         delayedRequests.add(delayedRequest);
-        if (GlobalDataManager.getInstance().getSDKSettings() == null) {
+        if (PaymentDataManager.getInstance().getSDKSettings() == null) {
             if (!initIsRunning) {
                 init();
             }
@@ -42,7 +42,7 @@ class RequestManager {
                     @Override
                     public void onSuccess(int responseCode, SDKSettings serializedResponse) {
                         initIsRunning = false;
-                        GlobalDataManager.getInstance().setSDKSettings(serializedResponse);
+                        PaymentDataManager.getInstance().setSDKSettings(serializedResponse);
                         runDelayedRequests();
                     }
 

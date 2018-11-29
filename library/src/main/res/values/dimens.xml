@@ -1,7 +1,7 @@
 <resources>
     <dimen name="default_padding">16dp</dimen>
 
-    <dimen name="pay_btn_min_height">40dp</dimen>
+    <dimen name="pay_btn_min_height">44dp</dimen>
     <dimen name="pay_btn_corners_radius">50dp</dimen>
 
     <dimen name="pay_btn_margin_vertical">10dp</dimen>
@@ -41,6 +41,7 @@
     <dimen name="action_bar_back_button_container_width">30dp</dimen>
     <dimen name="action_bar_back_button_width">12dp</dimen>
 
+    <dimen name="edit_text_default_padding">-4dp</dimen>
     <dimen name="edit_text_height_basic">48dp</dimen>
 
     <dimen name="item_recent_height_basic">100dp</dimen>

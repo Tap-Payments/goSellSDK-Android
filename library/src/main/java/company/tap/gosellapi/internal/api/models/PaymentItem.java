@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import company.tap.gosellapi.internal.utils.AmountCalculator;
@@ -32,7 +33,7 @@ public final class PaymentItem {
 
     @SerializedName("amount_per_unit")
     @Expose
-    private double amountPerUnit;
+    private BigDecimal amountPerUnit;
 
     @SerializedName("discount")
     @Expose
@@ -44,24 +45,24 @@ public final class PaymentItem {
 
     @SerializedName("total_amount")
     @Expose
-    private double totalAmount;
+    private BigDecimal totalAmount;
 
-    public PaymentItem(String name, Quantity quantity, double amountPerUnit) {
+    public PaymentItem(String name, Quantity quantity, BigDecimal amountPerUnit) {
 
         this(name, null, quantity, amountPerUnit);
     }
 
-    public PaymentItem(String name, @Nullable String description, Quantity quantity, double amountPerUnit) {
+    public PaymentItem(String name, @Nullable String description, Quantity quantity, BigDecimal amountPerUnit) {
 
         this(name, description, quantity, amountPerUnit,null);
     }
 
-    public PaymentItem(String name, @Nullable String description, Quantity quantity, double amountPerUnit, @Nullable AmountModificator discount) {
+    public PaymentItem(String name, @Nullable String description, Quantity quantity, BigDecimal amountPerUnit, @Nullable AmountModificator discount) {
 
         this(name, description, quantity, amountPerUnit, discount, null);
     }
 
-    public PaymentItem(String name, @Nullable String description, Quantity quantity, double amountPerUnit, @Nullable AmountModificator discount, @Nullable ArrayList<Tax> taxes) {
+    public PaymentItem(String name, @Nullable String description, Quantity quantity, BigDecimal amountPerUnit, @Nullable AmountModificator discount, @Nullable ArrayList<Tax> taxes) {
 
         this.name           = name;
         this.description    = description;
@@ -72,7 +73,7 @@ public final class PaymentItem {
         this.totalAmount    = AmountCalculator.calculateTotalAmountOf(this);
     }
 
-    public double getAmountPerUnit() {
+    public BigDecimal getAmountPerUnit() {
 
         return amountPerUnit;
     }
@@ -87,35 +88,35 @@ public final class PaymentItem {
         return discount;
     }
 
-    public double getPlainAmount() {
+    public BigDecimal getPlainAmount() {
 
-        return this.getAmountPerUnit() * this.getQuantity().getValue();
+        return this.getAmountPerUnit().multiply(this.getQuantity().getValue());
     }
 
-    public double getDiscountAmount() {
+    public BigDecimal getDiscountAmount() {
 
         if (this.getDiscount() == null) {
 
-            return 0.0;
+            return BigDecimal.ZERO;
         }
 
         switch (this.getDiscount().getType()) {
 
             case PERCENTAGE:
 
-                return this.getPlainAmount() * this.getDiscount().getNormalizedValue();
+                return this.getPlainAmount().multiply(this.getDiscount().getNormalizedValue());
 
             case FIXED:
 
                 return this.getDiscount().getValue();
 
-            default: return 0.0f;
+            default: return BigDecimal.ZERO;
         }
     }
 
-    public double getTaxesAmount() {
+    public BigDecimal getTaxesAmount() {
 
-        double taxationAmount = this.getPlainAmount() - this.getDiscountAmount();
+        BigDecimal taxationAmount = this.getPlainAmount().subtract(this.getDiscountAmount());
 
         return AmountCalculator.calculateTaxesOn(taxationAmount, this.taxes);
     }

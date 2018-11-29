@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:background="@color/white"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <View
+        android:id="@+id/topSeparator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/mercury"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <View
+        android:id="@+id/bottomSeparator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/mercury"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/iconContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toTopOf="@id/bottomSeparator"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topSeparator"
+        android:background="@android:color/transparent">
+
+        <ImageView
+            android:id="@+id/paymentSystemIcon"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="7dp"
+            android:layout_marginEnd="7dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="7dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/paymentSystemName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="17dp"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@id/iconContainer"
+        app:layout_constraintEnd_toStartOf="@id/arrowIcon"
+        app:layout_constraintTop_toBottomOf="@id/topSeparator"
+        app:layout_constraintBottom_toTopOf="@id/bottomSeparator"
+        android:textSize="@dimen/font_size_16sp"
+        android:textColor="@color/black"
+        />
+
+    <ImageView
+        android:id="@+id/arrowIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topSeparator"
+        app:layout_constraintBottom_toTopOf="@id/bottomSeparator"
+        android:background="@drawable/ic_arrow_right_normal"
+        tools:ignore="ContentDescription"/>
+
+
+</android.support.constraint.ConstraintLayout>

@@ -3,6 +3,8 @@ package company.tap.gosellapi.internal.api.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.math.BigDecimal;
+
 import company.tap.gosellapi.internal.api.enums.AmountModificatorType;
 
 public class AmountModificator {
@@ -13,9 +15,9 @@ public class AmountModificator {
 
     @SerializedName("value")
     @Expose
-    private double value;
+    private BigDecimal value;
 
-    public AmountModificator(AmountModificatorType type, double value) {
+    public AmountModificator(AmountModificatorType type, BigDecimal value) {
         this.type = type;
         this.value = value;
     }
@@ -24,17 +26,17 @@ public class AmountModificator {
         return type;
     }
 
-    public double getValue() {
+    public BigDecimal getValue() {
         return value;
     }
 
-    public double getNormalizedValue() {
+    public BigDecimal getNormalizedValue() {
 
         if (this.type != AmountModificatorType.PERCENTAGE) {
 
             return this.value;
         }
 
-        return this.value * 0.01f;
+        return this.value.multiply(BigDecimal.valueOf(0.01));
     }
 }

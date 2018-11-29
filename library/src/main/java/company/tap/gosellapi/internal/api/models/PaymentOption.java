@@ -8,6 +8,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 
 import company.tap.gosellapi.internal.api.enums.PaymentType;
+import company.tap.gosellapi.internal.api.interfaces.CurrenciesSupport;
 import company.tap.tapcardvalidator_android.CardBrand;
 
 /**
@@ -16,14 +17,14 @@ import company.tap.tapcardvalidator_android.CardBrand;
  * Model for Customer object
  */
 
-public final class PaymentOption implements Comparable<PaymentOption>{
+public final class PaymentOption implements Comparable<PaymentOption>, CurrenciesSupport {
     @SerializedName("id")
     @Expose
     private String id;
 
     @SerializedName("name")
     @Expose
-    private String name;
+    private CardBrand brand;
 
     @SerializedName("image")
     @Expose
@@ -61,13 +62,13 @@ public final class PaymentOption implements Comparable<PaymentOption>{
         return sourceId;
     }
 
-    public String getName() {
-        return name;
+    public String getName() { return getBrand().getRawValue(); }
+
+    public CardBrand getBrand() {
+        return brand;
     }
 
-    public String getImage() {
-        return image;
-    }
+    public String getImage() { return image; }
 
     public PaymentType getPaymentType() {
         return paymentType;

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.adapters.RecentPaymentsRecyclerViewAdapter;
 import company.tap.gosellapi.internal.api.models.SavedCard;
-import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.RecentSectionViewModel;
+import company.tap.gosellapi.internal.data_managers.payment_options.view_models.RecentSectionViewModel;
 
 public class RecentSectionViewHolder
         extends PaymentOptionsBaseViewHolder<ArrayList<SavedCard>, RecentSectionViewHolder, RecentSectionViewModel>

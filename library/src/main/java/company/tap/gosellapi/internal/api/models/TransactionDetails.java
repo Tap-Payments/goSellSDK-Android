@@ -1,5 +1,8 @@
 package company.tap.gosellapi.internal.api.models;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -7,11 +10,19 @@ public final class TransactionDetails {
 
     @SerializedName("created")
     @Expose
-    private long created;
+    @NonNull private long created;
 
     @SerializedName("timezone")
     @Expose
-    private String timezone;
+    @NonNull private String timezone;
+
+    @SerializedName("authorization_id")
+    @Expose
+    @Nullable private String authorizationID;
+
+    @SerializedName("url")
+    @Expose
+    @Nullable private String url;
 
     /**
      * @return Receipt identifier.
@@ -25,5 +36,15 @@ public final class TransactionDetails {
      */
     public String getTimezone() {
         return timezone;
+    }
+
+    @Nullable
+    public String getAuthorizationID() {
+        return authorizationID;
+    }
+
+    @Nullable
+    public String getUrl() {
+        return url;
     }
 }

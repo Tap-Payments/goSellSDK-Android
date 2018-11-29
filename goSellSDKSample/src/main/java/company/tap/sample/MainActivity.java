@@ -1,14 +1,19 @@
 package company.tap.sample;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import company.tap.gosellapi.internal.api.enums.measurements.Mass;
+import company.tap.gosellapi.internal.api.enums.AuthorizeActionType;
+import company.tap.gosellapi.internal.api.enums.TransactionMode;
 import company.tap.gosellapi.internal.api.models.AmountModificator;
-import company.tap.gosellapi.internal.api.models.CustomerInfo;
+import company.tap.gosellapi.internal.api.models.AuthorizeAction;
+import company.tap.gosellapi.internal.api.models.Customer;
 import company.tap.gosellapi.internal.api.models.PaymentItem;
 import company.tap.gosellapi.internal.api.models.PhoneNumber;
 import company.tap.gosellapi.internal.api.models.Quantity;
@@ -39,93 +44,108 @@ public class MainActivity extends AppCompatActivity implements GoSellPaymentData
     private void generateDefaultPaymentData() {
 
         this.currency = "KWD";
-        this.customerInfo = new CustomerInfo(null, "Name", "Middlename", "Surname", "hello@tap.company", new PhoneNumber("965", "00000000"));
-        this.items = new ArrayList<PaymentItem>();
-        this.items.add(new PaymentItem("Test item #1", "Description for test item #1", new Quantity(KILOGRAMS, 1.0), 1.0f, new AmountModificator(PERCENTAGE, 1.0f), null));
+        this.customer = new Customer(null, "Name", "Middlename", "Surname", "hello@tap.company", new PhoneNumber("965", "00000000"));
+        this.amount = null;
+        this.items = new ArrayList<>();
+        this.items.add(new PaymentItem("Test item #1", "Description for test item #1", new Quantity(KILOGRAMS, BigDecimal.ONE), BigDecimal.ONE, new AmountModificator(PERCENTAGE, BigDecimal.ONE), null));
+        this.transactionMode = TransactionMode.PURCHASE;
         this.taxes = new ArrayList<Tax>();
-        this.taxes.add(new Tax("Test tax #1", "Test tax #1 description", new AmountModificator(FIXED, 2.0f)));
+        this.taxes.add(new Tax("Test tax #1", "Test tax #1 description", new AmountModificator(FIXED, BigDecimal.TEN)));
         this.shipping = new ArrayList<Shipping>();
-        this.shipping.add(new Shipping("Test shipping #1", "Test shipping description #1", 1.0));
+        this.shipping.add(new Shipping("Test shipping #1", "Test shipping description #1", BigDecimal.ONE));
         this.postURL = "https://tap.company";
         this.paymentDescription = "Test payment description.";
-        this.paymentMetadata = new HashMap<String, String>();
+        this.paymentMetadata = new HashMap<>();
         this.paymentMetadata.put("metadata_key_1", "metadata value 1");
         this.paymentReference = new Reference("acquirer_1","gateway_1","payment_1","track_1","transaction_1","order_1");
         this.paymentStatementDescriptor = "Test payment statement descriptor.";
         this.requires3DSecure = true;
         this.receiptSettings = new Receipt(true,true);
+        this.authorizeAction = new AuthorizeAction(AuthorizeActionType.VOID, 10);
     }
 
-    private String currency;
-    private CustomerInfo customerInfo;
-    private ArrayList<PaymentItem> items;
-    private ArrayList<Tax> taxes;
-    private ArrayList<Shipping> shipping;
-    private String postURL;
-    private String paymentDescription;
-    private HashMap<String, String> paymentMetadata;
-    private Reference paymentReference;
-    private String paymentStatementDescriptor;
-    private boolean requires3DSecure;
-    private Receipt receiptSettings;
+    private @NonNull String currency;
+    private @NonNull Customer customer;
+    private @Nullable BigDecimal amount;
+    private @Nullable ArrayList<PaymentItem> items;
+    private @Nullable TransactionMode transactionMode;
+    private @Nullable ArrayList<Tax> taxes;
+    private @Nullable ArrayList<Shipping> shipping;
+    private @Nullable String postURL;
+    private @Nullable String paymentDescription;
+    private @Nullable HashMap<String, String> paymentMetadata;
+    private @Nullable Reference paymentReference;
+    private @Nullable String paymentStatementDescriptor;
+    private @Nullable boolean requires3DSecure;
+    private @Nullable Receipt receiptSettings;
+    private @Nullable AuthorizeAction authorizeAction;
 
     @Override
-    public String getCurrency() {
+    public @NonNull String getCurrency() {
         return currency;
     }
 
     @Override
-    public CustomerInfo getCustomerInfo() {
-        return customerInfo;
+    public @NonNull Customer getCustomer() {
+        return customer;
     }
 
     @Override
-    public ArrayList<PaymentItem> getItems() {
+    public @Nullable BigDecimal getAmount() { return amount; }
+
+    @Override
+    public @Nullable ArrayList<PaymentItem> getItems() {
         return items;
     }
 
     @Override
-    public ArrayList<Tax> getTaxes() {
+    public @Nullable TransactionMode getTransactionMode() { return transactionMode; }
+
+    @Override
+    public @Nullable ArrayList<Tax> getTaxes() {
         return taxes;
     }
 
     @Override
-    public ArrayList<Shipping> getShipping() {
+    public @Nullable ArrayList<Shipping> getShipping() {
         return shipping;
     }
 
     @Override
-    public String getPostURL() {
+    public @Nullable String getPostURL() {
         return postURL;
     }
 
     @Override
-    public String getPaymentDescription() {
+    public @Nullable String getPaymentDescription() {
         return paymentDescription;
     }
 
     @Override
-    public HashMap<String, String> getPaymentMetadata() {
+    public @Nullable HashMap<String, String> getPaymentMetadata() {
         return paymentMetadata;
     }
 
     @Override
-    public Reference getPaymentReference() {
+    public @Nullable Reference getPaymentReference() {
         return paymentReference;
     }
 
     @Override
-    public String getPaymentStatementDescriptor() {
+    public @Nullable String getPaymentStatementDescriptor() {
         return paymentStatementDescriptor;
     }
 
     @Override
-    public boolean getRequires3DSecure() {
+    public @Nullable boolean getRequires3DSecure() {
         return requires3DSecure;
     }
 
     @Override
-    public Receipt getReceiptSettings() {
+    public @Nullable Receipt getReceiptSettings() {
         return receiptSettings;
     }
+
+    @Override
+    public @Nullable AuthorizeAction getAuthorizeAction() { return authorizeAction; }
 }

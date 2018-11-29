@@ -20,4 +20,5 @@
     <color name="azure_radiance_pressed">#0077FF</color>
     <color name="gallery">#EAEAEA</color>
     <color name="red">#EE0000</color>
+    <color name="separator">#0C000000</color>
 </resources>

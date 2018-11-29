@@ -8,7 +8,8 @@ import com.bumptech.glide.Glide;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
-import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.WebPaymentViewModel;
+import company.tap.gosellapi.internal.data_managers.payment_options.view_models.WebPaymentViewModel;
+import company.tap.tapcardvalidator_android.CardBrand;
 
 public class WebPaymentViewHolder
         extends PaymentOptionsBaseViewHolder<PaymentOption, WebPaymentViewHolder, WebPaymentViewModel> {
