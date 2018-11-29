@@ -1,7 +1,6 @@
 package company.tap.gosellapi.internal.activities;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.webkit.WebResourceError;
@@ -11,17 +10,32 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import company.tap.gosellapi.R;
-import company.tap.gosellapi.internal.api.enums.PaymentType;
+import company.tap.gosellapi.internal.api.callbacks.GoSellError;
+import company.tap.gosellapi.internal.api.enums.AuthenticationStatus;
+import company.tap.gosellapi.internal.api.enums.ChargeStatus;
+import company.tap.gosellapi.internal.api.models.Authenticate;
+import company.tap.gosellapi.internal.api.models.Authorize;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
-import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
-import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
+import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 import company.tap.gosellapi.internal.data_managers.LoadingScreenManager;
-import company.tap.gosellapi.internal.interfaces.ChargeObserver;
+import company.tap.gosellapi.internal.data_managers.payment_options.view_models.WebPaymentViewModel;
+import company.tap.gosellapi.internal.interfaces.IPaymentProcessListener;
+import company.tap.gosellapi.internal.utils.ActivityDataExchanger;
 
-public class WebPaymentActivity extends BaseActionBarActivity implements ChargeObserver {
-    private final PaymentOptionsResponse paymentOptionsResponse = GlobalDataManager.getInstance().getPaymentOptionsDataManager().getPaymentOptionsResponse();;
-    private PaymentOption webPaymentOption;
+public class WebPaymentActivity extends BaseActionBarActivity implements IPaymentProcessListener {
+
+    public final class IntentParameters {
+
+        public static final String paymentOptionModel = "payment_option_model";
+    }
+
+    private WebPaymentViewModel viewModel;
+
+    private PaymentOption getPaymentOption() {
+
+        return viewModel.getPaymentOption();
+    }
 
     private WebView webView;
 
@@ -31,6 +45,9 @@ public class WebPaymentActivity extends BaseActionBarActivity implements ChargeO
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        viewModel = (WebPaymentViewModel) ActivityDataExchanger.getInstance().getExtra(getIntent(), IntentParameters.paymentOptionModel);
+
         setContentView(R.layout.gosellapi_activity_web_payment);
 
         webView = findViewById(R.id.webPaymentWebView);
@@ -38,17 +55,8 @@ public class WebPaymentActivity extends BaseActionBarActivity implements ChargeO
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
 
-        webPaymentOption = new PaymentOption();
-        for(PaymentOption option : paymentOptionsResponse.getPaymentOptions()) {
-
-            if (option.getPaymentType().equals(PaymentType.WEB)) {
-                webPaymentOption = option;
-                break;
-            }
-        }
-
-        setTitle(webPaymentOption.getName());
-        setImage(webPaymentOption.getImage());
+        setTitle(getPaymentOption().getName());
+        setImage(getPaymentOption().getImage());
 
         View view = getWindow().getDecorView().findViewById(android.R.id.content);
         view.post(new Runnable() {
@@ -60,18 +68,19 @@ public class WebPaymentActivity extends BaseActionBarActivity implements ChargeO
     }
 
     private void getData() {
+
         LoadingScreenManager.getInstance().showLoadingScreen(this);
-        GlobalDataManager.getInstance().initiatePayment(this, webPaymentOption);
+        PaymentDataManager.getInstance().initiatePayment(viewModel, this);
     }
 
     private void updateWebView() {
+
         WebView webView = findViewById(R.id.webPaymentWebView);
         webView.setVisibility(View.VISIBLE);
 
         if(paymentURL == null) return;
 
         webView.loadUrl(paymentURL);
-
     }
 
     private void finishActivityWithResultCodeOK() {
@@ -88,13 +97,20 @@ public class WebPaymentActivity extends BaseActionBarActivity implements ChargeO
     private class WebPaymentWebViewClient extends WebViewClient {
 
         @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+
+            PaymentDataManager.WebPaymentURLDecision decision = PaymentDataManager.getInstance().decisionForWebPaymentURL(url);
+            boolean shouldOverride = !decision.shouldLoad();
+
+
+            return shouldOverride;
+        }
+
+        @Override
         public void onPageFinished(WebView view, String url) {
+
             super.onPageFinished(view, url);
             LoadingScreenManager.getInstance().closeLoadingScreen();
-
-            if(url.equals(returnURL)) {
-                GlobalDataManager.getInstance().retrieveChargeAPI();
-            }
         }
 
         @Override
@@ -113,30 +129,40 @@ public class WebPaymentActivity extends BaseActionBarActivity implements ChargeO
     }
 
     @Override
-    public void otpScreenNeedToShown() {
+    public void didReceiveCharge(Charge charge) {
 
-        Log.e("OkHttp", "OTP NEED TO SHOWN");
+        obtainPaymentURLFromChargeOrAuthorize(charge);
     }
 
     @Override
-    public void webScreenNeedToShown() {
-        Log.e("OkHttp", "WEB NEED TO SHOWN");
+    public void didReceiveAuthorize(Authorize authorize) {
+
+        obtainPaymentURLFromChargeOrAuthorize(authorize);
     }
 
     @Override
-    public void responseSucceed() {
-        Log.e("OkHttp","RESPONSE SUCCEED");
+    public void didReceiveError(GoSellError error) {
+
+        closeLoadingScreen();
     }
 
-    @Override
-    public void responseFailed() {
-        Log.e("OkHttp", "RESPONSE FAILED");
+    private void obtainPaymentURLFromChargeOrAuthorize(Charge chargeOrAuthorize) {
+
+        if ( chargeOrAuthorize.getStatus() != ChargeStatus.INITIATED ) { return; }
+
+        Authenticate authentication = chargeOrAuthorize.getAuthenticate();
+        if ( authentication != null && authentication.getStatus() == AuthenticationStatus.INITIATED ) { return; }
+
+        String url = chargeOrAuthorize.getTransaction().getUrl();
+        if ( url != null ) {
+
+            this.paymentURL = url;
+            updateWebView();
+        }
     }
 
-    @Override
-    public void dataAcquired(Charge response) {
-        paymentURL = response.getRedirect().getUrl();
-        returnURL = response.getRedirect().getReturnURL();
-        updateWebView();
+    private void closeLoadingScreen() {
+
+        LoadingScreenManager.getInstance().closeLoadingScreen();
     }
 }

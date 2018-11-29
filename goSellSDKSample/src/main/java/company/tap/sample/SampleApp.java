@@ -11,7 +11,7 @@ public class SampleApp extends Application{
     @Override
     public void onCreate() {
         super.onCreate();
-        Fabric.with(this, new Crashlytics());
+//        Fabric.with(this, new Crashlytics());
 
         GoSellSDK.init(this, "YOUR_SANDBOX_SECRET_KEY");
     }

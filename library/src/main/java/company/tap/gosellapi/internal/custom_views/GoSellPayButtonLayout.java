@@ -20,14 +20,14 @@ import android.widget.ImageView;
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.api.requests.PaymentOptionsRequest;
-import company.tap.gosellapi.internal.interfaces.ChargeObserver;
+import company.tap.gosellapi.internal.interfaces.IPaymentProcessListener;
 import company.tap.gosellapi.internal.utils.Utils;
 import company.tap.gosellapi.internal.activities.GoSellPaymentActivity;
 import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.facade.GoSellAPI;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
-import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
+import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 import company.tap.gosellapi.internal.interfaces.GoSellPaymentDataSource;
 import gotap.com.tapglkitandroid.gl.Views.TapLoadingView;
 
@@ -71,7 +71,7 @@ public final class GoSellPayButtonLayout extends FrameLayout implements View.OnC
     private ImageView securityIconView;
 
     private PaymentOption paymentOption;
-    private ChargeObserver observer;
+    private IPaymentProcessListener observer;
 
     public GoSellPayButtonLayout(Context context) {
         super(context);
@@ -85,7 +85,7 @@ public final class GoSellPayButtonLayout extends FrameLayout implements View.OnC
 
     public void setPaymentDataSource(GoSellPaymentDataSource paymentDataSource) {
 
-        GlobalDataManager.getInstance().setDataSource(paymentDataSource);
+        PaymentDataManager.getInstance().setExternalDataSource(paymentDataSource);
         this.paymentDataSource = paymentDataSource;
     }
 
@@ -93,7 +93,7 @@ public final class GoSellPayButtonLayout extends FrameLayout implements View.OnC
         this.paymentOption = paymentOption;
     }
 
-    public void setObserver(ChargeObserver observer) {
+    public void setObserver(IPaymentProcessListener observer) {
         this.observer = observer;
     }
 
@@ -359,15 +359,18 @@ public final class GoSellPayButtonLayout extends FrameLayout implements View.OnC
 
         PaymentOptionsRequest request = new PaymentOptionsRequest(
 
+                this.paymentDataSource.getTransactionMode(),
+                this.paymentDataSource.getAmount(),
                 this.paymentDataSource.getItems(),
                 this.paymentDataSource.getShipping(),
                 this.paymentDataSource.getTaxes(),
                 this.paymentDataSource.getCurrency(),
-                this.paymentDataSource.getCustomerInfo().getIdentifier()
+                this.paymentDataSource.getCustomer().getIdentifier()
         );
 
         GoSellAPI.getInstance().getPaymentTypes(request,
                 new APIRequestCallback<PaymentOptionsResponse>() {
+
                     @Override
                     public void onSuccess(int responseCode, PaymentOptionsResponse serializedResponse) {
                         loadingView.setForceStop(true, new TapLoadingView.FullProgressListener() {
@@ -393,7 +396,6 @@ public final class GoSellPayButtonLayout extends FrameLayout implements View.OnC
     private void makePayment() {
         loadingView.start();
 
-        if(paymentOption == null && observer == null) return;
-        GlobalDataManager.getInstance().initiatePayment(observer, paymentOption);
+
     }
 }

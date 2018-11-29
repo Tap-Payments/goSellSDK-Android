@@ -5,6 +5,8 @@ import android.support.annotation.Nullable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.math.BigDecimal;
+
 public final class Shipping {
 
     @SerializedName("name")
@@ -17,16 +19,16 @@ public final class Shipping {
 
     @SerializedName("amount")
     @Expose
-    private double amount;
+    private BigDecimal amount;
 
-    public Shipping(String name, @Nullable String description, double amount) {
+    public Shipping(String name, @Nullable String description, BigDecimal amount) {
 
         this.name           = name;
         this.description    = description;
         this.amount         = amount;
     }
 
-    public double getAmount() {
+    public BigDecimal getAmount() {
 
         return amount;
     }

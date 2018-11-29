@@ -3,68 +3,92 @@ package company.tap.gosellapi.internal.api.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by eugene.goltsev on 27.04.2018.
- * <br>
- * Model for Customer object
- */
-
 public final class Customer {
-    @SerializedName("email_address")
-    @Expose
-    private String email_address;
 
-    @SerializedName("phone_number")
+    @SerializedName("id")
     @Expose
-    private String phone_number;
+    private String identifier;
 
     @SerializedName("first_name")
     @Expose
-    private String first_name;
+    private String firstName;
+
+    @SerializedName("middle_name")
+    @Expose
+    private String middleName;
 
     @SerializedName("last_name")
     @Expose
-    private String last_name;
+    private String lastName;
 
-    /**
-     * Constructor with all fields
-     */
-    public Customer(String email_address, String phone_number, String first_name, String last_name) {
-        this.email_address = email_address;
-        this.phone_number = phone_number;
-        this.first_name = first_name;
-        this.last_name = last_name;
+    @SerializedName("email")
+    @Expose
+    private String email;
+
+    @SerializedName("phone")
+    @Expose
+    private PhoneNumber phone;
+
+    public Customer(String id) {
+        this.identifier = id;
     }
 
-    public Customer(String email_address, String phone_number, String first_name) {
-        this.email_address = email_address;
-        this.phone_number = phone_number;
-        this.first_name = first_name;
+    public Customer(String firstName, String lastName, String email, PhoneNumber phone) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
     }
 
-    public String getEmail_address() {
-        return email_address;
+    public Customer(String identifier, String firstName, String middleName, String lastName, String email, PhoneNumber phone) {
+        this.identifier = identifier;
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
     }
 
-    public String getPhone_number() {
-        return phone_number;
+    public Customer(String firstName, String email, PhoneNumber phone) {
+        this.firstName = firstName;
+        this.email = email;
+        this.phone = phone;
     }
 
-    public String getFirst_name() {
-        return first_name;
+    public String getIdentifier() {
+        return identifier;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public PhoneNumber getPhone() {
+        return phone;
     }
 
     @Override
     public String toString() {
         return "Customer {" +
-                "\n        email_address =  '" + email_address + '\'' +
-                "\n        phone_number =  '" + phone_number + '\'' +
-                "\n        first_name =  '" + first_name + '\'' +
-                "\n        last_name =  '" + last_name + '\'' +
+                "\n        id =  '" + identifier + '\'' +
+                "\n        email =  '" + email + '\'' +
+                "\n        first_name =  '" + firstName + '\'' +
+                "\n        middle_name =  '" + middleName + '\'' +
+                "\n        last_name =  '" + lastName + '\'' +
+                "\n        phone  country code =  '" + phone.getCountryCode() + '\'' +
+                "\n        phone number =  '" + phone.getNumber() + '\'' +
                 "\n    }";
     }
 }

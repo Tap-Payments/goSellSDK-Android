@@ -1,16 +1,16 @@
 package company.tap.gosellapi.internal.api.api_service;
 
+import company.tap.gosellapi.internal.api.models.Authorize;
 import company.tap.gosellapi.internal.api.models.Charge;
+import company.tap.gosellapi.internal.api.requests.CreateAuthorizeRequest;
 import company.tap.gosellapi.internal.api.requests.PaymentOptionsRequest;
 import company.tap.gosellapi.internal.api.models.Token;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
-import company.tap.gosellapi.internal.api.requests.CreateTokenRequest;
-import company.tap.gosellapi.internal.api.requests.CreateTokenWithEncryptedCardDataRequest;
-import company.tap.gosellapi.internal.api.requests.CreateTokenWithExistingCardDataRequest;
 import company.tap.gosellapi.internal.api.responses.AddressFormatsResponse;
 import company.tap.gosellapi.internal.api.responses.BINLookupResponse;
 import company.tap.gosellapi.internal.api.responses.SDKSettings;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
+import company.tap.gosellapi.internal.interfaces.CreateTokenRequest;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -43,14 +43,17 @@ public interface APIService {
     @POST(API_Constants.TOKEN)
     Call<Token> createToken(@Body CreateTokenRequest createTokenRequest);
 
-    @POST(API_Constants.TOKEN)
-    Call<Token> createTokenWithEncryptedCard(@Body CreateTokenWithEncryptedCardDataRequest createTokenWithEncryptedDataRequest);
-
-    @POST(API_Constants.TOKEN)
-    Call<Token> createTokenWithExistingCard(@Body CreateTokenWithExistingCardDataRequest createTokenWithExistingCardDataRequest);
+//    @POST(API_Constants.TOKEN)
+//    Call<Token> createTokenWithEncryptedCard(@Body CreateTokenWithCardDataRequest createTokenWithEncryptedDataRequest);
+//
+//    @POST(API_Constants.TOKEN)
+//    Call<Token> createTokenWithExistingCard(@Body CreateTokenWithExistingCardDataRequest createTokenWithExistingCardDataRequest);
 
     @POST(API_Constants.CHARGES)
     Call<Charge> createCharge(@Body CreateChargeRequest createChargeRequest);
+
+    @POST(API_Constants.AUTHORIZE)
+    Call<Authorize> createAuthorize(@Body CreateAuthorizeRequest createAuthorizeRequest);
 
     @POST(API_Constants.PAYMENT_TYPES)
     Call<PaymentOptionsResponse> getPaymentTypes(@Body PaymentOptionsRequest paymentOptionsRequest);

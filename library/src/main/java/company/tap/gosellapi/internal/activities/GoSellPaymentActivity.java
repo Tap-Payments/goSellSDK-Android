@@ -3,7 +3,6 @@ package company.tap.gosellapi.internal.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -22,16 +21,16 @@ import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 import company.tap.gosellapi.internal.api.models.CardRawData;
 import company.tap.gosellapi.internal.api.responses.BINLookupResponse;
 import company.tap.gosellapi.internal.custom_views.DatePicker;
-import company.tap.gosellapi.internal.data_managers.GlobalDataManager;
+import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
-import company.tap.gosellapi.internal.data_managers.payment_options.viewmodels.CardCredentialsViewModel;
+import company.tap.gosellapi.internal.data_managers.payment_options.view_models.CardCredentialsViewModel;
+import company.tap.gosellapi.internal.data_managers.payment_options.view_models.WebPaymentViewModel;
 import company.tap.gosellapi.internal.fragments.GoSellPaymentOptionsFragment;
+import company.tap.gosellapi.internal.utils.ActivityDataExchanger;
 import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
 
-public class GoSellPaymentActivity
-        extends AppCompatActivity
-        implements PaymentOptionsDataManager.PaymentOptionsDataListener {
+public class GoSellPaymentActivity extends BaseActivity implements PaymentOptionsDataManager.PaymentOptionsDataListener {
     private static final int SCAN_REQUEST_CODE = 123;
     private static final int CURRENCIES_REQUEST_CODE = 124;
     private static final int WEB_PAYMENT_REQUEST_CODE = 125;
@@ -48,7 +47,7 @@ public class GoSellPaymentActivity
         setContentView(R.layout.gosellapi_activity_main);
 
         fragmentManager = getSupportFragmentManager();
-        dataSource = GlobalDataManager.getInstance().getPaymentOptionsDataManager(this);
+        dataSource = PaymentDataManager.getInstance().getPaymentOptionsDataManager(this);
 
         final FrameLayout fragmentContainer = findViewById(R.id.paymentActivityFragmentContainer);
         fragmentContainer.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -70,10 +69,10 @@ public class GoSellPaymentActivity
                 .commit();
 
         businessIcon = findViewById(R.id.businessIcon);
-        String logoPath = GlobalDataManager.getInstance().getSDKSettings().getData().getMerchant().getLogo();
+        String logoPath = PaymentDataManager.getInstance().getSDKSettings().getData().getMerchant().getLogo();
         Glide.with(this).load(logoPath).apply(RequestOptions.circleCropTransform()).into(businessIcon);
 
-        String businessNameString = GlobalDataManager.getInstance().getSDKSettings().getData().getMerchant().getName();
+        String businessNameString = PaymentDataManager.getInstance().getSDKSettings().getData().getMerchant().getName();
         TextView businessName = findViewById(R.id.businessName);
         businessName.setText(businessNameString);
     }
@@ -92,8 +91,12 @@ public class GoSellPaymentActivity
     }
 
     @Override
-    public void startWebPayment() {
+    public void startWebPayment(WebPaymentViewModel model) {
+
         Intent intent = new Intent(this, WebPaymentActivity.class);
+
+        ActivityDataExchanger.getInstance().putExtra(model, WebPaymentActivity.IntentParameters.paymentOptionModel, intent);
+
         startActivityForResult(intent, WEB_PAYMENT_REQUEST_CODE);
     }
 
@@ -147,7 +150,7 @@ public class GoSellPaymentActivity
 
     @Override
     public void addressOnCardClicked() {
-        BINLookupResponse binLookupResponse = GlobalDataManager.getInstance().getBinLookupResponse();
+        BINLookupResponse binLookupResponse = PaymentDataManager.getInstance().getBinLookupResponse();
         if(binLookupResponse == null) return;
         Intent intent = new Intent(this, GoSellCardAddressActivity.class);
         intent.putExtra(GoSellCardAddressActivity.INTENT_EXTRA_KEY_COUNTRY, binLookupResponse.getCountry());
@@ -165,13 +168,13 @@ public class GoSellPaymentActivity
             @Override
             public void onSuccess(int responseCode, BINLookupResponse serializedResponse) {
                 dataSource.showAddressOnCardCell(true);
-                GlobalDataManager.getInstance().setBinLookupResponse(serializedResponse);
+                PaymentDataManager.getInstance().setBinLookupResponse(serializedResponse);
             }
 
             @Override
             public void onFailure(GoSellError errorDetails) {
                 dataSource.showAddressOnCardCell(false);
-                GlobalDataManager.getInstance().setBinLookupResponse(null);
+                PaymentDataManager.getInstance().setBinLookupResponse(null);
             }
         });
     }

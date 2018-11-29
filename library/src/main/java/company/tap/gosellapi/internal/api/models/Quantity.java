@@ -3,6 +3,8 @@ package company.tap.gosellapi.internal.api.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.math.BigDecimal;
+
 import company.tap.gosellapi.internal.api.enums.measurements.Measurement;
 import company.tap.gosellapi.internal.api.enums.measurements.MeasurementUnit;
 
@@ -17,17 +19,17 @@ public final class Quantity {
 
     @SerializedName("value")
     @Expose
-    private double value;
+    private BigDecimal value;
 
     public MeasurementUnit getMeasurementUnit() {
         return measurementUnit;
     }
 
-    public double getValue() {
+    public BigDecimal getValue() {
         return value;
     }
 
-    public Quantity(MeasurementUnit measurementUnit, double value) {
+    public Quantity(MeasurementUnit measurementUnit, BigDecimal value) {
 
         this.measurementGroup = measurementUnit.getMeasurementGroup();
         this.measurementUnit = measurementUnit;

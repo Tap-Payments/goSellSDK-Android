@@ -16,6 +16,7 @@
     <string name="edittext_hint_name">Name</string>
     <string name="edittext_hint_phone_number">Phone number</string>
     <string name="edittext_hint_email">Email</string>
+    <string name="edittext_hint_address_on_card">Address on Card</string>
 
     <string name="textview_title_address_on_card">Address on Card</string>
     <string name="textview_title_country">Country</string>

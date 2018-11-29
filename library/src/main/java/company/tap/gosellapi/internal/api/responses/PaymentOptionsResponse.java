@@ -1,5 +1,6 @@
 package company.tap.gosellapi.internal.api.responses;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 
@@ -23,57 +24,61 @@ public final class PaymentOptionsResponse implements BaseResponse {
 
     @SerializedName("id")
     @Expose
-    private String id;
+    @NonNull private String id;
 
     @SerializedName("order_id")
     @Expose
-    private String orderID;
+    @NonNull private String orderID;
 
     @SerializedName("object")
     @Expose
-    private String object;
+    @NonNull private String object;
 
     @SerializedName("payment_methods")
     @Expose
-    private ArrayList<PaymentOption> paymentOptions;
+    @NonNull private ArrayList<PaymentOption> paymentOptions;
 
     @SerializedName("currency")
     @Expose
-    private String currency;
+    @NonNull private String currency;
 
     @SerializedName("supported_currencies")
     @Expose
-    private ArrayList<AmountedCurrency> supportedCurrencies;
+    @NonNull private ArrayList<AmountedCurrency> supportedCurrencies;
 
     @SerializedName("cards")
     @Expose
     @Nullable private ArrayList<SavedCard> cards;
 
-    public String getId() {
+    @NonNull public String getId() {
         return id;
     }
 
-    public String getOrderID() {
+    @NonNull public String getOrderID() {
         return orderID;
     }
 
-    public String getObject() {
+    @NonNull public String getObject() {
         return object;
     }
 
-    public ArrayList<PaymentOption> getPaymentOptions() {
+    @NonNull public ArrayList<PaymentOption> getPaymentOptions() {
         return paymentOptions;
     }
 
-    public String getCurrency() {
+    @NonNull public String getCurrency() {
         return currency;
     }
 
-    public ArrayList<AmountedCurrency> getSupportedCurrencies() {
-        return supportedCurrencies;
-    }
+    @NonNull public ArrayList<AmountedCurrency> getSupportedCurrencies() { return supportedCurrencies; }
 
-    @Nullable public ArrayList<SavedCard> getCards() {
+    @NonNull public ArrayList<SavedCard> getCards() {
+
+        if ( cards == null ) {
+
+            cards = new ArrayList<>();
+        }
+
         return cards;
     }
 }

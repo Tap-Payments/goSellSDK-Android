@@ -49,10 +49,12 @@ public class GoSellPaymentOptionsFragment extends Fragment {
     }
 
     private void initMainRecyclerView(View view) {
+
         paymentOptionsRecyclerView = view.findViewById(R.id.paymentOptionsRecyclerView);
 
         //Configuring layout manager
         layoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false);
+
         paymentOptionsRecyclerView.setLayoutManager(layoutManager);
 
         // Configuring MainRecycleViewAdapter and handle PaymentOptionsViewAdapterListener
