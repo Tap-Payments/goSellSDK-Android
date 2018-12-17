@@ -9,12 +9,12 @@ import java.util.HashMap;
 
 import company.tap.gosellapi.internal.api.enums.TransactionMode;
 import company.tap.gosellapi.internal.api.models.AuthorizeAction;
-import company.tap.gosellapi.internal.api.models.Customer;
-import company.tap.gosellapi.internal.api.models.PaymentItem;
 import company.tap.gosellapi.internal.api.models.Receipt;
 import company.tap.gosellapi.internal.api.models.Reference;
 import company.tap.gosellapi.internal.api.models.Shipping;
 import company.tap.gosellapi.internal.api.models.Tax;
+import company.tap.gosellapi.open.models.Customer;
+import company.tap.gosellapi.open.models.PaymentItem;
 
 public interface GoSellPaymentDataSource {
 
@@ -22,7 +22,8 @@ public interface GoSellPaymentDataSource {
     @NonNull    String                  getCurrency();
 
     /**Customer.*/
-    @NonNull     Customer                getCustomer();
+    @NonNull
+    Customer getCustomer();
 
     /**Amount. Either amount or items should return nonnull value. If both return nonnull, then items is preferred.*/
     @Nullable    BigDecimal              getAmount();

@@ -6,13 +6,12 @@ import android.support.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import company.tap.gosellapi.internal.api.enums.TransactionMode;
+import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
-import company.tap.gosellapi.internal.api.models.AuthorizeAction;
-import company.tap.gosellapi.internal.api.models.Customer;
-import company.tap.gosellapi.internal.api.models.Receipt;
-import company.tap.gosellapi.internal.api.models.Reference;
-import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
+import company.tap.gosellapi.open.models.AuthorizeAction;
+import company.tap.gosellapi.open.models.Customer;
+import company.tap.gosellapi.open.models.Receipt;
+import company.tap.gosellapi.open.models.Reference;
 
 public interface IPaymentDataProvider {
 

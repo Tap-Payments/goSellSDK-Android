@@ -10,10 +10,10 @@ import com.google.gson.annotations.SerializedName;
 import java.math.BigDecimal;
 import java.util.HashMap;
 
-import company.tap.gosellapi.internal.api.models.Customer;
+import company.tap.gosellapi.open.models.Customer;
 import company.tap.gosellapi.internal.api.models.Order;
-import company.tap.gosellapi.internal.api.models.Receipt;
-import company.tap.gosellapi.internal.api.models.Reference;
+import company.tap.gosellapi.open.models.Receipt;
+import company.tap.gosellapi.open.models.Reference;
 import company.tap.gosellapi.internal.api.models.SourceRequest;
 import company.tap.gosellapi.internal.api.models.TrackingURL;
 

@@ -4,14 +4,15 @@ import com.google.gson.annotations.SerializedName;
 
 public enum Mass implements MeasurementUnit {
 
-    @SerializedName("kilograms")    KILOGRAMS,
-    @SerializedName("grams")        GRAMS,
-    @SerializedName("decigrams")    DECIGRAMS,
-    @SerializedName("centigrams")   CENTIGRAMS,
-    @SerializedName("milligrams")   MILLIGRAMS,
-    @SerializedName("micrograms")   MICROGRAMS,
-    @SerializedName("nanograms")    NANOGRAMS,
+
     @SerializedName("picograms")    PICOGRAMS,
+    @SerializedName("nanograms")    NANOGRAMS,
+    @SerializedName("micrograms")   MICROGRAMS,
+    @SerializedName("milligrams")   MILLIGRAMS,
+    @SerializedName("centigrams")   CENTIGRAMS,
+    @SerializedName("decigrams")    DECIGRAMS,
+    @SerializedName("grams")        GRAMS,
+    @SerializedName("kilograms")    KILOGRAMS,
     @SerializedName("ounces")       OUNCES,
     @SerializedName("pounds")       POUNDS,
     @SerializedName("stones")       STONES,

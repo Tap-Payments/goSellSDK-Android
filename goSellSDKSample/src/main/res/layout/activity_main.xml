@@ -7,7 +7,7 @@
     android:background="@color/azure_radiance"
     tools:context=".MainActivity">
 
-    <company.tap.gosellapi.internal.custom_views.GoSellPayButtonLayout
+    <company.tap.gosellapi.open.buttons.PayButtonView
         android:id="@+id/payButtonId"
         android:layout_width="match_parent"
         android:layout_height="40dp"
