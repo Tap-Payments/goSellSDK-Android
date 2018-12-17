@@ -8,14 +8,14 @@ import java.util.HashMap;
 
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.enums.Permission;
-import company.tap.gosellapi.internal.api.enums.TransactionMode;
+import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 import company.tap.gosellapi.internal.api.models.Authorize;
-import company.tap.gosellapi.internal.api.models.AuthorizeAction;
+import company.tap.gosellapi.open.models.AuthorizeAction;
 import company.tap.gosellapi.internal.api.models.Charge;
-import company.tap.gosellapi.internal.api.models.Customer;
-import company.tap.gosellapi.internal.api.models.Receipt;
-import company.tap.gosellapi.internal.api.models.Reference;
+import company.tap.gosellapi.open.models.Customer;
+import company.tap.gosellapi.open.models.Receipt;
+import company.tap.gosellapi.open.models.Reference;
 import company.tap.gosellapi.internal.api.requests.PaymentOptionsRequest;
 import company.tap.gosellapi.internal.api.responses.BINLookupResponse;
 import company.tap.gosellapi.internal.api.responses.SDKSettings;
@@ -24,11 +24,11 @@ import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptio
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.PaymentOptionViewModel;
 import company.tap.gosellapi.internal.interfaces.IPaymentDataProvider;
 import company.tap.gosellapi.internal.interfaces.IPaymentProcessListener;
-import company.tap.gosellapi.internal.interfaces.GoSellPaymentDataSource;
+import company.tap.gosellapi.open.interfaces.PaymentDataSource;
 
 public final class PaymentDataManager {
 
-    @Nullable   private GoSellPaymentDataSource externalDataSource;
+    @Nullable   private PaymentDataSource externalDataSource;
     @NonNull    private IPaymentDataProvider dataProvider = new PaymentDataProvider();
     @NonNull    private PaymentProcessListener processListener = new PaymentProcessListener();
     @NonNull    private PaymentProcessManager paymentProcessManager = new PaymentProcessManager(getPaymentDataProvider(), getProcessListener());
@@ -55,20 +55,36 @@ public final class PaymentDataManager {
 
     private PaymentDataManager() {}
 
-    private static class SingletonHolder {
-
+    /////////////////////////////////////////    ########### Start of Singleton section ##################
+    /**
+     * Here we will use inner class to create a singleton object of PaymentDataManager
+     * Inner class singleton approach introduced by Bill Pugh to overcome other singleton approaches :
+     *    - Eager initialization
+     *    - Static block initialization
+     *    - Lazy load initialization
+     *    - thread safe initialization
+     * in this approach create the Singleton class using a inner static helper class
+     * When the singleton class is loaded, SingletonCreationAdmin class is not loaded into memory
+     *  and only when someone calls the getInstance method.
+     */
+    private static class SingletonCreationAdmin {
         private static final PaymentDataManager INSTANCE = new PaymentDataManager();
     }
 
+    /**
+     * Singleton getInstance method
+     * @return
+     */
     public static PaymentDataManager getInstance() {
-        return PaymentDataManager.SingletonHolder.INSTANCE;
+        return SingletonCreationAdmin.INSTANCE;
     }
+    /////////////////////////////////////////  ########### End of Singleton section ##################
 
-    public GoSellPaymentDataSource getExternalDataSource() {
+    public PaymentDataSource getExternalDataSource() {
         return externalDataSource;
     }
 
-    public void setExternalDataSource(GoSellPaymentDataSource externalDataSource) {
+    public void setExternalDataSource(PaymentDataSource externalDataSource) {
         this.externalDataSource = externalDataSource;
     }
 

@@ -33,10 +33,9 @@ public class AmountModificator {
     public BigDecimal getNormalizedValue() {
 
         if (this.type != AmountModificatorType.PERCENTAGE) {
-
             return this.value;
         }
-
+//why
         return this.value.multiply(BigDecimal.valueOf(0.01));
     }
 }

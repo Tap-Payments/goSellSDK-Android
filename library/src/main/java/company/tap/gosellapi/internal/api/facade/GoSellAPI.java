@@ -30,12 +30,12 @@ public final class GoSellAPI {
         requestManager = new RequestManager(apiHelper);
     }
 
-    private static class SingletonHolder {
+    private static class SingletonCreationAdmin {
         private static final GoSellAPI INSTANCE = new GoSellAPI();
     }
 
     public static GoSellAPI getInstance() {
-        return SingletonHolder.INSTANCE;
+        return SingletonCreationAdmin.INSTANCE;
     }
 
     //requests
@@ -79,11 +79,12 @@ public final class GoSellAPI {
 //        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.createTokenWithExistingCard(createTokenWithExistingCardDataRequest), requestCallback));
 //    }
 
-    public void getPaymentTypes(PaymentOptionsRequest paymentOptionsRequest, final APIRequestCallback<PaymentOptionsResponse> requestCallback) {
+    public void getPaymentOptions(PaymentOptionsRequest paymentOptionsRequest, final APIRequestCallback<PaymentOptionsResponse> requestCallback) {
         PaymentDataManager.getInstance().setPaymentOptionsRequest(paymentOptionsRequest);
         requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.getPaymentTypes(paymentOptionsRequest), new APIRequestCallback<PaymentOptionsResponse>() {
             @Override
             public void onSuccess(int responseCode, PaymentOptionsResponse serializedResponse) {
+
                 PaymentDataManager.getInstance().createPaymentOptionsDataManager(serializedResponse);
                 requestCallback.onSuccess(responseCode, serializedResponse);
             }

@@ -1,29 +1,31 @@
-package company.tap.gosellapi.internal.interfaces;
+package company.tap.gosellapi.open.interfaces;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RestrictTo;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import company.tap.gosellapi.internal.api.enums.TransactionMode;
-import company.tap.gosellapi.internal.api.models.AuthorizeAction;
-import company.tap.gosellapi.internal.api.models.Receipt;
-import company.tap.gosellapi.internal.api.models.Reference;
-import company.tap.gosellapi.internal.api.models.Shipping;
-import company.tap.gosellapi.internal.api.models.Tax;
+import company.tap.gosellapi.open.enums.TransactionMode;
+import company.tap.gosellapi.open.models.AuthorizeAction;
 import company.tap.gosellapi.open.models.Customer;
 import company.tap.gosellapi.open.models.PaymentItem;
+import company.tap.gosellapi.open.models.Receipt;
+import company.tap.gosellapi.open.models.Reference;
+import company.tap.gosellapi.open.models.Shipping;
+import company.tap.gosellapi.open.models.Tax;
+import company.tap.gosellapi.open.models.TapCurrency;
 
-public interface GoSellPaymentDataSource {
+@RestrictTo(RestrictTo.Scope.LIBRARY)
+public interface PaymentDataSource {
 
     /**Transaction currency.*/
-    @NonNull    String                  getCurrency();
+    @NonNull     TapCurrency            getCurrency();
 
     /**Customer.*/
-    @NonNull
-    Customer getCustomer();
+    @NonNull     Customer                getCustomer();
 
     /**Amount. Either amount or items should return nonnull value. If both return nonnull, then items is preferred.*/
     @Nullable    BigDecimal              getAmount();

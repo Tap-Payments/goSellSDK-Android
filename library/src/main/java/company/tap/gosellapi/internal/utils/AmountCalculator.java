@@ -5,9 +5,9 @@ import java.util.ArrayList;
 
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 import company.tap.gosellapi.internal.api.models.ExtraFee;
-import company.tap.gosellapi.internal.api.models.PaymentItem;
-import company.tap.gosellapi.internal.api.models.Shipping;
-import company.tap.gosellapi.internal.api.models.Tax;
+import company.tap.gosellapi.open.models.PaymentItem;
+import company.tap.gosellapi.open.models.Shipping;
+import company.tap.gosellapi.open.models.Tax;
 
 public abstract class AmountCalculator {
 

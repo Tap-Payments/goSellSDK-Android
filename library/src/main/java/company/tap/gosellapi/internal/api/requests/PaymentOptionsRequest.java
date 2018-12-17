@@ -2,6 +2,7 @@ package company.tap.gosellapi.internal.api.requests;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RestrictTo;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -9,12 +10,13 @@ import com.google.gson.annotations.SerializedName;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-import company.tap.gosellapi.internal.api.enums.TransactionMode;
-import company.tap.gosellapi.internal.api.models.PaymentItem;
-import company.tap.gosellapi.internal.api.models.Shipping;
-import company.tap.gosellapi.internal.api.models.Tax;
+import company.tap.gosellapi.open.enums.TransactionMode;
+import company.tap.gosellapi.open.models.PaymentItem;
+import company.tap.gosellapi.open.models.Shipping;
+import company.tap.gosellapi.open.models.Tax;
 import company.tap.gosellapi.internal.utils.AmountCalculator;
-
+import company.tap.gosellapi.open.models.TapCurrency;
+@RestrictTo(RestrictTo.Scope.LIBRARY)
 public final class PaymentOptionsRequest {
 
     @SerializedName("transaction_mode")
@@ -39,7 +41,7 @@ public final class PaymentOptionsRequest {
 
     @SerializedName("currency")
     @Expose
-    @NonNull private String currency;
+    @NonNull private TapCurrency currency;
 
     @SerializedName("total_amount")
     @Expose
@@ -50,7 +52,7 @@ public final class PaymentOptionsRequest {
                                  @Nullable ArrayList<PaymentItem> items,
                                  @Nullable ArrayList<Shipping> shipping,
                                  @Nullable ArrayList<Tax> taxes,
-                                 @Nullable String currency,
+                                 @Nullable TapCurrency currency,
                                  @Nullable String customer) {
 
         this.transactionMode    = transactionMode == null ? TransactionMode.PURCHASE : transactionMode;

@@ -10,6 +10,9 @@ import java.util.HashMap;
 
 import company.tap.gosellapi.internal.api.enums.ChargeStatus;
 import company.tap.gosellapi.internal.api.responses.BaseResponse;
+import company.tap.gosellapi.open.models.Customer;
+import company.tap.gosellapi.open.models.Receipt;
+import company.tap.gosellapi.open.models.Reference;
 
 /**
  * Created by eugene.goltsev on 14.02.2018.
