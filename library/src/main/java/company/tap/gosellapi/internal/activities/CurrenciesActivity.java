@@ -17,13 +17,14 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 
 import company.tap.gosellapi.R;
+import company.tap.gosellapi.internal.interfaces.CurrenciesAdapterCallback;
 import company.tap.gosellapi.internal.utils.Utils;
 import company.tap.gosellapi.internal.adapters.CurrenciesRecyclerViewAdapter;
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models_data.CurrencyViewModelData;
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-public class CurrenciesActivity extends BaseActionBarActivity implements CurrenciesRecyclerViewAdapter.CurrenciesAdapterCallback {
+public class CurrenciesActivity extends BaseActionBarActivity implements CurrenciesAdapterCallback {
 
     public static final String CURRENCIES_ACTIVITY_DATA = "currenciesActivityData";
     public static final String CURRENCIES_ACTIVITY_INITIAL_SELECTED_CURRENCY = "currenciesActivityInitialSelectedCurrency";
@@ -42,6 +43,10 @@ public class CurrenciesActivity extends BaseActionBarActivity implements Currenc
         setContentView(R.layout.gosellapi_activity_currencies);
 
         getData();
+        for(AmountedCurrency  amountedCurrency:currencies){
+            System.out.println("amounted currency : " + amountedCurrency.getCurrency());
+        }
+        System.out.println("selectedCurrency : " + selectedCurrency.getCurrency());
         initRecycler();
         setTitle();
     }

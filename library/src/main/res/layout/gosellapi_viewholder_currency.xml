@@ -36,6 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="start"
+            android:text="aqsdas"
             android:textSize="13sp" />
 
         <TextView
@@ -43,6 +44,7 @@
             style="@style/TextView.Title.Header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="wwwwwww"
             android:gravity="start" />
     </LinearLayout>
 

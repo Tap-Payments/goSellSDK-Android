@@ -13,7 +13,7 @@ public class CurrencyViewModel extends PaymentOptionViewModel<CurrencyViewModelD
     }
 
     public void holderClicked() {
-
+        System.out.println(" Currency ViewModel >>  parentDataManager :"+parentDataManager + " >> position :"+position);
         parentDataManager.currencyHolderClicked(position);
     }
 }

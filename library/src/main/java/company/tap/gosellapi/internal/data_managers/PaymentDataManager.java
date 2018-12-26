@@ -2,6 +2,7 @@ package company.tap.gosellapi.internal.data_managers;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RestrictTo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,28 +26,13 @@ import company.tap.gosellapi.internal.data_managers.payment_options.view_models.
 import company.tap.gosellapi.internal.interfaces.IPaymentDataProvider;
 import company.tap.gosellapi.internal.interfaces.IPaymentProcessListener;
 import company.tap.gosellapi.open.interfaces.PaymentDataSource;
-
+@RestrictTo(RestrictTo.Scope.LIBRARY)
 public final class PaymentDataManager {
 
     @Nullable   private PaymentDataSource externalDataSource;
     @NonNull    private IPaymentDataProvider dataProvider = new PaymentDataProvider();
     @NonNull    private PaymentProcessListener processListener = new PaymentProcessListener();
     @NonNull    private PaymentProcessManager paymentProcessManager = new PaymentProcessManager(getPaymentDataProvider(), getProcessListener());
-
-    @NonNull private IPaymentDataProvider getPaymentDataProvider() {
-
-        return dataProvider;
-    }
-
-    @NonNull private PaymentProcessListener getProcessListener() {
-
-        return processListener;
-    }
-
-    @NonNull private PaymentProcessManager getPaymentProcessManager() {
-
-        return paymentProcessManager;
-    }
 
     private SDKSettings SDKSettings;
     private PaymentOptionsRequest paymentOptionsRequest;
@@ -129,6 +115,17 @@ public final class PaymentDataManager {
         return paymentOptionsDataManager;
     }
 
+
+
+    public void retrieveChargeOrAuthorizeAPI(Charge chargeOrAuthorize){
+        getPaymentProcessManager().retrieveChargeOrAuthorizeAPI(chargeOrAuthorize);
+    }
+
+    /**
+     *
+     * @param model
+     * @param listener
+     */
     public void initiatePayment(PaymentOptionViewModel model, IPaymentProcessListener listener) {
 
         getProcessListener().addListener(listener);
@@ -323,5 +320,20 @@ public final class PaymentDataManager {
 
             return listeners;
         }
+    }
+
+    @NonNull private IPaymentDataProvider getPaymentDataProvider() {
+
+        return dataProvider;
+    }
+
+    @NonNull private PaymentProcessListener getProcessListener() {
+
+        return processListener;
+    }
+
+    @NonNull public PaymentProcessManager getPaymentProcessManager() {
+
+        return paymentProcessManager;
     }
 }

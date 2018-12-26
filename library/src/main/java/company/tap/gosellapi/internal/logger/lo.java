@@ -20,4 +20,8 @@ public class lo {
             Log.d("goTap_logger: " + className + "." + methodName + "():" + lineNumber, (message == null ? "" : message));
         }
     }
+
+    public static void logRequestResponseTime(String operation){
+        Log.d(operation +": ", System.nanoTime()+"");
+    }
 }

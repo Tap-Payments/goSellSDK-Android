@@ -2,6 +2,8 @@ package company.tap.gosellapi.internal.data_managers.payment_options;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import company.tap.gosellapi.internal.Constants;
 import company.tap.gosellapi.internal.api.enums.PaymentType;
@@ -13,6 +15,7 @@ import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.api.models.SavedCard;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
+import company.tap.gosellapi.internal.data_managers.payment_options.utils.PaymentOptionsDataManagerUtils;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.CardCredentialsViewModel;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.CurrencyViewModel;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.EmptyViewModel;
@@ -87,23 +90,21 @@ public class PaymentOptionsDataManager {
 
         this.paymentOptionsResponse = paymentOptionsResponse;
         this.modelsHandler = new ViewModelsHandler();
-
         getModelsHandler().generateViewModels();
         getModelsHandler().filterViewModels(getPaymentOptionsResponse().getCurrency());
     }
 
     //region data for adapter
     public int getSize() {
+        System.out.println(" PaymentOptionsRecyclerViewAdapter >>> visibleViewModels size :  "+ getVisibleViewModels().size());
         return getVisibleViewModels().size();
     }
 
     public AmountedCurrency getSelectedCurrency() {
 
         if(this.selectedCurrency == null) {
-
            this.selectedCurrency = getTransactionCurrency();
         }
-
         return selectedCurrency;
     }
 
@@ -148,10 +149,13 @@ public class PaymentOptionsDataManager {
 
     //region callback actions from child viewModels
     public void currencyHolderClicked(int position) {
-
+        System.out.println(" PaymentOptionsDataManager .... "+ position);
         ArrayList<AmountedCurrency> currencies = getPaymentOptionsResponse().getSupportedCurrencies();
-
+        for(AmountedCurrency amountedCurrency : currencies){
+            System.out.println(" supported currency : "+ amountedCurrency);
+        }
         CurrencyViewModelData currencyViewModelData = ((CurrencyViewModel) viewModels.get(position)).getData();
+        System.out.println(" currencyViewModelData : "+ currencyViewModelData.getSelectedCurrency().getCurrency());
         listener.startCurrencySelection(currencies, currencyViewModelData.getSelectedCurrency());
     }
 
@@ -161,7 +165,7 @@ public class PaymentOptionsDataManager {
     }
 
     public void webPaymentSystemViewHolderClicked(WebPaymentViewModel sender, int position) {
-
+        System.out.println("webPaymentSystemViewHolderClicked >> webPayment model : " +sender );
         setFocused(position);
         listener.startWebPayment(sender);
     }
@@ -354,12 +358,40 @@ public class PaymentOptionsDataManager {
             CurrencyViewModel currencyViewModel = generateCurrencyModel();
             result.add(currencyViewModel);
 
+             // paymentOptions === paymentMethods
             ArrayList<PaymentOption> paymentOptions     = getPaymentOptionsResponse().getPaymentOptions();
-            ArrayList<PaymentOption> webPaymentOptions  = Utils.List.filter(paymentOptions, getPaymentOptionsFilter(PaymentType.WEB));
-            ArrayList<PaymentOption> cardPaymentOptions = Utils.List.filter(paymentOptions, getPaymentOptionsFilter(PaymentType.CARD));
 
+            System.out.println( "/////////////////////  get web/card payment options   ///////////////");
+             /**
+              * Haitham Sheshtawy 20/12/2018
+             * I need to test Java 8 way of filtering collection against old Utils filter method
+              * Just Test >>> and I can't apply it now because Java 8 stream only works starting from API 24+
+              * and our project minSDK = 15
+             */
+            // 1- Utils filter
+            ArrayList<PaymentOption> webPaymentOptions  = Utils.List.filter(paymentOptions, getPaymentOptionsFilter(PaymentType.WEB));
+//            System.out.println("$$$$$$$$$$$$$$$$         Utils filter result                  $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ ");
+//            for(PaymentOption paymentOption: webPaymentOptions){
+//                System.out.println(paymentOption.getName());
+//            }
+//            // 2- Java 8 stream method
+//            List<PaymentOption> paymentOptions1 = paymentOptions.stream()
+//                                                                      .filter(p -> p.getPaymentType() == PaymentType.WEB)
+//                                                                     .collect(Collectors.toList());
+//            System.out.println("$$$$$$$$$$$$$$$$         Java 8 stream filter result   "+paymentOptions1.size()+"               $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ ");
+//            for(PaymentOption paymentOption: paymentOptions1){
+//                System.out.println(paymentOption.getName());
+//            }
+//            System.out.println( "////////////////////////////////////////////////////////////////////////////////////////////////////////");
+            ArrayList<PaymentOption> cardPaymentOptions = Utils.List.filter(paymentOptions, getPaymentOptionsFilter(PaymentType.CARD));
+            for(PaymentOption paymentOption:cardPaymentOptions){
+                System.out.println(" Card  option : "+ paymentOption.getName());
+            }
+
+            System.out.println( "/////////////////////  get saved cards  ///////////////");
             ArrayList<SavedCard> savedCards = getPaymentOptionsResponse().getCards();
 
+            System.out.println( "/////////////////////  decide which view model to use   ///////////////");
             boolean hasSavedCards           = savedCards.size() > 0;
             boolean hasWebPaymentOptions    = webPaymentOptions.size() > 0;
             boolean hasCardPaymentOptions   = cardPaymentOptions.size() > 0;
@@ -383,24 +415,20 @@ public class PaymentOptionsDataManager {
                 GroupViewModel othersGroupModel = generateGroupModel(Constants.othersGroupTitle);
                 result.add(othersGroupModel);
             }
-
+            // according to paymentOptions response im working on for test >>> user has two web payment options [ KNEt - BENEFIT]
             if ( hasWebPaymentOptions ) {
-
-                EmptyViewModel emptyModel = generateEmptyModel(Constants.spaceBeforeWebPaymentOptionsIdentifier);
+                EmptyViewModel emptyModel = PaymentOptionsDataManagerUtils.ViewModelUtils.generateEmptyModel(Constants.spaceBeforeWebPaymentOptionsIdentifier,PaymentOptionsDataManager.this);
                 result.add(emptyModel);
-
                 for ( PaymentOption paymentOption : webPaymentOptions ) {
-
-                    WebPaymentViewModel webPaymentModel = generateWebPaymentModel(paymentOption);
+                    System.out.println(" paymentOption >> to be added ti viewModel List : "+ paymentOption.getName());
+                    WebPaymentViewModel webPaymentModel = PaymentOptionsDataManagerUtils.ViewModelUtils.generateWebPaymentModel(paymentOption,PaymentOptionsDataManager.this);
                     result.add(webPaymentModel);
                 }
             }
 
             if ( hasCardPaymentOptions ) {
-
-                EmptyViewModel emptyModel = generateEmptyModel(Constants.spaceBetweenWebAndCardOptionsIdentifier);
+                EmptyViewModel emptyModel = PaymentOptionsDataManagerUtils.ViewModelUtils.generateEmptyModel(Constants.spaceBetweenWebAndCardOptionsIdentifier,PaymentOptionsDataManager.this);
                 result.add(emptyModel);
-
                 CardCredentialsViewModel cardPaymentModel = generateCardPaymentModel(cardPaymentOptions);
                 result.add(cardPaymentModel);
             }
@@ -408,17 +436,24 @@ public class PaymentOptionsDataManager {
             viewModels = result;
         }
 
+        // need more re-factorization >>> it can be inside generateViewModel() and just use filterFlag=true or false
         private void filterViewModels(String currency) {
+            System.out.println(" filterViewModels :lastFilteredCurrency :" + lastFilteredCurrency );
+            System.out.println(" filterViewModels : currency " + currency );
+            System.out.println(" >>> " + (lastFilteredCurrency != null && lastFilteredCurrency.equals(currency)));
 
-            if ( lastFilteredCurrency != null && lastFilteredCurrency.equals(currency) ) { return; }
 
             ArrayList<PaymentOptionViewModel> result = new ArrayList<>();
 
             CurrencyViewModel model = findCurrencyModel();
+
+
             result.add(model);
 
             ArrayList<SavedCard> savedCards = filterByCurrenciesAndSortList(getPaymentOptionsResponse().getCards(), currency);
 
+            System.out.println( "Size : " +  savedCards.size() );
+//            savedCards.stream().forEach(item->System.out.println(item.getId()) );
             ArrayList<PaymentOption> paymentOptions = getPaymentOptionsResponse().getPaymentOptions();
 
             ArrayList<PaymentOption> webPaymentOptions = filteredByPaymentTypeAndCurrencyAndSortedList(paymentOptions, PaymentType.WEB, currency);
@@ -480,7 +515,8 @@ public class PaymentOptionsDataManager {
         }
 
         private CurrencyViewModel generateCurrencyModel() {
-
+          System.out.println("getTransactionCurrency() : " + getTransactionCurrency().getCurrency());
+          System.out.println("getSelectedCurrency() : " + getSelectedCurrency().getCurrency());
             CurrencyViewModelData currencyViewModelData = new CurrencyViewModelData(getTransactionCurrency(), getSelectedCurrency());
 
             return new CurrencyViewModel(PaymentOptionsDataManager.this, currencyViewModelData);
@@ -489,7 +525,6 @@ public class PaymentOptionsDataManager {
         private CurrencyViewModel findCurrencyModel() {
 
             for (PaymentOptionViewModel model : getViewModels() ) {
-
                 if ( model instanceof CurrencyViewModel ) {
 
                     return (CurrencyViewModel) model;
@@ -529,13 +564,15 @@ public class PaymentOptionsDataManager {
 
             return findSingleModel(RecentSectionViewModel.class);
         }
-
-        private EmptyViewModel generateEmptyModel(String identifier) {
-
-            EmptyViewModelData modelData = new EmptyViewModelData(identifier);
-
-            return new EmptyViewModel(PaymentOptionsDataManager.this, modelData);
-        }
+         /*
+          commented by haitham >>> as i moved it to PayamentOptionsDataManagerUtils
+         */
+//        private EmptyViewModel generateEmptyModel(String identifier) {
+//
+//            EmptyViewModelData modelData = new EmptyViewModelData(identifier);
+//
+//            return new EmptyViewModel(PaymentOptionsDataManager.this, modelData);
+//        }
 
         private EmptyViewModel findEmptyModel(String identifier) {
 
@@ -553,10 +590,13 @@ public class PaymentOptionsDataManager {
             return null;
         }
 
-        private WebPaymentViewModel generateWebPaymentModel(PaymentOption paymentOption) {
-
-            return new WebPaymentViewModel(PaymentOptionsDataManager.this, paymentOption);
-        }
+         /*
+          commented by haitham >>> as i moved it to PayamentOptionsDataManagerUtils
+         */
+//        private WebPaymentViewModel generateWebPaymentModel(PaymentOption paymentOption) {
+//
+//            return new WebPaymentViewModel(PaymentOptionsDataManager.this, paymentOption);
+//        }
 
         private WebPaymentViewModel findWebPaymentModel(PaymentOption paymentOption) {
 
@@ -573,6 +613,7 @@ public class PaymentOptionsDataManager {
 
             return null;
         }
+
 
         private CardCredentialsViewModel generateCardPaymentModel(ArrayList<PaymentOption> paymentOptions) {
 
@@ -612,13 +653,10 @@ public class PaymentOptionsDataManager {
             };
         }
 
-        private <E extends CurrenciesSupport & Comparable<E>> ArrayList<E> filterByCurrenciesAndSortList(ArrayList<E> list, String currency) {
-
+        private <E extends CurrenciesSupport & Comparable<E>> ArrayList<E> filterByCurrenciesAndSortList(ArrayList<E> list, final String currency) {
             Utils.List.Filter<E> filter = getCurrenciesFilter(currency);
-
             ArrayList<E> filtered = Utils.List.filter(list, filter);
             Collections.sort(filtered);
-
             return filtered;
         }
 

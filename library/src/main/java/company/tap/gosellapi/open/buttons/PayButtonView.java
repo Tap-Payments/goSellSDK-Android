@@ -1,11 +1,6 @@
 package company.tap.gosellapi.open.buttons;
 
-/**
- * This PayButtonView object is just a delegate stage to PaymentDataManager
- */
-
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -14,33 +9,22 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
-import company.tap.gosellapi.internal.api.requests.PaymentOptionsRequest;
 import company.tap.gosellapi.internal.interfaces.IPaymentProcessListener;
 import company.tap.gosellapi.internal.utils.Utils;
-import company.tap.gosellapi.internal.activities.GoSellPaymentActivity;
-import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
-import company.tap.gosellapi.internal.api.callbacks.GoSellError;
-import company.tap.gosellapi.internal.api.facade.GoSellAPI;
-import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
-import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
-import company.tap.gosellapi.open.interfaces.PaymentDataSource;
 import gotap.com.tapglkitandroid.gl.Views.TapLoadingView;
 
-public final class PayButtonView extends FrameLayout implements View.OnClickListener {
+public final class PayButtonView extends FrameLayout  {
 
     private static final int VALUE_IS_MISSING = -11111;
     private static final String TAG = "GoSellPayLayout TAG";
-    private PaymentDataSource paymentDataSource;
 
     private int layoutId;
     private int mHeight;
@@ -77,6 +61,7 @@ public final class PayButtonView extends FrameLayout implements View.OnClickList
     private PaymentOption paymentOption;
     private IPaymentProcessListener observer;
 
+
     public PayButtonView(Context context) {
         super(context);
         init(context, null);
@@ -87,20 +72,6 @@ public final class PayButtonView extends FrameLayout implements View.OnClickList
         init(context, attrs);
     }
 
-    public void setPaymentDataSource(PaymentDataSource paymentDataSource) {
-
-        PaymentDataManager.getInstance().setExternalDataSource(paymentDataSource);
-        this.paymentDataSource = paymentDataSource;
-    }
-
-    public void setPaymentOption(PaymentOption paymentOption) {
-        this.paymentOption = paymentOption;
-    }
-
-    public void setObserver(IPaymentProcessListener observer) {
-        this.observer = observer;
-    }
-
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
@@ -108,8 +79,8 @@ public final class PayButtonView extends FrameLayout implements View.OnClickList
     }
 
     private void init(Context context, AttributeSet attrs) {
-        payButton = new AppCompatTextView(context, attrs);
         loadingView = new TapLoadingView(context, attrs);
+        payButton = new AppCompatTextView(context, attrs);
         securityIconView = new ImageView(context, attrs);
 
         layoutId = getId() == -1 ? R.id.pay_layout_id : getId();
@@ -124,10 +95,6 @@ public final class PayButtonView extends FrameLayout implements View.OnClickList
         addView(payButton, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         addView(loadingView, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.START | Gravity.CENTER_VERTICAL));
         addView(securityIconView, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.END | Gravity.CENTER_VERTICAL));
-
-        super.setOnClickListener(this);
-        payButton.setOnClickListener(this);
-        securityIconView.setOnClickListener(this);
     }
 
     private void initAttributes(Context context, AttributeSet attrs) {
@@ -337,74 +304,19 @@ public final class PayButtonView extends FrameLayout implements View.OnClickList
         }
     }
 
-    //    //goSell handles clicks
-    @Override
-    public final void setOnClickListener(@Nullable OnClickListener l) {
-
+    public int getLayoutId() {
+        return layoutId;
     }
 
-    @Override
-    public void onClick(View v) {
-
-        if (paymentDataSource == null) {
-            makePayment();
-            return;
-        }
-
-        int i = v.getId();
-
-        if (i == layoutId || i == R.id.pay_button_id) {
-            getPaymentTypes();
-        } else if (i == R.id.pay_security_icon_id) {
-        }
+    public TapLoadingView getLoadingView() {
+        return loadingView;
     }
 
-    /**
-     *
-     */
-    private void getPaymentTypes() {
-
-        loadingView.start();
-
-        PaymentOptionsRequest request = new PaymentOptionsRequest(
-
-                this.paymentDataSource.getTransactionMode(),
-                this.paymentDataSource.getAmount(),
-                this.paymentDataSource.getItems(),
-                this.paymentDataSource.getShipping(),
-                this.paymentDataSource.getTaxes(),
-                this.paymentDataSource.getCurrency(),
-                this.paymentDataSource.getCustomer().getIdentifier()
-        );
-
-        GoSellAPI.getInstance().getPaymentOptions(request,
-                new APIRequestCallback<PaymentOptionsResponse>() {
-
-                    @Override
-                    public void onSuccess(int responseCode, PaymentOptionsResponse serializedResponse) {
-                        loadingView.setForceStop(true, new TapLoadingView.FullProgressListener() {
-                            @Override
-                            public void onFullProgress() {
-                                startMainActivity();
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onFailure(GoSellError errorDetails) {
-                        loadingView.setForceStop(true);
-                    }
-                });
+    public AppCompatTextView getPayButton() {
+        return payButton;
     }
 
-    private void startMainActivity() {
-        Intent intent = new Intent(getContext(), GoSellPaymentActivity.class);
-        getContext().startActivity(intent);
-    }
-
-    private void makePayment() {
-        loadingView.start();
-
-
+    public ImageView getSecurityIconView() {
+        return securityIconView;
     }
 }

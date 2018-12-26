@@ -22,12 +22,16 @@ import company.tap.gosellapi.internal.interfaces.CreateTokenRequest;
 public final class GoSellAPI {
     private APIService apiHelper;
 
-    //init and pending requests
+    // Declare and pending requests to initialization
     private RequestManager requestManager;
 
     private GoSellAPI() {
         apiHelper = RetrofitHelper.getApiHelper();
         requestManager = new RequestManager(apiHelper);
+    }
+
+    public void retrieveAuthorize(String identifier, APIRequestCallback<Authorize> requestCallback) {
+        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.retrieveAuthorize(identifier), requestCallback));
     }
 
     private static class SingletonCreationAdmin {
@@ -80,8 +84,14 @@ public final class GoSellAPI {
 //    }
 
     public void getPaymentOptions(PaymentOptionsRequest paymentOptionsRequest, final APIRequestCallback<PaymentOptionsResponse> requestCallback) {
+
+        // check paymentOptions Request
+        System.out.println( "### paymentOptionsRequest ### " + paymentOptionsRequest.getPaymentOptionRequestInfo());
+
+
+
         PaymentDataManager.getInstance().setPaymentOptionsRequest(paymentOptionsRequest);
-        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.getPaymentTypes(paymentOptionsRequest), new APIRequestCallback<PaymentOptionsResponse>() {
+        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.getPaymentOptions(paymentOptionsRequest), new APIRequestCallback<PaymentOptionsResponse>() {
             @Override
             public void onSuccess(int responseCode, PaymentOptionsResponse serializedResponse) {
 

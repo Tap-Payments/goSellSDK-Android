@@ -2,7 +2,6 @@ package company.tap.gosellapi.internal.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +10,10 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import company.tap.gosellapi.R;
+import company.tap.gosellapi.internal.api.enums.PaymentType;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.tapcardvalidator_android.CardBrand;
 
@@ -20,11 +21,13 @@ import company.tap.tapcardvalidator_android.CardBrand;
 public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSystemViewHolder> {
 
     private ArrayList<PaymentOption> data;
-    private final ArrayList<PaymentOption> initialData;
+    private  ArrayList<PaymentOption> initialData;
 
     public CardSystemsRecyclerViewAdapter(ArrayList<PaymentOption> data) {
         this.data = data;
-        this.initialData = data;
+        filterPaymentOptions();
+
+
     }
 
     @NonNull
@@ -45,6 +48,19 @@ public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSys
         return data.size();
     }
 
+    private void filterPaymentOptions(){
+
+        for(Iterator<PaymentOption> it = data.iterator(); it.hasNext();) {
+            PaymentOption p = it.next();
+            System.out.println("payment type : " + p.getName());
+            if(p.getPaymentType() != PaymentType.CARD) {
+                it.remove();
+            }
+        }
+       this.initialData = (ArrayList<PaymentOption>) data.clone();
+
+    }
+
     public void updateForCardBrand(CardBrand brand) {
 
         if(brand == null) {
@@ -53,16 +69,19 @@ public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSys
             return;
         }
 
-        for(PaymentOption option : data) {
+        data.clear();
+
+        for(PaymentOption option : initialData) {
 
            ArrayList<CardBrand> cardBrands = option.getSupportedCardBrands();
+            System.out.println("brand :"+ brand);
 
            if(cardBrands.contains(brand)) {
-               data.clear();
                data.add(option);
-               break;
            }
         }
+        if(data.size() == 0)
+            data = new ArrayList<>(initialData);
 
         notifyDataSetChanged();
     }

@@ -42,6 +42,8 @@ public final class SDKSettings implements BaseResponse {
         @Expose
         private InternalSDKSettings internalSDKSettings;
 
+        /////////////////////////////////////////////////////////////////////////////////////////////////////
+
         public boolean isLivemode() {
             return livemode;
         }
@@ -61,6 +63,7 @@ public final class SDKSettings implements BaseResponse {
         public InternalSDKSettings getInternalSDKSettings() {
             return internalSDKSettings;
         }
+        //////////////////////////////////////////////////////////////////////////////////////////////////////
 
         public static final class Merchant {
 

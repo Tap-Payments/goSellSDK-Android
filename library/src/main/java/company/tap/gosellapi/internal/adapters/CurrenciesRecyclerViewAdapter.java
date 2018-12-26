@@ -17,45 +17,19 @@ import java.util.regex.Pattern;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
+import company.tap.gosellapi.internal.interfaces.CurrenciesAdapterCallback;
 import company.tap.gosellapi.internal.utils.CurrencyFormatter;
+import company.tap.gosellapi.internal.utils.LocalizedCurrency;
 import company.tap.gosellapi.internal.utils.Utils;
 
 public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<CurrenciesRecyclerViewAdapter.CurrencyCellViewHolder> {
 
-    public interface CurrenciesAdapterCallback {
-
-        void itemSelected(AmountedCurrency currency);
-    }
-
-    private class LocalizedCurrency implements Comparable<LocalizedCurrency> {
-
-        private AmountedCurrency currency;
-        private String localizedDisplayName;
-
-        @Override
-        public int compareTo(@NonNull LocalizedCurrency o) {
-
-            return getLocalizedDisplayName().compareToIgnoreCase(o.getLocalizedDisplayName());
-        }
-
-        private LocalizedCurrency(AmountedCurrency currency) {
-
-            this.currency = currency;
-            this.localizedDisplayName = CurrencyFormatter.getLocalizedCurrencyName(currency.getCurrency());
-        }
-
-        private AmountedCurrency getCurrency() { return currency; }
-        private String getLocalizedDisplayName() { return localizedDisplayName; }
-    }
-
     private CurrenciesAdapterCallback callback;
-
     private final static int NO_SELECTION = -1;
     private ArrayList<LocalizedCurrency> allCurrencies;
     private ArrayList<LocalizedCurrency> filteredCurrencies;
     private LocalizedCurrency selectedCurrency;
     private String searchQuery = null;
-
     private ArrayList<LocalizedCurrency> getAllCurrencies() { return allCurrencies; }
     private ArrayList<LocalizedCurrency> getFilteredCurrencies() { return filteredCurrencies; }
     private LocalizedCurrency getSelectedCurrency() { return selectedCurrency; }
@@ -84,10 +58,10 @@ public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<Currenci
 
             selected = this.allCurrencies.get(0);
         }
-
+        System.out.println("allCurrencies >>>  size :"+allCurrencies.size());
         this.selectedCurrency   = selected;
         this.callback           = callback;
-
+        System.out.println(" RecyclerViewAdapter >>> selectedCurrency  : " + selectedCurrency.getCurrency());
         prepareDataSources();
     }
 
@@ -101,22 +75,39 @@ public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<Currenci
     private void prepareDataSources() {
 
         Collections.sort(allCurrencies);
+        for(LocalizedCurrency  amountedCurrency:allCurrencies){
+            System.out.println(" sorted amounted currency : " + amountedCurrency.getCurrency().getCurrency());
+        }
+        System.out.println("serachQuery :" + searchQuery);
         filter(searchQuery);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CurrencyCellViewHolder holder, int position) {
-
-        holder.bind(getFilteredCurrencies().get(position).getCurrency().getCurrency());
+       String bindedCurrency =
+                               (getFilteredCurrencies()!= null && getFilteredCurrencies().get(position)!=null )
+                               ?
+                               getFilteredCurrencies().get(position).getCurrency().getCurrency()
+                               :
+                               getAllCurrencies().get(position).getCurrency().getCurrency();
+        System.out.println(" binded currency : " + bindedCurrency);
+        holder.bind(bindedCurrency);
     }
 
     @Override
-    public int getItemCount() { return getFilteredCurrencies().size(); }
+    public int getItemCount() {
+        System.out.println("getFilteredCurrencies()  >>> "+getFilteredCurrencies());
+        System.out.println("getAllCurrencies()  >>> "+getAllCurrencies());
+        System.out.println("list size : " +( getFilteredCurrencies()!= null ? getFilteredCurrencies().size(): getAllCurrencies().size()));
+        return getFilteredCurrencies()!=null? getFilteredCurrencies().size(): getAllCurrencies().size();
+
+    }
 
     private void setSelection(int newSelection) {
 
-        selectedCurrency = getFilteredCurrencies().get(newSelection);
-
+        selectedCurrency = getFilteredCurrencies()!=null ?getFilteredCurrencies().get(newSelection)
+                           : getAllCurrencies().get(newSelection);
+      System.out.println(" selected currency from list : " + selectedCurrency.getCurrency().getCurrency());
         if (selectedPosition != NO_SELECTION) {
             notifyItemChanged(selectedPosition);
         }
@@ -126,10 +117,8 @@ public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<Currenci
     }
 
     public void filter(@NonNull String newText) {
-
         if ( searchQuery == newText ) { return; }
         searchQuery = newText;
-
         this.filteredCurrencies = Utils.List.filter(getAllCurrencies(), searchQueryFilter);
         notifyDataSetChanged();
     }
@@ -178,6 +167,7 @@ public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<Currenci
         }
 
         private void bind(String currencyCode) {
+            System.out.println("getCurrencySelectionString :   "+ currencyCode);
             tvCurrencyName.setText(getCurrencySelectionString(currencyCode));
 
             if (currencyCode.equals(selectedCurrency)) {
@@ -192,9 +182,12 @@ public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<Currenci
         public void onClick(View view) {
 
             int position = getAdapterPosition();
+            System.out.println(" get selected adapter position : " + position);
             setSelection(position);
 
-            AmountedCurrency selectedCurrency = getFilteredCurrencies().get(position).getCurrency();
+            AmountedCurrency selectedCurrency = getFilteredCurrencies()!=null ? getFilteredCurrencies().get(position).getCurrency()
+                                                : getAllCurrencies().get(position).getCurrency();
+            System.out.println("get user selected currency : " + selectedCurrency.getCurrency());
             callback.itemSelected(selectedCurrency);
         }
 
@@ -210,7 +203,8 @@ public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<Currenci
 
             String currencyCodeLowered = currencyCode.toLowerCase();
             String currencyName = Utils.getCurrencyName(currencyCode, currency);
-
+            System.out.println("currencyCodeLowered :  "+ currencyCodeLowered);
+            System.out.println("currencyName :  "+ currencyName);
 
             SpannableStringBuilder sb = new SpannableStringBuilder(currencyCode);
 
@@ -227,32 +221,34 @@ public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<Currenci
 
                 sb.append(")");
             }
+            /*
+              SearchQuery check done By Haitham >>> to avoid null pointer exception
+             */
+            if(searchQuery!=null) {
+                //formatting
+                if (!currencyName.isEmpty()  && !searchQuery.isEmpty()) {
+                    int index = currencyName.toLowerCase().indexOf(searchQuery);
+                    while (index >= 0) {
+                        Utils.highlightText(itemView.getContext(), sb, currencyNameIndex + index, searchQuery);
+                        index = currencyName.toLowerCase().indexOf(searchQuery, index + 1);
+                    }
+                }
 
-
-            //formatting
-            if (!currencyName.isEmpty() && !searchQuery.isEmpty()) {
-                int index = currencyName.toLowerCase().indexOf(searchQuery);
-                while (index >= 0) {
-                    Utils.highlightText(itemView.getContext(), sb, currencyNameIndex + index, searchQuery);
-                    index = currencyName.toLowerCase().indexOf(searchQuery, index + 1);
+                //search in currency code (not sequentally)
+                ArrayList<Integer> indexesToHighlight = new ArrayList<>();
+                int index = -1;
+                for (char ch : searchQuery.toCharArray()) {
+                    index = currencyCodeLowered.indexOf(ch, index + 1);
+                    if (index >= 0) {
+                        indexesToHighlight.add(index);
+                    }
+                }
+                if (indexesToHighlight.size() == searchQuery.length()) {
+                    for (int i : indexesToHighlight) {
+                        Utils.highlightText(itemView.getContext(), sb, i);
+                    }
                 }
             }
-
-            //search in currency code (not sequentally)
-            ArrayList<Integer> indexesToHighlight = new ArrayList<>();
-            int index = -1;
-            for (char ch : searchQuery.toCharArray()) {
-                index = currencyCodeLowered.indexOf(ch, index + 1);
-                if (index >= 0) {
-                    indexesToHighlight.add(index);
-                }
-            }
-            if (indexesToHighlight.size() == searchQuery.length()) {
-                for (int i : indexesToHighlight) {
-                    Utils.highlightText(itemView.getContext(), sb, i);
-                }
-            }
-
             return sb;
         }
     }

@@ -119,6 +119,7 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
   public PaymentDataSource(){
     generateDefaultPaymentData();
   }
+
   private void generateDefaultPaymentData() {
 
     this.currency = new TapCurrency("KWD");
@@ -134,16 +135,11 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
         build();
     this.amount = null;
     this.items = new ArrayList<>();
-    // add payment item
-//        this.items.add(new PaymentItem("Test item #1",
-//                                    "Description for test item #1",
-//                                     new Quantity(KILOGRAMS, BigDecimal.ONE),
-//                                     BigDecimal.ONE,
-//                                     new AmountModificator(PERCENTAGE, BigDecimal.ONE),
-//                               null));
-    this.items.add(new PaymentItem.PaymentItemBuilder("",new Quantity(KILOGRAMS, BigDecimal.ONE),BigDecimal.ONE)
+
+    this.items.add(
+        new PaymentItem.PaymentItemBuilder("",new Quantity(KILOGRAMS, BigDecimal.ONE),BigDecimal.ONE)
         .description("Description for test item #1")
-        .discount(new AmountModificator(PERCENTAGE, BigDecimal.ONE))
+        .discount(new AmountModificator(FIXED, BigDecimal.ZERO))
         .taxes(null)
         .build());
 //        Transaction mode

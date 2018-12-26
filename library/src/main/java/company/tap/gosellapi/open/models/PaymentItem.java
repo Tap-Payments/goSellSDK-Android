@@ -60,6 +60,8 @@ public class PaymentItem {
     this.discount = discount;
     this.taxes = taxes;
     this.totalAmount = AmountCalculator.calculateTotalAmountOf(this);
+
+    System.out.println("calculated total amount : " + this.totalAmount);
   }
 
   public BigDecimal getAmountPerUnit() {
@@ -75,6 +77,9 @@ public class PaymentItem {
   }
 
   public BigDecimal getPlainAmount() {
+    System.out.println("  #### getPlainAmount : " + this.getAmountPerUnit() );
+    System.out.println("  #### this.getQuantity().getValue() : " + this.getQuantity().getValue() );
+    System.out.println("  #### result : " + this.getAmountPerUnit().multiply(this.getQuantity().getValue()) );
     return this.getAmountPerUnit().multiply(this.getQuantity().getValue());
   }
 
@@ -120,12 +125,12 @@ public class PaymentItem {
     /**
      * public constructor with only required data
      */
-    public PaymentItemBuilder(String innerName,
-                              Quantity innerQuantity,
-                              BigDecimal innerAmountPerUnit) {
-      this.nestedName = innerName;
-      this.nestedQuantity = innerQuantity;
-      this.nestedAmountPerUnit = innerAmountPerUnit;
+    public PaymentItemBuilder(String name,
+                              Quantity quantity,
+                              BigDecimal amountPerUnit) {
+      this.nestedName = name;
+      this.nestedQuantity = quantity;
+      this.nestedAmountPerUnit = amountPerUnit;
     }
 
     public PaymentItemBuilder description(String innerDescription) {

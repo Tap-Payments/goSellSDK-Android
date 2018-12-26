@@ -16,9 +16,11 @@ final class API_Constants {
     static final String TOKEN_ID = "token_id";
 
     static final String AUTHORIZE = "authorize";
+    static final String AUTHORIZE_ID = "authorize_id";
 
     static final String CHARGES = "charges";
     static final String CHARGE_ID = "charge_id";
+
 
     static final String BIN = "bin";
     static final String BIN_LOOKUP = "bin_number";
