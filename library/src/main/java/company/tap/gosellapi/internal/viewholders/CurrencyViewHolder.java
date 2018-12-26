@@ -28,6 +28,7 @@ public class CurrencyViewHolder extends PaymentOptionsBaseViewHolder<CurrencyVie
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                System.out.println(" currency model clicked...... " + viewModel.getData());
                 viewModel.holderClicked();
             }
         });
@@ -40,18 +41,17 @@ public class CurrencyViewHolder extends PaymentOptionsBaseViewHolder<CurrencyVie
         AmountedCurrency transactionCurrency    = data.getTransactionCurrency();
         AmountedCurrency selectedCurrency       = data.getSelectedCurrency();
 
+        System.out.println(" Currency View Holders : transactionCurrency : " + transactionCurrency.getCurrency());
+        System.out.println(" Currency View Holders : selectedCurrency : " + selectedCurrency.getCurrency());
         String selectedCurrencyText = CurrencyFormatter.format(selectedCurrency);
 
         if (transactionCurrency.getCurrency().equals(selectedCurrency.getCurrency())) {
-
             currencySecondaryText.setVisibility(View.GONE);
             currencySecondaryText.setText("");
             currencyMainText.setText(selectedCurrencyText);
         }
         else {
-
             String transactionCurrencyText = CurrencyFormatter.format(transactionCurrency);
-
             currencySecondaryText.setVisibility(View.VISIBLE);
             currencySecondaryText.setText(transactionCurrencyText);
             currencyMainText.setText(selectedCurrencyText);

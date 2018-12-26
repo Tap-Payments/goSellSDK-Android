@@ -50,6 +50,8 @@ public final class PaymentOptionsResponse implements BaseResponse {
     @Expose
     @Nullable private ArrayList<SavedCard> cards;
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////
     @NonNull public String getId() {
         return id;
     }
@@ -81,4 +83,5 @@ public final class PaymentOptionsResponse implements BaseResponse {
 
         return cards;
     }
+    ////////////////////////////////////////////////////////////////////////////////////////////
 }

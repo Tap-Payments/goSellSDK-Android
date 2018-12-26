@@ -41,7 +41,7 @@ public final class PaymentOptionsRequest {
 
     @SerializedName("currency")
     @Expose
-    @NonNull private TapCurrency currency;
+    @NonNull private String currency;
 
     @SerializedName("total_amount")
     @Expose
@@ -52,7 +52,7 @@ public final class PaymentOptionsRequest {
                                  @Nullable ArrayList<PaymentItem> items,
                                  @Nullable ArrayList<Shipping> shipping,
                                  @Nullable ArrayList<Tax> taxes,
-                                 @Nullable TapCurrency currency,
+                                 @Nullable String currency,
                                  @Nullable String customer) {
 
         this.transactionMode    = transactionMode == null ? TransactionMode.PURCHASE : transactionMode;
@@ -73,5 +73,17 @@ public final class PaymentOptionsRequest {
             BigDecimal plainAmount = amount == null ? BigDecimal.ZERO : amount;
             this.totalAmount = AmountCalculator.calculateTotalAmountOf(new ArrayList<PaymentItem>(), taxes, shipping).add(plainAmount);
         }
+    }
+
+    public String getPaymentOptionRequestInfo(){
+        return
+            "trx_mode : " + this.transactionMode + " /n " +
+            "shipping : " + this.shipping + " /n " +
+            "taxes : " + this.taxes.size() + " /n " +
+            "currency : " + this.currency + " /n " +
+            "customer : " + this.customer + " /n " +
+            "total_amout : " + this.totalAmount + " /n "
+
+            ;
     }
 }

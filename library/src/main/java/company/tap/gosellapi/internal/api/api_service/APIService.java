@@ -1,5 +1,7 @@
 package company.tap.gosellapi.internal.api.api_service;
 
+import android.support.annotation.RestrictTo;
+
 import company.tap.gosellapi.internal.api.models.Authorize;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.requests.CreateAuthorizeRequest;
@@ -23,16 +25,16 @@ import retrofit2.http.Path;
  * <br>
  * Interface for Retrofit methods
  */
-
+@RestrictTo(RestrictTo.Scope.LIBRARY)
 public interface APIService {
+
     @GET(API_Constants.INIT)
     Call<SDKSettings> init();
 
     @GET(API_Constants.TOKENS + "/{" + API_Constants.TOKEN_ID + "}")
     Call<Token> retrieveToken(@Path(API_Constants.TOKEN_ID) String tokenId);
 
-    @GET(API_Constants.CHARGES + "/{" + API_Constants.CHARGE_ID + "}")
-    Call<Charge> retrieveCharge(@Path(API_Constants.CHARGE_ID) String chargeId);
+
 
     @GET(API_Constants.BIN + "/{" + API_Constants.BIN_LOOKUP + "}")
     Call<BINLookupResponse> retrieveBINLookup(@Path(API_Constants.BIN_LOOKUP) String binNumber);
@@ -52,11 +54,19 @@ public interface APIService {
     @POST(API_Constants.CHARGES)
     Call<Charge> createCharge(@Body CreateChargeRequest createChargeRequest);
 
+    @GET(API_Constants.CHARGES + "/{" + API_Constants.CHARGE_ID + "}")
+    Call<Charge> retrieveCharge(@Path(API_Constants.CHARGE_ID) String chargeId);
+
     @POST(API_Constants.AUTHORIZE)
     Call<Authorize> createAuthorize(@Body CreateAuthorizeRequest createAuthorizeRequest);
 
+
+    @GET(API_Constants.AUTHORIZE + "/{" + API_Constants.AUTHORIZE_ID + "}")
+    Call<Authorize> retrieveAuthorize(@Path(API_Constants.AUTHORIZE_ID) String authorizeId);
+
+
     @POST(API_Constants.PAYMENT_TYPES)
-    Call<PaymentOptionsResponse> getPaymentTypes(@Body PaymentOptionsRequest paymentOptionsRequest);
+    Call<PaymentOptionsResponse> getPaymentOptions(@Body PaymentOptionsRequest paymentOptionsRequest);
 
     @PUT(API_Constants.CHARGES + "/{" + API_Constants.CHARGE_ID + "}")
     Call<Charge> updateCharge(@Path(API_Constants.CHARGE_ID) String chargeId);

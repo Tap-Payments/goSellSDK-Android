@@ -29,7 +29,7 @@ public class PaymentOptionViewModel<T, K extends PaymentOptionsBaseViewHolder<T,
 
     public PaymentOption getPaymentOption() {
 
-        return null;
+        return (PaymentOption)data;
     }
 
     public T getData() {
@@ -49,7 +49,7 @@ public class PaymentOptionViewModel<T, K extends PaymentOptionsBaseViewHolder<T,
     }
 
     private void applyStateToHolder() {
-
+        System.out.println(" >>>> data.getClass() : " + data.getClass());
         holder.bind(data);
         holder.setFocused(parentDataManager.isPositionInFocus(position));
         holder.restoreState(savedState);

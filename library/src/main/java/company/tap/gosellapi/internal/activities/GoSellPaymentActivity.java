@@ -1,6 +1,7 @@
 package company.tap.gosellapi.internal.activities;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.ViewTreeObserver;
@@ -47,18 +48,26 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         setContentView(R.layout.gosellapi_activity_main);
 
         fragmentManager = getSupportFragmentManager();
+
+        /**
+         *  PaymentOptionsDataManager >> is the main actor who decide layout content
+         */
         dataSource = PaymentDataManager.getInstance().getPaymentOptionsDataManager(this);
 
         final FrameLayout fragmentContainer = findViewById(R.id.paymentActivityFragmentContainer);
+
+        //Register a callback to be invoked when the global layout state or the visibility of views within the view tree changes
         fragmentContainer.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 dataSource.setAvailableHeight(fragmentContainer.getHeight());
-                fragmentContainer.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+                    fragmentContainer.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                else
+                    fragmentContainer.getViewTreeObserver().removeGlobalOnLayoutListener(this);
             }
         });
-
-        initViews();
+         initViews();
     }
 
     private void initViews() {
@@ -67,7 +76,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                 .beginTransaction()
                 .replace(R.id.paymentActivityFragmentContainer, paymentOptionsFragment)
                 .commit();
-
+ // setup toolbar
         businessIcon = findViewById(R.id.businessIcon);
         String logoPath = PaymentDataManager.getInstance().getSDKSettings().getData().getMerchant().getLogo();
         Glide.with(this).load(logoPath).apply(RequestOptions.circleCropTransform()).into(businessIcon);
@@ -94,8 +103,12 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     public void startWebPayment(WebPaymentViewModel model) {
 
         Intent intent = new Intent(this, WebPaymentActivity.class);
-
-        ActivityDataExchanger.getInstance().putExtra(model, WebPaymentActivity.IntentParameters.paymentOptionModel, intent);
+        System.out.println("GoSellApiPaymentActivity >>> start WebPayment model :" + model);
+        /**
+         * ActivityDataExchanger old way Replaced by Haitham >> I created a new way of storing PaymentOptionModel
+         */
+//        ActivityDataExchanger.getInstance().putExtra(model, WebPaymentActivity.IntentParameters.paymentOptionModel, intent);
+        ActivityDataExchanger.getInstance().setWebPaymentViewModel(model);
 
         startActivityForResult(intent, WEB_PAYMENT_REQUEST_CODE);
     }

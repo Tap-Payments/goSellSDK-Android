@@ -61,6 +61,7 @@ public class LoadingScreenManager {
     }
 
     private void removeLoadingView() {
+        System.out.println("removeLoadingView : "+loadingLayout );
         if (loadingLayout == null) return;
 
         final ViewGroup insertPoint = hostActivity.findViewById(android.R.id.content);

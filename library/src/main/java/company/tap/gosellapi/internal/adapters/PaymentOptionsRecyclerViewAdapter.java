@@ -19,19 +19,17 @@ public class PaymentOptionsRecyclerViewAdapter extends RecyclerView.Adapter<Paym
     @NonNull
     @Override
     public PaymentOptionsBaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
+        System.out.println("  onCreateViewHolder >>>>  viewType >> "+ viewType);
         return PaymentOptionsBaseViewHolder.newInstance(parent, PaymentOptionsBaseViewHolder.ViewHolderType.getByViewType(viewType));
     }
 
     @Override
     public void onBindViewHolder(@NonNull PaymentOptionsBaseViewHolder holder, int position) {
-        //noinspection unchecked
         holder.attachToViewModel(dataSource.getViewModel(position), position);
     }
 
     @Override
     public int getItemCount() {
-
         return dataSource.getSize();
     }
 

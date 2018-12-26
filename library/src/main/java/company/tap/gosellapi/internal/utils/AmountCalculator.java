@@ -79,25 +79,27 @@ public abstract class AmountCalculator {
 
         BigDecimal result = BigDecimal.ZERO;
 
-        for (ExtraFee fee : fees) {
+        if(fees!=null){
+            for (ExtraFee fee : fees) {
 
-            BigDecimal increase = BigDecimal.ZERO;
+                BigDecimal increase = BigDecimal.ZERO;
 
-            switch (fee.getType()) {
+                switch (fee.getType()) {
 
-                case FIXED:
+                    case FIXED:
 
-                    AmountedCurrency amountedCurrency = getAmountedCurrency(supportedCurrencies, fee.getCurrency());
-                    increase = currency.getAmount().multiply(fee.getValue()).divide(amountedCurrency.getAmount());
-                    break;
+                        AmountedCurrency amountedCurrency = getAmountedCurrency(supportedCurrencies, fee.getCurrency());
+                        increase = currency.getAmount().multiply(fee.getValue()).divide(amountedCurrency.getAmount());
+                        break;
 
-                case PERCENTAGE:
+                    case PERCENTAGE:
 
-                    increase = currency.getAmount().multiply(fee.getNormalizedValue());
-                    break;
+                        increase = currency.getAmount().multiply(fee.getNormalizedValue());
+                        break;
+                }
+
+                result = result.add(increase);
             }
-
-            result = result.add(increase);
         }
 
         return result;
