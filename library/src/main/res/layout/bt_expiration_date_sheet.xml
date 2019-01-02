@@ -24,6 +24,7 @@
         <GridView
             style="@style/bt_expiration_date_dialog_grid_view"
             android:id="@+id/bt_expiration_month_grid_view"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

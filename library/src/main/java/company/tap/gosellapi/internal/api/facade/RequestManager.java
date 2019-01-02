@@ -12,6 +12,7 @@ import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.responses.BaseResponse;
 import company.tap.gosellapi.internal.api.responses.SDKSettings;
 import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
+import okhttp3.RequestBody;
 import okio.Buffer;
 import retrofit2.Call;
 
@@ -97,6 +98,23 @@ class RequestManager {
             this.requestCallback = requestCallback;
         }
 
+      private String bodyToString(final RequestBody request){
+        try {
+          final RequestBody copy = request;
+          final Buffer buffer = new Buffer();
+          if(copy != null)
+            copy.writeTo(buffer);
+          else
+            return "body null";
+          return buffer.readUtf8();
+        }
+        catch (final IOException e) {
+          return "did not work";
+        }
+
+      }
+
+
         void run() {
             request.enqueue(new BaseCallback<>(requestCallback));
         }
@@ -109,4 +127,6 @@ class RequestManager {
           return this.request;
         }
     }
+
+
 }

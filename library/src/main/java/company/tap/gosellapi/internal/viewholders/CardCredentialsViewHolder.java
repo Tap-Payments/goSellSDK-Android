@@ -16,8 +16,11 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.style.ReplacementSpan;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -25,25 +28,30 @@ import java.util.ArrayList;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.adapters.CardSystemsRecyclerViewAdapter;
+import company.tap.gosellapi.internal.api.enums.CardScheme;
+import company.tap.gosellapi.internal.api.facade.GoSellAPI;
+import company.tap.gosellapi.internal.api.models.CardRawData;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
+import company.tap.gosellapi.internal.api.responses.BINLookupResponse;
 import company.tap.gosellapi.internal.custom_views.CvvEditText;
 import company.tap.gosellapi.internal.custom_views.ExpirationDateEditText;
 import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.CardCredentialsViewModel;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models_data.CardCredentialsViewModelData;
+import company.tap.gosellapi.internal.utils.ActivityDataExchanger;
 import company.tap.gosellapi.internal.utils.CardType;
+import company.tap.gosellapi.internal.utils.DateValidator;
 import company.tap.tapcardvalidator_android.CardBrand;
 import company.tap.tapcardvalidator_android.CardValidationState;
 import company.tap.tapcardvalidator_android.CardValidator;
 import company.tap.tapcardvalidator_android.DefinedCardBrand;
 
 public class CardCredentialsViewHolder
-        extends PaymentOptionsBaseViewHolder<CardCredentialsViewModelData, CardCredentialsViewHolder, CardCredentialsViewModel> {
+    extends PaymentOptionsBaseViewHolder<CardCredentialsViewModelData, CardCredentialsViewHolder, CardCredentialsViewModel> {
 
-    public interface Data {
 
+  public interface Data {
         void bindCardNumberFieldWithWatcher(EditText cardNumberField);
-
         SpannableString getCardNumberText();
         String getExpirationDateText();
         String getCVVText();
@@ -64,20 +72,22 @@ public class CardCredentialsViewHolder
     private Switch saveCardSwitch;
     private RecyclerView cardSystemsRecyclerView;
     private CardCredentialsViewModel viewModel;
+    private CardCredentialsTextWatcher cardCredentialsTextWatcher;
 
 
     CardCredentialsViewHolder(View view) {
 
         super(view);
+        cardCredentialsTextWatcher = new CardCredentialsTextWatcher();
 
+        viewModel = ActivityDataExchanger.getInstance().getCardCredentialsViewModel();
 /////////////////////////////////////////////////// CARD NUMBER START ///////////////////////////////////////////////////////
         cardNumberField = itemView.findViewById(R.id.cardNumberField);
 
-        cardNumberField.addTextChangedListener(new TextWatcher() {
-
+         viewModel.ViewHolderReference(this);
+         cardNumberField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
@@ -92,7 +102,7 @@ public class CardCredentialsViewHolder
                 if (cardBrand != CardBrand.americanExpress) {
                     spacings = new int[]{4, 8, 12};
                 } else {
-                    spacings = new int[]{3, 9};
+                    spacings = new int[]{4,8, 13};
                 }
 
                 String text = str.toString();
@@ -135,43 +145,29 @@ public class CardCredentialsViewHolder
                 }
 
                 cardNumberField.addTextChangedListener(this);
-            }
 
-            private String validateLength(String cardNumber) {
-
-                cardNumber = cardNumber.replace(" ", "");
-                System.out.println("brand >>  card number : replaced card no = " + cardNumber);
-                DefinedCardBrand brand = CardValidator.validate(cardNumber);
-                System.out.println("brand >>  card number :" + cardNumber + " brand:"+brand.getCardBrand());
-
-                String str = cardNumberField.getText().toString();
-                String newStr = str;
-                if (brand.getValidationState().equals(CardValidationState.invalid)) {
-                    newStr =  str.substring(0,str.length()-1);
+                if(text.length()== BIN_NUMBER_LENGTH){
+                    viewModel.binNumberEntered(text);
                 }
-                return newStr;
             }
 
-            @Override
+           @Override
             public void afterTextChanged(Editable s) {
-
+             System.out.println("validate card fields.... " + validateCardFields());
+             viewModel.cardDetailsFilled(validateCardFields(),viewModel);
             }
         });
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////// CARD SCANNER START ///////////////////////////////////////////////////////
         cardScannerButton = itemView.findViewById(R.id.cardScannerButton);
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////// CARD EXPIRATION_DATE START ///////////////////////////////////////////////////////
         expirationDateField = itemView.findViewById(R.id.expirationDateField);
         // enable Expiration date dialog
         expirationDateField.useDialogForExpirationDateEntry((Activity) view.getContext(), true);
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////// CVV START ///////////////////////////////////////////////////////
         cvvField = itemView.findViewById(R.id.cvvField);
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////// NAME ON CARD START ///////////////////////////////////////////////////////
         nameOnCardField = itemView.findViewById(R.id.cardholderNameField);
@@ -183,7 +179,7 @@ public class CardCredentialsViewHolder
             new InputFilter() {
 
                 @Override
-                public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dest_start, int dest_end) {
 
                     boolean keepOriginal = true;
 
@@ -212,24 +208,25 @@ public class CardCredentialsViewHolder
                 }
 
                 private boolean isCharAllowed(char c) {
-                    return Character.isLetterOrDigit(c) || Character.isSpaceChar(c);
+                    return Character.isLetterOrDigit(c) || Character.isSpaceChar(c) || isDotChar(c);
+                }
+
+                private boolean isDotChar(char c){
+                    return c == '.';
                 }
 
             } });
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////// ADDRESS ON CARD START ///////////////////////////////////////////////////////
         addressOnCardLayout = itemView.findViewById(R.id.addressOnCardContainer);
         addressOnCardField = itemView.findViewById(R.id.addressOnCardTextView);
         addressOnCardField.setText("Address will be displayed here, probably in multiple lines.");
         setupAddressOnCardField();
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////// SAVE CARD START ///////////////////////////////////////////////////////
         saveCardLayout = itemView.findViewById(R.id.saveCardContainer);
         saveCardDescriptionTextView = itemView.findViewById(R.id.saveCardDescriptionTextView);
         saveCardSwitch = itemView.findViewById(R.id.saveCardSwitch);
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////// SETUP CARD PAYMENT OPTIONS START ///////////////////////////////////////////////////////
         initCardSystemsRecyclerView(getPaymentOption());
@@ -238,21 +235,49 @@ public class CardCredentialsViewHolder
 }
 
 
-    private ArrayList<PaymentOption> getPaymentOption() {
+
+  private ArrayList<PaymentOption> getPaymentOption() {
         return PaymentDataManager.getInstance().getPaymentOptionsDataManager().getPaymentOptionsResponse().getPaymentOptions();
     }
 
     @Override
     public void bind(CardCredentialsViewModelData data) {
 
-     if(viewModel!=null)   viewModel.bindCardNumberFieldWithWatcher(cardNumberField);
+        cardScannerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewModel.cardScannerButtonClicked();
+            }
+        });
 
-//        cardScannerButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                viewModel.cardScannerButtonClicked();
-//            }
-//        });
+        if (!viewModel.getCardNumber().isEmpty()) {
+            cardNumberField.setText(viewModel.getCardNumber());
+        }
+
+        if (!viewModel.getExpirationMonth().isEmpty() && !viewModel.getExpirationYear().isEmpty()) {
+            String expirationDate = viewModel.getExpirationMonth() + "/" + String.format("%02d", Integer.valueOf(viewModel.getExpirationYear()) % 100);
+            expirationDateField.setText(expirationDate);
+        }
+
+        if (!viewModel.getNameOnCard().isEmpty()) {
+            nameOnCardField.setText(viewModel.getNameOnCard());
+        }
+
+
+      saveCardSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+          viewModel.saveCardSwitchClicked(isChecked);
+        }
+      });
+
+
+        nameOnCardField.addTextChangedListener(cardCredentialsTextWatcher);
+        expirationDateField.addTextChangedListener(cardCredentialsTextWatcher);
+        cvvField.addTextChangedListener(cardCredentialsTextWatcher);
+
+
+
 //
 //        addressOnCardLayout.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -261,21 +286,7 @@ public class CardCredentialsViewHolder
 //            }
 //        });
 //
-//        saveCardSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                viewModel.saveCardSwitchClicked(isChecked);
-//            }
-//        });
-//
-//        if (!viewModel.getCardNumber().isEmpty()) {
-//            cardNumberField.setText(viewModel.getCardNumber());
-//        }
-//
-//        if (!viewModel.getExpirationMonth().isEmpty() && !viewModel.getExpirationYear().isEmpty()) {
-//            String expirationDate = viewModel.getExpirationMonth() + "/" + String.format("%02d", Integer.valueOf(viewModel.getExpirationYear()) % 100);
-//            expirationDateField.setText(expirationDate);
-//        }
+
 //
 //        if (viewModel.isShowAddressOnCardCell()) {
 //            addressOnCardLayout.setVisibility(View.VISIBLE);
@@ -286,10 +297,6 @@ public class CardCredentialsViewHolder
 ////            CVVField.setText(viewModel.getCVVnumber());
 ////        }
 //
-////        if (!viewModel.getNameOnCard().isEmpty()) {
-////            nameOnCardField.setText(viewModel.getNameOnCard());
-////        }
-//
 //        RelativeLayout saveCardSwitchContainer = itemView.findViewById(R.id.saveCardSwitchContainer);
 //        saveCardSwitchContainer.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 //        viewModel.setCardSwitchHeight(saveCardSwitchContainer.getMeasuredHeight());
@@ -297,7 +304,59 @@ public class CardCredentialsViewHolder
 //        initCardSystemsRecyclerView(data.getPaymentOptions());
     }
 
-    @Override
+    class CardCredentialsTextWatcher implements TextWatcher{
+
+      @Override
+      public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+      }
+
+      @Override
+      public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+      }
+
+      @Override
+      public void afterTextChanged(Editable s) {
+        System.out.println("validateCardFields : "+ validateCardFields());
+          viewModel.cardDetailsFilled(validateCardFields(), viewModel);
+      }
+    }
+
+
+
+  private boolean validateCardFields() {
+
+        boolean status=false;
+      if( cardNumberField.getText().toString() !=null && expirationDateField.getText().toString()!=null &&
+          cvvField.getText().toString() !=null && nameOnCardField.getText().toString()!=null) {
+
+              if(  validateCardNumber(cardNumberField.getText().toString())
+                .getValidationState() == CardValidationState.valid
+                &&
+                validateCVV()
+                &&
+                validateCardHolderName()){
+                status= true;
+                viewModel.setCardNumber(cardNumberField.getText().toString());
+                viewModel.setExpirationMonth(expirationDateField.getMonth());
+                viewModel.setExpirationYear(expirationDateField.getYear());
+                viewModel.setCVVnumber(cvvField.getText().toString());
+                viewModel.setNameOnCard(nameOnCardField.getText().toString().trim());
+              }
+      }
+      return status;
+  }
+
+  private boolean validateCVV(){
+    return cvvField.getmCardType().getSecurityCodeLength()== cvvField.getText().toString().length();
+  }
+
+  private boolean validateCardHolderName(){
+      return nameOnCardField.getText().toString().trim().length() > 0;
+  }
+
+  @Override
     public void setFocused(boolean isFocused) {
         itemView.setSelected(isFocused);
     }
@@ -313,20 +372,14 @@ public class CardCredentialsViewHolder
         cardSystemsRecyclerView.setAdapter(adapter);
     }
 
-    private void updateCardSystemsRecyclerView(CardBrand brand) {
+    public void updateCardSystemsRecyclerView(CardBrand brand) {
         RecyclerView cardSystemsRecyclerView = itemView.findViewById(R.id.cardSystemsRecyclerView);
         cardSystemsRecyclerView.invalidate();
         CardSystemsRecyclerViewAdapter adapter = (CardSystemsRecyclerViewAdapter) cardSystemsRecyclerView.getAdapter();
         adapter.updateForCardBrand(brand);
     }
 
-    public void updateAddressOnCardView(boolean isShow) {
-        if (isShow) {
-            addressOnCardLayout.setVisibility(View.VISIBLE);
-        } else {
-            addressOnCardLayout.setVisibility(View.GONE);
-        }
-    }
+
 
     private DefinedCardBrand validateCardNumber(String cardNumber) {
 
@@ -337,6 +390,7 @@ public class CardCredentialsViewHolder
 
         // update CCVEditText CardType: to set CCV Length according to CardType
         updateCCVEditTextCardType(brand.getCardBrand());
+        // update card types
         updateCardSystemsRecyclerView(brand.getCardBrand());
 
         if (brand.getValidationState().equals(CardValidationState.invalid)) {
@@ -347,12 +401,7 @@ public class CardCredentialsViewHolder
         return brand;
     }
 
-
-    /**
-     * Update CVV card type to identify CVV length
-     * @param cardBrand
-     */
-    private void updateCCVEditTextCardType(CardBrand cardBrand){
+    public void updateCCVEditTextCardType(CardBrand cardBrand){
       System.out.println("updateCCVEditTextCardType : " + cardBrand);
       if (cardBrand == null) return;
 
@@ -462,6 +511,15 @@ public class CardCredentialsViewHolder
         });
     }
 
+
+     public void updateAddressOnCardView(boolean isShow) {
+    if (isShow) {
+      addressOnCardLayout.setVisibility(View.VISIBLE);
+    } else {
+      addressOnCardLayout.setVisibility(View.GONE);
+    }
+  }
+
     private static class TrackingSpan extends ReplacementSpan {
 
         private float mTrackingPx;
@@ -488,6 +546,21 @@ public class CardCredentialsViewHolder
             }
         }
     }
+
+     private String validateLength(String cardNumber) {
+
+                cardNumber = cardNumber.replace(" ", "");
+                System.out.println("brand >>  card number : replaced card no = " + cardNumber);
+                DefinedCardBrand brand = CardValidator.validate(cardNumber);
+                System.out.println("brand >>  card number :" + cardNumber + " brand:"+brand.getCardBrand());
+
+                String str = cardNumberField.getText().toString();
+                String newStr = str;
+                if (brand.getValidationState().equals(CardValidationState.invalid)) {
+                    newStr =  str.substring(0,str.length()-1);
+                }
+                return newStr;
+}
 
     private EditText getAddressOnCardField() {
 

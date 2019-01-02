@@ -61,6 +61,10 @@ public class CvvEditText extends ErrorEditText implements TextWatcher {
         invalidate();
     }
 
+    public CardType getmCardType() {
+        return mCardType;
+    }
+
     /**
      * @param mask if {@code true}, this field will be masked.
      */

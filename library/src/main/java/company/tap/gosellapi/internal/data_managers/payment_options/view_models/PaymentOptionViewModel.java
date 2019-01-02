@@ -27,9 +27,9 @@ public class PaymentOptionViewModel<T, K extends PaymentOptionsBaseViewHolder<T,
 
     public PaymentOptionsBaseViewHolder.ViewHolderType getType() { return type; }
 
-    public PaymentOption getPaymentOption() {
+    public T getPaymentOption() {
 
-        return (PaymentOption)data;
+        return data;
     }
 
     public T getData() {

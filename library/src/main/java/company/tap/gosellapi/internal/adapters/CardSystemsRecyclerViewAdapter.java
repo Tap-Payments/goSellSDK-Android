@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import company.tap.gosellapi.R;
+import company.tap.gosellapi.internal.api.enums.CardScheme;
 import company.tap.gosellapi.internal.api.enums.PaymentType;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.tapcardvalidator_android.CardBrand;
@@ -85,6 +86,8 @@ public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSys
 
         notifyDataSetChanged();
     }
+
+
 }
 
 class CardSystemViewHolder extends RecyclerView.ViewHolder {

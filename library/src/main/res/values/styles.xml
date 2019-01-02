@@ -145,11 +145,11 @@
     </style>
 
     <style name="bt_expiration_date_dialog_dark" parent="bt_expiration_date_dialog_sheet">
-        <item name="bt_expiration_date_sheet_background">@color/bt_expiration_date_sheet_background_dark</item>
-        <item name="bt_expiration_date_dialog_label">@color/bt_white_54</item>
-        <item name="bt_expiration_date_dialog_divider">@color/bt_white_12</item>
-        <item name="bt_expiration_date_scrollbar_thumb_vertical">@color/bt_white_54</item>
-        <item name="bt_expiration_date_scrollbar_track_vertical">@color/bt_white_12</item>
+        <item name="bt_expiration_date_sheet_background">@color/white</item>
+        <item name="bt_expiration_date_dialog_label">@color/black</item>
+        <item name="bt_expiration_date_dialog_divider">@color/french_gray</item>
+        <item name="bt_expiration_date_scrollbar_thumb_vertical">@color/black</item>
+        <item name="bt_expiration_date_scrollbar_track_vertical">@color/black</item>
     </style>
 
     <style name="bt_expiration_date_dialog_sheet_animation">
@@ -163,7 +163,7 @@
         <item name="android:gravity">center_horizontal</item>
         <item name="android:paddingTop">@dimen/bt_expiration_date_sheet_label_padding_top</item>
         <item name="android:paddingBottom">@dimen/bt_expiration_date_sheet_label_padding_bottom</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:textColor">?attr/bt_expiration_date_dialog_label</item>
     </style>
 

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import company.tap.gosellapi.R;
+import company.tap.gosellapi.internal.api.enums.CardScheme;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.PaymentOptionViewModel;
 
 //T - data, K - this holder, Q - model
@@ -74,7 +75,7 @@ public abstract class PaymentOptionsBaseViewHolder<T, K extends PaymentOptionsBa
 
             case CARD:
 
-//                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.gosellapi_viewholder_card_credentials, parent, false);
+//              view = LayoutInflater.from(parent.getContext()).inflate(R.layout.gosellapi_viewholder_card_credentials, parent, false);
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.gosellsdk_viewholder_card_payment_option, parent, false);
                 return new CardCredentialsViewHolder(view);
 
@@ -114,4 +115,5 @@ public abstract class PaymentOptionsBaseViewHolder<T, K extends PaymentOptionsBa
 
     public Parcelable saveState() { return null; }
     public void restoreState(Parcelable state) { }
+
 }

@@ -8,7 +8,7 @@ import company.tap.gosellapi.R;
 public enum ExpirationDateDialogTheme {
 
     LIGHT(R.color.bt_black_87, R.color.bt_white_87, R.color.bt_black_38),
-    DARK(R.color.bt_white_87, R.color.bt_black_87, R.color.bt_white_38);
+    DARK(R.color.black, R.color.bt_black_87, R.color.french_gray);
 
     private final int mItemTextColor;
     private final int mItemInverseTextColor;
@@ -38,8 +38,8 @@ public enum ExpirationDateDialogTheme {
                 "textColorPrimaryInverse", theme.mItemInverseTextColor);
         theme.mResolvedItemDisabledTextColor = activity.getResources()
                 .getColor(theme.mItemDisabledTextColor);
-        theme.mResolvedSelectedItemBackground = ColorUtils.getColor(activity, "colorAccent",
-                R.color.bt_blue);
+        theme.mResolvedSelectedItemBackground = ColorUtils.getColor(activity, "mercury",
+                R.color.mercury);
 
         return theme;
     }

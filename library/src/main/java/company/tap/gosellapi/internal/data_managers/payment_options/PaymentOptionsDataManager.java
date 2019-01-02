@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import company.tap.gosellapi.internal.Constants;
+import company.tap.gosellapi.internal.api.enums.CardScheme;
 import company.tap.gosellapi.internal.api.enums.PaymentType;
 import company.tap.gosellapi.internal.api.enums.Permission;
 import company.tap.gosellapi.internal.api.interfaces.CurrenciesSupport;
@@ -13,6 +14,7 @@ import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 import company.tap.gosellapi.internal.api.models.CardRawData;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.api.models.SavedCard;
+import company.tap.gosellapi.internal.api.responses.BINLookupResponse;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 import company.tap.gosellapi.internal.data_managers.payment_options.utils.PaymentOptionsDataManagerUtils;
@@ -26,6 +28,7 @@ import company.tap.gosellapi.internal.data_managers.payment_options.view_models.
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models_data.CardCredentialsViewModelData;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models_data.CurrencyViewModelData;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models_data.EmptyViewModelData;
+import company.tap.gosellapi.internal.utils.ActivityDataExchanger;
 import company.tap.gosellapi.internal.utils.CompoundFilter;
 import company.tap.gosellapi.internal.utils.Utils;
 import io.card.payment.CreditCard;
@@ -52,7 +55,7 @@ public class PaymentOptionsDataManager {
 
         void startScanCard();
 
-        void cardDetailsFilled(boolean isFilled, CardRawData cardRawData);
+        void cardDetailsFilled(boolean isFilled, CardCredentialsViewModel cardCredentialsViewModel);
 
         void saveCardSwitchClicked(boolean isChecked, int saveCardBlockPosition);
 
@@ -61,6 +64,7 @@ public class PaymentOptionsDataManager {
         void cardExpirationDateClicked(CardCredentialsViewModel model);
 
         void binNumberEntered(String binNumber);
+
     }
 
     private PaymentOptionsDataListener listener;
@@ -181,9 +185,9 @@ public class PaymentOptionsDataManager {
         }
     }
 
-    public void cardDetailsFilled(boolean isFilled, CardRawData cardRawData) {
+    public void cardDetailsFilled(boolean isFilled, CardCredentialsViewModel cardCredentialsViewModel) {
 
-        listener.cardDetailsFilled(isFilled, cardRawData);
+        listener.cardDetailsFilled(isFilled, cardCredentialsViewModel);
     }
 
     public void addressOnCardClicked() {
@@ -287,6 +291,8 @@ public class PaymentOptionsDataManager {
 
         int expirationMonth = card.expiryMonth;
         int expirationYear = card.expiryYear;
+        System.out.println(" cardScanned >>> expirationMonth "+ expirationMonth);
+        System.out.println(" cardScanned >>> expirationYear "+ expirationYear);
         if (expirationMonth != 0 && expirationYear != 0) {
 
             cardCredentialsViewModel.setExpirationYear(String.valueOf(expirationYear));
@@ -300,6 +306,7 @@ public class PaymentOptionsDataManager {
         }
 
         String cardholderName = card.cardholderName;
+        System.out.println(" cardScanned >>> cardholderName "+ cardholderName);
         if ( cardholderName != null && !cardholderName.isEmpty() ) {
 
             cardCredentialsViewModel.setNameOnCard(card.cardholderName);
@@ -507,6 +514,8 @@ public class PaymentOptionsDataManager {
                 }
 
                 CardCredentialsViewModel cardPaymentModel = findCardPaymentModel();
+                // save CardCredentialsViewModel in ActivityDataExchanger to use it CardCredentialsViewHolder
+                ActivityDataExchanger.getInstance().setCardCredentialsViewModel(cardPaymentModel);
                 result.add(cardPaymentModel);
             }
 
