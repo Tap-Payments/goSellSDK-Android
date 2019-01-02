@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import company.tap.gosellapi.internal.api.enums.CardScheme;
 import company.tap.tapcardvalidator_android.CardBrand;
 
 public final class BINLookupResponse implements BaseResponse {
@@ -28,6 +29,10 @@ public final class BINLookupResponse implements BaseResponse {
     @SerializedName("card_brand")
     @Expose
     private CardBrand cardBrand;
+
+    @SerializedName("card_scheme")
+    @Expose
+    @Nullable private CardScheme scheme;
 
     @SerializedName("country")
     @Expose
@@ -69,6 +74,8 @@ public final class BINLookupResponse implements BaseResponse {
     public CardBrand getCardBrand() {
         return cardBrand;
     }
+
+    @Nullable public CardScheme getScheme() { return scheme; }
 
     /**
      * @return Card issuing country.

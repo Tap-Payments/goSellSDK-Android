@@ -1,13 +1,28 @@
 package company.tap.gosellapi.internal.activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
+import android.view.View;
 import android.view.ViewTreeObserver;
+import android.webkit.SafeBrowsingResponse;
+import android.webkit.ValueCallback;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -17,21 +32,30 @@ import java.util.ArrayList;
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
+import company.tap.gosellapi.internal.api.enums.AuthenticationStatus;
+import company.tap.gosellapi.internal.api.enums.ChargeStatus;
 import company.tap.gosellapi.internal.api.facade.GoSellAPI;
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
+import company.tap.gosellapi.internal.api.models.Authenticate;
+import company.tap.gosellapi.internal.api.models.Authorize;
 import company.tap.gosellapi.internal.api.models.CardRawData;
+import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.responses.BINLookupResponse;
 import company.tap.gosellapi.internal.custom_views.DatePicker;
+import company.tap.gosellapi.internal.data_managers.LoadingScreenManager;
 import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.CardCredentialsViewModel;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.WebPaymentViewModel;
 import company.tap.gosellapi.internal.fragments.GoSellPaymentOptionsFragment;
+import company.tap.gosellapi.internal.interfaces.IPaymentProcessListener;
 import company.tap.gosellapi.internal.utils.ActivityDataExchanger;
+import company.tap.gosellapi.open.buttons.PayButtonView;
+import company.tap.gosellapi.open.delegate.PaymentProcessDelegate;
 import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
 
-public class GoSellPaymentActivity extends BaseActivity implements PaymentOptionsDataManager.PaymentOptionsDataListener {
+public class GoSellPaymentActivity extends BaseActivity implements PaymentOptionsDataManager.PaymentOptionsDataListener, IPaymentProcessListener {
     private static final int SCAN_REQUEST_CODE = 123;
     private static final int CURRENCIES_REQUEST_CODE = 124;
     private static final int WEB_PAYMENT_REQUEST_CODE = 125;
@@ -40,6 +64,11 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     private FragmentManager fragmentManager;
 
     private ImageView businessIcon;
+    private PayButtonView  payButton;
+
+    private CardCredentialsViewModel  cardCredentialsViewModel;
+    private boolean saveCardChecked;
+    private Charge chargeOrAuthorize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +96,8 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                     fragmentContainer.getViewTreeObserver().removeGlobalOnLayoutListener(this);
             }
         });
-         initViews();
+
+        initViews();
     }
 
     private void initViews() {
@@ -76,7 +106,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                 .beginTransaction()
                 .replace(R.id.paymentActivityFragmentContainer, paymentOptionsFragment)
                 .commit();
- // setup toolbar
+        // setup toolbar
         businessIcon = findViewById(R.id.businessIcon);
         String logoPath = PaymentDataManager.getInstance().getSDKSettings().getData().getMerchant().getLogo();
         Glide.with(this).load(logoPath).apply(RequestOptions.circleCropTransform()).into(businessIcon);
@@ -84,6 +114,15 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         String businessNameString = PaymentDataManager.getInstance().getSDKSettings().getData().getMerchant().getName();
         TextView businessName = findViewById(R.id.businessName);
         businessName.setText(businessNameString);
+
+         payButton = findViewById(R.id.payButtonId);
+         payButton.setEnabled(false);
+         payButton.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 startCardPaymentProcess();
+             }
+         });
     }
 
     @Override
@@ -157,8 +196,9 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     }
 
     @Override
-    public void cardDetailsFilled(boolean isFilled, CardRawData cardRawData) {
-
+    public void cardDetailsFilled(boolean isFilled, CardCredentialsViewModel _cardCredentialsViewModel) {
+        cardCredentialsViewModel = _cardCredentialsViewModel;
+        payButton.setEnabled(isFilled);
     }
 
     @Override
@@ -172,11 +212,12 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
     @Override
     public void saveCardSwitchClicked(boolean isChecked, int saveCardBlockPosition) {
+        saveCardChecked = isChecked;
     }
 
     @Override
     public void binNumberEntered(String binNumber) {
-
+        System.out.println(" binNumberEntered >>> binNumber:"+binNumber);
         GoSellAPI.getInstance().retrieveBINLookupBINLookup(binNumber, new APIRequestCallback<BINLookupResponse>() {
             @Override
             public void onSuccess(int responseCode, BINLookupResponse serializedResponse) {
@@ -214,6 +255,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
             case WEB_PAYMENT_REQUEST_CODE:
                 if(resultCode == RESULT_OK) finish();
                 break;
+
         }
     }
 
@@ -222,6 +264,154 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         super.finish();
         overridePendingTransition(android.R.anim.fade_in, R.anim.slide_out_bottom);
     }
+
+    private void startCardPaymentProcess(){
+        payButton.getLoadingView().start();
+        PaymentDataManager.getInstance().initiatePayment(cardCredentialsViewModel, this);
+    }
+
+    @Override
+    public void didReceiveCharge(Charge charge) {
+       if(charge==null)return;
+
+        System.out.println(" Cards >> didReceiveCharge * * * " + charge.getStatus());
+        System.out.println(" Cards >> didReceiveCharge * * * " + charge.getTransaction().getUrl());
+        if (charge != null) {
+            switch (charge.getStatus()) {
+                case INITIATED:
+                    break;
+                case CAPTURED:
+                case AUTHORIZED:
+                case FAILED:
+                case ABANDONED:
+                case CANCELLED:
+                case DECLINED:
+                case RESTRICTED:
+                    closePaymentActivity(charge);
+                    break;
+            }
+
+            obtainPaymentURLFromChargeOrAuthorize(charge);
+
+        }
+
+
+    }
+
+    private void obtainPaymentURLFromChargeOrAuthorize(Charge chargeOrAuthorize) {
+        System.out.println(" GoSellPaymentActivity >> chargeOrAuthorize : " + chargeOrAuthorize.getStatus());
+
+        if (chargeOrAuthorize.getStatus() != ChargeStatus.INITIATED) {
+            return;
+        }
+
+        Authenticate authentication = chargeOrAuthorize.getAuthenticate();
+        if (authentication != null)
+            System.out.println(" GoSellPaymentActivity >> authentication : " + authentication.getStatus());
+        if (authentication != null && authentication.getStatus() == AuthenticationStatus.INITIATED) {
+            return;
+        }
+
+        String url = chargeOrAuthorize.getTransaction().getUrl();
+        System.out.println("GoSellPaymentActivity >> Transaction().getUrl() :" + url);
+        System.out.println("GoSellPaymentActivity >> chargeOrAuthorize :" + chargeOrAuthorize.getId());
+
+
+        if (url != null) {
+            // save charge id
+            setChargeOrAuthorize(chargeOrAuthorize);
+            LoadingScreenManager.getInstance().closeLoadingScreen();
+            //this.paymentURL = url;
+            showWebView(chargeOrAuthorize.getTransaction().getUrl());
+        }
+    }
+
+    private void showWebView(String url){
+
+      RelativeLayout popup_window = new RelativeLayout(this);
+      FrameLayout.LayoutParams fl= new FrameLayout.LayoutParams(FrameLayout.LayoutParams.FILL_PARENT, FrameLayout.LayoutParams.FILL_PARENT);
+      popup_window.setLayoutParams(fl);
+      WebView w = new WebView(this);
+      w.setScrollContainer(false);
+      RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT,RelativeLayout.LayoutParams.FILL_PARENT);
+      //params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+      w.setLayoutParams(params);
+      w.setWebViewClient(new CardPaymentWebViewClient());
+      WebSettings settings = w.getSettings();
+      settings.setJavaScriptEnabled(true);
+      popup_window.addView(w);
+      setContentView(popup_window);
+      w.loadUrl(url);
+    }
+
+
+    public class CardPaymentWebViewClient extends WebViewClient {
+
+      @Override
+      public void onPageStarted(WebView view, String url, Bitmap favicon) {
+        System.out.println(" on page started : "+ url);
+        super.onPageStarted(view, url, favicon);
+      }
+
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            //return super.shouldOverrideUrlLoading(view, url);
+            System.out.println("shouldOverrideUrlLoading :"+url);
+            PaymentDataManager.WebPaymentURLDecision decision = PaymentDataManager.getInstance().decisionForWebPaymentURL(url);
+
+            boolean shouldOverride = !decision.shouldLoad();
+            System.out.println(" shouldOverrideUrlLoading : decision : " + shouldOverride);
+            if (shouldOverride) { // if decision is true and response has TAP_ID
+                // call backend to get charge response >> based of charge object type [Authorize - Charge] call retrieveCharge / retrieveAuthorize
+                PaymentDataManager.getInstance().retrieveChargeOrAuthorizeAPI(getChargeOrAuthorize());
+            }
+            return shouldOverride;
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            System.out.println("onPageFinished :"+url);
+        }
+    }
+
+    private Charge getChargeOrAuthorize() {
+        return chargeOrAuthorize;
+    }
+
+
+
+
+
+
+    private void closePaymentActivity(Charge charge) {
+        setPaymentResult(charge);
+        finishActivityWithResultCodeOK();
+    }
+
+    private void setPaymentResult(Charge chargeOrAuthorize) {
+        PaymentProcessDelegate.getInstance().setPaymentResult(chargeOrAuthorize);
+    }
+
+    private void finishActivityWithResultCodeOK() {
+        setResult(RESULT_OK);
+        finish();
+    }
+
+    @Override
+    public void didReceiveAuthorize(Authorize authorize) {
+
+    }
+
+    @Override
+    public void didReceiveError(GoSellError error) {
+
+    }
+    private void setChargeOrAuthorize(Charge chargeOrAuthorize) {
+        this.chargeOrAuthorize = chargeOrAuthorize;
+    }
+
 }
 
 

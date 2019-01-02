@@ -1,6 +1,7 @@
 package company.tap.gosellapi.internal.custom_views;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.view.View;
@@ -56,6 +57,7 @@ public class ExpirationDateItemAdapter extends ArrayAdapter<String> {
         float[] radii = new float[] { radius, radius, radius, radius, radius, radius, radius, radius };
         mSelectedItemBackground = new ShapeDrawable(new RoundRectShape(radii, null, null));
         mSelectedItemBackground.getPaint().setColor(mTheme.getSelectedItemBackground());
+//        mSelectedItemBackground.getPaint().setColor(Color.parseColor("#F2F2F2"));
     }
 
     public void setOnItemClickListener(AdapterView.OnItemClickListener listener) {

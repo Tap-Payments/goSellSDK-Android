@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import company.tap.gosellapi.internal.api.enums.CardScheme;
 import company.tap.gosellapi.internal.api.models.BINLookupResponse;
 import company.tap.gosellapi.internal.api.models.Card;
+import company.tap.gosellapi.internal.api.models.CardRawData;
 import company.tap.gosellapi.internal.api.models.CreateTokenCard;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.card_input_fields_text_handlers.CardNumberTextHandler;
@@ -42,6 +43,8 @@ public class CardCredentialsViewModel
     //region Private Properties
 
     @Nullable private CardNumberTextHandler cardNumberTextHandler;
+    private CardCredentialsViewHolder cardCredentialsViewHolder;
+    private ArrayList<PaymentOption> paymentOptions;
     @NonNull private CardNumberTextHandler getCardNumberTextHandler(EditText editText) {
 
         if ( cardNumberTextHandler == null ) {
@@ -65,7 +68,6 @@ public class CardCredentialsViewModel
 
     @Override
     public void bindCardNumberFieldWithWatcher(EditText cardNumberField) {
-
         cardNumberField.addTextChangedListener(getCardNumberTextHandler(cardNumberField));
     }
 
@@ -138,6 +140,12 @@ public class CardCredentialsViewModel
         parentDataManager.cardScannerButtonClicked();
     }
 
+
+    public void cardDetailsFilled(boolean isFilled, CardCredentialsViewModel cardCredentialsViewModel) {
+
+        parentDataManager.cardDetailsFilled(isFilled, cardCredentialsViewModel);
+    }
+
     public void addressOnCardClicked() {
         parentDataManager.addressOnCardClicked();
     }
@@ -176,11 +184,11 @@ public class CardCredentialsViewModel
         return isShowAddressOnCardCell;
     }
 
-    String getCVVnumber() {
+    public String getCVVnumber() {
         return CVVnumber;
     }
 
-    String getNameOnCard() {
+    public String getNameOnCard() {
         return nameOnCard;
     }
 
@@ -199,7 +207,7 @@ public class CardCredentialsViewModel
 
         // TODO: Add address handling here.
 
-        return new CreateTokenCard(number, expMonth, expYear, cvc, cardholderName, null);
+        return new CreateTokenCard(number!=null?number.replace(" ",""):"", expMonth, expYear.substring(2), cvc, cardholderName, null);
     }
 
     public void showAddressOnCardCell(boolean isShow) {
@@ -213,7 +221,6 @@ public class CardCredentialsViewModel
     public void setExpirationMonth(String expirationMonth) {
         this.expirationMonth = expirationMonth;
     }
-
 
     public void setExpirationYear(String expirationYear) {
         this.expirationYear = expirationYear;
@@ -260,6 +267,18 @@ public class CardCredentialsViewModel
 
         setCardNumber(cardNumber);
     }
+
+
+  public void ViewHolderReference(CardCredentialsViewHolder cardCredentialsViewHolder) {
+      this.cardCredentialsViewHolder = cardCredentialsViewHolder;
+  }
+
+
+  public CardCredentialsViewHolder getCardCredentialsViewHolder(){
+      return cardCredentialsViewHolder;
+  }
+
+
 
     //endregion
 

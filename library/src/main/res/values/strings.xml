@@ -1,56 +1,61 @@
 <resources>
-    <string name="app_name">GoSellAPI</string>
-    <string name="pay">Pay</string>
+  <string name="app_name">GoSellAPI</string>
+  <string name="pay">Pay</string>
 
-    <string name="actionbar_title_address_on_card">Address on card</string>
+  <string name="actionbar_title_address_on_card">Address on card</string>
 
-    <string name="edittext_hint_card_number">Card number</string>
-    <string name="edittext_hint_expiration_date">MM/YY</string>
-    <string name="edittext_hint_CVV">CVV</string>
-    <string name="edittext_hint_name_on_card">Name on card</string>
-    <string name="edittext_hint_line1">Line 1</string>
-    <string name="edittext_hint_line2">Line 2</string>
-    <string name="edittext_hint_city">City</string>
-    <string name="edittext_hint_state">State</string>
-    <string name="edittext_hint_zip_code">Zip code</string>
-    <string name="edittext_hint_name">Name</string>
-    <string name="edittext_hint_phone_number">Phone number</string>
-    <string name="edittext_hint_email">Email</string>
-    <string name="edittext_hint_address_on_card">Address on Card</string>
+  <string name="edittext_hint_card_number">Card number</string>
+  <string name="edittext_hint_expiration_date">MM/YY</string>
+  <string name="edittext_hint_CVV">CVV</string>
+  <string name="edittext_hint_name_on_card">Name on card</string>
+  <string name="edittext_hint_line1">Line 1</string>
+  <string name="edittext_hint_line2">Line 2</string>
+  <string name="edittext_hint_city">City</string>
+  <string name="edittext_hint_state">State</string>
+  <string name="edittext_hint_zip_code">Zip code</string>
+  <string name="edittext_hint_name">Name</string>
+  <string name="edittext_hint_phone_number">Phone number</string>
+  <string name="edittext_hint_email">Email</string>
+  <string name="edittext_hint_address_on_card">Address on Card</string>
 
-    <string name="textview_title_address_on_card">Address on Card</string>
-    <string name="textview_title_country">Country</string>
-    <string name="textview_title_recent">Recent</string>
-    <string name="textview_title_others">Others</string>
-    <string name="textview_title_resend_again">Resend OTP</string>
-    <string name="textview_title_save_for_merchant">Save for %s Checkouts</string>
-    <string name="textview_title_save_for_gopay">Save for goPay Checkouts</string>
-    <string name="textview_title_personal_info">Your Personal Info</string>
+  <string name="textview_title_address_on_card">Address on Card</string>
+  <string name="textview_title_country">Country</string>
+  <string name="textview_title_recent">Recent</string>
+  <string name="textview_title_others">Others</string>
+  <string name="textview_title_resend_again">Resend OTP</string>
+  <string name="textview_title_save_for_merchant">Save for %s Checkouts</string>
+  <string name="textview_title_save_for_gopay">Save for goPay Checkouts</string>
+  <string name="textview_title_personal_info">Your Personal Info</string>
 
-    <string name="textview_disclaimer_save_card">For faster and more secure checkout, save your card</string>
-    <string name="textview_disclaimer_otp_sent_number">Please enter the OTP that has been sent to %s</string>
-    <string name="textview_disclaimer_go_pay_checkouts">By enabling goPay, your card details will be saved with Tap Payments in order for you to get faster and more secure checkouts in multiple apps and websites</string>
+  <string name="textview_disclaimer_save_card">For faster and more secure checkout, save your card</string>
+  <string name="textview_disclaimer_otp_sent_number">Please enter the OTP that has been sent to %s</string>
+  <string name="textview_disclaimer_go_pay_checkouts">By enabling goPay, your card details will be saved with Tap Payments in order for you to get faster and more secure checkouts in multiple apps and websites</string>
 
-    <string name="textview_placeholder_last_four_digits">••••%s</string>
+  <string name="textview_placeholder_last_four_digits">••••%s</string>
 
-    <string name="btn_title_confirm">Confirm</string>
-    <string name="btn_title_save">Save</string>
-    <string name="search">Search</string>
-    <string name="payment_status_alert_successful">Successful</string>
+  <string name="btn_title_confirm">Confirm</string>
+  <string name="btn_title_save">Save</string>
+  <string name="search">Search</string>
+  <string name="payment_status_alert_successful">Successful</string>
+  <string name="payment_status_alert_failed">Failed</string>
+  <string name="payment_status_alert_declined">Declined</string>
 
-    <string name="bt_month">Month</string>
-    <string name="bt_year">Year</string>
-    <string name="bt_expiration_required">Expiration date is required</string>
-    <string name="bt_expiration_invalid">Expiration date is invalid</string>
-    <string name="bt_form_hint_expiration">Expiration Date</string>
+  <string name="bt_month">Month</string>
+  <string name="bt_year">Year</string>
+  <string name="bt_expiration_required">Expiration date is required</string>
+  <string name="bt_expiration_invalid">Expiration date is invalid</string>
+  <string name="bt_form_hint_expiration">Expiration Date</string>
 
-    <string name="bt_cvv_required">%s is required</string>
-    <string name="bt_cvv_invalid">%s is invalid</string>
-    <string name="bt_form_hint_cvv">@string/bt_cvv</string>
-    <string name="bt_cvv">CVV</string>
-    <string name="bt_cvc">CVC</string>
-    <string name="bt_cid">CID</string>
-    <string name="bt_cvn">CVN</string>
+  <string name="bt_cvv_required">%s is required</string>
+  <string name="bt_cvv_invalid">%s is invalid</string>
+  <string name="bt_form_hint_cvv">@string/bt_cvv</string>
+  <string name="bt_cvv">CVV</string>
+  <string name="bt_cvc">CVC</string>
+  <string name="bt_cid">CID</string>
+  <string name="bt_cvn">CVN</string>
+
+  <!-- TODO: Remove or change this placeholder text -->
+  <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

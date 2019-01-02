@@ -14,5 +14,6 @@ public class SampleApp extends Application{
 //        Fabric.with(this, new Crashlytics());
 
         GoSellSDK.init(this, "sk_test_0spETzD5rvIjOoM8mwqJA27i");
+//        GoSellSDK.init(this, "sk_test_XKokBfNWv6FIYuTMg5sLPjhJ"); / from waqas just for test
     }
 }

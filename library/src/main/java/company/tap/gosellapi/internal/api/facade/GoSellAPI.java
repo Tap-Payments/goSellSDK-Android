@@ -9,6 +9,7 @@ import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.models.Authorize;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.requests.CreateAuthorizeRequest;
+import company.tap.gosellapi.internal.api.requests.CreateTokenWithCardDataRequest;
 import company.tap.gosellapi.internal.api.requests.PaymentOptionsRequest;
 import company.tap.gosellapi.internal.api.models.Token;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
@@ -69,7 +70,7 @@ public final class GoSellAPI {
         requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.retrieveAddressFormats(), requestCallback));
     }
 
-    public void createToken(CreateTokenRequest createTokenRequest, final APIRequestCallback<Token> requestCallback) {
+    public void createToken(CreateTokenWithCardDataRequest createTokenRequest, final APIRequestCallback<Token> requestCallback) {
 
         requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.createToken(createTokenRequest), requestCallback));
     }

@@ -179,7 +179,5 @@ public final class CardRequest {
         return cryptedDataInternal;
     }
 
-    public String getCryptedData() {
-        return cryptedData;
-    }
+
 }

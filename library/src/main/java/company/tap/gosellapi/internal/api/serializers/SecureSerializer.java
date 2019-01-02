@@ -19,7 +19,7 @@ public class SecureSerializer implements JsonSerializer<SecureSerializable> {
 
         Gson gson = new Gson();
         String jsonString = gson.toJson(src, typeOfSrc);
-
+        System.out.println("serialize request jsonString: "+jsonString);
         String encryptedString = CryptoUtil.encryptJsonString(jsonString,getEncryptionKey());
 
         return new JsonPrimitive(encryptedString);

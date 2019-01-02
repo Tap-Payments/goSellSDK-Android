@@ -1,38 +1,15 @@
 package company.tap.gosellapi.internal.activities;
 
-import android.app.ActivityManager;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.graphics.PixelFormat;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.ContextCompat;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ImageView;
-import android.widget.PopupWindow;
-import android.widget.RemoteViews;
-import android.widget.TextView;
-
-import java.util.Random;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
@@ -42,11 +19,12 @@ import company.tap.gosellapi.internal.api.models.Authenticate;
 import company.tap.gosellapi.internal.api.models.Authorize;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
-import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 import company.tap.gosellapi.internal.data_managers.LoadingScreenManager;
+import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.WebPaymentViewModel;
 import company.tap.gosellapi.internal.interfaces.IPaymentProcessListener;
 import company.tap.gosellapi.internal.utils.ActivityDataExchanger;
+import company.tap.gosellapi.open.delegate.PaymentProcessDelegate;
 
 
 public class WebPaymentActivity extends BaseActionBarActivity implements IPaymentProcessListener {
@@ -130,8 +108,7 @@ public class WebPaymentActivity extends BaseActionBarActivity implements IPaymen
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
       System.out.println(" shouldOverrideUrlLoading : " + url);
-      PaymentDataManager.WebPaymentURLDecision decision = PaymentDataManager.getInstance()
-          .decisionForWebPaymentURL(url);
+      PaymentDataManager.WebPaymentURLDecision decision = PaymentDataManager.getInstance().decisionForWebPaymentURL(url);
 
       boolean shouldOverride = !decision.shouldLoad();
       System.out.println(" shouldOverrideUrlLoading : decision : " + shouldOverride);
@@ -144,7 +121,6 @@ public class WebPaymentActivity extends BaseActionBarActivity implements IPaymen
 
     @Override
     public void onPageFinished(WebView view, String url) {
-      System.out.println(" webpayment webview finished loading URL :" + url);
       super.onPageFinished(view, url);
       LoadingScreenManager.getInstance().closeLoadingScreen();
     }
@@ -166,18 +142,20 @@ public class WebPaymentActivity extends BaseActionBarActivity implements IPaymen
 
   @Override
   public void didReceiveCharge(Charge charge) {
-    System.out.println("* * * " + charge.getStatus());
     if (charge != null) {
+      System.out.println("* * * " + charge.getStatus());
       switch (charge.getStatus()) {
         case INITIATED:
-
           break;
-        case CAPTURED: AUTHORIZED:
-          paymentSuccess();
-
-
-          break;
-
+        case CAPTURED:
+        case AUTHORIZED:
+        case FAILED:
+        case ABANDONED:
+        case CANCELLED:
+        case DECLINED:
+        case RESTRICTED:
+          closePaymentActivity(charge);
+        break;
       }
     }
     obtainPaymentURLFromChargeOrAuthorize(charge);
@@ -191,57 +169,14 @@ public class WebPaymentActivity extends BaseActionBarActivity implements IPaymen
     return intent;
   }
 
-  private void paymentSuccess() {
-    // show success bar
-    DisplayMetrics displayMetrics = new DisplayMetrics();
-    getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-    int height = displayMetrics.heightPixels;
-    int width = displayMetrics.widthPixels;
-    PopupWindow popupWindow;
-    try {
-// We need to get the instance of the LayoutInflater
-      LayoutInflater inflater = (LayoutInflater) this
-          .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-      View layout = inflater.inflate(R.layout.charge_status_layout,
-          (ViewGroup) findViewById(R.id.popup_element));
 
-
-      popupWindow = new PopupWindow(layout, width, 150, true);
-
-      ImageView closeIcon = layout.findViewById(R.id.close_icon);
-      TextView statusText = layout.findViewById(R.id.status_text);
-      TextView chargeText = layout.findViewById(R.id.charge_id_txt);
-
-      statusText.setText(R.string.payment_status_alert_successful);
-      chargeText.setText(getChargeOrAuthorize().getId());
-
-      closeIcon.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-          closePaymentActivity();
-          popupWindow.dismiss();
-          finish();
-        }
-      });
-      popupWindow.showAtLocation(layout, Gravity.TOP, 0, 50);
-      popupWindow.setAnimationStyle(R.style.popup_window_animation_phone);
-
-
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
+  private void closePaymentActivity(Charge charge) {
+    setPaymentResult(charge);
+    finishActivityWithResultCodeOK();
   }
 
-  private void closePaymentActivity(){
-    ActivityDataExchanger activityDataExchanger = ActivityDataExchanger.getInstance();
-    System.out.println("activityDataExchanger.getClientActivity() >> " + activityDataExchanger.getClientActivity());
-    Intent intent = new Intent(this,activityDataExchanger.getClientActivity());
-    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-    intent.putExtra("charge_id",getChargeOrAuthorize().getId());
-    startActivity(intent);
-
+  private void setPaymentResult(Charge chargeOrAuthorize) {
+    PaymentProcessDelegate.getInstance().setPaymentResult(chargeOrAuthorize);
   }
 
   @Override
@@ -257,8 +192,7 @@ public class WebPaymentActivity extends BaseActionBarActivity implements IPaymen
   }
 
   private void obtainPaymentURLFromChargeOrAuthorize(Charge chargeOrAuthorize) {
-    System.out
-        .println(" WebPaymentActivity >> chargeOrAuthorize : " + chargeOrAuthorize.getStatus());
+    System.out.println(" WebPaymentActivity >> chargeOrAuthorize : " + chargeOrAuthorize.getStatus());
 
     if (chargeOrAuthorize.getStatus() != ChargeStatus.INITIATED) {
       return;

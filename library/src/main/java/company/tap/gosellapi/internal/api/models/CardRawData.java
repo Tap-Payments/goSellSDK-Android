@@ -42,4 +42,24 @@ public final class CardRawData {
         this.cvc = cvc;
         this.name = name;
     }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public String getExp_month() {
+        return exp_month;
+    }
+
+    public String getExp_year() {
+        return exp_year;
+    }
+
+    public String getCvc() {
+        return cvc;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

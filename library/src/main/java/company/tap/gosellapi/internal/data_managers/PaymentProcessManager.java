@@ -14,6 +14,7 @@ import company.tap.gosellapi.internal.Constants;
 import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.enums.PaymentType;
+import company.tap.gosellapi.internal.data_managers.payment_options.view_models_data.CardCredentialsViewModelData;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.gosellapi.internal.api.facade.GoSellAPI;
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
@@ -49,10 +50,15 @@ final class PaymentProcessManager {
     boolean urlIsReturnURL = url.startsWith(Constants.RETURN_URL);
     boolean shouldLoad = !urlIsReturnURL;
     boolean redirectionFinished = urlIsReturnURL;
-    boolean shouldCloseWebPaymentScreen = redirectionFinished && getCurrentPaymentViewModel()
-        .getPaymentOption().getPaymentType() == PaymentType.CARD;
-    System.out.println(
-        " shouldOverrideUrlLoading : shouldCloseWebPaymentScreen :" + shouldCloseWebPaymentScreen);
+    boolean shouldCloseWebPaymentScreen = false;
+
+    if(getCurrentPaymentViewModel().getPaymentOption() instanceof PaymentOption)
+      shouldCloseWebPaymentScreen = redirectionFinished && ((PaymentOption)getCurrentPaymentViewModel().getPaymentOption()).getPaymentType() == PaymentType.CARD;
+
+    if(getCurrentPaymentViewModel().getPaymentOption() instanceof CardCredentialsViewModelData)
+      shouldCloseWebPaymentScreen = redirectionFinished;
+
+    System.out.println(" shouldOverrideUrlLoading : shouldCloseWebPaymentScreen :" + shouldCloseWebPaymentScreen);
     @Nullable String tapID = null;
 
     Uri uri = Uri.parse(url);
@@ -66,24 +72,29 @@ final class PaymentProcessManager {
         shouldCloseWebPaymentScreen, redirectionFinished, tapID);
   }
 
+
+
   void startPaymentProcess(@NonNull final PaymentOptionViewModel paymentOptionModel) {
 
     IPaymentDataProvider provider = getDataProvider();
 
     AmountedCurrency amount = provider.getSelectedCurrency();
-    System.out.println(
-        " PaymentProcess >>> amount:" + amount.getCurrency() + " amount value :" + amount
-            .getAmount().toString());
+    System.out.println(" PaymentProcess >>> amount:" + amount.getCurrency() + " amount value :" + amount.getAmount().toString());
     // when it should be extra fees ????
-    ArrayList<ExtraFee> extraFees = paymentOptionModel.getPaymentOption().getExtraFees();
+    ArrayList<ExtraFee> extraFees;
+
+    if( paymentOptionModel.getPaymentOption() instanceof PaymentOption)
+     extraFees =((PaymentOption) paymentOptionModel.getPaymentOption()).getExtraFees();
+    else
+      extraFees = ((CardCredentialsViewModelData) paymentOptionModel.getPaymentOption()).getPaymentOptions().get(0).getExtraFees();
+
     if (extraFees == null) {
       extraFees = new ArrayList<>();
     }
     ArrayList<AmountedCurrency> supportedCurrencies = provider.getSupportedCurrencies();
     BigDecimal feesAmount = AmountCalculator
         .calculateExtraFeesAmount(extraFees, supportedCurrencies, amount);
-    System.out.println(
-        "feesAmount.compareTo(BigDecimal.ZERO) : " + feesAmount.compareTo(BigDecimal.ZERO));
+    System.out.println("feesAmount.compareTo(BigDecimal.ZERO) : " + feesAmount.compareTo(BigDecimal.ZERO));
     if (feesAmount.compareTo(BigDecimal.ZERO) == 1) {
 
       AmountedCurrency extraFeesAmount = new AmountedCurrency(amount.getCurrency(), feesAmount);
@@ -158,7 +169,8 @@ final class PaymentProcessManager {
   }
 
   private void forceStartPaymentProcess(@NonNull PaymentOptionViewModel paymentOptionModel) {
-
+    System.out.println("paymentOptionModel instance of WebPaymentViewModel :"+ (paymentOptionModel instanceof WebPaymentViewModel));
+    System.out.println("paymentOptionModel instance of CardCredentialsViewModel :"+ (paymentOptionModel instanceof CardCredentialsViewModel));
     if (paymentOptionModel instanceof WebPaymentViewModel) {
       setCurrentPaymentViewModel(paymentOptionModel);
       startPaymentProcessWithWebPaymentModel((WebPaymentViewModel) paymentOptionModel);
@@ -187,8 +199,15 @@ final class PaymentProcessManager {
     if (card == null) {
       return;
     }
+//    System.out.println(" startPaymentProcessWithCardPaymentModel >>> card : getPaymentOptions size : "+paymentOptionModel.getPaymentOption().getPaymentOptions().size());
+//    for(PaymentOption paymentOption: paymentOptionModel.getData().getPaymentOptions()){
+//      System.out.println("@@@@@@@@ "+ paymentOption.getName());
+//    }
+//    for(PaymentOption paymentOption: paymentOptionModel.getPaymentOption().getPaymentOptions()){
+//      System.out.println("@@@@@@@@ "+ paymentOption.getName());
+//    }
 
-    startPaymentProcessWithCard(card, paymentOptionModel.getPaymentOption(),
+    startPaymentProcessWithCard(card,paymentOptionModel.getPaymentOption().getPaymentOptions().get(0),
         paymentOptionModel.shouldSaveCard());
   }
 
@@ -196,10 +215,11 @@ final class PaymentProcessManager {
                                            PaymentOption paymentOption, boolean saveCard) {
 
     CreateTokenWithCardDataRequest request = new CreateTokenWithCardDataRequest(card);
+
     callTokenAPI(request, paymentOption, saveCard);
   }
 
-  private void callTokenAPI(@NonNull CreateTokenRequest request,
+  private void callTokenAPI(@NonNull CreateTokenWithCardDataRequest request,
                             @NonNull final PaymentOption paymentOption,
                             @Nullable final boolean saveCard) {
 
@@ -207,7 +227,8 @@ final class PaymentProcessManager {
 
       @Override
       public void onSuccess(int responseCode, Token serializedResponse) {
-
+        System.out.println("startPaymentProcessWithCard >> serializedResponse: "+ serializedResponse);
+        System.out.println("startPaymentProcessWithCard >> serializedResponse: first six :"+ serializedResponse.getCard().getFirstSix());
         SourceRequest source = new SourceRequest(serializedResponse);
         callChargeOrAuthorizeAPI(source, paymentOption, serializedResponse.getCard().getFirstSix(),
             saveCard);
@@ -215,6 +236,7 @@ final class PaymentProcessManager {
 
       @Override
       public void onFailure(GoSellError errorDetails) {
+        System.out.println("GoSellAPI.createToken : "+errorDetails.getErrorBody());
       }
     });
   }
@@ -230,8 +252,9 @@ final class PaymentProcessManager {
     ArrayList<AmountedCurrency> supportedCurrencies = provider.getSupportedCurrencies();
     String orderID = provider.getPaymentOptionsOrderID();
     System.out.println("orderID : " + orderID);
+    System.out.println("saveCard : " + saveCard);
     @Nullable String postURL = provider.getPostURL();
-
+    System.out.println("postURL : " + postURL);
     @Nullable TrackingURL post = postURL == null ? null : new TrackingURL(postURL);
 
     AmountedCurrency amountedCurrency = provider.getSelectedCurrency();
@@ -250,7 +273,7 @@ final class PaymentProcessManager {
         .getRequires3DSecure();// this.dataSource.getRequires3DSecure() || this.chargeRequires3DSecure();
     Receipt receipt = provider.getReceiptSettings();
     TransactionMode transactionMode = provider.getTransactionMode();
-
+    System.out.println("transactionMode : "+transactionMode);
     switch (transactionMode) {
 
       case PURCHASE:
