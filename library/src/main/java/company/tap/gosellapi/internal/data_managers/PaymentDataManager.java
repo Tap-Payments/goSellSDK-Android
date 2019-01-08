@@ -4,11 +4,18 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
+import company.tap.gosellapi.internal.api.enums.PaymentType;
 import company.tap.gosellapi.internal.api.enums.Permission;
+import company.tap.gosellapi.internal.api.models.PaymentOption;
+import company.tap.gosellapi.internal.api.models.PhoneNumber;
+import company.tap.gosellapi.internal.api.models.SavedCard;
+import company.tap.gosellapi.internal.data_managers.payment_options.view_models.CardCredentialsViewModel;
+import company.tap.gosellapi.internal.data_managers.payment_options.view_models.WebPaymentViewModel;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 import company.tap.gosellapi.internal.api.models.Authorize;
@@ -40,6 +47,19 @@ public final class PaymentDataManager {
     private BINLookupResponse binLookupResponse;
 
     private PaymentDataManager() {}
+
+    public String calculateTotalAmount(BigDecimal feesAmount) {
+        return getPaymentProcessManager().calculateTotalAmount(feesAmount);
+    }
+
+    public void checkSavedCardPaymentExtraFees(SavedCard savedCard,
+                                               PaymentOptionsDataManager.PaymentOptionsDataListener paymentOptionsDataListener) {
+        getPaymentProcessManager().checkSavedCardPaymentExtraFees(savedCard,paymentOptionsDataListener);
+    }
+
+    public PaymentOption findSavedCardPaymentOption(SavedCard savedCard) {
+        return getPaymentProcessManager().findPaymentOption(savedCard);
+    }
 
     /////////////////////////////////////////    ########### Start of Singleton section ##################
     /**
@@ -121,15 +141,27 @@ public final class PaymentDataManager {
         getPaymentProcessManager().retrieveChargeOrAuthorizeAPI(chargeOrAuthorize);
     }
 
-    /**
-     *
-     * @param model
-     * @param listener
-     */
-    public void initiatePayment(PaymentOptionViewModel model, IPaymentProcessListener listener) {
 
+  public void checkWebPaymentExtraFees(WebPaymentViewModel model, PaymentOptionsDataManager.PaymentOptionsDataListener paymentOptionsDataListener){
+      getPaymentProcessManager().checkPaymentExtraFees(model.getPaymentOption(),paymentOptionsDataListener,PaymentType.WEB);
+  }
+
+    public void checkCardPaymentExtraFees(CardCredentialsViewModel model, PaymentOptionsDataManager.PaymentOptionsDataListener paymentOptionsDataListener){
+        getPaymentProcessManager().checkPaymentExtraFees(model.getSelectedCardPaymentOption(),paymentOptionsDataListener,PaymentType.CARD);
+    }
+
+    public BigDecimal calculateCardExtraFees(PaymentOption paymentOption){
+     return getPaymentProcessManager().calculateExtraFeesAmount(paymentOption);
+    }
+
+    public void initiatePayment(PaymentOptionViewModel model, IPaymentProcessListener listener) {
         getProcessListener().addListener(listener);
         getPaymentProcessManager().startPaymentProcess(model);
+    }
+
+    public void initiateSavedCardPayment(SavedCard savedCard,IPaymentProcessListener listener){
+      getProcessListener().addListener(listener);
+      getPaymentProcessManager().startSavedCardPaymentProcess(savedCard);
     }
 
     public final class WebPaymentURLDecision {

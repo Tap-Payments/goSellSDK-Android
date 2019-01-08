@@ -5,5 +5,6 @@ import com.google.gson.annotations.SerializedName;
 public enum PaymentType {
 
     @SerializedName("card") CARD,
-    @SerializedName("web")  WEB
+    @SerializedName("web")  WEB,
+    @SerializedName("savedCard")  SavedCard
 }

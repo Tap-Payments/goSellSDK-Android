@@ -44,6 +44,7 @@ class DialogManager {
                 }
             });
         }
+        dialogBuilder.show();
     }
 
     private void callCallback(@Nullable DialogResult callback, boolean positiveButtonClicked) {

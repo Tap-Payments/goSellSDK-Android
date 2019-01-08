@@ -8,6 +8,7 @@ import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models_data.CurrencyViewModelData;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.CurrencyViewModel;
 import company.tap.gosellapi.internal.utils.CurrencyFormatter;
+import company.tap.gosellapi.internal.utils.Utils;
 
 public class CurrencyViewHolder extends PaymentOptionsBaseViewHolder<CurrencyViewModelData, CurrencyViewHolder, CurrencyViewModel> {
 
@@ -36,25 +37,26 @@ public class CurrencyViewHolder extends PaymentOptionsBaseViewHolder<CurrencyVie
         setTexts(data);
     }
 
+
     private void setTexts(CurrencyViewModelData data) {
 
         AmountedCurrency transactionCurrency    = data.getTransactionCurrency();
         AmountedCurrency selectedCurrency       = data.getSelectedCurrency();
 
-        System.out.println(" Currency View Holders : transactionCurrency : " + transactionCurrency.getCurrency());
-        System.out.println(" Currency View Holders : selectedCurrency : " + selectedCurrency.getCurrency());
-        String selectedCurrencyText = CurrencyFormatter.format(selectedCurrency);
+        System.out.println(" Currency View Holders : Utils.getFormattedCurrency : " + Utils.getFormattedCurrency(selectedCurrency));
+//        System.out.println(" Currency View Holders : CurrencyFormatter.format(selectedCurrency) : " + CurrencyFormatter.format(selectedCurrency));
+        // replace CurrencyFormatter with Utils.getFormattedCurrency();
+        String selectedCurrencyText = Utils.getFormattedCurrency(selectedCurrency);
 
         if (transactionCurrency.getCurrency().equals(selectedCurrency.getCurrency())) {
             currencySecondaryText.setVisibility(View.GONE);
             currencySecondaryText.setText("");
-            currencyMainText.setText(selectedCurrencyText);
         }
         else {
-            String transactionCurrencyText = CurrencyFormatter.format(transactionCurrency);
+            String transactionCurrencyText = Utils.getFormattedCurrency(transactionCurrency);
             currencySecondaryText.setVisibility(View.VISIBLE);
             currencySecondaryText.setText(transactionCurrencyText);
-            currencyMainText.setText(selectedCurrencyText);
         }
+        currencyMainText.setText(selectedCurrencyText);
     }
 }

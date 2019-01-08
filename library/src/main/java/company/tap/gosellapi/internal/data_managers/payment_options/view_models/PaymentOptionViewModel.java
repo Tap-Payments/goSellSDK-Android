@@ -32,6 +32,10 @@ public class PaymentOptionViewModel<T, K extends PaymentOptionsBaseViewHolder<T,
         return data;
     }
 
+    public PaymentOptionsDataManager getPaymentOptionsDataManager(){
+        return parentDataManager;
+    }
+
     public T getData() {
         return data;
     }

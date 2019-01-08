@@ -13,7 +13,9 @@ public class SampleApp extends Application{
         super.onCreate();
 //        Fabric.with(this, new Crashlytics());
 
-        GoSellSDK.init(this, "YOUR_SANDBOX_SECRET_KEY");
-//        GoSellSDK.init(this, "YOUR_SANDBOX_SECRET_KEY"); / from waqas just for test
+//        GoSellSDK.init(this, "YOUR_SANDBOX_SECRET_KEY"); // original
+//        GoSellSDK.init(this, "YOUR_SANDBOX_SECRET_KEY"); // from waqas just for test
+        GoSellSDK.init(this, "YOUR_SANDBOX_SECRET_KEY"); // from Kalai just for test
+
     }
 }

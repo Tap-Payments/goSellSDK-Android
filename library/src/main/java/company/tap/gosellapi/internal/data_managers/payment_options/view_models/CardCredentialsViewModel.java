@@ -25,6 +25,7 @@ import company.tap.gosellapi.internal.api.models.Card;
 import company.tap.gosellapi.internal.api.models.CardRawData;
 import company.tap.gosellapi.internal.api.models.CreateTokenCard;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
+import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.card_input_fields_text_handlers.CardNumberTextHandler;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models_data.CardCredentialsViewModelData;
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
@@ -45,6 +46,8 @@ public class CardCredentialsViewModel
     @Nullable private CardNumberTextHandler cardNumberTextHandler;
     private CardCredentialsViewHolder cardCredentialsViewHolder;
     private ArrayList<PaymentOption> paymentOptions;
+    private PaymentOption selectedCardPaymentOption;
+
     @NonNull private CardNumberTextHandler getCardNumberTextHandler(EditText editText) {
 
         if ( cardNumberTextHandler == null ) {
@@ -142,7 +145,6 @@ public class CardCredentialsViewModel
 
 
     public void cardDetailsFilled(boolean isFilled, CardCredentialsViewModel cardCredentialsViewModel) {
-
         parentDataManager.cardDetailsFilled(isFilled, cardCredentialsViewModel);
     }
 
@@ -207,7 +209,13 @@ public class CardCredentialsViewModel
 
         // TODO: Add address handling here.
 
-        return new CreateTokenCard(number!=null?number.replace(" ",""):"", expMonth, expYear.substring(2), cvc, cardholderName, null);
+        return new CreateTokenCard(
+            number.replace(" ",""),
+            expMonth,
+            (expYear.length()==4)?expYear.substring(2):expirationYear,
+            cvc,
+            cardholderName,
+            null);
     }
 
     public void showAddressOnCardCell(boolean isShow) {
@@ -278,9 +286,34 @@ public class CardCredentialsViewModel
       return cardCredentialsViewHolder;
   }
 
+  public void setPaymentOption(CardBrand cardBrand) {
+      if(cardBrand!=null){
+          for(PaymentOption paymentOption:  data.getPaymentOptions()){
+              System.out.println(" card cred ... paymentOption. comparison :"+paymentOption.getBrand().name() + " selected :"+ cardBrand.name() + " >> " +paymentOption.getBrand().compareTo(cardBrand));
+              if(paymentOption.getBrand().compareTo(cardBrand)==0){
+                  this.selectedCardPaymentOption = paymentOption;
+                  updatePayButtonWithExtraFees(paymentOption);
+              }
+          }
+          if(selectedCardPaymentOption!=null)
+              System.out.println("card cred ... paymentOption. final : "+selectedCardPaymentOption.getBrand().name());
+      }else
+      {
+        selectedCardPaymentOption = null;
+        updatePayButtonWithExtraFees(selectedCardPaymentOption);
+      }
+  }
+
+  private void updatePayButtonWithExtraFees(PaymentOption paymentOption){
+      parentDataManager.updatePayButtonWithExtraFees(paymentOption);
+  }
+
+  public PaymentOption getSelectedCardPaymentOption(){
+      return selectedCardPaymentOption;
+  }
 
 
-    //endregion
+  //endregion
 
     public class BrandWithScheme {
 

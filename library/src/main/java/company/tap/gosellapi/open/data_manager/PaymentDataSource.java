@@ -1,9 +1,10 @@
-package company.tap.sample;
+package company.tap.gosellapi.open.data_manager;
 
 /**
  * this object is just an example so client can follow to send us PaymentDataSource Object that implements PaymentDataSource interface
  */
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import company.tap.gosellapi.internal.api.enums.AuthorizeActionType;
+import company.tap.gosellapi.open.data_manager.PaymentResultDataManager;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.gosellapi.internal.api.models.AmountModificator;
 import company.tap.gosellapi.open.models.AuthorizeAction;
@@ -45,6 +47,7 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
   private @Nullable boolean requires3DSecure;
   private @Nullable Receipt receiptSettings;
   private @Nullable AuthorizeAction authorizeAction;
+  private @NonNull Context context;
 
   @Override
   public @NonNull TapCurrency getCurrency() {
@@ -116,7 +119,8 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
   public @Nullable AuthorizeAction getAuthorizeAction() { return authorizeAction; }
 
 
-  public PaymentDataSource(){
+  public PaymentDataSource(Context applicationContext){
+    this.context = applicationContext;
     generateDefaultPaymentData();
   }
 
@@ -125,12 +129,17 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
     this.currency = new TapCurrency("KWD");
 //        this.customer = new Customer_old(null, "Name", "Middlename", "Surname", "hello@tap.company",
 //                                     new PhoneNumber("965", "00000000"),"meta");
-    this.customer = new Customer.CustomerBuilder("").
+
+    // check if customer id is in pref.
+
+    PaymentResultDataManager  paymentResultDataManager =   PaymentResultDataManager.getInstance();
+    System.out.println("preparing data source with customer ref :"+ paymentResultDataManager.getCustomerRef(context));
+    this.customer = new Customer.CustomerBuilder(paymentResultDataManager.getCustomerRef(context)).
         firstName("Name").
         middleName("MiddleName").
         lastName("Surname").
         email("hello@tap.company").
-        phone(new PhoneNumber("965","00000000")).
+        phone(new PhoneNumber("965","65562630")).
         metadata("meta").
         build();
     this.amount = null;

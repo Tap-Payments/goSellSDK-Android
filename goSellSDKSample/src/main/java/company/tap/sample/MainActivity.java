@@ -1,8 +1,6 @@
 package company.tap.sample;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
@@ -13,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.open.buttons.PayButtonView;
@@ -25,12 +24,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-      System.out.println("MainActivity started  "+ getIntent());
-        if(getIntent().hasExtra("charge_id"))
-        System.out.println("MainActivity >> charge_id :"+getIntent().getStringExtra("charge_id"));
-        PayButton payButton = new PayButton();
 
-        payButton.setPaymentDataSource(new company.tap.sample.PaymentDataSource());
+        PayButton payButton = new PayButton();
+//        payButton.setPaymentDataSource(new company.tap.gosellapi.open.data_manager.PaymentDataSource(getApplicationContext()));
         // call delegate interface to get charge or authorize status
         PayButtonView payButtonView = findViewById(R.id.payButtonId);
         payButton.setButtonView(payButtonView,this);
@@ -43,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
      Charge chargeOrAuthorise = PaymentProcessDelegate.getInstance().getPaymentResult();
      if(chargeOrAuthorise!=null){
        showPaymentResult(chargeOrAuthorise);
+     }else {
+       if(PaymentProcessDelegate.getInstance().getGoSellError()!=null){
+         Toast.makeText(this,"Error: "+  PaymentProcessDelegate.getInstance().getGoSellError().getErrorMessage(),Toast.LENGTH_LONG).show();
+       }
      }
   }
 

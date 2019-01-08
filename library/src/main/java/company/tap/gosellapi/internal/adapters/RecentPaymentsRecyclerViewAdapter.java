@@ -1,6 +1,9 @@
 package company.tap.gosellapi.internal.adapters;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.design.card.MaterialCardView;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -17,15 +22,16 @@ import company.tap.gosellapi.internal.api.models.Card;
 import company.tap.gosellapi.internal.api.models.SavedCard;
 
 public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<RecentPaymentsRecyclerViewAdapter.RecentPaymentsViewHolder> {
+
     public interface RecentPaymentsRecyclerViewAdapterListener {
         void recentPaymentItemClicked(int position);
     }
 
     private ArrayList<SavedCard> datasource;
     private RecyclerView parent;
-
-    private RecentPaymentsRecyclerViewAdapterListener listener;
     private int focusedPosition = Constants.NO_FOCUS;
+    private RecentPaymentsRecyclerViewAdapterListener listener;
+
 
     public RecentPaymentsRecyclerViewAdapter(ArrayList<SavedCard> datasource, RecentPaymentsRecyclerViewAdapterListener listener) {
         this.datasource = datasource;
@@ -43,7 +49,7 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
     public void onBindViewHolder(@NonNull RecentPaymentsViewHolder holder, int position) {
         SavedCard card = datasource.get(position);
         holder.bind(position, card);
-        holder.setFocused(position == focusedPosition);
+        //holder.setFocused(position == focusedPosition);
     }
 
     @Override
@@ -52,9 +58,24 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
     }
 
     public void setFocused(boolean focused) {
+
         setFocused(focused ? focusedPosition : Constants.NO_FOCUS);
+
     }
 
+    public void clearFocus()
+    {
+        System.out.println("afterText changed ... adapter.clear "+focusedPosition);
+        RecentPaymentsViewHolder oldHolder;
+        parent.clearFocus();
+        if (focusedPosition != Constants.NO_FOCUS) {
+            oldHolder = (RecentPaymentsViewHolder) parent.findViewHolderForAdapterPosition(focusedPosition);
+            if (oldHolder != null) {
+                oldHolder.setFocused(false);
+            }
+        }
+        listener.recentPaymentItemClicked(Constants.NO_FOCUS);
+    }
     private void setFocused(int position) {
         RecentPaymentsViewHolder oldHolder;
 
@@ -66,10 +87,11 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
         }
 
         focusedPosition = position;
-        RecentPaymentsViewHolder newHolder = (RecentPaymentsViewHolder) parent.findViewHolderForAdapterPosition(focusedPosition);
+        RecentPaymentsViewHolder newHolder = (RecentPaymentsViewHolder) parent.findViewHolderForAdapterPosition(position);
         if (newHolder != null) {
             newHolder.setFocused(true);
         }
+
     }
 
     @Override
@@ -88,7 +110,10 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
         private int position;
         private SavedCard card;
         private ImageView itemCheckmark;
+        private ImageView logoImageView;
         private RelativeLayout recentPaymentsCardViewLayout;
+        private MaterialCardView cardView;
+        private MaterialCardView childCard;
 
         private RecentPaymentsViewHolder(View itemView) {
             super(itemView);
@@ -104,8 +129,11 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
             String cardNumber = String.format(itemView.getResources().getString(R.string.textview_placeholder_last_four_digits), card.getLastFour());
             TextView cardLastDigits = itemView.findViewById(R.id.cardLastDigits);
             cardLastDigits.setText(cardNumber);
-
+            cardView = itemView.findViewById(R.id.parent_card);
+            childCard = itemView.findViewById(R.id.childCard);
             itemCheckmark = itemView.findViewById(R.id.itemCheckmark);
+            logoImageView = itemView.findViewById(R.id.logoImageView);
+            Glide.with(itemView.getContext()).load(card.getImage()).into(logoImageView);
         }
 
         @Override
@@ -114,8 +142,18 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
             listener.recentPaymentItemClicked(position);
         }
 
+
         private void setFocused(boolean focused) {
-            itemCheckmark.setVisibility(focused ? View.VISIBLE : View.INVISIBLE);
+            if(focused){
+                itemCheckmark.setVisibility(View.VISIBLE);
+                cardView.setStrokeWidth(1);
+                cardView.setStrokeColor(itemView.getResources().getColor(R.color.vibrant_green));
+
+            }else {
+                itemCheckmark.setVisibility(View.INVISIBLE);
+                cardView.setStrokeWidth(0);
+            }
+
             recentPaymentsCardViewLayout.setSelected(focused);
         }
     }

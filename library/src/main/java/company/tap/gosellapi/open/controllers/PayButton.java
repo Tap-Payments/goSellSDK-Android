@@ -42,14 +42,15 @@ private Activity activity;
 
   @Override
   public void onClick(View v) {
-    if (paymentDataSource == null) {
-      //makePayment();
-      return;
-    }
+//    if (paymentDataSource == null) {
+//      //makePayment();
+//      return;
+//    }
 
     int i = v.getId();
 
     if (i == payButtonView.getLayoutId() || i == R.id.pay_button_id) {
+      setPaymentDataSource(new company.tap.gosellapi.open.data_manager.PaymentDataSource(activity));
       getPaymentOptions();
     } else if (i == R.id.pay_security_icon_id) {
     }

@@ -62,6 +62,8 @@ public class SavedCard implements Comparable<SavedCard>, CurrenciesSupport {
     @Expose
     @NonNull private int orderBy;
 
+    @SerializedName("image")
+    @Nullable private String image;
     /**
      * @return Card identifier.
      */
@@ -125,6 +127,9 @@ public class SavedCard implements Comparable<SavedCard>, CurrenciesSupport {
 
     @Nullable public ArrayList<String> getSupportedCurrencies() { return supportedCurrencies; }
 
+    @Nullable public String getImage(){
+        return image;
+    }
     /**
      * @return Ordering field.
      */

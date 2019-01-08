@@ -1,6 +1,12 @@
 package company.tap.gosellapi.internal.api.callbacks;
 
+import com.google.gson.JsonObject;
+
 import android.support.annotation.RestrictTo;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Model for response errors
@@ -22,6 +28,30 @@ public class GoSellError {
         this.errorCode = errorCode;
         this.errorBody = errorBody;
         this.throwable = throwable;
+    }
+
+
+    public String getErrorMessage(){
+        String res="";
+        if(errorBody!=null && !"".equals(errorBody.trim()))
+        {
+            try {
+                JSONObject jsonObject = new JSONObject(errorBody);
+                if(jsonObject!=null){
+                    JSONArray jsonArray = jsonObject.getJSONArray("errors");
+                    if(jsonArray!=null)
+                    {
+                        JSONObject jsonObj =  jsonArray.getJSONObject(0);
+                        if(jsonObj!=null) res = (String)jsonObj.get("description");
+                    }
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return res;
     }
 
     /**
