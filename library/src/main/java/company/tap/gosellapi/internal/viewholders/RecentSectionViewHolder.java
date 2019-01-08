@@ -36,8 +36,9 @@ public class RecentSectionViewHolder
 
     @Override
     public void setFocused(boolean isFocused) {
+        System.out.println("afterText changed ...");
         if (adapter != null) {
-            adapter.setFocused(isFocused);
+            adapter.clearFocus();
         }
     }
 

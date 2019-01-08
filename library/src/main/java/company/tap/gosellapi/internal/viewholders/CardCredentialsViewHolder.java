@@ -92,6 +92,7 @@ public class CardCredentialsViewHolder
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+              PaymentDataManager.getInstance().getPaymentOptionsDataManager().clearFocus();
                 String str =s.toString();
 
                 DefinedCardBrand brand = validateCardNumber(str);
@@ -102,7 +103,8 @@ public class CardCredentialsViewHolder
                 if (cardBrand != CardBrand.americanExpress) {
                     spacings = new int[]{4, 8, 12};
                 } else {
-                    spacings = new int[]{4,8, 13};
+                    spacings = new int[]{4, 10};
+//                    spacings = new int[]{4, 8,13};
                 }
 
                 String text = str.toString();
@@ -149,11 +151,13 @@ public class CardCredentialsViewHolder
                 if(text.length()== BIN_NUMBER_LENGTH){
                     viewModel.binNumberEntered(text);
                 }
+
+                viewModel.setPaymentOption(cardBrand);
             }
 
            @Override
             public void afterTextChanged(Editable s) {
-             System.out.println("validate card fields.... " + validateCardFields());
+             System.out.println("afterText changed ...");
              viewModel.cardDetailsFilled(validateCardFields(),viewModel);
             }
         });
@@ -304,7 +308,22 @@ public class CardCredentialsViewHolder
 //        initCardSystemsRecyclerView(data.getPaymentOptions());
     }
 
-    class CardCredentialsTextWatcher implements TextWatcher{
+//  @Override
+//  public void clear() {
+////    cardNumberField.setText("");
+////    viewModel.setCardNumber("");
+////
+////    expirationDateField.setText("");
+////    viewModel.setExpirationYear("");
+////    viewModel.setExpirationMonth("");
+////
+////    cvvField.setText("");
+////    cvvField.setCardType(null);
+////
+////    nameOnCardField.setText("");
+//  }
+
+  class CardCredentialsTextWatcher implements TextWatcher{
 
       @Override
       public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -313,13 +332,13 @@ public class CardCredentialsViewHolder
 
       @Override
       public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+        System.out.println("validateCardFields : "+ validateCardFields());
+        viewModel.cardDetailsFilled(validateCardFields(), viewModel);
       }
 
       @Override
       public void afterTextChanged(Editable s) {
-        System.out.println("validateCardFields : "+ validateCardFields());
-          viewModel.cardDetailsFilled(validateCardFields(), viewModel);
+
       }
     }
 
@@ -328,8 +347,10 @@ public class CardCredentialsViewHolder
   private boolean validateCardFields() {
 
         boolean status=false;
-      if( cardNumberField.getText().toString() !=null && expirationDateField.getText().toString()!=null &&
-          cvvField.getText().toString() !=null && nameOnCardField.getText().toString()!=null) {
+      if( cardNumberField.getText()!= null
+          && !"".equalsIgnoreCase(cardNumberField.getText().toString().trim())
+          && expirationDateField.getText()!=null
+          && cvvField.getText()!=null && nameOnCardField.getText()!=null) {
 
               if(  validateCardNumber(cardNumberField.getText().toString())
                 .getValidationState() == CardValidationState.valid
@@ -431,58 +452,6 @@ public class CardCredentialsViewHolder
         if (cardBrand.getRawValue().contains("UNION_PAY") || cardBrand.getRawValue().contains("UNIONPAY"))
             cvvField.setCardType(CardType.UNIONPAY);
 
-//      if (cardBrand.getRawValue().contains("CARDGUARD"))
-//        cvvField.setCardType(CardType.CARDGUARD);
-
-//      if (cardBrand.getRawValue().contains("CBK"))
-//        cvvField.setCardType(CardType.CBK);
-
-//      if (cardBrand.getRawValue().contains("DANKORT"))
-//        cvvField.setCardType(CardType.DANKORT);
-
-//      if (cardBrand.getRawValue().contains("FAWRY"))
-//        cvvField.setCardType(CardType.AMEX);
-
-//      if (cardBrand.getRawValue().contains("INSTAPAY"))
-//        cvvField.setCardType(CardType.AMEX);
-
-//      if (cardBrand.getRawValue().contains("INTERPAY"))
-//        cvvField.setCardType(CardType.AMEX);
-
-//      if (cardBrand.getRawValue().contains("JCB"))
-//        cvvField.setCardType(CardType.AMEX);
-
-//      if (cardBrand.getRawValue().contains("NAPS"))
-//        cvvField.setCardType(CardType.AMEX);
-
-//
-//      if (cardBrand.getRawValue().contains("NSPK"))
-//        cvvField.setCardType(CardType.AMEX);
-//
-//      if (cardBrand.getRawValue().contains("OMAN_NET"))
-//        cvvField.setCardType(CardType.AMEX);
-//
-//      if (cardBrand.getRawValue().contains("SADAD_ACCOUNT"))
-//        cvvField.setCardType(CardType.AMEX);
-//
-//      if (cardBrand.getRawValue().contains("TAP"))
-//        cvvField.setCardType(CardType.AMEX);
-//
-//      if (cardBrand.getRawValue().contains("UATP"))
-//        cvvField.setCardType(CardType.AMEX);
-
-//      if (cardBrand.getRawValue().contains("VERVE"))
-//        cvvField.setCardType(CardType.AMEX);
-
-//
-//      if (cardBrand.getRawValue().contains("Viva PAY"))
-//        cvvField.setCardType(CardType.AMEX);
-//
-//      if (cardBrand.getRawValue().contains("Wataniya PAY"))
-//        cvvField.setCardType(CardType.AMEX);
-//
-//      if (cardBrand.getRawValue().contains("Zain PAY"))
-//        cvvField.setCardType(CardType.AMEX);
     }
 
     private void setupAddressOnCardField() {

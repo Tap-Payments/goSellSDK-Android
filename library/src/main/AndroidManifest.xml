@@ -26,7 +26,11 @@
     <activity
         android:name=".internal.activities.CountriesActivity"
         android:theme="@style/GoSellSDKAppTheme"/>
-
+    <activity
+        android:name=".internal.activities.OTPActivity"
+        android:theme="@style/GoSellSDKAppTheme.NoActionBar"
+        >
+    </activity>
   </application>
 
 </manifest>

@@ -18,6 +18,7 @@ public class EmptyViewHolder
         display();
     }
 
+
     private void display() {
 
         ViewGroup.LayoutParams layoutParams = itemView.getLayoutParams();

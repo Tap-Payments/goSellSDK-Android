@@ -6,6 +6,7 @@ import company.tap.gosellapi.internal.api.models.Authorize;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.requests.CreateAuthorizeRequest;
 import company.tap.gosellapi.internal.api.requests.CreateTokenWithCardDataRequest;
+import company.tap.gosellapi.internal.api.requests.CreateTokenWithExistingCardDataRequest;
 import company.tap.gosellapi.internal.api.requests.PaymentOptionsRequest;
 import company.tap.gosellapi.internal.api.models.Token;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
@@ -44,13 +45,11 @@ public interface APIService {
     Call<AddressFormatsResponse> retrieveAddressFormats();
 
     @POST(API_Constants.TOKEN)
-    Call<Token> createToken(@Body CreateTokenWithCardDataRequest createTokenRequest);
+    Call<Token> createTokenWithEncryptedCard(@Body CreateTokenWithCardDataRequest createTokenWithEncryptedDataRequest);
 
-//    @POST(API_Constants.TOKEN)
-//    Call<Token> createTokenWithEncryptedCard(@Body CreateTokenWithCardDataRequest createTokenWithEncryptedDataRequest);
-//
-//    @POST(API_Constants.TOKEN)
-//    Call<Token> createTokenWithExistingCard(@Body CreateTokenWithExistingCardDataRequest createTokenWithExistingCardDataRequest);
+    @POST(API_Constants.TOKEN)
+    Call<Token> createTokenWithExistingCard(@Body
+                                                CreateTokenWithExistingCardDataRequest createTokenWithExistingCardDataRequest);
 
     @POST(API_Constants.CHARGES)
     Call<Charge> createCharge(@Body CreateChargeRequest createChargeRequest);

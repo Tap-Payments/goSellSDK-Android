@@ -34,7 +34,8 @@ public class AppInfo {
     private static void initApplicationInfo(String applicationId) {
         applicationInfo = new LinkedHashMap<>();
 
-        applicationInfo.put("app_id", applicationId);
+//        applicationInfo.put("app_id", applicationId); // updated based on Kalai resp.
+        applicationInfo.put("app_id", "company.tap.goSellSDKExample");
         applicationInfo.put("requirer", "SDK");
         applicationInfo.put("requirer_version", BuildConfig.VERSION_NAME);
         applicationInfo.put("requirer_os", "Android");

@@ -15,7 +15,10 @@ import company.tap.gosellapi.internal.data_managers.payment_options.view_models.
 public abstract class PaymentOptionsBaseViewHolder<T, K extends PaymentOptionsBaseViewHolder<T, K, Q>, Q extends PaymentOptionViewModel<T, K, Q>> extends RecyclerView.ViewHolder {
     Q viewModel;
 
-    public enum ViewHolderType {
+
+
+
+  public enum ViewHolderType {
 
         CURRENCY(0),
         EMPTY(1),
@@ -65,7 +68,8 @@ public abstract class PaymentOptionsBaseViewHolder<T, K extends PaymentOptionsBa
 
             case SAVED_CARDS:
 
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.gosellapi_viewholder_save_card, parent, false);
+//                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.gosellapi_viewholder_save_card, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.gosellapi_viewholder_recent_section, parent, false);
                 return new RecentSectionViewHolder(view);
 
             case WEB:
@@ -105,6 +109,7 @@ public abstract class PaymentOptionsBaseViewHolder<T, K extends PaymentOptionsBa
     }
 
     public abstract void bind(T data);
+
 
     public final void unbind() {
 

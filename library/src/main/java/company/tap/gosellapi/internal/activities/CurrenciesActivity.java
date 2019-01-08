@@ -41,12 +41,7 @@ public class CurrenciesActivity extends BaseActionBarActivity implements Currenc
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.slide_in_left, android.R.anim.fade_out);
         setContentView(R.layout.gosellapi_activity_currencies);
-
         getData();
-        for(AmountedCurrency  amountedCurrency:currencies){
-            System.out.println("amounted currency : " + amountedCurrency.getCurrency());
-        }
-        System.out.println("selectedCurrency : " + selectedCurrency.getCurrency());
         initRecycler();
         setTitle();
     }
