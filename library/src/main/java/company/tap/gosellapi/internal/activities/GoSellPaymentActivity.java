@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
@@ -22,7 +20,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
@@ -38,19 +35,16 @@ import company.tap.gosellapi.internal.api.models.Authenticate;
 import company.tap.gosellapi.internal.api.models.Authorize;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
-import company.tap.gosellapi.internal.api.models.PhoneNumber;
 import company.tap.gosellapi.internal.api.models.SavedCard;
 import company.tap.gosellapi.internal.api.responses.BINLookupResponse;
 import company.tap.gosellapi.internal.custom_views.DatePicker;
+import company.tap.gosellapi.internal.custom_views.OTPFullScreenDialog;
 import company.tap.gosellapi.internal.data_managers.LoadingScreenManager;
 import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.CardCredentialsViewModel;
-import company.tap.gosellapi.internal.data_managers.payment_options.view_models.PaymentOptionViewModel;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.RecentSectionViewModel;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.WebPaymentViewModel;
-import company.tap.gosellapi.internal.data_managers.payment_options.view_models_data.CardCredentialsViewModelData;
-import company.tap.gosellapi.internal.fragments.GoSellOTPScreenFragment;
 import company.tap.gosellapi.internal.fragments.GoSellPaymentOptionsFragment;
 import company.tap.gosellapi.internal.interfaces.IPaymentProcessListener;
 import company.tap.gosellapi.internal.utils.ActivityDataExchanger;
@@ -59,7 +53,7 @@ import company.tap.gosellapi.open.delegate.PaymentProcessDelegate;
 import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
 
-public class GoSellPaymentActivity extends BaseActivity implements PaymentOptionsDataManager.PaymentOptionsDataListener, IPaymentProcessListener {
+public class GoSellPaymentActivity extends BaseActivity implements PaymentOptionsDataManager.PaymentOptionsDataListener, IPaymentProcessListener,OTPFullScreenDialog.ConfirmOTP {
   private static final int SCAN_REQUEST_CODE = 123;
   private static final int CURRENCIES_REQUEST_CODE = 124;
   private static final int WEB_PAYMENT_REQUEST_CODE = 125;
@@ -77,7 +71,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
   private SavedCard savedCard;
   private WebPaymentViewModel webPaymentViewModel;
   private LinearLayout linearLayout;
-
+  private boolean OTP_STATUS=false;
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -85,7 +79,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     setContentView(R.layout.gosellapi_activity_main);
     linearLayout = findViewById(R.id.basicLayout);
     fragmentManager = getSupportFragmentManager();
-
+    //Utils.hideKeyboard(this);
     /**
      *  PaymentOptionsDataManager >> is the main actor who decide layout content
      */
@@ -380,19 +374,49 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
   private void initSavedCardPaymentProcess() {
    // start tokenize card
     payButton.getLoadingView().start();
-    PaymentDataManager.getInstance().initiateSavedCardPayment(getSavedCard(), this);
+    PaymentDataManager.getInstance().initiateSavedCardPayment(getSavedCard(),recentSectionViewModel, this);
   }
 
   private void openOTPScreen(Charge charge){
-    String phoneNumber = charge.getAuthenticate().getValue();
-    Intent intent = new Intent(this,OTPActivity.class);
-    intent.putExtra("phoneNumber", phoneNumber);
-    startActivity(intent);
+    stopPayButtonLoadingView();
+    if(charge.getAuthenticate()!=null){
+      String phoneNumber = charge.getAuthenticate().getValue();
+
+      OTPFullScreenDialog dialog = new OTPFullScreenDialog();
+      Bundle b = new Bundle();
+      b.putString("phoneNumber", phoneNumber);
+      dialog.setArguments(b);
+      dialog.show(getSupportFragmentManager(),OTPFullScreenDialog.TAG);
+
+
+
+//      Intent intent = new Intent(this,OTPActivity.class);
+//      intent.putExtra("phoneNumber", phoneNumber);
+//      startActivityForResult(intent,OPT_ACTIVITY_CODE);
+//      GoSellOTPScreenFragment otpScreenFragment= new GoSellOTPScreenFragment();
+//      fragmentManager
+//          .beginTransaction()
+//          .replace(R.id.paymentActivityFragmentContainer, otpScreenFragment,"OTP")
+//          .commit();
+    }else{
+
+    }
   }
 
   private void initCardPaymentProcess() {
     payButton.getLoadingView().start();
     PaymentDataManager.getInstance().initiatePayment(cardCredentialsViewModel, this);
+
+  }
+
+  @Override
+  public void confirmOTP() {
+    LoadingScreenManager.getInstance().showLoadingScreen(GoSellPaymentActivity.this);
+  }
+
+  @Override
+  public void resendOTP() {
+    LoadingScreenManager.getInstance().showLoadingScreen(GoSellPaymentActivity.this);
   }
 
   @Override
@@ -439,11 +463,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     overridePendingTransition(android.R.anim.fade_in, R.anim.slide_out_bottom);
   }
 
-//    private void startSavedCardPaymentProcess(){
-//      payButton.getLoadingView().start();
-//      PaymentDataManager.getInstance().initiateSavedCarPayment(recentSectionViewModel,this);
-//    }
-
   @Override
   public void didReceiveCharge(Charge charge) {
     System.out.println(" Cards >> didReceiveCharge * * * "+charge);
@@ -454,13 +473,14 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
       switch (charge.getStatus()) {
         case INITIATED:
           Authenticate authenticate =  charge.getAuthenticate();
-          if(authenticate!=null){
+          if(authenticate!=null &&  authenticate.getStatus()== AuthenticationStatus.INITIATED){
             switch (authenticate.getType()){
               case BIOMETRICS:
 
                 break;
 
               case OTP:
+                PaymentDataManager.getInstance().setChargeOrAuthorize(charge);
                 openOTPScreen(charge);
                 break;
           }
@@ -534,6 +554,8 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     w.loadUrl(url);
   }
 
+
+
   public class CardPaymentWebViewClient extends WebViewClient {
 
     @Override
@@ -604,7 +626,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
   private void setChargeOrAuthorize(Charge chargeOrAuthorize) {
     this.chargeOrAuthorize = chargeOrAuthorize;
   }
-
 
 }
 

@@ -23,6 +23,7 @@ final class API_Constants {
     static final String CHARGES = "charges";
     static final String CHARGE_ID = "charge_id";
 
+    static final String AUTHENTICATE="authenticate";
 
     static final String BIN = "bin";
     static final String BIN_LOOKUP = "bin_number";

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/GoSellSDKAppTheme.NoActionBar"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+  <!--<android.support.design.widget.AppBarLayout-->
+      <!--android:layout_width="match_parent"-->
+      <!--android:layout_height="wrap_content" >-->
+
+    <!--<android.support.v7.widget.Toolbar-->
+        <!--android:id="@+id/toolbar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:visibility="invisible"-->
+        <!--android:background="@color/silver_light"-->
+        <!--&gt;</android.support.v7.widget.Toolbar>-->
+
+  <!--</android.support.design.widget.AppBarLayout>-->
+
+  <!--<FrameLayout-->
+      <!--android:layout_width="match_parent"-->
+      <!--android:layout_height="match_parent"-->
+      <!--&gt;-->
+
+<!--<include layout="@layout/gosellapi_fragment_otpscreen"></include>-->
+
+  <!--</FrameLayout>-->
+</android.support.design.widget.CoordinatorLayout>

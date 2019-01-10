@@ -2,9 +2,11 @@ package company.tap.gosellapi.internal.api.api_service;
 
 import android.support.annotation.RestrictTo;
 
+import company.tap.gosellapi.internal.api.enums.AuthenticationType;
 import company.tap.gosellapi.internal.api.models.Authorize;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.requests.CreateAuthorizeRequest;
+import company.tap.gosellapi.internal.api.requests.CreateOTPVerificationRequest;
 import company.tap.gosellapi.internal.api.requests.CreateTokenWithCardDataRequest;
 import company.tap.gosellapi.internal.api.requests.CreateTokenWithExistingCardDataRequest;
 import company.tap.gosellapi.internal.api.requests.PaymentOptionsRequest;
@@ -64,6 +66,12 @@ public interface APIService {
     @GET(API_Constants.AUTHORIZE + "/{" + API_Constants.AUTHORIZE_ID + "}")
     Call<Authorize> retrieveAuthorize(@Path(API_Constants.AUTHORIZE_ID) String authorizeId);
 
+    @POST(API_Constants.CHARGES +"/"+ API_Constants.AUTHENTICATE + "/{" + API_Constants.CHARGE_ID + "}")
+    Call<Charge> authenticate(@Path(API_Constants.CHARGE_ID )String chargeID, @Body
+                              CreateOTPVerificationRequest createOTPVerificationRequest);
+
+    @PUT(API_Constants.CHARGES +"/"+ API_Constants.AUTHENTICATE + "/{" + API_Constants.CHARGE_ID + "}")
+    Call<Charge> request_authenticate(@Path(API_Constants.CHARGE_ID )String chargeID);
 
     @POST(API_Constants.PAYMENT_TYPES)
     Call<PaymentOptionsResponse> getPaymentOptions(@Body PaymentOptionsRequest paymentOptionsRequest);

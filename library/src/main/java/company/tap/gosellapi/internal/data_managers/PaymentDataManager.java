@@ -12,9 +12,9 @@ import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.enums.PaymentType;
 import company.tap.gosellapi.internal.api.enums.Permission;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
-import company.tap.gosellapi.internal.api.models.PhoneNumber;
 import company.tap.gosellapi.internal.api.models.SavedCard;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.CardCredentialsViewModel;
+import company.tap.gosellapi.internal.data_managers.payment_options.view_models.RecentSectionViewModel;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.WebPaymentViewModel;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
@@ -45,8 +45,9 @@ public final class PaymentDataManager {
     private PaymentOptionsRequest paymentOptionsRequest;
     private PaymentOptionsDataManager paymentOptionsDataManager;
     private BINLookupResponse binLookupResponse;
+    private Charge chargeOrAuthorize=null;
 
-    private PaymentDataManager() {}
+  private PaymentDataManager() {}
 
     public String calculateTotalAmount(BigDecimal feesAmount) {
         return getPaymentProcessManager().calculateTotalAmount(feesAmount);
@@ -61,7 +62,23 @@ public final class PaymentDataManager {
         return getPaymentProcessManager().findPaymentOption(savedCard);
     }
 
-    /////////////////////////////////////////    ########### Start of Singleton section ##################
+  public void confirmOTPCode(String otpCode) {
+   getPaymentProcessManager().confirmOTPCode(getChargeOrAuthorize(),otpCode);
+  }
+
+  public void setChargeOrAuthorize(Charge charge) {
+      this.chargeOrAuthorize= charge;
+  }
+
+  public Charge getChargeOrAuthorize(){
+    return chargeOrAuthorize;
+  }
+
+  public void resendOTPCode() {
+    getPaymentProcessManager().resendOTPCode(getChargeOrAuthorize());
+  }
+
+  /////////////////////////////////////////    ########### Start of Singleton section ##################
     /**
      * Here we will use inner class to create a singleton object of PaymentDataManager
      * Inner class singleton approach introduced by Bill Pugh to overcome other singleton approaches :
@@ -159,9 +176,11 @@ public final class PaymentDataManager {
         getPaymentProcessManager().startPaymentProcess(model);
     }
 
-    public void initiateSavedCardPayment(SavedCard savedCard,IPaymentProcessListener listener){
+    public void initiateSavedCardPayment(SavedCard savedCard,
+                                         RecentSectionViewModel recentSectionViewModel,
+                                         IPaymentProcessListener listener){
       getProcessListener().addListener(listener);
-      getPaymentProcessManager().startSavedCardPaymentProcess(savedCard);
+      getPaymentProcessManager().startSavedCardPaymentProcess(savedCard,recentSectionViewModel);
     }
 
     public final class WebPaymentURLDecision {
