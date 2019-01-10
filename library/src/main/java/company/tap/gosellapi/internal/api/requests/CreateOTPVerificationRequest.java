@@ -6,26 +6,28 @@ import android.support.annotation.RestrictTo;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import company.tap.gosellapi.internal.api.enums.AuthenticationType;
+
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 public final class CreateOTPVerificationRequest {
 
-    @SerializedName("id")
+    @SerializedName("type")
     @Expose
-    private String id;
+    private AuthenticationType type;
 
-    @SerializedName("otp")
+    @SerializedName("value")
     @Expose
-    private String otp;
+    private String value;
 
-    private CreateOTPVerificationRequest(String id, String otp) {
-        this.id = id;
-        this.otp = otp;
+    private CreateOTPVerificationRequest(AuthenticationType id, String otp) {
+        this.type = id;
+        this.value = otp;
     }
 
     public final static class Builder {
         private CreateOTPVerificationRequest createOTPVerificationRequest;
 
-        public Builder(String id, String otp) {
+        public Builder(AuthenticationType id, String otp) {
             createOTPVerificationRequest = new CreateOTPVerificationRequest(id, otp);
         }
 

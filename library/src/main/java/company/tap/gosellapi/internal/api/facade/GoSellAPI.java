@@ -9,6 +9,8 @@ import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.models.Authorize;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.requests.CreateAuthorizeRequest;
+import company.tap.gosellapi.internal.api.requests.CreateOTPRequest;
+import company.tap.gosellapi.internal.api.requests.CreateOTPVerificationRequest;
 import company.tap.gosellapi.internal.api.requests.CreateTokenWithCardDataRequest;
 import company.tap.gosellapi.internal.api.requests.CreateTokenWithExistingCardDataRequest;
 import company.tap.gosellapi.internal.api.requests.PaymentOptionsRequest;
@@ -56,6 +58,14 @@ public final class GoSellAPI {
     public void createAuthorize(final CreateAuthorizeRequest createAuthorizeRequest, final APIRequestCallback<Authorize> requestCallback) {
 
         requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.createAuthorize(createAuthorizeRequest), requestCallback));
+    }
+
+    public void authenticate(final String chargeIdentifier, final CreateOTPVerificationRequest createOTPRequest, final APIRequestCallback<Charge> requestCallback){
+        requestManager.request(new RequestManager.DelayedRequest(apiHelper.authenticate(chargeIdentifier,createOTPRequest),requestCallback));
+    }
+
+    public void request_authenticate(final String chargeIdentifier,final APIRequestCallback<Charge> requestCallback){
+        requestManager.request(new RequestManager.DelayedRequest(apiHelper.request_authenticate(chargeIdentifier),requestCallback));
     }
 
     public void updateCharge(final String chargeId, final APIRequestCallback<Charge> requestCallback) {

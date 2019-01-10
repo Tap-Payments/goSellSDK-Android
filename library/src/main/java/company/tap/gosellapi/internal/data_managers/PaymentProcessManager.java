@@ -13,12 +13,15 @@ import java.util.HashMap;
 import company.tap.gosellapi.internal.Constants;
 import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
+import company.tap.gosellapi.internal.api.enums.AuthenticationType;
 import company.tap.gosellapi.internal.api.enums.ExtraFeesStatus;
 import company.tap.gosellapi.internal.api.enums.PaymentType;
 import company.tap.gosellapi.internal.api.models.CreateTokenSavedCard;
 import company.tap.gosellapi.internal.api.models.SavedCard;
+import company.tap.gosellapi.internal.api.requests.CreateOTPVerificationRequest;
 import company.tap.gosellapi.internal.api.requests.CreateTokenWithExistingCardDataRequest;
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
+import company.tap.gosellapi.internal.data_managers.payment_options.view_models.RecentSectionViewModel;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models_data.CardCredentialsViewModelData;
 import company.tap.gosellapi.internal.utils.Utils;
 import company.tap.gosellapi.open.enums.TransactionMode;
@@ -63,8 +66,10 @@ final class PaymentProcessManager {
     if (getCurrentPaymentViewModel().getPaymentOption() instanceof CardCredentialsViewModelData)
       shouldCloseWebPaymentScreen = redirectionFinished;
 
-    System.out.println(
-        " shouldOverrideUrlLoading : shouldCloseWebPaymentScreen :" + shouldCloseWebPaymentScreen);
+    if(getCurrentPaymentViewModel().getPaymentOption() instanceof RecentSectionViewModel)
+      shouldCloseWebPaymentScreen = redirectionFinished;
+
+    System.out.println(" shouldOverrideUrlLoading : shouldCloseWebPaymentScreen :" + shouldCloseWebPaymentScreen);
     @Nullable String tapID = null;
 
     Uri uri = Uri.parse(url);
@@ -198,8 +203,9 @@ final class PaymentProcessManager {
     forceStartPaymentProcess(paymentOptionModel);
   }
 
-  void startSavedCardPaymentProcess(@NonNull final SavedCard paymentOptionModel){
-    forceStartSavedCardPaymentProcess(paymentOptionModel);
+  void startSavedCardPaymentProcess(@NonNull final SavedCard paymentOptionModel,
+                                    RecentSectionViewModel recentSectionViewModel){
+    forceStartSavedCardPaymentProcess(paymentOptionModel,recentSectionViewModel);
   }
 
   PaymentProcessManager(@NonNull IPaymentDataProvider dataProvider,
@@ -331,7 +337,9 @@ final class PaymentProcessManager {
 
   /////////////////////////////////////////////////////////  Saved Card Payment process ////////////////////////////
 
-  private void forceStartSavedCardPaymentProcess(@NonNull SavedCard savedCard) {
+  private void forceStartSavedCardPaymentProcess(@NonNull SavedCard savedCard,
+                                                 RecentSectionViewModel recentSectionViewModel) {
+    setCurrentPaymentViewModel(recentSectionViewModel);
     PaymentOption paymentOption =  findPaymentOption(savedCard);
     CreateTokenSavedCard createTokenSavedCard = new CreateTokenSavedCard(savedCard.getId(),dataProvider.getCustomer().getIdentifier());
     startPaymentProcessWithSavedCardPaymentModel(createTokenSavedCard,paymentOption);
@@ -525,5 +533,62 @@ final class PaymentProcessManager {
 
   public PaymentOption findPaymentOption(SavedCard savedCard) {
     return findSavedCardPaymentOption(savedCard);
+  }
+
+  <T extends Charge> void confirmOTPCode(@NonNull T chargeOrAuthorize,
+                                         String otpCode) {
+    CreateOTPVerificationRequest createOTPVerificationRequest = new CreateOTPVerificationRequest.Builder(AuthenticationType.OTP,otpCode).build();
+    APIRequestCallback<T> callBack = new APIRequestCallback<T>() {
+      @Override
+      public void onSuccess(int responseCode, T serializedResponse) {
+        System.out.println(" confirmOTPCode >>> " + responseCode);
+        System.out.println(" confirmOTPCode >>> " + serializedResponse.getStatus());
+        System.out.println(" confirmOTPCode >>> " + serializedResponse.getResponse().getMessage());
+        handleChargeOrAuthorizeResponse((Charge) serializedResponse, null);
+      }
+
+      @Override
+      public void onFailure(GoSellError errorDetails) {
+        System.out.println(" confirmOTPCode >>> error : "+ errorDetails.getErrorBody());
+        //otpListener.otpCodeAuthenticated();
+        handleChargeOrAuthorizeResponse(null,errorDetails);
+      }
+    };
+
+    if (chargeOrAuthorize instanceof Charge)
+      GoSellAPI.getInstance()
+          .authenticate(chargeOrAuthorize.getId(),createOTPVerificationRequest, (APIRequestCallback<Charge>) callBack);
+//    else
+//      GoSellAPI.getInstance()
+//          .retrieveAuthorize(chargeOrAuthorize.getId(), (APIRequestCallback<Authorize>) callBack);
+
+  }
+
+  <T extends Charge> void resendOTPCode(@NonNull T chargeOrAuthorize) {
+
+      APIRequestCallback<T> callBack = new APIRequestCallback<T>() {
+        @Override
+        public void onSuccess(int responseCode, T serializedResponse) {
+          System.out.println(" resendOTPCode >>> " + responseCode);
+          System.out.println(" resendOTPCode >>> " + serializedResponse.getStatus());
+          System.out.println(" resendOTPCode >>> " + serializedResponse.getResponse().getMessage());
+          System.out.println(" resendOTPCode >>> " + serializedResponse.getAuthenticate().getValue());
+          handleChargeOrAuthorizeResponse((Charge) serializedResponse, null);
+        }
+
+        @Override
+        public void onFailure(GoSellError errorDetails) {
+          System.out.println(" confirmOTPCode >>> error : "+ errorDetails.getErrorBody());
+          handleChargeOrAuthorizeResponse(null,errorDetails);
+        }
+      };
+
+      if (chargeOrAuthorize instanceof Charge)
+        GoSellAPI.getInstance()
+            .request_authenticate(chargeOrAuthorize.getId(), (APIRequestCallback<Charge>) callBack);
+//    else
+//      GoSellAPI.getInstance()
+//          .retrieveAuthorize(chargeOrAuthorize.getId(), (APIRequestCallback<Authorize>) callBack);
+
   }
 }

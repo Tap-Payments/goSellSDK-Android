@@ -100,7 +100,7 @@ public class LoadingScreenManager {
         ImageView loadingViewBackground = loadingLayout.findViewById(R.id.blurredBackground);
 
         ViewGroup insertPoint = hostActivity.findViewById(android.R.id.content);
-
+        System.out.println("insertPoint : "+insertPoint);
         Bitmap bitmap = createScreenshot(insertPoint);
 
         Blurry.with(hostActivity)
@@ -130,7 +130,21 @@ public class LoadingScreenManager {
     }
 
     private Bitmap createScreenshot(ViewGroup view) {
-        Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
+
+        int w = view.getWidth();
+        int h = view.getHeight();
+        System.out.println("w: "+w);
+        System.out.println("h: "+h);
+
+        if(w<=0 )
+            w=800;
+
+        if(h<=0 )
+            h=300;
+
+
+
+        Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
 
         Canvas canvas = new Canvas(bitmap);
         view.draw(canvas);
