@@ -46,6 +46,8 @@ public class OTPFullScreenDialog extends DialogFragment {
     void resendOTP();
   }
 
+
+
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
