@@ -1,5 +1,6 @@
 package company.tap.gosellapi.internal.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -143,6 +144,8 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     });
 
   }
+
+
 
   @Override
   public void updatePayButtonWithSavedCardExtraFees(SavedCard recentItem,
@@ -382,22 +385,24 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     if(charge.getAuthenticate()!=null){
       String phoneNumber = charge.getAuthenticate().getValue();
 
-      OTPFullScreenDialog dialog = new OTPFullScreenDialog();
+//      android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//      android.support.v4.app.Fragment prev = getSupportFragmentManager().findFragmentByTag(OTPFullScreenDialog.TAG);
+//      if (prev != null) {
+//        ft.remove(prev);
+//      }
+//      ft.addToBackStack(null);
+      //ft.commitAllowingStateLoss();
+
+      android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+      android.support.v4.app.DialogFragment dialogFragment = new OTPFullScreenDialog();
       Bundle b = new Bundle();
       b.putString("phoneNumber", phoneNumber);
-      dialog.setArguments(b);
-      dialog.show(getSupportFragmentManager(),OTPFullScreenDialog.TAG);
+      dialogFragment.setArguments(b);
 
-
-
-//      Intent intent = new Intent(this,OTPActivity.class);
-//      intent.putExtra("phoneNumber", phoneNumber);
-//      startActivityForResult(intent,OPT_ACTIVITY_CODE);
-//      GoSellOTPScreenFragment otpScreenFragment= new GoSellOTPScreenFragment();
-//      fragmentManager
-//          .beginTransaction()
-//          .replace(R.id.paymentActivityFragmentContainer, otpScreenFragment,"OTP")
-//          .commit();
+//      dialogFragment.show(ft, OTPFullScreenDialog.TAG);
+//      ft.commitAllowingStateLoss();
+      ft.add(dialogFragment,OTPFullScreenDialog.TAG);
+      ft.commitAllowingStateLoss();
     }else{
 
     }
@@ -625,6 +630,13 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
   private void setChargeOrAuthorize(Charge chargeOrAuthorize) {
     this.chargeOrAuthorize = chargeOrAuthorize;
+  }
+
+
+  @SuppressLint("MissingSuperCall")
+  @Override
+  protected void onSaveInstanceState(Bundle outState) {
+    //No call for super(). Bug on API Level > 11.
   }
 
 }
