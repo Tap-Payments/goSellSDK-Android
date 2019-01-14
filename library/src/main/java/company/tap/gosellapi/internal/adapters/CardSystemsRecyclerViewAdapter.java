@@ -16,86 +16,127 @@ import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.enums.CardScheme;
 import company.tap.gosellapi.internal.api.enums.PaymentType;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
+import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
+import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
 import company.tap.tapcardvalidator_android.CardBrand;
 
 
 public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSystemViewHolder> {
 
-    private ArrayList<PaymentOption> data;
-    private  ArrayList<PaymentOption> initialData;
+  private ArrayList<PaymentOption> data;
+  private ArrayList<PaymentOption> initialData;
 
-    public CardSystemsRecyclerViewAdapter(ArrayList<PaymentOption> data) {
-        this.data = data;
-        filterPaymentOptions();
+  public CardSystemsRecyclerViewAdapter(ArrayList<PaymentOption> _data) {
+    data = new ArrayList<>(_data);
+    for (PaymentOption option : _data) {
+      System.out.println(" filter based on  currency inside card view holder : " + option
+          .getPaymentType() + " >> " + option.getName());
+    }
+    this.initialData = new ArrayList<>(filter(_data));
+    //this.data = _data;
+    filterPaymentOptions();
 
+
+  }
+
+  private ArrayList<PaymentOption> filter(ArrayList<PaymentOption> _data) {
+    ArrayList<PaymentOption> filteredData =new ArrayList<>(_data);
+    for (Iterator<PaymentOption> it = filteredData.iterator(); it.hasNext(); ) {
+      PaymentOption p = it.next();
+      if (p.getPaymentType() != PaymentType.CARD) {
+        it.remove();
+      } else if (p.getPaymentType() == PaymentType.CARD &&
+          !isCardSupportSelectedCurrency(p,
+              PaymentDataManager.getInstance().getPaymentOptionsDataManager())
+          ) {
+        it.remove();
+      }
 
     }
+    return filteredData;
+  }
 
-    @NonNull
-    @Override
-    public CardSystemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.gosellapi_viewholder_card_system, parent, false);
-        return new CardSystemViewHolder(view);
+  @NonNull
+  @Override
+  public CardSystemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    View view = LayoutInflater.from(parent.getContext())
+        .inflate(R.layout.gosellapi_viewholder_card_system, parent, false);
+    return new CardSystemViewHolder(view);
+  }
+
+  @Override
+  public void onBindViewHolder(@NonNull CardSystemViewHolder holder, int position) {
+    PaymentOption option = data.get(position);
+    Glide.with(holder.itemView.getContext()).load(option.getImage()).into(holder.cardSystemIcon);
+  }
+
+  @Override
+  public int getItemCount() {
+    return data.size();
+  }
+
+  private void filterPaymentOptions() {
+
+    for (Iterator<PaymentOption> it = data.iterator(); it.hasNext(); ) {
+      PaymentOption p = it.next();
+      System.out.println("payment type : " + p.getName());
+      if (p.getPaymentType() != PaymentType.CARD) {
+        it.remove();
+      } else if (p.getPaymentType() == PaymentType.CARD &&
+          !isCardSupportSelectedCurrency(p,
+              PaymentDataManager.getInstance().getPaymentOptionsDataManager())
+          ) {
+        it.remove();
+      }
+    }
+  }
+
+  private boolean isCardSupportSelectedCurrency(PaymentOption paymentOption, @NonNull
+      PaymentOptionsDataManager paymentOptionsDataManager) {
+    for (String s : paymentOption.getSupportedCurrencies()) {
+      if (s.equalsIgnoreCase(paymentOptionsDataManager.getSelectedCurrency().getCurrency())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public void updateForCardBrand(CardBrand brand) {
+
+    if (brand == null) {
+      data = new ArrayList<>(initialData);
+      notifyDataSetChanged();
+      return;
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull CardSystemViewHolder holder, int position) {
-        PaymentOption option = data.get(position);
-        Glide.with(holder.itemView.getContext()).load(option.getImage()).into(holder.cardSystemIcon);
+    data.clear();
+
+    for (PaymentOption option : initialData) {
+
+      ArrayList<CardBrand> cardBrands = option.getSupportedCardBrands();
+      System.out.println("brand :" + brand);
+
+      if (cardBrands.contains(brand)) {
+        data.add(option);
+      }
     }
+    if (data.size() == 0)
+      data = new ArrayList<>(initialData);
 
-    @Override
-    public int getItemCount() {
-        return data.size();
-    }
+    notifyDataSetChanged();
+  }
 
-    private void filterPaymentOptions(){
 
-        for(Iterator<PaymentOption> it = data.iterator(); it.hasNext();) {
-            PaymentOption p = it.next();
-            System.out.println("payment type : " + p.getName());
-            if(p.getPaymentType() != PaymentType.CARD) {
-                it.remove();
-            }
-        }
-       this.initialData = (ArrayList<PaymentOption>) data.clone();
-
-    }
-
-    public void updateForCardBrand(CardBrand brand) {
-
-        if(brand == null) {
-            data = new ArrayList<>(initialData);
-            notifyDataSetChanged();
-            return;
-        }
-
-        data.clear();
-
-        for(PaymentOption option : initialData) {
-
-           ArrayList<CardBrand> cardBrands = option.getSupportedCardBrands();
-            System.out.println("brand :"+ brand);
-
-           if(cardBrands.contains(brand)) {
-               data.add(option);
-           }
-        }
-        if(data.size() == 0)
-            data = new ArrayList<>(initialData);
-
-        notifyDataSetChanged();
-    }
 
 
 }
 
 class CardSystemViewHolder extends RecyclerView.ViewHolder {
-    ImageView cardSystemIcon;
+  ImageView cardSystemIcon;
 
-    CardSystemViewHolder(View itemView) {
-        super(itemView);
+  CardSystemViewHolder(View itemView) {
+    super(itemView);
 
-        cardSystemIcon = itemView.findViewById(R.id.cardSystemIcon);
-    }
+    cardSystemIcon = itemView.findViewById(R.id.cardSystemIcon);
+  }
 }

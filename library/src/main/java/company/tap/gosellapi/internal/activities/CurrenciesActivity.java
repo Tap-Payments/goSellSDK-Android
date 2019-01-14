@@ -47,7 +47,6 @@ public class CurrenciesActivity extends BaseActionBarActivity implements Currenc
     }
 
     private void getData() {
-
         //noinspection unchecked
         currencies = (ArrayList<AmountedCurrency>) getIntent().getSerializableExtra(CURRENCIES_ACTIVITY_DATA);
         selectedCurrency = (AmountedCurrency) getIntent().getSerializableExtra(CURRENCIES_ACTIVITY_INITIAL_SELECTED_CURRENCY);

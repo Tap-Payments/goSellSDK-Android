@@ -1,6 +1,8 @@
 package company.tap.gosellapi.internal.data_managers.payment_options;
 
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 import company.tap.gosellapi.internal.Constants;
@@ -48,6 +50,11 @@ public class PaymentOptionsDataManager {
     return null;
   }
 
+  public void filterViewModelsWithAmountedCurrency(AmountedCurrency amountedCurrency) {
+    //getModelsHandler().generateViewModels();
+    getModelsHandler().filterViewModels(amountedCurrency.getCurrency());
+  }
+
   //outer interface (for fragment, containing recyclerView)
   public interface PaymentOptionsDataListener {
 
@@ -89,7 +96,8 @@ public class PaymentOptionsDataManager {
   private ArrayList<PaymentOptionViewModel> visibleViewModels;
   private String lastFilteredCurrency;
 
-  private ViewModelsHandler getModelsHandler() {
+
+  public ViewModelsHandler getModelsHandler() {
     return modelsHandler;
   }
 
@@ -269,7 +277,57 @@ public class PaymentOptionsDataManager {
   public void currencySelectedByUser(AmountedCurrency selectedCurrency) {
 
     this.selectedCurrency = selectedCurrency;
+    filterViewModelsWithAmountedCurrency(selectedCurrency);
 
+//
+//    //update currency section
+//    CurrencyViewModel currencyViewModel = getModelsHandler().findCurrencyModel();
+//    if (currencyViewModel == null) return;
+//
+//    CurrencyViewModelData currencyViewModelData = currencyViewModel.getData();
+//    currencyViewModelData.setSelectedCurrency(selectedCurrency);
+//    currencyViewModel.updateData();
+//
+//
+//    // filter web payment
+//    ArrayList<PaymentOption> paymentOptions0 = new ArrayList<>(getPaymentOptionsResponse().getPaymentOptions());
+//    ArrayList<PaymentOption> webPaymentOptions = getModelsHandler().filteredByPaymentTypeAndCurrencyAndSortedList(
+//        paymentOptions0, PaymentType.WEB, selectedCurrency.getCurrency());
+//
+//    ArrayList<WebPaymentViewModel> webPaymentViewModels = new ArrayList<>();
+//    for(PaymentOption paymentOption:webPaymentOptions){
+//      webPaymentViewModels.add(getModelsHandler().findWebPaymentModel(paymentOption));
+//    }
+//    if(webPaymentOptions.size()>0)
+//    System.out.println(" disc : "+ webPaymentViewModels.size() + " type : "+webPaymentViewModels.get(0).getPaymentOption().getName());
+//
+//
+//    //filter payment options
+//    CardCredentialsViewModel cardCredentialsViewModel = getModelsHandler().findCardPaymentModel();
+//    if (cardCredentialsViewModel == null) return;
+//
+//    ArrayList<PaymentOption> paymentOptions = new ArrayList<>(getPaymentOptionsResponse().getPaymentOptions());
+//
+//    for(PaymentOption option : paymentOptions){
+//      System.out.println(" filter based on  currency before : "+ option.getPaymentType() + " >> "+ option.getName());
+//    }
+//
+//
+//
+//    paymentOptions = Utils.List.filter(paymentOptions,
+//        getModelsHandler().<PaymentOption>getCurrenciesFilter(selectedCurrency.getCurrency()));
+//
+//for(PaymentOption option : paymentOptions){
+//  System.out.println("filter based on  currency after : "+ option.getPaymentType() + " >> "+ option.getName());
+//}
+//    CardCredentialsViewModelData cardCredentialsModelData = cardCredentialsViewModel.getData();
+//    cardCredentialsModelData.setPaymentOptions(paymentOptions);
+//
+//    cardCredentialsViewModel.updateData();
+  }
+
+
+  public void updateCurrencySection(){
     //update currency section
     CurrencyViewModel currencyViewModel = getModelsHandler().findCurrencyModel();
     if (currencyViewModel == null) return;
@@ -277,19 +335,6 @@ public class PaymentOptionsDataManager {
     CurrencyViewModelData currencyViewModelData = currencyViewModel.getData();
     currencyViewModelData.setSelectedCurrency(selectedCurrency);
     currencyViewModel.updateData();
-
-    //filter payment options
-    CardCredentialsViewModel cardCredentialsViewModel = getModelsHandler().findCardPaymentModel();
-    if (cardCredentialsViewModel == null) return;
-
-    ArrayList<PaymentOption> paymentOptions = getPaymentOptionsResponse().getPaymentOptions();
-    paymentOptions = Utils.List.filter(paymentOptions,
-        getModelsHandler().<PaymentOption>getCurrenciesFilter(selectedCurrency.getCurrency()));
-
-    CardCredentialsViewModelData cardCredentialsModelData = cardCredentialsViewModel.getData();
-    cardCredentialsModelData.setPaymentOptions(paymentOptions);
-
-    cardCredentialsViewModel.updateData();
   }
 
   public void cardExpirationDateSelected(String month, String year) {
@@ -394,13 +439,15 @@ public class PaymentOptionsDataManager {
 
     private void generateViewModels() {
 
-      ArrayList<PaymentOptionViewModel> result = new ArrayList<>();
+      ArrayList<PaymentOptionViewModel> viewModelsResult = new ArrayList<>();
 
       CurrencyViewModel currencyViewModel = generateCurrencyModel();
-      result.add(currencyViewModel);
+      viewModelsResult.add(currencyViewModel);
 
-      // paymentOptions === paymentMethods
-      ArrayList<PaymentOption> paymentOptions = getPaymentOptionsResponse().getPaymentOptions();
+//      ArrayList<PaymentOption> paymentOptions = getPaymentOptionsResponse().getPaymentOptions();
+      ArrayList<PaymentOption> paymentOptionsWorker = new ArrayList<>(getPaymentOptionsResponse().getPaymentOptions());
+//      paymentOptionsWorker = (ArrayList<PaymentOption>)getPaymentOptionsResponse().getPaymentOptions().clone();
+
 
       System.out.println("/////////////////////  get web/card payment options   ///////////////");
       /**
@@ -411,7 +458,7 @@ public class PaymentOptionsDataManager {
        */
       // 1- Utils filter
       ArrayList<PaymentOption> webPaymentOptions = Utils.List
-          .filter(paymentOptions, getPaymentOptionsFilter(PaymentType.WEB));
+          .filter(paymentOptionsWorker, getPaymentOptionsFilter(PaymentType.WEB));
 //            System.out.println("$$$$$$$$$$$$$$$$         Utils filter result                  $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ ");
 //            for(PaymentOption paymentOption: webPaymentOptions){
 //                System.out.println(paymentOption.getName());
@@ -426,16 +473,19 @@ public class PaymentOptionsDataManager {
 //            }
 //            System.out.println( "////////////////////////////////////////////////////////////////////////////////////////////////////////");
       ArrayList<PaymentOption> cardPaymentOptions = Utils.List
-          .filter(paymentOptions, getPaymentOptionsFilter(PaymentType.CARD));
+          .filter(paymentOptionsWorker, getPaymentOptionsFilter(PaymentType.CARD));
+
       for (PaymentOption paymentOption : cardPaymentOptions) {
         System.out.println(" Card  option : " + paymentOption.getName());
       }
 
       System.out.println("/////////////////////  get saved cards  ///////////////");
-      ArrayList<SavedCard> savedCards = getPaymentOptionsResponse().getCards();
+//      ArrayList<SavedCard> savedCards = getPaymentOptionsResponse().getCards();
+      ArrayList<SavedCard> savedCardsWorker = new ArrayList<>(getPaymentOptionsResponse().getCards());
+//      savedCardsWorker = (ArrayList<SavedCard>)getPaymentOptionsResponse().getCards().clone();
 
       System.out.println("/////////////////////  decide which view model to use   ///////////////");
-      boolean hasSavedCards = savedCards.size() > 0;
+      boolean hasSavedCards = savedCardsWorker.size() > 0;
       boolean hasWebPaymentOptions = webPaymentOptions.size() > 0;
       boolean hasCardPaymentOptions = cardPaymentOptions.size() > 0;
       boolean hasOtherPaymentOptions = hasWebPaymentOptions || hasCardPaymentOptions;
@@ -444,32 +494,32 @@ public class PaymentOptionsDataManager {
       if (displaysGroupTitles) {
 
         GroupViewModel recentGroupModel = generateGroupModel(Constants.recentGroupTitle);
-        result.add(recentGroupModel);
+        viewModelsResult.add(recentGroupModel);
       }
 
       if (hasSavedCards) {
 
-        RecentSectionViewModel recentCardsModel = generateSavedCardsModel(savedCards);
-        result.add(recentCardsModel);
+        RecentSectionViewModel recentCardsModel = generateSavedCardsModel(savedCardsWorker);
+        viewModelsResult.add(recentCardsModel);
       }
 
       if (displaysGroupTitles) {
 
         GroupViewModel othersGroupModel = generateGroupModel(Constants.othersGroupTitle);
-        result.add(othersGroupModel);
+        viewModelsResult.add(othersGroupModel);
       }
       // according to paymentOptions response im working on for test >>> user has two web payment options [ KNEt - BENEFIT]
       if (hasWebPaymentOptions) {
         EmptyViewModel emptyModel = PaymentOptionsDataManagerUtils.ViewModelUtils
             .generateEmptyModel(Constants.spaceBeforeWebPaymentOptionsIdentifier,
                 PaymentOptionsDataManager.this);
-        result.add(emptyModel);
+        viewModelsResult.add(emptyModel);
         for (PaymentOption paymentOption : webPaymentOptions) {
           System.out.println(
-              " paymentOption >> to be added ti viewModel List : " + paymentOption.getName());
+              " paymentOption >> to be added to viewModel List : " + paymentOption.getName());
           WebPaymentViewModel webPaymentModel = PaymentOptionsDataManagerUtils.ViewModelUtils
               .generateWebPaymentModel(paymentOption, PaymentOptionsDataManager.this);
-          result.add(webPaymentModel);
+          viewModelsResult.add(webPaymentModel);
         }
       }
 
@@ -477,40 +527,42 @@ public class PaymentOptionsDataManager {
         EmptyViewModel emptyModel = PaymentOptionsDataManagerUtils.ViewModelUtils
             .generateEmptyModel(Constants.spaceBetweenWebAndCardOptionsIdentifier,
                 PaymentOptionsDataManager.this);
-        result.add(emptyModel);
+        viewModelsResult.add(emptyModel);
         CardCredentialsViewModel cardPaymentModel = generateCardPaymentModel(cardPaymentOptions);
-        result.add(cardPaymentModel);
+        viewModelsResult.add(cardPaymentModel);
       }
 
-      viewModels = result;
+      viewModels = viewModelsResult;
     }
 
-    // need more re-factorization >>> it can be inside generateViewModel() and just use filterFlag=true or false
-    private void filterViewModels(String currency) {
-      System.out.println(" filterViewModels :lastFilteredCurrency :" + lastFilteredCurrency);
-      System.out.println(" filterViewModels : currency " + currency);
-      System.out.println(
-          " >>> " + (lastFilteredCurrency != null && lastFilteredCurrency.equals(currency)));
+    public void filterViewModels(String currency) {
+      System.out.println(" filterViewModels :lastFilteredCurrency :" + lastFilteredCurrency + " <<< current curr "+currency);
+
+      ArrayList<PaymentOption> paymentOptionsWorker= new ArrayList<>(getPaymentOptionsResponse().getPaymentOptions());
 
 
-      ArrayList<PaymentOptionViewModel> result = new ArrayList<>();
+      ArrayList<SavedCard> savedCardsWorker = new ArrayList<>(getPaymentOptionsResponse().getCards());
+
+
+      ArrayList<PaymentOptionViewModel> viewModelResult = new ArrayList<>();
 
       CurrencyViewModel model = findCurrencyModel();
+      viewModelResult.add(model);
+
+      ArrayList<SavedCard> savedCards = filterByCurrenciesAndSortList(savedCardsWorker, currency);
+      System.out.println("Size of saved cards : " + savedCards.size());
 
 
-      result.add(model);
 
-      ArrayList<SavedCard> savedCards = filterByCurrenciesAndSortList(
-          getPaymentOptionsResponse().getCards(), currency);
-
-      System.out.println("Size : " + savedCards.size());
-//            savedCards.stream().forEach(item->System.out.println(item.getId()) );
-      ArrayList<PaymentOption> paymentOptions = getPaymentOptionsResponse().getPaymentOptions();
+      for(PaymentOption paymentOption1: paymentOptionsWorker){
+        System.out.println("last payment option :" + paymentOption1.getPaymentType() + " > " +paymentOption1.getName() );
+      }
 
       ArrayList<PaymentOption> webPaymentOptions = filteredByPaymentTypeAndCurrencyAndSortedList(
-          paymentOptions, PaymentType.WEB, currency);
+          paymentOptionsWorker, PaymentType.WEB, currency);
+
       ArrayList<PaymentOption> cardPaymentOptions = filteredByPaymentTypeAndCurrencyAndSortedList(
-          paymentOptions, PaymentType.CARD, currency);
+          paymentOptionsWorker, PaymentType.CARD, currency);
 
       boolean hasSavedCards = savedCards.size() > 0;
       boolean hasWebPaymentOptions = webPaymentOptions.size() > 0;
@@ -521,19 +573,19 @@ public class PaymentOptionsDataManager {
       if (displaysGroupTitles) {
 
         GroupViewModel recentGroupModel = findGroupModel(Constants.recentGroupTitle);
-        result.add(recentGroupModel);
+        viewModelResult.add(recentGroupModel);
       }
 
       if (hasSavedCards) {
 
         RecentSectionViewModel savedCardsModel = findSavedCardsModel();
-        result.add(savedCardsModel);
+        viewModelResult.add(savedCardsModel);
       }
 
       if (displaysGroupTitles) {
 
         GroupViewModel recentGroupModel = findGroupModel(Constants.othersGroupTitle);
-        result.add(recentGroupModel);
+        viewModelResult.add(recentGroupModel);
       }
 
       if (hasWebPaymentOptions) {
@@ -542,13 +594,13 @@ public class PaymentOptionsDataManager {
 
           EmptyViewModel emptyModel = findEmptyModel(
               Constants.spaceBeforeWebPaymentOptionsIdentifier);
-          result.add(emptyModel);
+          viewModelResult.add(emptyModel);
         }
 
         for (PaymentOption paymentOption : webPaymentOptions) {
 
           WebPaymentViewModel webPaymentModel = findWebPaymentModel(paymentOption);
-          result.add(webPaymentModel);
+          viewModelResult.add(webPaymentModel);
         }
       }
 
@@ -558,16 +610,16 @@ public class PaymentOptionsDataManager {
 
           EmptyViewModel emptyModel = findEmptyModel(
               Constants.spaceBetweenWebAndCardOptionsIdentifier);
-          result.add(emptyModel);
+          viewModelResult.add(emptyModel);
         }
 
         CardCredentialsViewModel cardPaymentModel = findCardPaymentModel();
         // save CardCredentialsViewModel in ActivityDataExchanger to use it CardCredentialsViewHolder
         ActivityDataExchanger.getInstance().setCardCredentialsViewModel(cardPaymentModel);
-        result.add(cardPaymentModel);
+        viewModelResult.add(cardPaymentModel);
       }
 
-      visibleViewModels = result;
+      visibleViewModels = viewModelResult;
       lastFilteredCurrency = currency;
     }
 
@@ -710,6 +762,13 @@ public class PaymentOptionsDataManager {
     private ArrayList<PaymentOption> filteredByPaymentTypeAndCurrencyAndSortedList(
         ArrayList<PaymentOption> list, PaymentType paymentType, String currency) {
 
+      System.out.println("......... filter  before filtration..............list.size : "+list.size());
+      for(PaymentOption option: list)
+      {
+        System.out.println("......... filter before "+ option.getPaymentType());
+      }
+
+
       ArrayList<Utils.List.Filter<PaymentOption>> filters = new ArrayList<>();
       filters.add(this.<PaymentOption>getCurrenciesFilter(currency));
       filters.add(getPaymentOptionsFilter(paymentType));
@@ -718,6 +777,12 @@ public class PaymentOptionsDataManager {
       ArrayList<PaymentOption> filtered = Utils.List.filter(list, filter);
       Collections.sort(filtered);
 
+      System.out.println("......... filter .............."+paymentType + " .... "+currency);
+      for(PaymentOption paymentOption: filtered){
+        System.out.println("......... filter .............."+ paymentOption.getPaymentType());
+      }
+
+      System.out.println("......... filter end ..............");
       return filtered;
     }
 
@@ -729,7 +794,6 @@ public class PaymentOptionsDataManager {
 
         @Override
         public boolean isIncluded(E object) {
-
           return object.getSupportedCurrencies().contains(currency);
         }
       };
