@@ -85,7 +85,7 @@ public class GoSellPaymentOptionsFragment extends Fragment {
 
     private void saveRecyclerState() {
         layoutManagerState = layoutManager.onSaveInstanceState();
-        dataSource.saveState();
+        if(dataSource!=null)dataSource.saveState();
     }
 
     private void restoreRecyclerState() {
@@ -94,4 +94,6 @@ public class GoSellPaymentOptionsFragment extends Fragment {
             layoutManagerState = null;
         }
     }
+
+
 }

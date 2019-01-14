@@ -3,6 +3,7 @@ package company.tap.gosellapi.internal.viewholders;
 import android.app.Activity;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.os.Parcelable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -71,6 +72,7 @@ public class CardCredentialsViewHolder
     private TextView saveCardDescriptionTextView;
     private Switch saveCardSwitch;
     private RecyclerView cardSystemsRecyclerView;
+    private LinearLayoutManager linearLayoutManager;
     private CardCredentialsViewModel viewModel;
     private CardCredentialsTextWatcher cardCredentialsTextWatcher;
 
@@ -107,7 +109,7 @@ public class CardCredentialsViewHolder
 //                    spacings = new int[]{4, 8,13};
                 }
 
-                String text = str.toString();
+                String text = str;
                 text = text.replace(" ", "");
                 SpannableStringBuilder cardNumber = new SpannableStringBuilder(text);
 
@@ -308,21 +310,6 @@ public class CardCredentialsViewHolder
 //        initCardSystemsRecyclerView(data.getPaymentOptions());
     }
 
-//  @Override
-//  public void clear() {
-////    cardNumberField.setText("");
-////    viewModel.setCardNumber("");
-////
-////    expirationDateField.setText("");
-////    viewModel.setExpirationYear("");
-////    viewModel.setExpirationMonth("");
-////
-////    cvvField.setText("");
-////    cvvField.setCardType(null);
-////
-////    nameOnCardField.setText("");
-//  }
-
   class CardCredentialsTextWatcher implements TextWatcher{
 
       @Override
@@ -386,7 +373,7 @@ public class CardCredentialsViewHolder
 
         cardSystemsRecyclerView = itemView.findViewById(R.id.cardSystemsRecyclerView);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.VERTICAL, false);
+        linearLayoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.VERTICAL, false);
         cardSystemsRecyclerView.setLayoutManager(linearLayoutManager);
 
         CardSystemsRecyclerViewAdapter adapter = new CardSystemsRecyclerViewAdapter(paymentOptions);
@@ -535,4 +522,16 @@ public class CardCredentialsViewHolder
 
         return addressOnCardField;
     }
+
+  @Override
+  public Parcelable saveState() {
+    return linearLayoutManager.onSaveInstanceState();
+  }
+
+  @Override
+  public void restoreState(Parcelable state) {
+    if (state != null) {
+      linearLayoutManager.onRestoreInstanceState(state);
+    }
+  }
 }

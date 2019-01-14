@@ -157,8 +157,14 @@ public class OTPFullScreenDialog extends DialogFragment {
 
       @Override
       public void onTextChanged(CharSequence s, int start, int before, int count) {
-        String text = before == 0 ? String.valueOf(s.charAt(start)) : "";
-        updateConfirmationCodeCells(start, text);
+        /**
+         * Check string length first to avoid screen rotation issue (IndexOutOfBoundsException)
+         */
+        if(s!=null && s.length()>0){
+          String text = before == 0 ? String.valueOf(s.charAt(start)) : "";
+          updateConfirmationCodeCells(start, text);
+        }
+
       }
 
       @Override

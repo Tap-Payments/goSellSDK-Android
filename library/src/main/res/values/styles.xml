@@ -16,7 +16,7 @@
     </style>
 
     <style name="GoSellSDKActionBar">
-        <item name="android:background">@color/french_gray</item>
+        <item name="android:background">@color/french_gray_new</item>
     </style>
 
     <style name="TextView"></style>
@@ -29,9 +29,10 @@
     </style>
 
     <style name="TextView.Title">
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/bt_black_87</item>
         <item name="android:textSize">@dimen/font_size_17sp</item>
         <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif</item>
+        <item name="android:lineSpacingExtra">@dimen/title_lineSpacingExtra</item>
         <item name="android:textStyle">normal</item>
     </style>
 

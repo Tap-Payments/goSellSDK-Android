@@ -288,6 +288,7 @@ public class CardCredentialsViewModel
 
   public void setPaymentOption(CardBrand cardBrand) {
       if(cardBrand!=null){
+          System.out.println(" CardCredentialsViewModel..  data.getPaymentOptions() ="+ data.getPaymentOptions().size());
           for(PaymentOption paymentOption:  data.getPaymentOptions()){
               System.out.println(" card cred ... paymentOption. comparison :"+paymentOption.getBrand().name() + " selected :"+ cardBrand.name() + " >> " +paymentOption.getBrand().compareTo(cardBrand));
               if(paymentOption.getBrand().compareTo(cardBrand)==0){

@@ -3,7 +3,6 @@ package company.tap.gosellapi.internal.data_managers;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
 import android.util.Log;
 
 import java.math.BigDecimal;
@@ -319,9 +318,6 @@ final class PaymentProcessManager {
       public void onSuccess(int responseCode, Token serializedResponse) {
         System.out
             .println("startPaymentProcessWithCard >> serializedResponse: " + serializedResponse);
-        System.out.println(
-            "startPaymentProcessWithCard >> serializedResponse: first six :" + serializedResponse
-                .getCard().getFirstSix());
         SourceRequest source = new SourceRequest(serializedResponse);
         callChargeOrAuthorizeAPI(source, paymentOption, serializedResponse.getCard().getFirstSix(),
             saveCard);
@@ -541,8 +537,6 @@ final class PaymentProcessManager {
     APIRequestCallback<T> callBack = new APIRequestCallback<T>() {
       @Override
       public void onSuccess(int responseCode, T serializedResponse) {
-        System.out.println(" confirmOTPCode >>> " + responseCode);
-        System.out.println(" confirmOTPCode >>> " + serializedResponse.getStatus());
         System.out.println(" confirmOTPCode >>> " + serializedResponse.getResponse().getMessage());
         handleChargeOrAuthorizeResponse((Charge) serializedResponse, null);
       }
@@ -550,7 +544,6 @@ final class PaymentProcessManager {
       @Override
       public void onFailure(GoSellError errorDetails) {
         System.out.println(" confirmOTPCode >>> error : "+ errorDetails.getErrorBody());
-        //otpListener.otpCodeAuthenticated();
         handleChargeOrAuthorizeResponse(null,errorDetails);
       }
     };
@@ -569,8 +562,7 @@ final class PaymentProcessManager {
       APIRequestCallback<T> callBack = new APIRequestCallback<T>() {
         @Override
         public void onSuccess(int responseCode, T serializedResponse) {
-          System.out.println(" resendOTPCode >>> " + responseCode);
-          System.out.println(" resendOTPCode >>> " + serializedResponse.getStatus());
+
           System.out.println(" resendOTPCode >>> " + serializedResponse.getResponse().getMessage());
           System.out.println(" resendOTPCode >>> " + serializedResponse.getAuthenticate().getValue());
           handleChargeOrAuthorizeResponse((Charge) serializedResponse, null);
