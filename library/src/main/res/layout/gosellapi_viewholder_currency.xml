@@ -1,60 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/selector_payment_options_viewholder"
-    android:orientation="horizontal">
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/selector_payment_options_viewholder"
+              android:orientation="horizontal"
+    >
 
+
+  <LinearLayout
+      android:layout_width="65dp"
+      android:layout_height="65dp"
+      android:orientation="horizontal"
+      android:gravity="center_horizontal|center_vertical"
+      >
     <ImageView
         android:id="@+id/billIcon"
+        android:layout_width="18dp"
+        android:layout_height="24dp"
+        android:background="@drawable/ic_bill_normal"
+        />
+  </LinearLayout>
+
+  <View
+      android:layout_width="@dimen/separator_width_basic"
+      android:layout_height="match_parent"
+      android:background="@color/alto_gray"
+      />
+
+
+  <LinearLayout
+      android:id="@+id/currencyLayout"
+      android:layout_width="0dp"
+      android:layout_height="match_parent"
+      android:layout_marginStart="@dimen/margin_basic_13dp"
+      android:layout_marginLeft="@dimen/margin_basic_13dp"
+      android:layout_weight="1"
+      android:animateLayoutChanges="true"
+      android:gravity="center_vertical"
+      android:layoutDirection="ltr"
+      android:orientation="vertical"
+      >
+
+    <TextView
+        android:id="@+id/currencySecondaryText"
+        style="@style/secondary_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_basic_23dp"
-        android:background="@drawable/ic_bill_normal" />
+        android:gravity="start"
+        android:text="aqsdas"
+        android:textSize="13sp"
+        android:lineSpacingExtra="@dimen/title_lineSpacingExtra_11"
+        />
 
-    <View
-        android:layout_width="@dimen/separator_width_basic"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/margin_basic_4dp"
-        android:layout_marginTop="@dimen/margin_basic_4dp"
-        android:background="@color/alto_gray" />
-
-    <LinearLayout
-        android:id="@+id/currencyLayout"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/margin_basic_16dp"
-        android:layout_weight="1"
-        android:animateLayoutChanges="true"
-        android:gravity="center_vertical"
-        android:layoutDirection="ltr"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/currencySecondaryText"
-            style="@style/TextView.Title.Header"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="start"
-            android:text="aqsdas"
-            android:textSize="13sp" />
-
-        <TextView
-            android:id="@+id/currencyMainText"
-            style="@style/TextView.Title.Header"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="wwwwwww"
-            android:gravity="start" />
-    </LinearLayout>
-
-    <ImageView
-        android:id="@id/arrowIcon"
+    <TextView
+        android:id="@+id/currencyMainText"
+        style="@style/header_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginEnd="@dimen/margin_basic_16dp"
-        android:layout_marginStart="@dimen/margin_basic_16dp"
-        android:background="@drawable/ic_arrow_right_normal" />
+        android:text="wwwwwww"
+        android:gravity="start"
+        />
+  </LinearLayout>
+
+  <ImageView
+      android:id="@id/arrowIcon"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_vertical"
+      android:layout_marginEnd="@dimen/margin_basic_16dp"
+      android:layout_marginStart="@dimen/margin_basic_16dp"
+      android:background="@drawable/ic_arrow_right_normal"
+      />
 
 </LinearLayout>

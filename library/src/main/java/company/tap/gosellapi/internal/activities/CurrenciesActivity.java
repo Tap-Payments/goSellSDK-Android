@@ -13,6 +13,7 @@ import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import java.util.ArrayList;
 
@@ -72,7 +73,8 @@ public class CurrenciesActivity extends BaseActionBarActivity implements Currenc
     }
 
     private void setTitle() {
-        setTitle(Utils.getFormattedCurrency(selectedCurrency));
+       // setTitle(Utils.getFormattedCurrency(selectedCurrency));
+        setTitle(getResources().getString(R.string.select_currency_title));
     }
 
     @Override
@@ -81,7 +83,8 @@ public class CurrenciesActivity extends BaseActionBarActivity implements Currenc
         inflater.inflate(R.menu.menu_search, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
         mSearchView = (SearchView) searchItem.getActionView();
-
+// hide it for now
+        mSearchView.setVisibility(View.INVISIBLE);
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -103,16 +106,19 @@ public class CurrenciesActivity extends BaseActionBarActivity implements Currenc
     @Override
     public void finish() {
         super.finish();
-        super.overridePendingTransition(android.R.anim.fade_in, R.anim.slide_out_left);
+        //super.overridePendingTransition(android.R.anim.fade_in, R.anim.slide_out_left);
+        overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
     }
 
     @Override
     public void itemSelected(AmountedCurrency currency) {
 
-        if ( this.selectedCurrency.equals(currency) ) { return; }
+        //if ( this.selectedCurrency.equals(currency) ) { return; }
 
         this.selectedCurrency = currency;
         setTitle();
+        setResult(RESULT_OK, new Intent().putExtra(CURRENCIES_ACTIVITY_USER_CHOICE_CURRENCY, selectedCurrency));
+        super.onBackPressed();
     }
 
     @Override

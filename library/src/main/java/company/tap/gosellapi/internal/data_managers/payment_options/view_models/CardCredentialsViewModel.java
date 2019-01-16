@@ -1,6 +1,7 @@
 package company.tap.gosellapi.internal.data_managers.payment_options.view_models;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Parcel;
 import android.support.annotation.NonNull;
@@ -20,11 +21,12 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import company.tap.gosellapi.internal.api.enums.CardScheme;
-import company.tap.gosellapi.internal.api.models.BINLookupResponse;
+
 import company.tap.gosellapi.internal.api.models.Card;
 import company.tap.gosellapi.internal.api.models.CardRawData;
 import company.tap.gosellapi.internal.api.models.CreateTokenCard;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
+import company.tap.gosellapi.internal.api.responses.BINLookupResponse;
 import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.card_input_fields_text_handlers.CardNumberTextHandler;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models_data.CardCredentialsViewModelData;
@@ -110,6 +112,13 @@ public class CardCredentialsViewModel
 
     @Nullable private BINLookupResponse currentBINData;
     @Nullable private BINLookupResponse getCurrentBINData() { return currentBINData; }
+
+    public void setCurrentBINData(
+        company.tap.gosellapi.internal.api.responses.BINLookupResponse _currentBINData){
+        currentBINData = _currentBINData;
+        if(getCardCredentialsViewHolder()!=null)
+        getCardCredentialsViewHolder().updateCardSystemsRecyclerView(getRecognizedCardType().getBrand(),getRecognizedCardType().getScheme());
+    }
 
     @NonNull private ArrayList<CardBrand> availableCardBrands;
     @NonNull private ArrayList<CardBrand> getAvailableCardBrands() { return availableCardBrands; }
@@ -246,7 +255,7 @@ public class CardCredentialsViewModel
 
     @Override
     public BrandWithScheme getRecognizedCardType() {
-
+        System.out.println(" getRecognizedType: "+ getCurrentBINData());
         BINLookupResponse binData = getCurrentBINData();
 
         @Nullable CardScheme scheme = null;
@@ -276,8 +285,15 @@ public class CardCredentialsViewModel
         setCardNumber(cardNumber);
     }
 
+    @Override
+    public void updateCardsRecyclerViewWithCardAndSchema(CardBrand cardBrand,
+                                                         CardScheme cardScheme) {
+        if(getCardCredentialsViewHolder()!=null)
+            getCardCredentialsViewHolder().updateCardSystemsRecyclerView(cardBrand,cardScheme);
+    }
 
-  public void ViewHolderReference(CardCredentialsViewHolder cardCredentialsViewHolder) {
+
+    public void ViewHolderReference(CardCredentialsViewHolder cardCredentialsViewHolder) {
       this.cardCredentialsViewHolder = cardCredentialsViewHolder;
   }
 
@@ -286,22 +302,35 @@ public class CardCredentialsViewModel
       return cardCredentialsViewHolder;
   }
 
-  public void setPaymentOption(CardBrand cardBrand) {
-      if(cardBrand!=null){
-          System.out.println(" CardCredentialsViewModel..  data.getPaymentOptions() ="+ data.getPaymentOptions().size());
+  public void setPaymentOption(CardBrand cardBrand,CardScheme cardScheme) {
+
+      if(cardScheme!=null){
           for(PaymentOption paymentOption:  data.getPaymentOptions()){
               System.out.println(" card cred ... paymentOption. comparison :"+paymentOption.getBrand().name() + " selected :"+ cardBrand.name() + " >> " +paymentOption.getBrand().compareTo(cardBrand));
-              if(paymentOption.getBrand().compareTo(cardBrand)==0){
+              if(paymentOption.getName().equalsIgnoreCase(cardScheme.name())){
                   this.selectedCardPaymentOption = paymentOption;
                   updatePayButtonWithExtraFees(paymentOption);
               }
           }
           if(selectedCardPaymentOption!=null)
               System.out.println("card cred ... paymentOption. final : "+selectedCardPaymentOption.getBrand().name());
-      }else
-      {
-        selectedCardPaymentOption = null;
-        updatePayButtonWithExtraFees(selectedCardPaymentOption);
+      }else {
+          if(cardBrand!=null){
+              System.out.println(" CardCredentialsViewModel..  data.getPaymentOptions() ="+ data.getPaymentOptions().size());
+              for(PaymentOption paymentOption:  data.getPaymentOptions()){
+                  System.out.println(" card cred ... paymentOption. comparison :"+paymentOption.getBrand().name() + " selected :"+ cardBrand.name() + " >> " +paymentOption.getBrand().compareTo(cardBrand));
+                  if(paymentOption.getBrand().compareTo(cardBrand)==0){
+                      this.selectedCardPaymentOption = paymentOption;
+                      updatePayButtonWithExtraFees(paymentOption);
+                  }
+              }
+              if(selectedCardPaymentOption!=null)
+                  System.out.println("card cred ... paymentOption. final : "+selectedCardPaymentOption.getBrand().name());
+          }else
+          {
+              selectedCardPaymentOption = null;
+              updatePayButtonWithExtraFees(selectedCardPaymentOption);
+          }
       }
   }
 
@@ -313,8 +342,12 @@ public class CardCredentialsViewModel
       return selectedCardPaymentOption;
   }
 
+    public void setCardNumberColor(int color) {
+        cardCredentialsViewHolder.setCardNumberColor(color);
+    }
 
-  //endregion
+
+    //endregion
 
     public class BrandWithScheme {
 
@@ -330,5 +363,7 @@ public class CardCredentialsViewModel
         }
 
         @NonNull public CardBrand getBrand() { return brand; }
+
+        @NonNull public CardScheme getScheme(){return scheme;}
     }
 }

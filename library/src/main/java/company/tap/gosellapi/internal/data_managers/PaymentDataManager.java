@@ -138,6 +138,7 @@ public final class PaymentDataManager {
 
     public void setBinLookupResponse(BINLookupResponse binLookupResponse) {
         this.binLookupResponse = binLookupResponse;
+
     }
 
     public void createPaymentOptionsDataManager(PaymentOptionsResponse paymentOptionsResponse) {
