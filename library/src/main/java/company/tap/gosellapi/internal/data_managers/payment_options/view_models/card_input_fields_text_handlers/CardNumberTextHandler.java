@@ -1,130 +1,176 @@
 package company.tap.gosellapi.internal.data_managers.payment_options.view_models.card_input_fields_text_handlers;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.text.SpannableStringBuilder;
 import android.widget.EditText;
 
+import company.tap.gosellapi.internal.api.enums.CardScheme;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.CardCredentialsViewModel;
 import company.tap.tapcardvalidator_android.CardBrand;
+import company.tap.tapcardvalidator_android.CardValidationState;
 import company.tap.tapcardvalidator_android.CardValidator;
+import company.tap.tapcardvalidator_android.DefinedCardBrand;
 
 public class CardNumberTextHandler extends TextHandler {
+  private static final int BIN_NUMBER_LENGTH = 6;
+  private boolean justRemovedWhitespace = false;
+  @NonNull private CardNumberTextHandler.DataProvider dataProvider;
+  @NonNull private CardNumberTextHandler.DataListener dataListener;
 
-    public interface DataProvider {
+  public interface DataListener {
+    void cardNumberTextHandlerDidUpdateCardNumber(String cardNumber);
+    void updateCardsRecyclerViewWithCardAndSchema(CardBrand cardBrand, CardScheme cardScheme);
+  }
 
-        CardCredentialsViewModel.BrandWithScheme getRecognizedCardType();
+  public interface DataProvider {
+
+    CardCredentialsViewModel.BrandWithScheme getRecognizedCardType();
+  }
+
+  public CardNumberTextHandler(@NonNull EditText editText, @NonNull
+      CardNumberTextHandler.DataProvider dataProvider,
+                                @NonNull CardNumberTextHandler.DataListener dataListener) {
+
+    super(editText);
+    this.dataProvider = dataProvider;
+    this.dataListener = dataListener;
+  }
+
+
+
+
+  // This method is called to notify you that, within s, the count characters beginning at start are about to be replaced by new text with length after.
+  protected void textWillChange(CharSequence s, int start, int count, int after) {
+
+    String text = s.toString();
+    if (text.isEmpty() || after != 0) {
+
+      this.justRemovedWhitespace = false;
+      return;
     }
 
-    public interface DataListener {
+    String textThatWillBeRemoved = text.substring(start, start + count);
+    this.justRemovedWhitespace = textThatWillBeRemoved.startsWith(" ") && (textThatWillBeRemoved
+        .length() == 1);
+  }
 
-        void cardNumberTextHandlerDidUpdateCardNumber(String cardNumber);
+  @Override
+  protected void textChanged(CharSequence s, int start, int before, int count) {
+
+    String text = s.toString();
+
+    callListenerWithCardNumber(text);
+
+    if ( this.justRemovedWhitespace && start > 0) {
+
+      text = (new StringBuffer(text).deleteCharAt(start - 1)).toString();
     }
 
-    public CardNumberTextHandler(@NonNull EditText editText, @NonNull DataProvider dataProvider, @NonNull DataListener dataListener) {
+    text = text.replace(" ", "");
 
-        super(editText);
-        this.dataProvider = dataProvider;
-        this.dataListener = dataListener;
+    SpannableStringBuilder cardNumber = new SpannableStringBuilder(text);
+
+    if(cardNumber.length()>=BIN_NUMBER_LENGTH){
+      callBINNumberAPI(cardNumber);
+    }else {
+      validateUsingCardValidator(cardNumber);
     }
 
-    @Override
-    // This method is called to notify you that, within s, the count characters beginning at start are about to be replaced by new text with length after.
-    protected void textWillChange(CharSequence s, int start, int count, int after) {
+    DefinedCardBrand cardBrand = CardValidator.validate(cardNumber.toString());
 
-        String text = s.toString();
-        if ( text.isEmpty() || after != 0 ) {
+    setCardNumberColor(cardBrand);
 
-            this.justRemovedWhitespace = false;
-            return;
-        }
+    int[] spacings = CardValidator.spacings(cardBrand.getCardBrand());
 
-        String textThatWillBeRemoved = text.substring(start, start + count);
-        this.justRemovedWhitespace = textThatWillBeRemoved.startsWith(" ") && (textThatWillBeRemoved.length() == 1);
+
+
+    applySpaces(spacings, cardNumber);
+
+    String textToSet = cardNumber.toString();
+    getEditText().setText(textToSet);
+
+    int selectionIndex = start + count;
+
+    for (int i = 0; i < spacings.length; i++) {
+
+      int space = spacings[i];
+
+      int incrementedSpace = space + i;
+
+      if (start <= incrementedSpace && incrementedSpace < start + count) {
+
+        selectionIndex++;
+        continue;
+      }
+
+      if (start - 1 == incrementedSpace && count == 0) {
+
+        selectionIndex--;
+      }
     }
 
-    @Override
-    protected void textChanged(CharSequence s, int start, int before, int count) {
+    try {
 
-        String text = s.toString();
-        callListenerWithCardNumber(text);
+      getEditText().setSelection(selectionIndex);
 
-        if ( this.justRemovedWhitespace && start > 0) {
+    } catch (Exception e) {
 
-            text = (new StringBuffer(text).deleteCharAt(start - 1)).toString();
-        }
-
-        CardCredentialsViewModel.BrandWithScheme recognizedType = dataProvider.getRecognizedCardType();
-        CardBrand cardBrand = recognizedType.getBrand();
-
-        int[] spacings = CardValidator.spacings(cardBrand);
-
-        text = text.replace(" ", "");
-        SpannableStringBuilder cardNumber = new SpannableStringBuilder(text);
-
-        applySpaces(spacings, cardNumber);
-
-        String textToSet = cardNumber.toString();
-        getEditText().setText(textToSet);
-
-        int selectionIndex = start + count;
-
-        for (int i = 0; i < spacings.length; i++) {
-
-            int space = spacings[i];
-
-            int incrementedSpace = space + i;
-
-            if (start <= incrementedSpace && incrementedSpace < start + count) {
-
-                selectionIndex++;
-                continue;
-            }
-
-            if (start - 1 == incrementedSpace && count == 0) {
-
-                selectionIndex--;
-            }
-        }
-
-        try {
-
-            getEditText().setSelection(selectionIndex);
-
-        } catch (Exception e) {
-
-            getEditText().setSelection(cardNumber.length());
-        }
+      getEditText().setSelection(cardNumber.length());
     }
 
-    //region Private Properties
 
-    @NonNull private DataProvider dataProvider;
-    @NonNull private DataListener dataListener;
+  }
 
-    private boolean justRemovedWhitespace = false;
-
-    //endregion
-
-    private void applySpaces(int[] spaces, SpannableStringBuilder string) {
-
-        for ( int spacingIndex = spaces.length - 1; spacingIndex > -1; spacingIndex-- ) {
-
-            int space = spaces[spacingIndex] + 1;
-
-            if ( string.length() == space ) {
-
-                string.append(" ");
-            }
-            if (string.length() > space ) {
-
-                string.insert(space, " ");
-            }
-        }
+  private void setCardNumberColor(DefinedCardBrand cardBrand) {
+    if(cardBrand!=null)
+    {
+      if(cardBrand.getValidationState()== CardValidationState.invalid){
+        ((CardCredentialsViewModel) dataListener).setCardNumberColor(Color.RED);
+      }else {
+        ((CardCredentialsViewModel) dataListener).setCardNumberColor(Color.BLACK);
+      }
     }
+  }
 
-    private void callListenerWithCardNumber(String cardNumber) {
+  private void validateUsingCardValidator(SpannableStringBuilder cardNumber) {
+    DefinedCardBrand brand = CardValidator.validate(cardNumber.toString());
+    updateCardsRecyclerViewWithCardAndSchema(brand.getCardBrand(),null);
+  }
 
-        String trimmedCardNumber = cardNumber.replace(" ", "");
-        dataListener.cardNumberTextHandlerDidUpdateCardNumber(trimmedCardNumber);
+  private void callBINNumberAPI(SpannableStringBuilder cardNumber) {
+
+    ((CardCredentialsViewModel) dataListener).binNumberEntered(cardNumber.toString());
+  }
+
+
+
+  private void updateCardsRecyclerViewWithCardAndSchema(CardBrand cardBrand, CardScheme cardScheme) {
+    dataListener.updateCardsRecyclerViewWithCardAndSchema(cardBrand,cardScheme);
+  }
+
+  private void callListenerWithCardNumber(String cardNumber) {
+
+    String trimmedCardNumber = cardNumber.replace(" ", "");
+    dataListener.cardNumberTextHandlerDidUpdateCardNumber(trimmedCardNumber);
+  }
+
+  private void applySpaces(int[] spaces, SpannableStringBuilder string) {
+
+    for ( int spacingIndex = spaces.length - 1; spacingIndex > -1; spacingIndex-- ) {
+
+      int space = spaces[spacingIndex] + 1;
+
+      if ( string.length() == space ) {
+
+        string.append(" ");
+      }
+      if (string.length() > space ) {
+
+        string.insert(space, " ");
+      }
     }
+  }
+
+
 }

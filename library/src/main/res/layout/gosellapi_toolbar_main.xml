@@ -8,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/headerLayout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_height_basic"
+        android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="@dimen/margin_basic_16dp"
         android:layout_marginLeft="@dimen/margin_basic_16dp"
@@ -38,6 +38,18 @@
             android:layout_toRightOf="@+id/businessIcon"
             android:layout_marginStart="@dimen/margin_basic_16dp"
             android:layout_marginLeft="@dimen/margin_basic_16dp"
+            />
+        
+        <ImageView
+            android:layout_width="@dimen/cancel_icon_width"
+            android:layout_height="@dimen/cancel_icon_height"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="@dimen/margin_basic_16dp"
+            android:layout_marginRight="@dimen/margin_basic_16dp"
+            android:src="@drawable/cancel1"
+            android:layout_centerVertical="true"
+            android:id="@+id/cancel_payment"
             />
 
     </RelativeLayout>

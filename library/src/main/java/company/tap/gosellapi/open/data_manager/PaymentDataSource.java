@@ -139,7 +139,8 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
         middleName("MiddleName").
         lastName("Surname").
         email("hello@tap.company").
-        phone(new PhoneNumber("973","39389898")).
+//        phone(new PhoneNumber("973","39389898")).
+        phone(new PhoneNumber("965","65562630")).
         metadata("meta").
         build();
     this.amount = null;

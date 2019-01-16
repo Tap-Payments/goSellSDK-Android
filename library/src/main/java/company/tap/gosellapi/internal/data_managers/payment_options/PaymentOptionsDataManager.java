@@ -1,10 +1,7 @@
 package company.tap.gosellapi.internal.data_managers.payment_options;
 
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-
 import company.tap.gosellapi.internal.Constants;
 import company.tap.gosellapi.internal.api.enums.ExtraFeesStatus;
 import company.tap.gosellapi.internal.api.enums.PaymentType;
@@ -13,6 +10,7 @@ import company.tap.gosellapi.internal.api.interfaces.CurrenciesSupport;
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.api.models.SavedCard;
+import company.tap.gosellapi.internal.api.responses.BINLookupResponse;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 import company.tap.gosellapi.internal.data_managers.payment_options.utils.PaymentOptionsDataManagerUtils;
@@ -278,52 +276,6 @@ public class PaymentOptionsDataManager {
 
     this.selectedCurrency = selectedCurrency;
     filterViewModelsWithAmountedCurrency(selectedCurrency);
-
-//
-//    //update currency section
-//    CurrencyViewModel currencyViewModel = getModelsHandler().findCurrencyModel();
-//    if (currencyViewModel == null) return;
-//
-//    CurrencyViewModelData currencyViewModelData = currencyViewModel.getData();
-//    currencyViewModelData.setSelectedCurrency(selectedCurrency);
-//    currencyViewModel.updateData();
-//
-//
-//    // filter web payment
-//    ArrayList<PaymentOption> paymentOptions0 = new ArrayList<>(getPaymentOptionsResponse().getPaymentOptions());
-//    ArrayList<PaymentOption> webPaymentOptions = getModelsHandler().filteredByPaymentTypeAndCurrencyAndSortedList(
-//        paymentOptions0, PaymentType.WEB, selectedCurrency.getCurrency());
-//
-//    ArrayList<WebPaymentViewModel> webPaymentViewModels = new ArrayList<>();
-//    for(PaymentOption paymentOption:webPaymentOptions){
-//      webPaymentViewModels.add(getModelsHandler().findWebPaymentModel(paymentOption));
-//    }
-//    if(webPaymentOptions.size()>0)
-//    System.out.println(" disc : "+ webPaymentViewModels.size() + " type : "+webPaymentViewModels.get(0).getPaymentOption().getName());
-//
-//
-//    //filter payment options
-//    CardCredentialsViewModel cardCredentialsViewModel = getModelsHandler().findCardPaymentModel();
-//    if (cardCredentialsViewModel == null) return;
-//
-//    ArrayList<PaymentOption> paymentOptions = new ArrayList<>(getPaymentOptionsResponse().getPaymentOptions());
-//
-//    for(PaymentOption option : paymentOptions){
-//      System.out.println(" filter based on  currency before : "+ option.getPaymentType() + " >> "+ option.getName());
-//    }
-//
-//
-//
-//    paymentOptions = Utils.List.filter(paymentOptions,
-//        getModelsHandler().<PaymentOption>getCurrenciesFilter(selectedCurrency.getCurrency()));
-//
-//for(PaymentOption option : paymentOptions){
-//  System.out.println("filter based on  currency after : "+ option.getPaymentType() + " >> "+ option.getName());
-//}
-//    CardCredentialsViewModelData cardCredentialsModelData = cardCredentialsViewModel.getData();
-//    cardCredentialsModelData.setPaymentOptions(paymentOptions);
-//
-//    cardCredentialsViewModel.updateData();
   }
 
 
@@ -397,6 +349,15 @@ public class PaymentOptionsDataManager {
 
     cardCredentialsViewModel.showAddressOnCardCell(isShow);
     //cardCredentialsViewModel.updateData();
+  }
+
+  public void setCurrentBINData(
+    BINLookupResponse currentBINData){
+    CardCredentialsViewModel cardCredentialsViewModel = getModelsHandler().findCardPaymentModel();
+    if (cardCredentialsViewModel == null) return;
+
+    cardCredentialsViewModel.setCurrentBINData(currentBINData);
+
   }
 
   //endregion

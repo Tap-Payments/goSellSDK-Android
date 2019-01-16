@@ -58,10 +58,8 @@ public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<Currenci
 
             selected = this.allCurrencies.get(0);
         }
-        System.out.println("allCurrencies >>>  size :"+allCurrencies.size());
         this.selectedCurrency   = selected;
         this.callback           = callback;
-        System.out.println(" RecyclerViewAdapter >>> selectedCurrency  : " + selectedCurrency.getCurrency());
         prepareDataSources();
     }
 
@@ -73,12 +71,7 @@ public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<Currenci
     }
 
     private void prepareDataSources() {
-
         Collections.sort(allCurrencies);
-        for(LocalizedCurrency  amountedCurrency:allCurrencies){
-            System.out.println(" sorted amounted currency : " + amountedCurrency.getCurrency().getCurrency());
-        }
-        System.out.println("serachQuery :" + searchQuery);
         filter(searchQuery);
     }
 
@@ -90,15 +83,11 @@ public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<Currenci
                                getFilteredCurrencies().get(position).getCurrency().getCurrency()
                                :
                                getAllCurrencies().get(position).getCurrency().getCurrency();
-        System.out.println(" binded currency : " + bindedCurrency);
         holder.bind(bindedCurrency);
     }
 
     @Override
     public int getItemCount() {
-        System.out.println("getFilteredCurrencies()  >>> "+getFilteredCurrencies());
-        System.out.println("getAllCurrencies()  >>> "+getAllCurrencies());
-        System.out.println("list size : " +( getFilteredCurrencies()!= null ? getFilteredCurrencies().size(): getAllCurrencies().size()));
         return getFilteredCurrencies()!=null? getFilteredCurrencies().size(): getAllCurrencies().size();
 
     }
@@ -107,7 +96,6 @@ public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<Currenci
 
         selectedCurrency = getFilteredCurrencies()!=null ?getFilteredCurrencies().get(newSelection)
                            : getAllCurrencies().get(newSelection);
-      System.out.println(" selected currency from list : " + selectedCurrency.getCurrency().getCurrency());
         if (selectedPosition != NO_SELECTION) {
             notifyItemChanged(selectedPosition);
         }

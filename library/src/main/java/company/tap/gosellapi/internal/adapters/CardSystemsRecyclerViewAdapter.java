@@ -101,7 +101,7 @@ public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSys
     return false;
   }
 
-  public void updateForCardBrand(CardBrand brand) {
+  public void updateForCardBrand(CardBrand brand,CardScheme cardScheme) {
 
     if (brand == null) {
       data = new ArrayList<>(initialData);
@@ -114,11 +114,20 @@ public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSys
     for (PaymentOption option : initialData) {
 
       ArrayList<CardBrand> cardBrands = option.getSupportedCardBrands();
-      System.out.println("brand :" + brand);
+      System.out.println("brand :" + brand + " >>> scheme :"+cardScheme);
 
-      if (cardBrands.contains(brand)) {
-        data.add(option);
+      if(cardScheme!=null){
+        if(option.getName().equalsIgnoreCase(cardScheme.name())){
+          data.add(option);
+          continue;
+        }
+      }else {
+        if (cardBrands.contains(brand)) {
+          data.add(option);
+        }
       }
+
+
     }
     if (data.size() == 0)
       data = new ArrayList<>(initialData);

@@ -43,17 +43,17 @@ public class CurrencyViewHolder extends PaymentOptionsBaseViewHolder<CurrencyVie
         AmountedCurrency transactionCurrency    = data.getTransactionCurrency();
         AmountedCurrency selectedCurrency       = data.getSelectedCurrency();
 
-        System.out.println(" Currency View Holders : Utils.getFormattedCurrency : " + Utils.getFormattedCurrency(selectedCurrency));
+        System.out.println(" Currency View Holders : Utils.getFormattedCurrency : " +  selectedCurrency.getSymbol()+ " " + selectedCurrency.getAmount() );// Utils.getFormattedCurrency(selectedCurrency));
 //        System.out.println(" Currency View Holders : CurrencyFormatter.format(selectedCurrency) : " + CurrencyFormatter.format(selectedCurrency));
         // replace CurrencyFormatter with Utils.getFormattedCurrency();
-        String selectedCurrencyText = Utils.getFormattedCurrency(selectedCurrency);
+        String selectedCurrencyText = selectedCurrency.getSymbol()+ " " + selectedCurrency.getAmount();// Utils.getFormattedCurrency(selectedCurrency);
 
         if (transactionCurrency.getCurrency().equals(selectedCurrency.getCurrency())) {
             currencySecondaryText.setVisibility(View.GONE);
             currencySecondaryText.setText("");
         }
         else {
-            String transactionCurrencyText = Utils.getFormattedCurrency(transactionCurrency);
+            String transactionCurrencyText =   transactionCurrency.getSymbol() + " " + transactionCurrency.getAmount();  //  Utils.getFormattedCurrency(transactionCurrency);
             currencySecondaryText.setVisibility(View.VISIBLE);
             currencySecondaryText.setText(transactionCurrencyText);
         }

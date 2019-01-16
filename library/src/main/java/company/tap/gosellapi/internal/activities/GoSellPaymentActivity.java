@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Telephony;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -151,6 +152,15 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
       }
     });
 
+    // cancel icon
+    ImageView cancel_payment = findViewById(R.id.cancel_payment);
+    cancel_payment.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        onBackPressed();
+      }
+    });
+
   }
 
 
@@ -173,6 +183,9 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         selectedCurrency);
 
     startActivityForResult(intent, CURRENCIES_REQUEST_CODE);
+
+    // custom animation like swapping
+    overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
   }
 
   @Override
@@ -340,12 +353,14 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
           public void onSuccess(int responseCode, BINLookupResponse serializedResponse) {
             dataSource.showAddressOnCardCell(true);
             PaymentDataManager.getInstance().setBinLookupResponse(serializedResponse);
+            dataSource.setCurrentBINData(serializedResponse);
           }
 
           @Override
           public void onFailure(GoSellError errorDetails) {
             dataSource.showAddressOnCardCell(false);
             PaymentDataManager.getInstance().setBinLookupResponse(null);
+            dataSource.setCurrentBINData(null);
           }
         });
   }
@@ -410,11 +425,18 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
   @Override
   public void confirmOTP() {
     LoadingScreenManager.getInstance().showLoadingScreen(GoSellPaymentActivity.this);
+
+    Fragment fragment = getSupportFragmentManager().findFragmentByTag(OTPFullScreenDialog.TAG);
+    if(fragment != null)
+      getSupportFragmentManager().beginTransaction().remove(fragment).commit();
   }
 
   @Override
   public void resendOTP() {
     LoadingScreenManager.getInstance().showLoadingScreen(GoSellPaymentActivity.this);
+    Fragment fragment = getSupportFragmentManager().findFragmentByTag(OTPFullScreenDialog.TAG);
+    if(fragment != null)
+      getSupportFragmentManager().beginTransaction().remove(fragment).commit();
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////

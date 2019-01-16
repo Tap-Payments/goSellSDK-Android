@@ -51,6 +51,10 @@ public class CardCredentialsViewHolder
     extends PaymentOptionsBaseViewHolder<CardCredentialsViewModelData, CardCredentialsViewHolder, CardCredentialsViewModel> {
 
 
+  public void setCardNumberColor(int color) {
+    cardNumberField.setTextColor(color);
+  }
+
   public interface Data {
         void bindCardNumberFieldWithWatcher(EditText cardNumberField);
         SpannableString getCardNumberText();
@@ -87,6 +91,7 @@ public class CardCredentialsViewHolder
         cardNumberField = itemView.findViewById(R.id.cardNumberField);
 
          viewModel.ViewHolderReference(this);
+
          cardNumberField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -154,7 +159,11 @@ public class CardCredentialsViewHolder
                     viewModel.binNumberEntered(text);
                 }
 
-                viewModel.setPaymentOption(cardBrand);
+                if(text.length() < BIN_NUMBER_LENGTH){
+                  PaymentDataManager.getInstance().setBinLookupResponse(null);
+                }
+              BINLookupResponse binLookupResponse =  PaymentDataManager.getInstance().getBinLookupResponse();
+                viewModel.setPaymentOption(cardBrand,binLookupResponse==null?null:binLookupResponse.getScheme());
             }
 
            @Override
@@ -165,7 +174,9 @@ public class CardCredentialsViewHolder
         });
 
 /////////////////////////////////////////////////// CARD SCANNER START ///////////////////////////////////////////////////////
-        cardScannerButton = itemView.findViewById(R.id.cardScannerButton);
+//        viewModel.bindCardNumberFieldWithWatcher(cardNumberField);
+
+      cardScannerButton = itemView.findViewById(R.id.cardScannerButton);
 
 /////////////////////////////////////////////////// CARD EXPIRATION_DATE START ///////////////////////////////////////////////////////
         expirationDateField = itemView.findViewById(R.id.expirationDateField);
@@ -380,14 +391,12 @@ public class CardCredentialsViewHolder
         cardSystemsRecyclerView.setAdapter(adapter);
     }
 
-    public void updateCardSystemsRecyclerView(CardBrand brand) {
+    public void updateCardSystemsRecyclerView(CardBrand brand,CardScheme cardScheme) {
         RecyclerView cardSystemsRecyclerView = itemView.findViewById(R.id.cardSystemsRecyclerView);
         cardSystemsRecyclerView.invalidate();
         CardSystemsRecyclerViewAdapter adapter = (CardSystemsRecyclerViewAdapter) cardSystemsRecyclerView.getAdapter();
-        adapter.updateForCardBrand(brand);
+        adapter.updateForCardBrand(brand,cardScheme);
     }
-
-
 
     private DefinedCardBrand validateCardNumber(String cardNumber) {
 
@@ -399,7 +408,8 @@ public class CardCredentialsViewHolder
         // update CCVEditText CardType: to set CCV Length according to CardType
         updateCCVEditTextCardType(brand.getCardBrand());
         // update card types
-        updateCardSystemsRecyclerView(brand.getCardBrand());
+       BINLookupResponse binLookupResponse =  PaymentDataManager.getInstance().getBinLookupResponse();
+       updateCardSystemsRecyclerView(brand.getCardBrand(),binLookupResponse==null?null:binLookupResponse.getScheme());
 
         if (brand.getValidationState().equals(CardValidationState.invalid)) {
             cardNumberField.setTextColor(itemView.getResources().getColor(R.color.red));

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <color name="vibrant_green">#2ACE00</color>
     <color name="vibrant_green_pressed">#1F9A00</color>
     <color name="silver_light">#C9C9C9</color>
     <color name="white">#FFFFFF</color>
     <color name="alto_gray">#DDDDDD</color>
     <color name="gray">#888888</color>
-    <color name="greyish_brown">#535353</color>
+    <color name="greyish_brown" tools:ignore="MissingDefaultResource">#535353</color>
     <color name="dark_gray">#595959</color>
     <color name="french_gray">#A8B5B5B5</color>
     <color name="french_gray_new">#e6f7f7f7</color>
