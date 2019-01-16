@@ -188,6 +188,11 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
   }
 
+  /**
+   * start webpayment activity
+   * @param model
+   */
+
   @Override
   public void startWebPayment(WebPaymentViewModel model) {
     this.webPaymentViewModel = model;
