@@ -69,6 +69,7 @@ public class PaymentOptionViewModel<T, K extends PaymentOptionsBaseViewHolder<T,
         if (holder != null) holder.bind(data);
     }
 
+
     public void setViewFocused(boolean focused) {
         if (holder != null) holder.setFocused(focused);
     }

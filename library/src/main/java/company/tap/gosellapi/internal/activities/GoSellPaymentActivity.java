@@ -424,6 +424,8 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
       dialogFragment.setArguments(b);
       ft.add(dialogFragment, OTPFullScreenDialog.TAG);
       ft.commitAllowingStateLoss();
+    }else {
+      closePaymentActivity(null);
     }
   }
 

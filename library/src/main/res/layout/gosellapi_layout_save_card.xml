@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/saveCardSwitchContainer"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingTop="@dimen/margin_basic_19dp"
-    android:paddingBottom="@dimen/margin_basic_19dp"
-    android:layout_marginStart="@dimen/margin_basic_4dp"
-    android:orientation="horizontal">
+                android:id="@+id/saveCardSwitchContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/margin_basic_19dp"
+                android:paddingBottom="@dimen/margin_basic_19dp"
+                android:layout_marginStart="@dimen/margin_basic_4dp"
+                android:orientation="horizontal"
+                android:layout_marginLeft="@dimen/margin_basic_4dp"
+    >
 
     <TextView
         style="@style/TextView.Disclaimer.Small"
@@ -16,7 +18,10 @@
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:layout_toStartOf="@id/saveCardSwitch"
-        android:text="@string/textview_disclaimer_save_card" />
+        android:text="@string/textview_disclaimer_save_card"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@id/saveCardSwitch"
+        />
 
     <android.support.v7.widget.SwitchCompat
         android:id="@+id/saveCardSwitch"
@@ -26,6 +31,8 @@
         android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/margin_basic_16dp"
         android:layout_marginStart="@dimen/margin_basic_16dp"
-        android:theme="@style/SwitchPrimary"/>
+        android:theme="@style/SwitchPrimary"
+        android:layout_alignParentRight="true"
+        />
 
 </RelativeLayout>

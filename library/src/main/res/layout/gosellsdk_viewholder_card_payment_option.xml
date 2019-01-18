@@ -77,6 +77,7 @@
         app:layout_constraintEnd_toStartOf="@id/cardScannerButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center_vertical"
         app:hintTextAppearance="@style/TextInputLayout.Hint"
         >
 
@@ -90,7 +91,6 @@
           android:inputType="numberDecimal"
           style="@style/EditText"
           app:layout_constraintBottom_toBottomOf="parent"
-
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toTopOf="parent"
@@ -212,6 +212,7 @@
           app:layout_constraintTop_toTopOf="parent"
           app:layout_constraintBottom_toBottomOf="parent"
           android:hint="@string/bt_form_hint_cvv"
+          android:backgroundTint="@color/separator"
           />
 
     </android.support.design.widget.TextInputLayout>
@@ -247,7 +248,7 @@
         android:inputType="textCapCharacters"
         android:hint="@string/edittext_hint_name_on_card"
         style="@style/EditText"
-        app:backgroundTint="@color/separator"
+        app:backgroundTint="@color/transparent"
         tools:ignore="RtlSymmetry"
         />
 

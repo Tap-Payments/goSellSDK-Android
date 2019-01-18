@@ -8,4 +8,11 @@
     <style name="popup_window_animation_phone">
         <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
     </style>
+
+  <style name="GoSellSDKAppTheme.NoActionBar">
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
+    <item name="android:statusBarColor">@color/french_gray</item>
+
+  </style>
 </resources>

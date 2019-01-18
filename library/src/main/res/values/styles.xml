@@ -5,6 +5,7 @@
     <style name="GoSellSDKAppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor" tools:ignore="NewApi">@color/french_gray</item>
     </style>
 
     <style name="GoSellSDKAppTheme.Translucent">
