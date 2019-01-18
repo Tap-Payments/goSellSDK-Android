@@ -121,9 +121,6 @@ public class PaymentOptionsDataManager {
 
   //region data for adapter
   public int getSize() {
-    System.out.println(
-        " PaymentOptionsRecyclerViewAdapter >>> visibleViewModels size :  " + getVisibleViewModels()
-            .size());
     return getVisibleViewModels().size();
   }
 
@@ -538,8 +535,9 @@ public class PaymentOptionsDataManager {
       }
 
       if (hasSavedCards) {
-
         RecentSectionViewModel savedCardsModel = findSavedCardsModel();
+        savedCardsModel.setData(savedCards);
+        // update RecentSectionViewModel data with only filtered cards. // added to fix filtering saved cards based on changed currency
         viewModelResult.add(savedCardsModel);
       }
 

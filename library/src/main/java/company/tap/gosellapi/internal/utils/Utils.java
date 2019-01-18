@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.BackgroundColorSpan;
+import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -97,6 +98,11 @@ public class Utils {
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
+
+    public static void hideKeyboardFrom(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
     public static String getFormattedCurrency(AmountedCurrency amountedCurrency){
 
         Locale locale = new Locale(AppInfo.getLocaleString());
@@ -151,5 +157,14 @@ public class Utils {
     public static void highlightText(Context context, SpannableStringBuilder sb, int index) {
         BackgroundColorSpan fcs = new BackgroundColorSpan(ContextCompat.getColor(context, R.color.vibrant_green));
         sb.setSpan(fcs, index, index + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+    }
+
+    public static void highlightPhoneNumber(Context context,SpannableStringBuilder sb,int startIndex,String textToHighlight){
+        ForegroundColorSpan fcs = new ForegroundColorSpan(ContextCompat.getColor(context,R.color.bt_blue));
+        sb.setSpan(fcs,startIndex,startIndex+textToHighlight.length(),Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+    }
+
+    public static DisplayMetrics  getWindowDisplayMetrics(){
+        return Resources.getSystem().getDisplayMetrics();
     }
 }

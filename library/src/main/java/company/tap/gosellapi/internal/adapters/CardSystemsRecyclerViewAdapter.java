@@ -135,9 +135,6 @@ public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSys
     notifyDataSetChanged();
   }
 
-
-
-
 }
 
 class CardSystemViewHolder extends RecyclerView.ViewHolder {

@@ -1,59 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".internal.fragments.GoSellOTPScreenFragment">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".internal.fragments.GoSellOTPScreenFragment"
+    >
+
+  <!--<include layout="@layout/gosellapi_toolbar_main"/>-->
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:layout_centerInParent="true"
+      >
+
+    <include layout="@layout/gosellapi_layout_password_input"/>
 
     <LinearLayout
+        android:id="@+id/disclaimerLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_centerInParent="true"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="9dp"
         >
 
-        <include layout="@layout/gosellapi_layout_password_input" />
+      <TextView
+          android:layout_width="0dp"
+          android:layout_height="match_parent"
+          android:layout_marginStart="24dp"
+          android:layout_marginLeft="24dp"
+          android:layout_weight="1"
+          android:gravity="start"
+          android:id="@+id/phoneNumberValue"
+          android:text="@string/textview_disclaimer_otp_sent_number"
+          />
 
-        <LinearLayout
-            android:id="@+id/disclaimerLayout"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginTop="9dp">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="24dp"
-                android:layout_marginLeft="24dp"
-                android:layout_weight="1"
-                android:gravity="start"
-                android:id="@+id/phoneNumberValue"
-                android:text="@string/textview_disclaimer_otp_sent_number" />
-
-            <TextView
-                android:id="@+id/timerTextView"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="24dp"
-                android:layout_marginRight="24dp"
-                android:layout_weight="1"
-                android:enabled="false"
-                android:gravity="end"
-                android:text="@string/textview_title_resend_again"
-                android:textAllCaps="true"
-                android:textColor="#007aff" />
-
-        </LinearLayout>
+      <TextView
+          android:id="@+id/timerTextView"
+          android:layout_width="0dp"
+          android:layout_height="match_parent"
+          android:layout_marginEnd="24dp"
+          android:layout_marginRight="24dp"
+          android:layout_weight="1"
+          android:enabled="false"
+          android:gravity="end"
+          android:text="@string/textview_title_resend_again"
+          android:textAllCaps="true"
+          android:textColor="#007aff"
+          />
 
     </LinearLayout>
 
+  </LinearLayout>
 
-    <company.tap.gosellapi.open.buttons.PayButtonView
-        android:id="@+id/payButtonId"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_alignParentBottom="true"
-        />
+
+  <company.tap.gosellapi.open.buttons.PayButtonView
+      android:id="@+id/payButtonId"
+      android:layout_width="match_parent"
+      android:layout_height="40dp"
+      android:layout_alignParentBottom="true"
+      />
 
 </RelativeLayout>

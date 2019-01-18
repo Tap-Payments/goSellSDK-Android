@@ -1,28 +1,40 @@
 package company.tap.gosellapi.internal.custom_views;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.text.Editable;
+import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import company.tap.gosellapi.R;
+import company.tap.gosellapi.internal.activities.BaseActivity;
 import company.tap.gosellapi.internal.activities.GoSellPaymentActivity;
 import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 import company.tap.gosellapi.internal.utils.Utils;
 import company.tap.gosellapi.open.buttons.PayButtonView;
+import okhttp3.internal.Util;
 
 public class OTPFullScreenDialog extends DialogFragment {
 
@@ -52,7 +64,6 @@ public class OTPFullScreenDialog extends DialogFragment {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setStyle(DialogFragment.STYLE_NO_FRAME, R.style.GoSellSDKAppTheme_NoActionBar);
-
   }
 
   @Override
@@ -77,7 +88,6 @@ public class OTPFullScreenDialog extends DialogFragment {
       int width = ViewGroup.LayoutParams.MATCH_PARENT;
       int height = ViewGroup.LayoutParams.MATCH_PARENT;
       dialog.getWindow().setLayout(width, height);
-
     }
   }
 
@@ -86,19 +96,27 @@ public class OTPFullScreenDialog extends DialogFragment {
     super.onResume();
     Dialog dialog = getDialog();
     if (dialog != null) {
-      int width = ViewGroup.LayoutParams.MATCH_PARENT;
-      int height = ViewGroup.LayoutParams.MATCH_PARENT;
+      //DisplayMetrics  displayMatrix =  Utils.getWindowDisplayMetrics();
+      int width =ViewGroup.LayoutParams.MATCH_PARENT; // displayMatrix.widthPixels;//
+      int height = ViewGroup.LayoutParams.MATCH_PARENT;// displayMatrix.heightPixels - 56;//
       dialog.getWindow().setLayout(width, height);
-
     }
   }
+
+  @Override
+  public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+
+   // getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+    //getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+  }
+
 
   private void prepareTextViews(View view) {
 
     LayoutInflater inflater = LayoutInflater.from(view.getContext());
     LinearLayout textViewsLayout = view.findViewById(R.id.textViewsLayout);
     RelativeLayout otpParentLayout = view.findViewById(R.id.otpParentLayout);
-    Utils.showKeyboard(view.getContext(), otpParentLayout);
 
     int index = 0;
     while (index < CONFIRMATION_CODE_LENGTH) {
@@ -127,9 +145,13 @@ public class OTPFullScreenDialog extends DialogFragment {
     phoneNumberTextView = view.findViewById(R.id.phoneNumberValue);
     Bundle b = getArguments();
     String phoneNumber = b.getString("phoneNumber", "");
-      System.out.println("phone number " + phoneNumber);
+    String sentNumberDisclaimer = getString(R.string.textview_disclaimer_otp_sent_number);
+    SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(sentNumberDisclaimer+" ");
+    spannableStringBuilder.append(phoneNumber);
+    Utils.highlightPhoneNumber(getContext(),spannableStringBuilder,sentNumberDisclaimer.length()+1,phoneNumber);
+
       phoneNumberTextView
-          .setText(getString(R.string.textview_disclaimer_otp_sent_number, phoneNumber));
+          .setText(spannableStringBuilder);
 
     payButtonView = view.findViewById(R.id.payButtonId);
     payButtonView.setEnabled(false);
@@ -141,9 +163,61 @@ public class OTPFullScreenDialog extends DialogFragment {
         confirmOTPCode();
       }
     });
+
+
+
+//    setupToolbar(view);
   }
 
-
+//  private void setupToolbar(View view){
+//    // setup toolbar
+//    ImageView businessIcon = view.findViewById(R.id.businessIcon);
+//    String logoPath = PaymentDataManager.getInstance().getSDKSettings().getData().getMerchant()
+//        .getLogo();
+//    Glide.with(this).load(logoPath).apply(RequestOptions.circleCropTransform()).into(businessIcon);
+//
+//    String businessNameString = PaymentDataManager.getInstance().getSDKSettings().getData()
+//        .getMerchant().getName();
+//    TextView businessName = view.findViewById(R.id.businessName);
+//    businessName.setText(businessNameString);
+//
+//    // cancel icon
+//    ImageView cancel_payment = view.findViewById(R.id.cancel_payment);
+//    cancel_payment.setOnClickListener(new View.OnClickListener() {
+//      @Override
+//      public void onClick(View v) {
+//        showDismissConfirmationDialog();
+//      }
+//    });
+//  }
+//
+//  private void showDismissConfirmationDialog(){
+//    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(BaseActivity.getCurrent());
+//    dialogBuilder.setTitle(getString(R.string.otp_cancel_payment_title));
+//    dialogBuilder.setMessage(R.string.otp_cancel_payment_message);
+//    dialogBuilder.setCancelable(false);
+//
+//    dialogBuilder.setPositiveButton(getString(R.string.otp_confirm_dialog), new DialogInterface.OnClickListener() {
+//      @Override
+//      public void onClick(DialogInterface dialog, int which) {
+//        closeOtpDialogFragment();
+//      }
+//    });
+//
+//
+//      dialogBuilder.setNegativeButton(getString(R.string.otp_cancel_dialog), new DialogInterface.OnClickListener() {
+//        @Override
+//        public void onClick(DialogInterface dialog, int which) {
+//          dialog.dismiss();
+//        }
+//      });
+//
+//    dialogBuilder.show();
+//  }
+//
+//  private void closeOtpDialogFragment(){
+//    dismiss();
+//  }
 
   private void handleConfirmationCodeInputEditText(View view) {
 
@@ -158,9 +232,12 @@ public class OTPFullScreenDialog extends DialogFragment {
       @Override
       public void onTextChanged(CharSequence s, int start, int before, int count) {
         /**
+         * this method is to notify you that within s, the count characters beginning at index start
+         * are about to be replaced by new text with length <b>after</b>
+         * by length before.
          * Check string length first to avoid screen rotation issue (IndexOutOfBoundsException)
          */
-        if(s!=null && s.length()>0){
+        if(s!=null && s.length()>=0){
           String text = before == 0 ? String.valueOf(s.charAt(start)) : "";
           updateConfirmationCodeCells(start, text);
         }
@@ -180,6 +257,8 @@ public class OTPFullScreenDialog extends DialogFragment {
   }
 
   private void updateConfirmationCodeCells(Integer index, String text) {
+
+
     if (index < 0 || index > CONFIRMATION_CODE_LENGTH) return;
 
     TextView passwordCell = textViewsArray.get(index);
