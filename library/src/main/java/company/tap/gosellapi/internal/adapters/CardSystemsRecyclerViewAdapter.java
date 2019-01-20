@@ -150,7 +150,6 @@ public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSys
       return true;
     }
 
-
     return flag;
   }
 

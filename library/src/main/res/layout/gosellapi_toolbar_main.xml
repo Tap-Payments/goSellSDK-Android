@@ -40,17 +40,26 @@
             android:layout_marginLeft="@dimen/margin_basic_16dp"
             />
         
-        <ImageView
-            android:layout_width="@dimen/cancel_icon_width"
-            android:layout_height="@dimen/cancel_icon_height"
+        <LinearLayout
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_marginEnd="@dimen/margin_basic_16dp"
             android:layout_marginRight="@dimen/margin_basic_16dp"
-            android:src="@drawable/cancel1"
-            android:layout_centerVertical="true"
             android:id="@+id/cancel_payment"
-            />
+            android:gravity="center_horizontal"
+            >
+            <ImageView
+                android:layout_width="@dimen/cancel_icon_width"
+                android:layout_height="@dimen/cancel_icon_height"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:src="@drawable/cancel1"
+                android:layout_centerVertical="true"
+
+                />
+        </LinearLayout>
+
 
     </RelativeLayout>
 

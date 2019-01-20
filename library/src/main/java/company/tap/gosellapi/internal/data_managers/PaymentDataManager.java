@@ -84,14 +84,16 @@ public final class PaymentDataManager {
   }
 
   public ArrayList<CardBrand> getAvailablePaymentOptionsCardBrands() {
-    PaymentOptionsResponse paymentOptionsResponse = getPaymentOptionsDataManager().getPaymentOptionsResponse();
+    PaymentOptionsResponse paymentOptionsResponse = getPaymentOptionsDataManager()
+        .getPaymentOptionsResponse();
     if (paymentOptionsResponse != null)
       return getAvailableCardBrandsFromPaymentOptions(paymentOptionsResponse.getPaymentOptions());
     else
       return null;
   }
 
-  private ArrayList<CardBrand> getAvailableCardBrandsFromPaymentOptions(@NonNull ArrayList<PaymentOption> paymentOptions) {
+  private ArrayList<CardBrand> getAvailableCardBrandsFromPaymentOptions(
+      @NonNull ArrayList<PaymentOption> paymentOptions) {
     ArrayList<CardBrand> cardBrands = new ArrayList<>();
     for (PaymentOption paymentOption : paymentOptions) {
       cardBrands.add(paymentOption.getBrand());
@@ -169,6 +171,15 @@ public final class PaymentDataManager {
 
   public PaymentOptionsDataManager getPaymentOptionsDataManager(
       PaymentOptionsDataManager.PaymentOptionsDataListener dataListener) {
+
+    if (paymentOptionsDataManager != null)
+      return paymentOptionsDataManager.setListener(dataListener);
+
+    paymentOptionsDataManager = getPaymentOptionsDataManager();
+
+    if (paymentOptionsDataManager == null)
+      return null;
+
     return paymentOptionsDataManager.setListener(dataListener);
   }
 

@@ -241,5 +241,7 @@
         <item name="android:windowExitAnimation">@anim/slide_out_left</item>
     </style>
 
-
+    <style name="Animation">
+        <item name="android:windowEnterAnimation">@anim/popup_show</item>
+    </style>
 </resources>

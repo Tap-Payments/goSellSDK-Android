@@ -326,6 +326,7 @@ final class PaymentProcessManager {
       @Override
       public void onFailure(GoSellError errorDetails) {
         System.out.println("GoSellAPI.createToken : " + errorDetails.getErrorBody());
+        closePaymentWithError(errorDetails);
       }
     });
   }
@@ -370,11 +371,15 @@ final class PaymentProcessManager {
     });
   }
 
+
+  private void closePaymentWithError(GoSellError goSellError){
+    handleChargeOrAuthorizeResponse(null, goSellError);
+  }
   private void callChargeOrAuthorizeAPI(@NonNull SourceRequest source,
                                         @NonNull PaymentOption paymentOption,
                                         @Nullable String cardBIN, @Nullable Boolean saveCard) {
 
-    Log.e("OkHttp", "CALL CHARGE API");
+    Log.e("OkHttp", "CALL CHARGE API OR AUTHORIZE API");
 
     IPaymentDataProvider provider = getDataProvider();
 
@@ -470,7 +475,6 @@ final class PaymentProcessManager {
             .createAuthorize(authorizeRequest, new APIRequestCallback<Authorize>() {
               @Override
               public void onSuccess(int responseCode, Authorize serializedResponse) {
-
                 handleChargeOrAuthorizeResponse(serializedResponse, null);
               }
 
@@ -547,14 +551,13 @@ final class PaymentProcessManager {
         handleChargeOrAuthorizeResponse(null,errorDetails);
       }
     };
-
-    if (chargeOrAuthorize instanceof Charge)
+    System.out.println("&&&&&&&&&&& "+chargeOrAuthorize.getId() + "  >>> type >> "+ (chargeOrAuthorize instanceof Authorize));
+    if (chargeOrAuthorize instanceof Authorize)
+      GoSellAPI.getInstance()
+          .authenticate_authorize_transaction(chargeOrAuthorize.getId(),createOTPVerificationRequest, (APIRequestCallback<Charge>) callBack);
+    else
       GoSellAPI.getInstance()
           .authenticate(chargeOrAuthorize.getId(),createOTPVerificationRequest, (APIRequestCallback<Charge>) callBack);
-//    else
-//      GoSellAPI.getInstance()
-//          .retrieveAuthorize(chargeOrAuthorize.getId(), (APIRequestCallback<Authorize>) callBack);
-
   }
 
   <T extends Charge> void resendOTPCode(@NonNull T chargeOrAuthorize) {
@@ -575,12 +578,12 @@ final class PaymentProcessManager {
         }
       };
 
-      if (chargeOrAuthorize instanceof Charge)
+      if (chargeOrAuthorize instanceof Authorize)
         GoSellAPI.getInstance()
-            .request_authenticate(chargeOrAuthorize.getId(), (APIRequestCallback<Charge>) callBack);
-//    else
-//      GoSellAPI.getInstance()
-//          .retrieveAuthorize(chargeOrAuthorize.getId(), (APIRequestCallback<Authorize>) callBack);
+            .request_authenticate_for_authorize_transaction(chargeOrAuthorize.getId(), (APIRequestCallback<Charge>) callBack);
+    else
+    GoSellAPI.getInstance()
+        .request_authenticate_for_charge_transaction(chargeOrAuthorize.getId(), (APIRequestCallback<Charge>) callBack);
 
   }
 }

@@ -1,22 +1,27 @@
 package company.tap.gosellapi.internal.activities;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Telephony;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -50,8 +55,6 @@ import company.tap.gosellapi.internal.data_managers.payment_options.view_models.
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.WebPaymentViewModel;
 import company.tap.gosellapi.internal.fragments.GoSellPaymentOptionsFragment;
 import company.tap.gosellapi.internal.interfaces.IPaymentProcessListener;
-import company.tap.gosellapi.internal.interfaces.OTPListener;
-import company.tap.gosellapi.internal.receivers.SMSReceiver;
 import company.tap.gosellapi.internal.utils.ActivityDataExchanger;
 import company.tap.gosellapi.internal.utils.Utils;
 import company.tap.gosellapi.open.buttons.PayButtonView;
@@ -67,7 +70,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
   private PaymentOptionsDataManager dataSource;
   private FragmentManager fragmentManager;
 
-  private ImageView businessIcon;
   private PayButtonView payButton;
 
   private CardCredentialsViewModel cardCredentialsViewModel;
@@ -76,17 +78,13 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
   private Charge chargeOrAuthorize;
   private SavedCard savedCard;
   private WebPaymentViewModel webPaymentViewModel;
-  private LinearLayout linearLayout;
-  private SMSReceiver smsBroadcastReceiver;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     overridePendingTransition(R.anim.slide_in_top, android.R.anim.fade_out);
     setContentView(R.layout.gosellapi_activity_main);
-    linearLayout = findViewById(R.id.basicLayout);
     fragmentManager = getSupportFragmentManager();
-    //Utils.hideKeyboard(this);
     /**
      *  PaymentOptionsDataManager >> is the main actor who decide layout content
      */
@@ -122,7 +120,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
 
     // setup toolbar
-    businessIcon = findViewById(R.id.businessIcon);
+    ImageView businessIcon = findViewById(R.id.businessIcon);
     String logoPath = PaymentDataManager.getInstance().getSDKSettings().getData().getMerchant()
         .getLogo();
     Glide.with(this).load(logoPath).apply(RequestOptions.circleCropTransform()).into(businessIcon);
@@ -135,17 +133,17 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     payButton = findViewById(R.id.payButtonId);
     payButton.setEnabled(false);
 
-    payButton.getPayButton().setText(
-        getResources().getString(R.string.pay) + " " +
-            dataSource.getSelectedCurrency().getSymbol() + "" +
-            dataSource.getSelectedCurrency().getAmount());
+    payButton.getPayButton().setText(String
+        .format("%s %s%s", getResources().getString(R.string.pay),
+            dataSource.getSelectedCurrency().getSymbol(),
+            dataSource.getSelectedCurrency().getAmount()));
 
     payButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         Utils.hideKeyboard(GoSellPaymentActivity.this);
         if (getSavedCard() != null) {
-          startSavedCardPaymentProcess(recentSectionViewModel);
+          startSavedCardPaymentProcess();
         } else {
           startCardPaymentProcess(cardCredentialsViewModel);
         }
@@ -153,14 +151,8 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     });
 
     // cancel icon
-    ImageView cancel_payment = findViewById(R.id.cancel_payment);
-    cancel_payment.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        onBackPressed();
-      }
-    });
-
+    LinearLayout cancel_payment = findViewById(R.id.cancel_payment);
+    cancel_payment.setOnClickListener(v -> onBackPressed());
   }
 
 
@@ -189,8 +181,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
   }
 
   /**
-   * start webpayment activity
-   * @param model
+   * start web payment activity
    */
 
   @Override
@@ -220,7 +211,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     startActivityForResult(scanCard, SCAN_REQUEST_CODE);
   }
 
-  private void startSavedCardPaymentProcess(RecentSectionViewModel recentSectionViewModel) {
+  private void startSavedCardPaymentProcess() {
     System.out.println(" getSavedCard().getPaymentOptionIdentifier() : " + getSavedCard()
         .getPaymentOptionIdentifier());
     PaymentDataManager.getInstance().checkSavedCardPaymentExtraFees(getSavedCard(), this);
@@ -255,8 +246,9 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
 
     payButton.getPayButton().setText(
-        getResources().getString(R.string.pay) + " " + PaymentDataManager.getInstance()
-            .calculateTotalAmount(feesAmount));
+        String.format("%s %s", getResources().getString(R.string.pay),
+            PaymentDataManager.getInstance()
+                .calculateTotalAmount(feesAmount)));
 
   }
 
@@ -281,8 +273,9 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
 
       payButton.getPayButton().setText(
-          getResources().getString(R.string.pay) + " " + PaymentDataManager.getInstance()
-              .calculateTotalAmount(feesAmount));
+          String.format("%s %s", getResources().getString(R.string.pay),
+              PaymentDataManager.getInstance()
+                  .calculateTotalAmount(feesAmount)));
     }
   }
 
@@ -306,14 +299,8 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
       selectedYear = modelExpirationYear;
     }
 
-    DatePicker
-        .showInContext(this, selectedMonth, selectedYear, new DatePicker.DatePickerListener() {
-          @Override
-          public void dateSelected(String month, String year) {
-
-            dataSource.cardExpirationDateSelected(month, year);
-          }
-        });
+    DatePicker.showInContext(this, selectedMonth, selectedYear,
+            (month, year) -> dataSource.cardExpirationDateSelected(month, year));
   }
 
 
@@ -327,9 +314,9 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
       payButton.getLoadingView().setForceStop(true);
     }
 
-    if (isFilled) {
-      //hideSoftKeyBoard();
-    }
+//    if (isFilled) {
+//      //hideSoftKeyBoard();
+//    }
     payButton.setEnabled(isFilled);
   }
 
@@ -374,7 +361,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
   ///////////////////////////////////////////////////////////////////////////////////////////////////
   @Override
   public void fireWebPaymentExtraFeesUserDecision(ExtraFeesStatus choice) {
-    System.out.println(" user choice : " + choice);
     switch (choice) {
       case NO_EXTRA_FEES:
       case ACCEPT_EXTRA_FEES:
@@ -403,7 +389,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
       case ACCEPT_EXTRA_FEES:
       case NO_EXTRA_FEES:
         initSavedCardPaymentProcess();
-        System.out.println(" accepted to start saved card .........................");
         break;
       case REFUSE_EXTRA_FEES:
         break;
@@ -465,8 +450,8 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         if (userChoiceCurrency != null) {
           stopPayButtonLoadingView();
           payButton.getPayButton().setText(
-              getResources().getString(R.string.pay) + " " + userChoiceCurrency
-                  .getSymbol() + userChoiceCurrency.getAmount());
+              String.format("%s %s%s", getResources().getString(R.string.pay), userChoiceCurrency
+                  .getSymbol(), userChoiceCurrency.getAmount()));
           updateDisplayedCards(userChoiceCurrency);
         }
         break;
@@ -506,8 +491,12 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
   }
 
   private void finishActivityWithResultCodeOK() {
-    setResult(RESULT_OK);
-    finish();
+    System.out.println("finishActivityWithResultCodeOK ....  ");
+    Fragment fragment = getSupportFragmentManager().findFragmentByTag(OTPFullScreenDialog.TAG);
+    if(fragment != null)
+      getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+    LoadingScreenManager.getInstance().closeLoadingScreen();
+    showDialog();
   }
 
   @Override
@@ -523,7 +512,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     System.out.println(" Cards >> didReceiveCharge * * * " + charge);
     if (charge == null) return;
     System.out.println(" Cards >> didReceiveCharge * * * " + charge.getStatus());
-    if (charge != null) {
+
       switch (charge.getStatus()) {
         case INITIATED:
           Authenticate authenticate = charge.getAuthenticate();
@@ -551,7 +540,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
           break;
       }
       obtainPaymentURLFromChargeOrAuthorize(charge);
-    }
+
   }
 
   private void obtainPaymentURLFromChargeOrAuthorize(Charge chargeOrAuthorize) {
@@ -577,7 +566,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
       // save charge id
       setChargeOrAuthorize(chargeOrAuthorize);
       LoadingScreenManager.getInstance().closeLoadingScreen();
-      //this.paymentURL = url;
       showWebView(chargeOrAuthorize.getTransaction().getUrl());
     }
   }
@@ -635,7 +623,37 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
   @Override
   public void didReceiveAuthorize(Authorize authorize) {
+    System.out.println(" Cards >> didReceiveAuthorize * * * " + authorize);
+    if (authorize == null) return;
+    System.out.println(" Cards >> didReceiveCharge * * * " + authorize.getStatus());
 
+    switch (authorize.getStatus()) {
+      case INITIATED:
+        Authenticate authenticate = authorize.getAuthenticate();
+        if (authenticate != null && authenticate.getStatus() == AuthenticationStatus.INITIATED) {
+          switch (authenticate.getType()) {
+            case BIOMETRICS:
+
+              break;
+
+            case OTP:
+              PaymentDataManager.getInstance().setChargeOrAuthorize(authorize);
+              openOTPScreen(authorize);
+              break;
+          }
+        }
+        break;
+      case CAPTURED:
+      case AUTHORIZED:
+      case FAILED:
+      case ABANDONED:
+      case CANCELLED:
+      case DECLINED:
+      case RESTRICTED:
+        closePaymentActivity(authorize);
+        break;
+    }
+    obtainPaymentURLFromChargeOrAuthorize(authorize);
   }
 
   @Override
@@ -667,16 +685,103 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     }
   }
 
-  private void hideSoftKeyBoard(View view) {
+
+
+
+  private void showDialog(){
+    // show success bar
+    DisplayMetrics displayMetrics = new DisplayMetrics();
+    getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+    int width = displayMetrics.widthPixels;
+    PopupWindow popupWindow;
     try {
-      InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-      imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+      LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+      if(inflater!=null){
+        View layout = inflater.inflate(R.layout.charge_status_layout, findViewById(R.id.popup_element));
+        popupWindow = new PopupWindow(layout, width, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+
+        ImageView status_icon = layout.findViewById(R.id.status_icon);
+        TextView statusText = layout.findViewById(R.id.status_text);
+        TextView chargeText = layout.findViewById(R.id.charge_id_txt);
+
+        String msg = "";
+
+        if(chargeOrAuthorize!=null){
+          System.out.println("chargeOrAuthorise.getStatus() : "+chargeOrAuthorize.getStatus());
+
+          switch (chargeOrAuthorize.getStatus()){
+            case CAPTURED:
+            case AUTHORIZED:
+              msg = getString(R.string.payment_status_alert_successful);
+              status_icon.setImageResource(R.drawable.ic_checkmark_normal);
+              break;
+            case FAILED:
+              msg = getString(R.string.payment_status_alert_failed);
+              status_icon.setImageResource(R.drawable.icon_failed);
+              break;
+            case DECLINED:
+              msg = getString(R.string.payment_status_alert_declined);
+              status_icon.setImageResource(R.drawable.icon_failed);
+              break;
+          }
+          chargeText.setText(chargeOrAuthorize.getId());
+        }else{
+          msg = getString(R.string.payment_status_alert_failed);
+          status_icon.setImageResource(R.drawable.icon_failed);
+          chargeText.setText("");
+        }
+
+        statusText.setText(msg);
+
+
+        LinearLayout close_icon_ll = layout.findViewById(R.id.close_icon_ll);
+        close_icon_ll.setOnClickListener(v -> {
+          popupWindow.dismiss();closeActivity();
+        });
+
+        popupWindow.showAtLocation(layout, Gravity.TOP, 0, 50);
+        popupWindow.setAnimationStyle(R.style.Animation);
+
+        setupTimer(popupWindow);
+
+      }
+
     } catch (Exception e) {
-      // TODO: handle exception
       e.printStackTrace();
-      System.out.println("keyboard : " + e.getLocalizedMessage());
     }
+
   }
+
+  private void setupTimer(PopupWindow popupWindow){
+    // Hide after some seconds
+    final Handler handler  = new Handler();
+    final Runnable runnable = () -> {
+      if (popupWindow.isShowing()) {
+
+        popupWindow.dismiss();
+        closeActivity();
+      }
+    };
+
+    popupWindow.setOnDismissListener(() -> handler.removeCallbacks(runnable));
+
+    handler.postDelayed(runnable, 4000);
+  }
+
+private void closeActivity(){
+  setResult(RESULT_OK);
+  finish();
+}
+
+//  private void hideSoftKeyBoard(View view) {
+//    try {
+//      InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+//      imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+//    } catch (Exception e) {
+//      e.printStackTrace();
+//      System.out.println("keyboard : " + e.getLocalizedMessage());
+//    }
+//  }
 
 }
 
