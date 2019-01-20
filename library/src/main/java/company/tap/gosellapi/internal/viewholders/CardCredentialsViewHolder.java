@@ -153,10 +153,11 @@ public class CardCredentialsViewHolder
                     viewModel.binNumberEntered(text);
                 }
 
-                if(text.length() < BIN_NUMBER_LENGTH){
+                if(text.length() < BIN_NUMBER_LENGTH || text.length() == 0){
                   PaymentDataManager.getInstance().setBinLookupResponse(null);
                 }
-              BINLookupResponse binLookupResponse =  PaymentDataManager.getInstance().getBinLookupResponse();
+
+                BINLookupResponse binLookupResponse =  PaymentDataManager.getInstance().getBinLookupResponse();
                 viewModel.setPaymentOption(cardBrand,binLookupResponse==null?null:binLookupResponse.getScheme());
             }
 
@@ -396,7 +397,9 @@ public class CardCredentialsViewHolder
 
         cardNumber = cardNumber.replace(" ", "");
 
-        DefinedCardBrand brand = CardValidator.validate(cardNumber);
+        // get preferred card brands from payment option
+        ArrayList<CardBrand> paymentOptionsCardBrands = PaymentDataManager.getInstance().getAvailablePaymentOptionsCardBrands();
+        DefinedCardBrand brand = CardValidator.validate(cardNumber,paymentOptionsCardBrands);
         System.out.println("brand >>  card number :" + cardNumber + " brand:"+brand.getCardBrand());
 
         // update CCVEditText CardType: to set CCV Length according to CardType
@@ -422,27 +425,28 @@ public class CardCredentialsViewHolder
       if (cardBrand.getRawValue().contains("AMEX") || cardBrand.getRawValue().contains("AMERICAN_EXPRESS"))
         cvvField.setCardType(CardType.AMEX);
 
-        if (cardBrand.getRawValue().contains("VISA"))
+        else if (cardBrand.getRawValue().contains("VISA"))
             cvvField.setCardType(CardType.VISA);
 
-        if (cardBrand.getRawValue().contains("DISCOVER"))
+        else if (cardBrand.getRawValue().contains("DISCOVER"))
             cvvField.setCardType(CardType.DISCOVER);
 
-        if (cardBrand.getRawValue().contains("DINERS_CLUB") || cardBrand.getRawValue().contains("DINERS"))
+        else if (cardBrand.getRawValue().contains("DINERS_CLUB") || cardBrand.getRawValue().contains("DINERS"))
             cvvField.setCardType(CardType.DINERS_CLUB);
 
-        if (cardBrand.getRawValue().contains("MADA"))
+        else if (cardBrand.getRawValue().contains("MADA"))
             cvvField.setCardType(CardType.MADA);
 
-        if (cardBrand.getRawValue().contains("MAESTRO"))
+        else if (cardBrand.getRawValue().contains("MAESTRO"))
             cvvField.setCardType(CardType.MAESTRO);
 
-        if (cardBrand.getRawValue().contains("MASTERCARD"))
+        else if (cardBrand.getRawValue().contains("MASTERCARD"))
             cvvField.setCardType(CardType.MASTERCARD);
 
-        if (cardBrand.getRawValue().contains("UNION_PAY") || cardBrand.getRawValue().contains("UNIONPAY"))
+        else if (cardBrand.getRawValue().contains("UNION_PAY") || cardBrand.getRawValue().contains("UNIONPAY"))
             cvvField.setCardType(CardType.UNIONPAY);
-
+else
+        cvvField.setCardType(CardType.UNKNOWN);
     }
 
     private void setupAddressOnCardField() {

@@ -173,15 +173,10 @@ public class PaymentOptionsDataManager {
 
   //region callback actions from child viewModels
   public void currencyHolderClicked(int position) {
-    System.out.println(" PaymentOptionsDataManager .... " + position);
     ArrayList<AmountedCurrency> currencies = getPaymentOptionsResponse().getSupportedCurrencies();
-    for (AmountedCurrency amountedCurrency : currencies) {
-      System.out.println(" supported currency : " + amountedCurrency);
-    }
+
     CurrencyViewModelData currencyViewModelData = ((CurrencyViewModel) viewModels.get(position))
         .getData();
-    System.out.println(
-        " currencyViewModelData : " + currencyViewModelData.getSelectedCurrency().getCurrency());
     listener.startCurrencySelection(currencies, currencyViewModelData.getSelectedCurrency());
   }
 
@@ -192,7 +187,6 @@ public class PaymentOptionsDataManager {
   }
 
   public void webPaymentSystemViewHolderClicked(WebPaymentViewModel sender, int position) {
-    System.out.println("webPaymentSystemViewHolderClicked >> webPayment model : " + sender);
     setFocused(position);
     listener.startWebPayment(sender);
   }
@@ -325,7 +319,6 @@ public class PaymentOptionsDataManager {
     }
 
     String cardholderName = card.cardholderName;
-    System.out.println(" cardScanned >>> cardholderName " + cardholderName);
     if (cardholderName != null && !cardholderName.isEmpty()) {
 
       cardCredentialsViewModel.setNameOnCard(card.cardholderName);
@@ -433,16 +426,8 @@ public class PaymentOptionsDataManager {
       ArrayList<PaymentOption> cardPaymentOptions = Utils.List
           .filter(paymentOptionsWorker, getPaymentOptionsFilter(PaymentType.CARD));
 
-      for (PaymentOption paymentOption : cardPaymentOptions) {
-        System.out.println(" Card  option : " + paymentOption.getName());
-      }
-
-      System.out.println("/////////////////////  get saved cards  ///////////////");
-//      ArrayList<SavedCard> savedCards = getPaymentOptionsResponse().getCards();
       ArrayList<SavedCard> savedCardsWorker = new ArrayList<>(getPaymentOptionsResponse().getCards());
-//      savedCardsWorker = (ArrayList<SavedCard>)getPaymentOptionsResponse().getCards().clone();
 
-      System.out.println("/////////////////////  decide which view model to use   ///////////////");
       boolean hasSavedCards = savedCardsWorker.size() > 0;
       boolean hasWebPaymentOptions = webPaymentOptions.size() > 0;
       boolean hasCardPaymentOptions = cardPaymentOptions.size() > 0;
@@ -473,8 +458,6 @@ public class PaymentOptionsDataManager {
                 PaymentOptionsDataManager.this);
         viewModelsResult.add(emptyModel);
         for (PaymentOption paymentOption : webPaymentOptions) {
-          System.out.println(
-              " paymentOption >> to be added to viewModel List : " + paymentOption.getName());
           WebPaymentViewModel webPaymentModel = PaymentOptionsDataManagerUtils.ViewModelUtils
               .generateWebPaymentModel(paymentOption, PaymentOptionsDataManager.this);
           viewModelsResult.add(webPaymentModel);
@@ -494,27 +477,13 @@ public class PaymentOptionsDataManager {
     }
 
     public void filterViewModels(String currency) {
-      System.out.println(" filterViewModels :lastFilteredCurrency :" + lastFilteredCurrency + " <<< current curr "+currency);
-
       ArrayList<PaymentOption> paymentOptionsWorker= new ArrayList<>(getPaymentOptionsResponse().getPaymentOptions());
-
-
       ArrayList<SavedCard> savedCardsWorker = new ArrayList<>(getPaymentOptionsResponse().getCards());
-
-
       ArrayList<PaymentOptionViewModel> viewModelResult = new ArrayList<>();
-
       CurrencyViewModel model = findCurrencyModel();
       viewModelResult.add(model);
 
       ArrayList<SavedCard> savedCards = filterByCurrenciesAndSortList(savedCardsWorker, currency);
-      System.out.println("Size of saved cards : " + savedCards.size());
-
-
-
-      for(PaymentOption paymentOption1: paymentOptionsWorker){
-        System.out.println("last payment option :" + paymentOption1.getPaymentType() + " > " +paymentOption1.getName() );
-      }
 
       ArrayList<PaymentOption> webPaymentOptions = filteredByPaymentTypeAndCurrencyAndSortedList(
           paymentOptionsWorker, PaymentType.WEB, currency);
@@ -583,8 +552,6 @@ public class PaymentOptionsDataManager {
     }
 
     private CurrencyViewModel generateCurrencyModel() {
-      System.out.println("getTransactionCurrency() : " + getTransactionCurrency().getCurrency());
-      System.out.println("getSelectedCurrency() : " + getSelectedCurrency().getCurrency());
       CurrencyViewModelData currencyViewModelData = new CurrencyViewModelData(
           getTransactionCurrency(), getSelectedCurrency());
 
@@ -721,13 +688,6 @@ public class PaymentOptionsDataManager {
     private ArrayList<PaymentOption> filteredByPaymentTypeAndCurrencyAndSortedList(
         ArrayList<PaymentOption> list, PaymentType paymentType, String currency) {
 
-      System.out.println("......... filter  before filtration..............list.size : "+list.size());
-      for(PaymentOption option: list)
-      {
-        System.out.println("......... filter before "+ option.getPaymentType());
-      }
-
-
       ArrayList<Utils.List.Filter<PaymentOption>> filters = new ArrayList<>();
       filters.add(this.<PaymentOption>getCurrenciesFilter(currency));
       filters.add(getPaymentOptionsFilter(paymentType));
@@ -736,12 +696,6 @@ public class PaymentOptionsDataManager {
       ArrayList<PaymentOption> filtered = Utils.List.filter(list, filter);
       Collections.sort(filtered);
 
-      System.out.println("......... filter .............."+paymentType + " .... "+currency);
-      for(PaymentOption paymentOption: filtered){
-        System.out.println("......... filter .............."+ paymentOption.getPaymentType());
-      }
-
-      System.out.println("......... filter end ..............");
       return filtered;
     }
 

@@ -303,35 +303,29 @@ public class CardCredentialsViewModel
   }
 
   public void setPaymentOption(CardBrand cardBrand,CardScheme cardScheme) {
-
       if(cardScheme!=null){
           for(PaymentOption paymentOption:  data.getPaymentOptions()){
-              System.out.println(" card cred ... paymentOption. comparison :"+paymentOption.getBrand().name() + " selected :"+ cardBrand.name() + " >> " +paymentOption.getBrand().compareTo(cardBrand));
               if(paymentOption.getName().equalsIgnoreCase(cardScheme.name())){
                   this.selectedCardPaymentOption = paymentOption;
                   updatePayButtonWithExtraFees(paymentOption);
               }
           }
-          if(selectedCardPaymentOption!=null)
-              System.out.println("card cred ... paymentOption. final : "+selectedCardPaymentOption.getBrand().name());
       }else {
           if(cardBrand!=null){
-              System.out.println(" CardCredentialsViewModel..  data.getPaymentOptions() ="+ data.getPaymentOptions().size());
               for(PaymentOption paymentOption:  data.getPaymentOptions()){
-                  System.out.println(" card cred ... paymentOption. comparison :"+paymentOption.getBrand().name() + " selected :"+ cardBrand.name() + " >> " +paymentOption.getBrand().compareTo(cardBrand));
                   if(paymentOption.getBrand().compareTo(cardBrand)==0){
                       this.selectedCardPaymentOption = paymentOption;
                       updatePayButtonWithExtraFees(paymentOption);
                   }
               }
-              if(selectedCardPaymentOption!=null)
-                  System.out.println("card cred ... paymentOption. final : "+selectedCardPaymentOption.getBrand().name());
           }else
           {
               selectedCardPaymentOption = null;
               updatePayButtonWithExtraFees(selectedCardPaymentOption);
           }
       }
+      if(selectedCardPaymentOption!=null && selectedCardPaymentOption.getBrand()!=null)
+          System.out.println("card cred ... paymentOption. final : "+selectedCardPaymentOption.getBrand().name());
   }
 
   private void updatePayButtonWithExtraFees(PaymentOption paymentOption){
