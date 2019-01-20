@@ -127,11 +127,7 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
   private void generateDefaultPaymentData() {
 
     this.currency = new TapCurrency("KWD");
-//        this.customer = new Customer_old(null, "Name", "Middlename", "Surname", "hello@tap.company",
-//                                     new PhoneNumber("965", "00000000"),"meta");
-
     // check if customer id is in pref.
-
     PaymentResultDataManager  paymentResultDataManager =   PaymentResultDataManager.getInstance();
     System.out.println("preparing data source with customer ref :"+ paymentResultDataManager.getCustomerRef(context));
     this.customer = new Customer.CustomerBuilder(paymentResultDataManager.getCustomerRef(context)).
@@ -153,6 +149,7 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
         .taxes(null)
         .build());
 //        Transaction mode
+//    this.transactionMode = TransactionMode.PURCHASE;
     this.transactionMode = TransactionMode.PURCHASE;
 //        Tax
     this.taxes = new ArrayList<Tax>();

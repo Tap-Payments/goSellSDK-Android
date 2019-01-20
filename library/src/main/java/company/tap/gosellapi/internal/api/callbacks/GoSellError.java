@@ -7,6 +7,7 @@ import android.support.annotation.RestrictTo;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 /**
  * Model for response errors
@@ -31,28 +32,30 @@ public class GoSellError {
     }
 
 
-    public String getErrorMessage(){
-        String res="";
-        if(errorBody!=null && !"".equals(errorBody.trim()))
-        {
-            try {
-                JSONObject jsonObject = new JSONObject(errorBody);
-                if(jsonObject!=null){
-                    JSONArray jsonArray = jsonObject.getJSONArray("errors");
-                    if(jsonArray!=null)
-                    {
-                        JSONObject jsonObj =  jsonArray.getJSONObject(0);
-                        if(jsonObj!=null) res = (String)jsonObj.get("description");
-                    }
-                }
+  public String getErrorMessage(){
+    String res = "";
+    if (errorBody != null && !"".equals(errorBody.trim())) {
+      try {
+        Object json = new JSONTokener(errorBody).nextValue();
+        JSONObject jsonObject = new JSONObject(errorBody);
 
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+        if(json instanceof JSONArray){
+          JSONArray jsonArray = jsonObject.getJSONArray("errors");
+          if(jsonArray!=null && jsonArray.length()>0)
+          {
+            JSONObject jsonObj =  jsonArray.getJSONObject(0);
+            if(jsonObj!=null) res = (String)jsonObj.get("description");
+          }
+        }else if(json instanceof JSONObject){
+          JSONObject jsonObject1 = jsonObject.getJSONObject("error");
+          if(jsonObject1!=null) res = (String)jsonObject1.get("description");
         }
-
-        return res;
+      }catch(JSONException errorMessage2){
+        errorMessage2.printStackTrace();
+      }
     }
+    return res;
+  }
 
     /**
      * @return HTTP error response code (4x, 5x)
