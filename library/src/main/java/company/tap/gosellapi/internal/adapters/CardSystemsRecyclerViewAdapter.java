@@ -18,6 +18,8 @@ import company.tap.gosellapi.internal.api.enums.PaymentType;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
+import company.tap.gosellapi.internal.utils.CompoundFilter;
+import company.tap.gosellapi.internal.utils.Utils;
 import company.tap.tapcardvalidator_android.CardBrand;
 
 
@@ -33,14 +35,11 @@ public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSys
           .getPaymentType() + " >> " + option.getName());
     }
     this.initialData = new ArrayList<>(filter(_data));
-    //this.data = _data;
     filterPaymentOptions();
-
-
   }
 
   private ArrayList<PaymentOption> filter(ArrayList<PaymentOption> _data) {
-    ArrayList<PaymentOption> filteredData =new ArrayList<>(_data);
+    ArrayList<PaymentOption> filteredData = new ArrayList<>(_data);
     for (Iterator<PaymentOption> it = filteredData.iterator(); it.hasNext(); ) {
       PaymentOption p = it.next();
       if (p.getPaymentType() != PaymentType.CARD) {
@@ -51,7 +50,6 @@ public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSys
           ) {
         it.remove();
       }
-
     }
     return filteredData;
   }
@@ -76,7 +74,6 @@ public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSys
   }
 
   private void filterPaymentOptions() {
-
     for (Iterator<PaymentOption> it = data.iterator(); it.hasNext(); ) {
       PaymentOption p = it.next();
       System.out.println("payment type : " + p.getName());
@@ -101,7 +98,7 @@ public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSys
     return false;
   }
 
-  public void updateForCardBrand(CardBrand brand,CardScheme cardScheme) {
+  public void updateForCardBrand(CardBrand brand, CardScheme cardScheme) {
 
     if (brand == null) {
       data = new ArrayList<>(initialData);
@@ -114,14 +111,14 @@ public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSys
     for (PaymentOption option : initialData) {
 
       ArrayList<CardBrand> cardBrands = option.getSupportedCardBrands();
-      System.out.println("brand :" + brand + " >>> scheme :"+cardScheme);
+      System.out.println("brand :" + brand + " >>> scheme :" + cardScheme);
 
-      if(cardScheme!=null){
-        if(option.getName().equalsIgnoreCase(cardScheme.name())){
+      if (cardScheme != null) {
+        if (comparePaymentOptionWithCardScheme(option, cardScheme)) {
           data.add(option);
           continue;
         }
-      }else {
+      } else {
         if (cardBrands.contains(brand)) {
           data.add(option);
         }
@@ -129,13 +126,36 @@ public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSys
 
 
     }
+
     if (data.size() == 0)
       data = new ArrayList<>(initialData);
 
     notifyDataSetChanged();
   }
 
+  private boolean comparePaymentOptionWithCardScheme(@NonNull PaymentOption paymentOption,
+                                                     @NonNull CardScheme cardScheme) {
+    boolean flag = false;
+
+    if (paymentOption.getName().equalsIgnoreCase(cardScheme.name())) {
+      return true;
+    }
+
+
+    if (paymentOption.getBrand().compareTo(cardScheme.getCardBrand()) == 0) {
+      return true;
+    }
+
+    if (paymentOption.getSupportedCardBrands().contains(cardScheme.getCardBrand())) {
+      return true;
+    }
+
+
+    return flag;
+  }
+
 }
+
 
 class CardSystemViewHolder extends RecyclerView.ViewHolder {
   ImageView cardSystemIcon;
