@@ -68,7 +68,13 @@ public final class PaymentDataManager {
   }
 
   public void confirmOTPCode(String otpCode) {
-    getPaymentProcessManager().confirmOTPCode(getChargeOrAuthorize(), otpCode);
+    if(getChargeOrAuthorize()!=null ) {
+      if(getChargeOrAuthorize() instanceof  Authorize)
+        getPaymentProcessManager().confirmAuthorizeOTPCode((Authorize) getChargeOrAuthorize(), otpCode);
+
+      else
+        getPaymentProcessManager().confirmChargeOTPCode(getChargeOrAuthorize(), otpCode);
+    }
   }
 
   public void setChargeOrAuthorize(Charge charge) {
@@ -80,7 +86,12 @@ public final class PaymentDataManager {
   }
 
   public void resendOTPCode() {
-    getPaymentProcessManager().resendOTPCode(getChargeOrAuthorize());
+    if(getChargeOrAuthorize()!= null) {
+      if (getChargeOrAuthorize() instanceof Authorize)
+            getPaymentProcessManager().resendAuthorizeOTPCode((Authorize) getChargeOrAuthorize());
+      else
+            getPaymentProcessManager().resendChargeOTPCode((Charge) getChargeOrAuthorize());
+    }
   }
 
   public ArrayList<CardBrand> getAvailablePaymentOptionsCardBrands() {

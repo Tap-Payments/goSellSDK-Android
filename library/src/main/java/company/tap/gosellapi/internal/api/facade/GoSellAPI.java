@@ -60,13 +60,13 @@ public final class GoSellAPI {
         requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.createAuthorize(createAuthorizeRequest), requestCallback));
     }
 
-    public void authenticate(final String chargeIdentifier, final CreateOTPVerificationRequest createOTPRequest, final APIRequestCallback<Charge> requestCallback){
-        requestManager.request(new RequestManager.DelayedRequest(apiHelper.authenticate(chargeIdentifier,createOTPRequest),requestCallback));
+    public void authenticate_charge_transaction(final String chargeIdentifier, final CreateOTPVerificationRequest createOTPRequest, final APIRequestCallback<Charge> requestCallback){
+        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.authenticate(chargeIdentifier,createOTPRequest),requestCallback));
     }
 
     public void authenticate_authorize_transaction(final String authorizeIdentifier, final CreateOTPVerificationRequest createOTPRequest,
-                                                   final APIRequestCallback<Charge> requestCallback){
-        requestManager.request(new RequestManager.DelayedRequest(apiHelper.authenticate_authorize_transaction(authorizeIdentifier,createOTPRequest),requestCallback));
+                                                   final APIRequestCallback<Authorize> requestCallback){
+        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.authenticate_authorize_transaction(authorizeIdentifier,createOTPRequest),requestCallback));
     }
 
 
@@ -74,11 +74,11 @@ public final class GoSellAPI {
 
 
     public void request_authenticate_for_charge_transaction(final String chargeIdentifier,final APIRequestCallback<Charge> requestCallback){
-        requestManager.request(new RequestManager.DelayedRequest(apiHelper.request_authenticate(chargeIdentifier),requestCallback));
+        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.request_authenticate(chargeIdentifier),requestCallback));
     }
 
-    public void request_authenticate_for_authorize_transaction(final String authorizeIdentifier,final APIRequestCallback<Charge> requestCallback){
-        requestManager.request(new RequestManager.DelayedRequest(apiHelper.request_authenticate_authorization(authorizeIdentifier),requestCallback));
+    public void request_authenticate_for_authorize_transaction(final String authorizeIdentifier,final APIRequestCallback<Authorize> requestCallback){
+        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.request_authenticate_authorization(authorizeIdentifier),requestCallback));
     }
 
     public void updateCharge(final String chargeId, final APIRequestCallback<Charge> requestCallback) {
@@ -107,8 +107,6 @@ public final class GoSellAPI {
 
         // check paymentOptions Request
         System.out.println( "### paymentOptionsRequest ### " + paymentOptionsRequest.getPaymentOptionRequestInfo());
-
-
 
         PaymentDataManager.getInstance().setPaymentOptionsRequest(paymentOptionsRequest);
         requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.getPaymentOptions(paymentOptionsRequest), new APIRequestCallback<PaymentOptionsResponse>() {

@@ -300,7 +300,6 @@ public class OTPFullScreenDialog extends DialogFragment {
   }
 
   private void confirmOTPCode() {
-    //Utils.hideKeyboard(getActivity());
     PaymentDataManager.getInstance().confirmOTPCode(otpCode);
     GoSellPaymentActivity listener = (GoSellPaymentActivity) getActivity();
     listener.confirmOTP();
@@ -308,7 +307,6 @@ public class OTPFullScreenDialog extends DialogFragment {
   }
 
   private void resendOTPCode() {
-//    Utils.hideKeyboard(getActivity());
     PaymentDataManager.getInstance().resendOTPCode();
     GoSellPaymentActivity listener = (GoSellPaymentActivity) getActivity();
     listener.resendOTP();

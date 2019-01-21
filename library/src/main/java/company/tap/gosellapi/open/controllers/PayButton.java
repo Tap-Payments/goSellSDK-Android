@@ -15,17 +15,19 @@ import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 import company.tap.gosellapi.internal.utils.ActivityDataExchanger;
 import company.tap.gosellapi.open.buttons.PayButtonView;
 import company.tap.gosellapi.open.interfaces.PaymentDataSource;
-import gotap.com.tapglkitandroid.gl.Views.TapLoadingView;
 
 public class PayButton implements View.OnClickListener {
 
   private PayButtonView payButtonView;
   private PaymentDataSource paymentDataSource;
-private Activity activity;
-  public PayButton() { }
+  private Activity activity;
+  private int SDK_REQUEST_CODE;
 
-  public void setButtonView(View buttonView, Activity activity) {
+  public PayButton() {
+  }
 
+  public void setButtonView(View buttonView, Activity activity, int SDK_REQUEST_CODE) {
+    this.SDK_REQUEST_CODE = SDK_REQUEST_CODE;
     if (buttonView instanceof PayButtonView) {
       this.payButtonView = (PayButtonView) buttonView;
       this.payButtonView.getPayButton().setOnClickListener(this);
@@ -35,18 +37,13 @@ private Activity activity;
 
   }
 
-  public void setPaymentDataSource(PaymentDataSource paymentDataSource) {
+  private void setPaymentDataSource(PaymentDataSource paymentDataSource) {
     PaymentDataManager.getInstance().setExternalDataSource(paymentDataSource);
     this.paymentDataSource = paymentDataSource;
   }
 
   @Override
   public void onClick(View v) {
-//    if (paymentDataSource == null) {
-//      //makePayment();
-//      return;
-//    }
-
     int i = v.getId();
 
     if (i == payButtonView.getLayoutId() || i == R.id.pay_button_id) {
@@ -57,10 +54,11 @@ private Activity activity;
   }
 
 
-
   private void getPaymentOptions() {
     payButtonView.getLoadingView().start();
-    System.out.println(" before call request this.paymentDataSource.getCurrency() : " + this.paymentDataSource.getCurrency().getIsoCode());
+    System.out.println(
+        " before call request this.paymentDataSource.getCurrency() : " + this.paymentDataSource
+            .getCurrency().getIsoCode());
     PaymentOptionsRequest request = new PaymentOptionsRequest(
 
         this.paymentDataSource.getTransactionMode(),
@@ -77,12 +75,8 @@ private Activity activity;
 
           @Override
           public void onSuccess(int responseCode, PaymentOptionsResponse serializedResponse) {
-            payButtonView.getLoadingView().setForceStop(true, new TapLoadingView.FullProgressListener() {
-              @Override
-              public void onFullProgress() {
-                startMainActivity();
-              }
-            });
+            payButtonView.getLoadingView()
+                .setForceStop(true, () -> startMainActivity());
           }
 
           @Override
@@ -93,9 +87,11 @@ private Activity activity;
   }
 
   private void startMainActivity() {
+
     ActivityDataExchanger activityDataExchanger = ActivityDataExchanger.getInstance();
     activityDataExchanger.saveClientActivity(activity.getClass());
     Intent intent = new Intent(payButtonView.getContext(), GoSellPaymentActivity.class);
-    payButtonView.getContext().startActivity(intent);
+    activity.startActivityForResult(intent,SDK_REQUEST_CODE );
+
   }
 }
