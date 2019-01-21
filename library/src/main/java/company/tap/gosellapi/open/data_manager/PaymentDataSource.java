@@ -148,9 +148,8 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
         .discount(new AmountModificator(FIXED, BigDecimal.ZERO))
         .taxes(null)
         .build());
-//        Transaction mode
-//    this.transactionMode = TransactionMode.PURCHASE;
     this.transactionMode = TransactionMode.PURCHASE;
+//    this.transactionMode = TransactionMode.AUTHORIZE_CAPTURE;
 //        Tax
     this.taxes = new ArrayList<Tax>();
     this.taxes.

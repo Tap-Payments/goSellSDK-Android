@@ -512,9 +512,8 @@ final class PaymentProcessManager {
       public void onSuccess(int responseCode, T serializedResponse) {
         System.out.println(" retrieveChargeOrAuthorizeAPI >>> " + responseCode);
         System.out.println(" retrieveChargeOrAuthorizeAPI >>> " + serializedResponse.getStatus());
-        System.out.println(
-            " retrieveChargeOrAuthorizeAPI >>> " + serializedResponse.getResponse().getMessage());
-        handleChargeOrAuthorizeResponse((Charge) serializedResponse, null);
+        System.out.println(" retrieveChargeOrAuthorizeAPI >>> " + serializedResponse.getResponse().getMessage());
+        handleChargeOrAuthorizeResponse(serializedResponse, null);
       }
 
       @Override
@@ -522,12 +521,12 @@ final class PaymentProcessManager {
 
       }
     };
-    if (chargeOrAuthorize instanceof Charge)
-      GoSellAPI.getInstance()
-          .retrieveCharge(chargeOrAuthorize.getId(), (APIRequestCallback<Charge>) callBack);
-    else
+    if (chargeOrAuthorize instanceof Authorize)
       GoSellAPI.getInstance()
           .retrieveAuthorize(chargeOrAuthorize.getId(), (APIRequestCallback<Authorize>) callBack);
+    else
+    GoSellAPI.getInstance()
+        .retrieveCharge(chargeOrAuthorize.getId(), (APIRequestCallback<Charge>) callBack);
   }
 
 
@@ -535,55 +534,98 @@ final class PaymentProcessManager {
     return findSavedCardPaymentOption(savedCard);
   }
 
-  <T extends Charge> void confirmOTPCode(@NonNull T chargeOrAuthorize,
-                                         String otpCode) {
+     void confirmChargeOTPCode(@NonNull Charge charge,String otpCode) {
     CreateOTPVerificationRequest createOTPVerificationRequest = new CreateOTPVerificationRequest.Builder(AuthenticationType.OTP,otpCode).build();
-    APIRequestCallback<T> callBack = new APIRequestCallback<T>() {
+    APIRequestCallback<Charge> callBack = new APIRequestCallback<Charge>() {
       @Override
-      public void onSuccess(int responseCode, T serializedResponse) {
-        System.out.println(" confirmOTPCode >>> " + serializedResponse.getResponse().getMessage());
-        handleChargeOrAuthorizeResponse((Charge) serializedResponse, null);
+      public void onSuccess(int responseCode, Charge serializedResponse) {
+        System.out.println(" confirmChargeOTPCode >>> " + serializedResponse.getResponse().getMessage());
+        handleChargeOrAuthorizeResponse(serializedResponse, null);
       }
 
       @Override
       public void onFailure(GoSellError errorDetails) {
-        System.out.println(" confirmOTPCode >>> error : "+ errorDetails.getErrorBody());
+        System.out.println(" confirmChargeOTPCode >>> error : "+ errorDetails.getErrorBody());
         handleChargeOrAuthorizeResponse(null,errorDetails);
       }
     };
-    System.out.println("&&&&&&&&&&& "+chargeOrAuthorize.getId() + "  >>> type >> "+ (chargeOrAuthorize instanceof Authorize));
-    if (chargeOrAuthorize instanceof Authorize)
-      GoSellAPI.getInstance()
-          .authenticate_authorize_transaction(chargeOrAuthorize.getId(),createOTPVerificationRequest, (APIRequestCallback<Charge>) callBack);
-    else
-      GoSellAPI.getInstance()
-          .authenticate(chargeOrAuthorize.getId(),createOTPVerificationRequest, (APIRequestCallback<Charge>) callBack);
+
+      GoSellAPI.getInstance().authenticate_charge_transaction(charge.getId(),createOTPVerificationRequest,callBack);
   }
 
-  <T extends Charge> void resendOTPCode(@NonNull T chargeOrAuthorize) {
 
-      APIRequestCallback<T> callBack = new APIRequestCallback<T>() {
+  void confirmAuthorizeOTPCode(@NonNull Authorize authorize, String otpCode) {
+    CreateOTPVerificationRequest createOTPVerificationRequest = new CreateOTPVerificationRequest.Builder(AuthenticationType.OTP,otpCode).build();
+    APIRequestCallback<Authorize> callBack = new APIRequestCallback<Authorize>() {
+      @Override
+      public void onSuccess(int responseCode, Authorize serializedResponse) {
+        System.out.println(" confirmAuthorizeOTPCode >>> " + serializedResponse.getResponse().getMessage());
+        handleChargeOrAuthorizeResponse(serializedResponse, null);
+      }
+
+      @Override
+      public void onFailure(GoSellError errorDetails) {
+        System.out.println(" confirmAuthorizeOTPCode >>> error : "+ errorDetails.getErrorBody());
+        handleChargeOrAuthorizeResponse(null,errorDetails);
+      }
+    };
+
+      GoSellAPI.getInstance()
+          .authenticate_authorize_transaction(authorize.getId(),createOTPVerificationRequest,callBack);
+
+  }
+
+
+  <T extends Charge> void resendChargeOTPCode(@NonNull Charge charge) {
+
+
+    APIRequestCallback<Charge> callBack = new APIRequestCallback<Charge>() {
+      @Override
+      public void onSuccess(int responseCode, Charge serializedResponse) {
+        System.out.println(" resendChargeOTPCode >>> inside call back type "+serializedResponse.getClass());
+        System.out.println(" resendChargeOTPCode >>> " + serializedResponse.getResponse().getMessage());
+        System.out.println(" resendChargeOTPCode >>> " + serializedResponse.getAuthenticate().getValue());
+        handleChargeOrAuthorizeResponse(serializedResponse, null);
+      }
+
+      @Override
+      public void onFailure(GoSellError errorDetails) {
+        System.out.println(" resendChargeOTPCode >>> error : "+ errorDetails.getErrorBody());
+        handleChargeOrAuthorizeResponse(null,errorDetails);
+      }
+    };
+
+    System.out.println(" resendChargeOTPCode >>> before call back type " + (charge.getClass()));
+
+      GoSellAPI.getInstance()
+          .request_authenticate_for_charge_transaction(charge.getId(),callBack);
+
+  }
+
+
+     void resendAuthorizeOTPCode(@NonNull Authorize authorize) {
+
+
+      APIRequestCallback<Authorize> callBack = new APIRequestCallback<Authorize>() {
         @Override
-        public void onSuccess(int responseCode, T serializedResponse) {
-
-          System.out.println(" resendOTPCode >>> " + serializedResponse.getResponse().getMessage());
-          System.out.println(" resendOTPCode >>> " + serializedResponse.getAuthenticate().getValue());
-          handleChargeOrAuthorizeResponse((Charge) serializedResponse, null);
+        public void onSuccess(int responseCode, Authorize serializedResponse) {
+          System.out.println(" resendAuthorizeOTPCode >>> inside call back type "+serializedResponse.getClass());
+          System.out.println(" resendAuthorizeOTPCode >>> " + serializedResponse.getResponse().getMessage());
+          System.out.println(" resendAuthorizeOTPCode >>> " + serializedResponse.getAuthenticate().getValue());
+          handleChargeOrAuthorizeResponse(serializedResponse, null);
         }
 
         @Override
         public void onFailure(GoSellError errorDetails) {
-          System.out.println(" confirmOTPCode >>> error : "+ errorDetails.getErrorBody());
+          System.out.println(" resendAuthorizeOTPCode >>> error : "+ errorDetails.getErrorBody());
           handleChargeOrAuthorizeResponse(null,errorDetails);
         }
       };
+    System.out.println(" resendAuthorizeOTPCode >>> before call back type " + (authorize.getClass()));
 
-      if (chargeOrAuthorize instanceof Authorize)
         GoSellAPI.getInstance()
-            .request_authenticate_for_authorize_transaction(chargeOrAuthorize.getId(), (APIRequestCallback<Charge>) callBack);
-    else
-    GoSellAPI.getInstance()
-        .request_authenticate_for_charge_transaction(chargeOrAuthorize.getId(), (APIRequestCallback<Charge>) callBack);
+            .request_authenticate_for_authorize_transaction(authorize.getId(),callBack);
+
 
   }
 }

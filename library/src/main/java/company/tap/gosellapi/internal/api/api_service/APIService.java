@@ -72,7 +72,7 @@ public interface APIService {
 
 
     @POST(API_Constants.AUTHORIZE +"/"+ API_Constants.AUTHENTICATE + "/{" + API_Constants.AUTHORIZE_ID + "}")
-    Call<Charge> authenticate_authorize_transaction(@Path(API_Constants.AUTHORIZE_ID )String authorizeID, @Body
+    Call<Authorize> authenticate_authorize_transaction(@Path(API_Constants.AUTHORIZE_ID )String authorizeID, @Body
         CreateOTPVerificationRequest createOTPVerificationRequest);
 
 
@@ -80,7 +80,7 @@ public interface APIService {
     Call<Charge> request_authenticate(@Path(API_Constants.CHARGE_ID )String chargeID);
 
     @PUT(API_Constants.AUTHORIZE +"/"+ API_Constants.AUTHENTICATE + "/{" + API_Constants.AUTHORIZE_ID + "}")
-    Call<Charge> request_authenticate_authorization(@Path(API_Constants.AUTHORIZE_ID )String authorizeID);
+    Call<Authorize> request_authenticate_authorization(@Path(API_Constants.AUTHORIZE_ID )String authorizeID);
 
     @POST(API_Constants.PAYMENT_TYPES)
     Call<PaymentOptionsResponse> getPaymentOptions(@Body PaymentOptionsRequest paymentOptionsRequest);

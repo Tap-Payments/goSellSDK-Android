@@ -491,12 +491,11 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
   }
 
   private void finishActivityWithResultCodeOK() {
-    System.out.println("finishActivityWithResultCodeOK ....  ");
     Fragment fragment = getSupportFragmentManager().findFragmentByTag(OTPFullScreenDialog.TAG);
     if(fragment != null)
       getSupportFragmentManager().beginTransaction().remove(fragment).commit();
     LoadingScreenManager.getInstance().closeLoadingScreen();
-    showDialog();
+    closeActivity();
   }
 
   @Override
@@ -523,6 +522,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                 break;
 
               case OTP:
+                System.out.println(" coming charge type is ...  caller didReceiveCharge");
                 PaymentDataManager.getInstance().setChargeOrAuthorize(charge);
                 openOTPScreen(charge);
                 break;
@@ -625,7 +625,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
   public void didReceiveAuthorize(Authorize authorize) {
     System.out.println(" Cards >> didReceiveAuthorize * * * " + authorize);
     if (authorize == null) return;
-    System.out.println(" Cards >> didReceiveCharge * * * " + authorize.getStatus());
+    System.out.println(" Cards >> didReceiveAuthorize * * * " + authorize.getStatus());
 
     switch (authorize.getStatus()) {
       case INITIATED:
@@ -637,8 +637,8 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
               break;
 
             case OTP:
-              PaymentDataManager.getInstance().setChargeOrAuthorize(authorize);
-              openOTPScreen(authorize);
+              PaymentDataManager.getInstance().setChargeOrAuthorize((Authorize)authorize);
+              openOTPScreen((Authorize)authorize);
               break;
           }
         }
@@ -685,103 +685,10 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     }
   }
 
-
-
-
-  private void showDialog(){
-    // show success bar
-    DisplayMetrics displayMetrics = new DisplayMetrics();
-    getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-    int width = displayMetrics.widthPixels;
-    PopupWindow popupWindow;
-    try {
-      LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-      if(inflater!=null){
-        View layout = inflater.inflate(R.layout.charge_status_layout, findViewById(R.id.popup_element));
-        popupWindow = new PopupWindow(layout, width, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-
-        ImageView status_icon = layout.findViewById(R.id.status_icon);
-        TextView statusText = layout.findViewById(R.id.status_text);
-        TextView chargeText = layout.findViewById(R.id.charge_id_txt);
-
-        String msg = "";
-
-        if(chargeOrAuthorize!=null){
-          System.out.println("chargeOrAuthorise.getStatus() : "+chargeOrAuthorize.getStatus());
-
-          switch (chargeOrAuthorize.getStatus()){
-            case CAPTURED:
-            case AUTHORIZED:
-              msg = getString(R.string.payment_status_alert_successful);
-              status_icon.setImageResource(R.drawable.ic_checkmark_normal);
-              break;
-            case FAILED:
-              msg = getString(R.string.payment_status_alert_failed);
-              status_icon.setImageResource(R.drawable.icon_failed);
-              break;
-            case DECLINED:
-              msg = getString(R.string.payment_status_alert_declined);
-              status_icon.setImageResource(R.drawable.icon_failed);
-              break;
-          }
-          chargeText.setText(chargeOrAuthorize.getId());
-        }else{
-          msg = getString(R.string.payment_status_alert_failed);
-          status_icon.setImageResource(R.drawable.icon_failed);
-          chargeText.setText("");
-        }
-
-        statusText.setText(msg);
-
-
-        LinearLayout close_icon_ll = layout.findViewById(R.id.close_icon_ll);
-        close_icon_ll.setOnClickListener(v -> {
-          popupWindow.dismiss();closeActivity();
-        });
-
-        popupWindow.showAtLocation(layout, Gravity.TOP, 0, 50);
-        popupWindow.setAnimationStyle(R.style.Animation);
-
-        setupTimer(popupWindow);
-
-      }
-
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
-  }
-
-  private void setupTimer(PopupWindow popupWindow){
-    // Hide after some seconds
-    final Handler handler  = new Handler();
-    final Runnable runnable = () -> {
-      if (popupWindow.isShowing()) {
-
-        popupWindow.dismiss();
-        closeActivity();
-      }
-    };
-
-    popupWindow.setOnDismissListener(() -> handler.removeCallbacks(runnable));
-
-    handler.postDelayed(runnable, 4000);
-  }
-
 private void closeActivity(){
   setResult(RESULT_OK);
   finish();
 }
-
-//  private void hideSoftKeyBoard(View view) {
-//    try {
-//      InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-//      imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-//    } catch (Exception e) {
-//      e.printStackTrace();
-//      System.out.println("keyboard : " + e.getLocalizedMessage());
-//    }
-//  }
 
 }
 

@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:id="@+id/popup_element"
     android:background="@color/white"
-    android:layout_height="56dp"
+    android:layout_height="60dp"
+    android:padding="1dp"
     >
 
 
