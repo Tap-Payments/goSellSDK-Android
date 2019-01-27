@@ -1,19 +1,11 @@
 package company.tap.gosellapi.internal.activities;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.util.DisplayMetrics;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -21,7 +13,6 @@ import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -98,26 +89,27 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
           @Override
           public void onGlobalLayout() {
             dataSource.setAvailableHeight(fragmentContainer.getHeight());
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
               fragmentContainer.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             else
               fragmentContainer.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+
           }
+
         });
 
     initViews();
   }
 
-
-
   private void initViews() {
     GoSellPaymentOptionsFragment paymentOptionsFragment = GoSellPaymentOptionsFragment
         .newInstance(dataSource);
+
     fragmentManager
         .beginTransaction()
         .replace(R.id.paymentActivityFragmentContainer, paymentOptionsFragment, "CARD")
         .commit();
-
 
     // setup toolbar
     ImageView businessIcon = findViewById(R.id.businessIcon);
@@ -138,24 +130,26 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
             dataSource.getSelectedCurrency().getSymbol(),
             dataSource.getSelectedCurrency().getAmount()));
 
-    payButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        Utils.hideKeyboard(GoSellPaymentActivity.this);
-        if (getSavedCard() != null) {
-          startSavedCardPaymentProcess();
-        } else {
-          startCardPaymentProcess(cardCredentialsViewModel);
-        }
+    payButton.setOnClickListener(v -> {
+      Utils.hideKeyboard(GoSellPaymentActivity.this);
+      if (getSavedCard() != null) {
+        startSavedCardPaymentProcess();
+      } else {
+        startCardPaymentProcess(cardCredentialsViewModel);
       }
     });
 
     // cancel icon
     LinearLayout cancel_payment = findViewById(R.id.cancel_payment);
-    cancel_payment.setOnClickListener(v -> onBackPressed());
+    cancel_payment.setOnClickListener(v ->{
+      setPaymentResult(null);
+      onBackPressed();
+    } );
+
   }
 
 
+  //////////////////////////////////////////////////////////////////////////////////////////////////
   private void setSelectedCard(SavedCard recentItem) {
     this.savedCard = recentItem;
   }
@@ -432,6 +426,11 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
@@ -679,6 +678,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
 
   private void stopPayButtonLoadingView() {
+      LoadingScreenManager.getInstance().closeLoadingScreen();
     if (payButton.getLoadingView() != null) {
       if (payButton.getLoadingView().isShown())
         payButton.getLoadingView().setForceStop(true);

@@ -39,7 +39,7 @@
             android:layout_marginStart="@dimen/margin_basic_16dp"
             android:layout_marginLeft="@dimen/margin_basic_16dp"
             />
-        
+
         <LinearLayout
             android:layout_width="48dp"
             android:layout_height="match_parent"

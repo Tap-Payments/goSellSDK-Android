@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="General">
+
+        <ListPreference
+            android:defaultValue="0"
+            android:dialogTitle="@string/sdkLanguage"
+            android:entries="@array/pref_array_sdk_language_entries"
+            android:entryValues="@array/pref_array_sdk_language_values"
+            android:key="@string/key_sdkLanguage"
+            android:summary="@string/summary_sdk_language"
+            android:title="@string/sdkLanguage" />
+
+
+        <ListPreference
+            android:defaultValue="0"
+            android:dialogTitle="@string/title_sdkMode"
+            android:entries="@array/pref_array_sdk_mode_entries"
+            android:entryValues="@array/pref_array_sdk_mode_values"
+            android:key="@string/key_sdkMode"
+            android:summary="@string/summary_sdk_mode"
+            android:title="@string/title_sdkMode" />
+
+        <ListPreference
+            android:defaultValue="0"
+            android:dialogTitle="@string/title_sdk_appearance_mode"
+            android:entries="@array/pref_array_sdk_appearance_mode_entries"
+            android:entryValues="@array/pref_array_sdk_appearance_mode_values"
+            android:key="@string/key_sdk_appearance_mode"
+            android:summary="@string/summary_sdk_appearance_mode"
+            android:title="@string/title_sdk_appearance_mode" />
+
+
+        <ListPreference
+            android:defaultValue="0"
+            android:dialogTitle="@string/title_sdk_transaction_mode"
+            android:entries="@array/pref_array_sdk_transactions_mode_entries"
+            android:entryValues="@array/pref_array_sdk_transaction_mode_values"
+            android:key="@string/key_sdk_transaction_mode"
+            android:summary="@string/summary_sdk_transaction_mode"
+            android:title="@string/title_sdk_transaction_mode" />
+
+        <ListPreference
+            android:defaultValue="0"
+            android:dialogTitle="@string/title_sdk_transaction_currency"
+            android:entries="@array/pref_array_sdk_transactions_currency_entries"
+            android:entryValues="@array/pref_array_sdk_transaction_currency_values"
+            android:key="@string/key_sdk_transaction_currency"
+            android:summary="@string/summary_sdk_transaction_currency"
+            android:title="@string/title_sdk_transaction_currency" />
+
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory android:title="@string/category_customer_title">
+
+        <Preference android:title="@string/select_customer">
+
+            <intent
+                android:action="SETTING_START_CUSTOMER_ACTIVITY"
+                android:targetPackage="company.tap.sample"
+                android:targetClass="company.tap.sample.activity.CustomerActivity"
+                />
+        </Preference>
+    </PreferenceCategory>
+
+</PreferenceScreen>

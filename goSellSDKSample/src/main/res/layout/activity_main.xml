@@ -7,6 +7,8 @@
     android:background="@color/white"
     tools:context=".MainActivity">
 
+    <include layout="@layout/activity_toolbar"></include>
+
     <company.tap.gosellapi.open.buttons.PayButtonView
         android:id="@+id/payButtonId"
         android:layout_width="match_parent"

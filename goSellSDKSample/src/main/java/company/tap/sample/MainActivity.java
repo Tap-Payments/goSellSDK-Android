@@ -43,9 +43,14 @@ private final int SDK_REQUEST_CODE = 1001;
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
       switch (requestCode){
             case SDK_REQUEST_CODE:
+              if(PaymentProcessDelegate.getInstance().getPaymentResult()!=null)
               showDialog();
                 break;
         }
+    }
+
+    public void openSettings(View view){
+      startActivity(new Intent(this,SettingsActivity.class));
     }
 
 

@@ -23,6 +23,7 @@
     <color name="red">#EE0000</color>
     <color name="separator">#0C000000</color>
     <color name="transparent">#00000000</color>
+    <color name="transparent1">#80000000</color>
 
     <color name="bt_white">#ffffff</color>
     <color name="bt_black">#001129</color>

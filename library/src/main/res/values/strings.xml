@@ -65,4 +65,9 @@
 
   <string name="select_currency_title">Select Currency</string>
 
+
+
+  <string name="key_sdkLanguage">key_sdkLanguage</string>
+  <string name="key_sdk_transaction_mode">key_sdk_transaction_mode</string>
+  <string name="key_sdk_transaction_currency">key_sdk_transaction_currency</string>
 </resources>
