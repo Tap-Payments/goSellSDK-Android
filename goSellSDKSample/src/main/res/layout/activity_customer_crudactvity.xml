@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".activity.CustomerCRUDActivity">
+
+    <include layout="@layout/crud_toolbar"/>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_margin="@dimen/margin_basic_8dp"
+        android:id="@+id/name_il"
+        android:hint="@string/customer_name_hint"
+        app:errorEnabled="true"
+        android:textColorHint="@color/black"
+        app:hintTextAppearance="@style/TextInputLayout.Hint">
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/customer_name"
+            style="@style/EditText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="start"
+            android:inputType="textPersonName"
+            app:backgroundTint="@color/mercury" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_margin="@dimen/margin_basic_8dp"
+        android:id="@+id/middlename_il"
+        android:hint="@string/middle_name_hint"
+        app:errorEnabled="true"
+        android:textColorHint="@color/black"
+        app:hintTextAppearance="@style/TextInputLayout.Hint">
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/middlename"
+            style="@style/EditText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="start"
+            android:inputType="textPersonName"
+            app:backgroundTint="@color/mercury" />
+
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_margin="@dimen/margin_basic_8dp"
+        android:id="@+id/lastname_il"
+        android:hint="@string/last_name_hint"
+        app:errorEnabled="true"
+        android:textColorHint="@color/black"
+        app:hintTextAppearance="@style/TextInputLayout.Hint">
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/lastname"
+            style="@style/EditText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="start"
+            android:inputType="textPersonName"
+            app:backgroundTint="@color/mercury" />
+
+    </android.support.design.widget.TextInputLayout>
+
+
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_margin="@dimen/margin_basic_8dp"
+        android:id="@+id/email_il"
+        android:hint="@string/customer_email_hint"
+        app:errorEnabled="true"
+        android:textColorHint="@color/black"
+        app:hintTextAppearance="@style/TextInputLayout.Hint">
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/customer_email"
+            style="@style/EditText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="start"
+
+            android:inputType="textEmailAddress"
+            app:backgroundTint="@color/mercury" />
+
+    </android.support.design.widget.TextInputLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="@dimen/margin_basic_8dp"
+            android:hint="@string/sdn"
+            android:id="@+id/sdn_il"
+            app:errorEnabled="true"
+            android:textColorHint="@color/black"
+            app:hintTextAppearance="@style/TextInputLayout.Hint">
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/sdn"
+                style="@style/EditText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:digits="0123456789 "
+                android:gravity="start"
+                 android:maxLength="3"
+                android:inputType="phone"
+                app:backgroundTint="@color/mercury" />
+
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_margin="@dimen/margin_basic_8dp"
+            android:hint="@string/customer_phone_hint"
+            android:id="@+id/mobile_il"
+            android:layout_weight="1"
+            app:errorEnabled="true"
+            android:textColorHint="@color/black"
+            app:hintTextAppearance="@style/TextInputLayout.Hint">
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/customer_mobile"
+                style="@style/EditText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:digits="0123456789 "
+                android:gravity="start"
+android:maxLength="8"
+                android:inputType="phone"
+                app:backgroundTint="@color/mercury" />
+
+        </android.support.design.widget.TextInputLayout>
+
+    </LinearLayout>
+
+
+
+
+
+</LinearLayout>

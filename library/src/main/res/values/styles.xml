@@ -1,7 +1,16 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+
     <style name="GoSellSDKAppTheme" parent="Theme.AppCompat.Light">
         <item name="actionBarStyle">@style/GoSellSDKActionBar</item>
     </style>
+
+    <!--<style name="GoSellSDKAppTheme.NoActionBar">-->
+        <!--<item name="windowActionBar">false</item>-->
+        <!--<item name="windowNoTitle">true</item>-->
+        <!--<item name="android:statusBarColor" tools:ignore="NewApi">@color/transparent</item>-->
+        <!---->
+    <!--</style>-->
+
     <style name="GoSellSDKAppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -15,6 +24,7 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
+
 
     <style name="GoSellSDKActionBar">
         <item name="android:background">@color/french_gray_new</item>
@@ -221,6 +231,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
     </style>
+
 
 
 

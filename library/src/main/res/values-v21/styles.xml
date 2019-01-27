@@ -13,6 +13,5 @@
     <item name="windowActionBar">false</item>
     <item name="windowNoTitle">true</item>
     <item name="android:statusBarColor">@color/french_gray</item>
-
   </style>
 </resources>

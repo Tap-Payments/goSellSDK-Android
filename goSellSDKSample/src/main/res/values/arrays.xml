@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pref_upload_quality_entries">
+        <item>360p</item>
+        <item>480p</item>
+        <item>720p</item>
+        <item>1080p</item>
+        <item>Original</item>
+    </string-array>
+    <string-array name="pref_upload_quality_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+
+
+    <string-array name="pref_array_sdk_language_entries">
+        <item>@string/english</item>
+        <item>@string/arabic</item>
+    </string-array>
+
+    <string-array name="pref_array_sdk_language_values">
+        <item>en</item>
+        <item>ar</item>
+    </string-array>
+
+
+
+    <string-array name="pref_array_sdk_mode_entries">
+        <item>@string/Sandbox</item>
+        <item>@string/Production</item>
+    </string-array>
+
+    <string-array name="pref_array_sdk_mode_values">
+        <item>sandbox</item>
+        <item>production</item>
+    </string-array>
+
+
+    <string-array name="pref_array_sdk_appearance_mode_entries">
+        <item>@string/FullScreen</item>
+        <item>@string/WindowMode</item>
+        <item>@string/Default</item>
+    </string-array>
+
+    <string-array name="pref_array_sdk_appearance_mode_values">
+        <item>fullscreen</item>
+        <item>window</item>
+        <item>default</item>
+    </string-array>
+
+    <string-array name="pref_array_sdk_transactions_mode_entries">
+        <item>@string/Payment</item>
+        <item>@string/Authorize</item>
+        <item>@string/SaveCards</item>
+    </string-array>
+
+    <string-array name="pref_array_sdk_transaction_mode_values">
+        <item>PURCHASE</item>
+        <item>AUTHORIZE_CAPTURE</item>
+        <item>SAVE_CARD</item>
+    </string-array>
+
+
+    <string-array name="pref_array_sdk_transactions_currency_entries">
+        <item>@string/aed</item>
+        <item>@string/bhd</item>
+        <item>@string/egp</item>
+        <item>@string/eur</item>
+        <item>@string/gbp</item>
+        <item>@string/kwd</item>
+        <item>@string/omr</item>
+        <item>@string/qr</item>
+        <item>@string/sr</item>
+        <item>@string/usd</item>
+    </string-array>
+
+    <string-array name="pref_array_sdk_transaction_currency_values">
+        <item>aed</item>
+        <item>bhd</item>
+        <item>egp</item>
+        <item>eur</item>
+        <item>gbp</item>
+        <item>kwd</item>
+        <item>omr</item>
+        <item>qr</item>
+        <item>sr</item>
+        <item>usd</item>
+    </string-array>
+
+
+
+
+
+
+</resources>

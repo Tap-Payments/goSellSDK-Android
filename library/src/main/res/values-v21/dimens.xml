@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <dimen name="cancel_icon_width">20dp</dimen>
-  <dimen name="cancel_icon_height">20dp</dimen>
+  <dimen name="cancel_icon_width">17dp</dimen>
+  <dimen name="cancel_icon_height">17dp</dimen>
 </resources>
