@@ -15,6 +15,10 @@ public enum ChargeStatus {
     @SerializedName("VOID")         VOID,
 
 
+    @SerializedName("VALID")        VALID,
+    @SerializedName("INVALID")      INVALID,
+
+
 
 
     @SerializedName("AUTHORIZED")   AUTHORIZED,

@@ -5,7 +5,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".internal.activities.TransparentActivity"
     android:id="@+id/transparent_view"
     android:theme="@style/FullScreenDialogStyle"
     >
@@ -16,7 +15,6 @@
       android:layout_centerInParent="true"
       android:id="@+id/centerLL"
       android:orientation="vertical"
-      android:theme="@style/FullScreenDialogStyle"
       ></LinearLayout>
 
 

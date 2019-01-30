@@ -179,7 +179,10 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
 
         trx_curr = pref.getString(context.getString(R.string.key_sdk_transaction_currency), "");
-        this.currency = new TapCurrency(trx_curr);
+        if(trx_curr!=null  && !"".equalsIgnoreCase(trx_curr.trim()) )
+              this.currency = new TapCurrency(trx_curr);
+        else
+            this.currency = new TapCurrency("kwd");
 
         trx_mode = pref.getString(context.getString(R.string.key_sdk_transaction_mode), "");
 
@@ -204,7 +207,7 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
         // check if customer id is in pref.
         System.out.println("preparing data source with customer ref :" + paymentResultDataManager.getCustomerRef(context));
 
-        System.out.println(" customers list size : " + customersList.size());
+
 
         if (customersList != null) {
             this.customer =

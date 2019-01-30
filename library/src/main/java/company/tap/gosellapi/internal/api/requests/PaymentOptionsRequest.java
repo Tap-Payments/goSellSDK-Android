@@ -75,6 +75,11 @@ public final class PaymentOptionsRequest {
         }
     }
 
+    @NonNull
+    public TransactionMode getTransactionMode() {
+        return transactionMode;
+    }
+
     public String getPaymentOptionRequestInfo(){
         return
             "trx_mode : " + this.transactionMode + " /n " +

@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.os.Parcelable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.widget.TextViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -36,6 +37,7 @@ import company.tap.gosellapi.internal.data_managers.payment_options.view_models.
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models_data.CardCredentialsViewModelData;
 import company.tap.gosellapi.internal.utils.ActivityDataExchanger;
 import company.tap.gosellapi.internal.utils.CardType;
+import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.tapcardvalidator_android.CardBrand;
 import company.tap.tapcardvalidator_android.CardValidationState;
 import company.tap.tapcardvalidator_android.CardValidator;
@@ -239,6 +241,14 @@ public class CardCredentialsViewHolder
         saveCardLayout = itemView.findViewById(R.id.saveCardContainer);
         saveCardDescriptionTextView = itemView.findViewById(R.id.saveCardDescriptionTextView);
         saveCardSwitch = itemView.findViewById(R.id.saveCardSwitch);
+
+        if(PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode() == TransactionMode.SAVE_CARD){
+            saveCardSwitch.setVisibility(View.GONE);
+            saveCardDescriptionTextView.setText(itemView.getResources().getString(R.string.textview_disclaimer_save_card_info));
+//            saveCardDescriptionTextView.setTextSize(12);
+            TextViewCompat.setTextAppearance(saveCardDescriptionTextView,R.style.SecurityText);
+        }
+
 
 /////////////////////////////////////////////////// SETUP CARD PAYMENT OPTIONS START ///////////////////////////////////////////////////////
         initCardSystemsRecyclerView(getPaymentOption());

@@ -3,6 +3,7 @@ package company.tap.gosellapi.internal.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.Menu;
 import android.view.View;
 import android.webkit.WebResourceError;
@@ -19,9 +20,11 @@ import company.tap.gosellapi.internal.api.models.Authenticate;
 import company.tap.gosellapi.internal.api.models.Authorize;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
+import company.tap.gosellapi.internal.api.models.SaveCard;
 import company.tap.gosellapi.internal.data_managers.LoadingScreenManager;
 import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.WebPaymentViewModel;
+import company.tap.gosellapi.internal.exceptions.TransactionModeException;
 import company.tap.gosellapi.internal.interfaces.IPaymentProcessListener;
 import company.tap.gosellapi.internal.utils.ActivityDataExchanger;
 import company.tap.gosellapi.open.delegate.PaymentProcessDelegate;
@@ -114,7 +117,7 @@ public class WebPaymentActivity extends BaseActionBarActivity implements IPaymen
       System.out.println(" shouldOverrideUrlLoading : decision : " + shouldOverride);
       if (shouldOverride) { // if decision is true and response has TAP_ID
         // call backend to get charge response >> based of charge object type [Authorize - Charge] call retrieveCharge / retrieveAuthorize
-        PaymentDataManager.getInstance().retrieveChargeOrAuthorizeAPI(getChargeOrAuthorize());
+        PaymentDataManager.getInstance().retrieveChargeOrAuthorizeOrSaveCardAPI(getChargeOrAuthorize());
       }
       return shouldOverride;
     }
@@ -159,6 +162,16 @@ public class WebPaymentActivity extends BaseActionBarActivity implements IPaymen
       }
     }
     obtainPaymentURLFromChargeOrAuthorize(charge);
+  }
+
+  @Override
+  public void didReceiveSaveCard(@NonNull SaveCard saveCard) {
+    System.out.println(" didReceiveSaveCard() not available in case of WebPayment ");
+  }
+
+  @Override
+  public void didCardSavedBefore() {
+    System.out.println(" didCardSavedBefore() not available in case of WebPayment ");
   }
 
   public static Intent getDismissIntent(int notificationId, Context context) {

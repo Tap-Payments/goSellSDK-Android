@@ -15,9 +15,12 @@ import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.enums.AuthenticationType;
 import company.tap.gosellapi.internal.api.enums.ExtraFeesStatus;
 import company.tap.gosellapi.internal.api.enums.PaymentType;
+import company.tap.gosellapi.internal.api.models.Card;
 import company.tap.gosellapi.internal.api.models.CreateTokenSavedCard;
+import company.tap.gosellapi.internal.api.models.SaveCard;
 import company.tap.gosellapi.internal.api.models.SavedCard;
 import company.tap.gosellapi.internal.api.requests.CreateOTPVerificationRequest;
+import company.tap.gosellapi.internal.api.requests.CreateSaveCardRequest;
 import company.tap.gosellapi.internal.api.requests.CreateTokenWithExistingCardDataRequest;
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.RecentSectionViewModel;
@@ -284,7 +287,7 @@ final class PaymentProcessManager {
             .getSourceId());
     SourceRequest source = new SourceRequest(paymentOption.getSourceId());
 
-    callChargeOrAuthorizeAPI(source, paymentOption, null, null);
+      callChargeOrAuthorizeOrSaveCardAPI(source, paymentOption, null, null);
   }
 
 
@@ -316,11 +319,21 @@ final class PaymentProcessManager {
 
       @Override
       public void onSuccess(int responseCode, Token serializedResponse) {
-        System.out
-            .println("startPaymentProcessWithCard >> serializedResponse: " + serializedResponse);
-        SourceRequest source = new SourceRequest(serializedResponse);
-        callChargeOrAuthorizeAPI(source, paymentOption, serializedResponse.getCard().getFirstSix(),
-            saveCard);
+
+          System.out.println("startPaymentProcessWithCard >> serializedResponse: " + responseCode);
+          System.out.println("startPaymentProcessWithCard >> transaction mode: " +
+          PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode());
+
+        if(PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode() == TransactionMode.SAVE_CARD
+                || saveCard) {
+            if(isCardSavedBefore(serializedResponse.getCard().getFingerprint())){
+                fireCardSavedBeforeDialog();
+                return;
+            }
+        }
+            SourceRequest source = new SourceRequest(serializedResponse);
+            callChargeOrAuthorizeOrSaveCardAPI(source, paymentOption, serializedResponse.getCard().getFirstSix(),
+                    saveCard);
       }
 
       @Override
@@ -331,6 +344,30 @@ final class PaymentProcessManager {
     });
   }
 
+
+  private void fireCardSavedBeforeDialog(){
+      String title = "Save Card";
+      String message = "Your card has been saved before, you can not save it twice!";
+
+      DialogManager.getInstance().showDialog(title, message, "OK", null, new DialogManager.DialogResult() {
+          @Override
+          public void dialogClosed(boolean positiveButtonClicked) {
+              PaymentDataManager.getInstance().fireCardSavedBeforeListener();
+          }
+      });
+  }
+
+  private boolean isCardSavedBefore(@NonNull  String fingerprint){
+      ArrayList<SavedCard> cards =  PaymentDataManager.getInstance().getPaymentOptionsDataManager().getPaymentOptionsResponse().getCards();
+      System.out.println(" cards list check size :" +cards.size());
+      if(cards == null || cards.size()==0) return  false;
+
+      for(SavedCard card: cards){
+          System.out.println(" cards list check fingerprint :"+ fingerprint +"  >>> savedcard finger:"+card.getFingerprint());
+          if(card.getFingerprint().equals(fingerprint)) return true;
+      }
+      return  false;
+  }
 
   /////////////////////////////////////////////////////////  Saved Card Payment process ////////////////////////////
 
@@ -361,7 +398,7 @@ final class PaymentProcessManager {
       public void onSuccess(int responseCode, Token serializedResponse) {
         System.out.println("startPaymentProcessWithSavedCard >> serializedResponse: " + serializedResponse);
         SourceRequest source = new SourceRequest(serializedResponse);
-        callChargeOrAuthorizeAPI(source, paymentOption, serializedResponse.getCard().getFirstSix(), saveCard);
+          callChargeOrAuthorizeOrSaveCardAPI(source, paymentOption, serializedResponse.getCard().getFirstSix(), saveCard);
       }
 
       @Override
@@ -373,9 +410,9 @@ final class PaymentProcessManager {
 
 
   private void closePaymentWithError(GoSellError goSellError){
-    handleChargeOrAuthorizeResponse(null, goSellError);
+      handleChargeOrAuthorizeOrSaveCardResponse(null, goSellError);
   }
-  private void callChargeOrAuthorizeAPI(@NonNull SourceRequest source,
+  private void callChargeOrAuthorizeOrSaveCardAPI(@NonNull SourceRequest source,
                                         @NonNull PaymentOption paymentOption,
                                         @Nullable String cardBIN, @Nullable Boolean saveCard) {
 
@@ -435,13 +472,13 @@ final class PaymentProcessManager {
           @Override
           public void onSuccess(int responseCode, Charge serializedResponse) {
 
-            handleChargeOrAuthorizeResponse(serializedResponse, null);
+              handleChargeOrAuthorizeOrSaveCardResponse(serializedResponse, null);
           }
 
           @Override
           public void onFailure(GoSellError errorDetails) {
 
-            handleChargeOrAuthorizeResponse(null, errorDetails);
+              handleChargeOrAuthorizeOrSaveCardResponse(null, errorDetails);
           }
         });
 
@@ -475,58 +512,114 @@ final class PaymentProcessManager {
             .createAuthorize(authorizeRequest, new APIRequestCallback<Authorize>() {
               @Override
               public void onSuccess(int responseCode, Authorize serializedResponse) {
-                handleChargeOrAuthorizeResponse(serializedResponse, null);
+                  handleChargeOrAuthorizeOrSaveCardResponse(serializedResponse, null);
               }
 
               @Override
               public void onFailure(GoSellError errorDetails) {
 
-                handleChargeOrAuthorizeResponse(null, errorDetails);
+                  handleChargeOrAuthorizeOrSaveCardResponse(null, errorDetails);
               }
             });
+        break;
+
+        case SAVE_CARD:
+            CreateSaveCardRequest saveCardRequest = new CreateSaveCardRequest(
+                    amountedCurrency.getCurrency(),
+                    customer,
+                    order,
+                    redirect,
+                    post,
+                    source,
+                    paymentDescription,
+                    paymentMetadata,
+                    reference,
+                    shouldSaveCard,
+                    statementDescriptor,
+                    require3DSecure,
+                    receipt,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+            );
+
+            GoSellAPI.getInstance().createSaveCard(saveCardRequest, new APIRequestCallback<SaveCard>() {
+                @Override
+                public void onSuccess(int responseCode, SaveCard serializedResponse) {
+
+                    handleChargeOrAuthorizeOrSaveCardResponse(serializedResponse, null);
+                }
+
+                @Override
+                public void onFailure(GoSellError errorDetails) {
+
+                    handleChargeOrAuthorizeOrSaveCardResponse(null, errorDetails);
+                }
+            });
+
+            break;
     }
   }
 
-  private void handleChargeOrAuthorizeResponse(@Nullable Charge chargeOrAuthorize,
+  private void handleChargeOrAuthorizeOrSaveCardResponse(@Nullable Charge chargeOrAuthorizeOrSave,
                                                @Nullable GoSellError error) {
-    System.out.println("handleChargeOrAuthorizeResponse >>  chargeOrAuthorize : "+chargeOrAuthorize);
-    System.out.println("handleChargeOrAuthorizeResponse >>  error : "+error);
-    if (chargeOrAuthorize != null) {
 
-      if (chargeOrAuthorize instanceof Authorize) {
+    if (chargeOrAuthorizeOrSave != null) {
+        System.out.println("handleChargeOrAuthorizeResponse >>  chargeOrAuthorize : "+ chargeOrAuthorizeOrSave.getStatus());
 
-        getProcessListener().didReceiveAuthorize((Authorize) chargeOrAuthorize);
-      } else {
+      if (chargeOrAuthorizeOrSave instanceof Authorize) {
+        getProcessListener().didReceiveAuthorize((Authorize) chargeOrAuthorizeOrSave);
 
-        getProcessListener().didReceiveCharge(chargeOrAuthorize);
+      } else if(chargeOrAuthorizeOrSave instanceof SaveCard){
+        getProcessListener().didReceiveSaveCard((SaveCard) chargeOrAuthorizeOrSave);
+
+      }
+      else
+      {
+          getProcessListener().didReceiveCharge(chargeOrAuthorizeOrSave);
       }
     } else {
-      getProcessListener().didReceiveError(error);
+        System.out.println("handleChargeOrAuthorizeResponse >>  error : "+error);
+        getProcessListener().didReceiveError(error);
     }
   }
 
-
-  <T extends Charge> void retrieveChargeOrAuthorizeAPI(T chargeOrAuthorize) {
+    /**
+     * verify
+     * @param chargeOrAuthorizeOrSaveCard
+     * @param <T>
+     */
+  <T extends Charge> void retrieveChargeOrAuthorizeOrSaveCardAPI(T chargeOrAuthorizeOrSaveCard) {
     APIRequestCallback<T> callBack = new APIRequestCallback<T>() {
       @Override
       public void onSuccess(int responseCode, T serializedResponse) {
-        System.out.println(" retrieveChargeOrAuthorizeAPI >>> " + responseCode);
-        System.out.println(" retrieveChargeOrAuthorizeAPI >>> " + serializedResponse.getStatus());
-        System.out.println(" retrieveChargeOrAuthorizeAPI >>> " + serializedResponse.getResponse().getMessage());
-        handleChargeOrAuthorizeResponse(serializedResponse, null);
+        System.out.println(" retrieveChargeOrAuthorizeOrSaveCardAPI >>> " + responseCode);
+        if(serializedResponse!=null) System.out.println(" retrieveChargeOrAuthorizeOrSaveCardAPI >>> " + serializedResponse.getId());
+       // System.out.println(" retrieveChargeOrAuthorizeOrSaveCardAPI >>> " + serializedResponse.getResponse().getMessage());
+          handleChargeOrAuthorizeOrSaveCardResponse(serializedResponse, null);
       }
 
       @Override
       public void onFailure(GoSellError errorDetails) {
-
+          if(errorDetails!=null)
+          System.out.println("retrieveChargeOrAuthorizeOrSaveCardAPI : onFailure >>> "+ errorDetails.getErrorBody());
       }
     };
-    if (chargeOrAuthorize instanceof Authorize)
+
+    if (chargeOrAuthorizeOrSaveCard instanceof Authorize)
       GoSellAPI.getInstance()
-          .retrieveAuthorize(chargeOrAuthorize.getId(), (APIRequestCallback<Authorize>) callBack);
+          .retrieveAuthorize(chargeOrAuthorizeOrSaveCard.getId(), (APIRequestCallback<Authorize>) callBack);
+
+    else if (chargeOrAuthorizeOrSaveCard  instanceof SaveCard) {
+        GoSellAPI.getInstance()
+                .retrieveSaveCard(chargeOrAuthorizeOrSaveCard.getId(), (APIRequestCallback<SaveCard>) callBack);
+        System.out.println("#################### saveCardId 1 :"+ chargeOrAuthorizeOrSaveCard.getId());
+    }
     else
-    GoSellAPI.getInstance()
-        .retrieveCharge(chargeOrAuthorize.getId(), (APIRequestCallback<Charge>) callBack);
+        GoSellAPI.getInstance()
+                .retrieveCharge(chargeOrAuthorizeOrSaveCard.getId(), (APIRequestCallback<Charge>) callBack);
   }
 
 
@@ -540,13 +633,13 @@ final class PaymentProcessManager {
       @Override
       public void onSuccess(int responseCode, Charge serializedResponse) {
         System.out.println(" confirmChargeOTPCode >>> " + serializedResponse.getResponse().getMessage());
-        handleChargeOrAuthorizeResponse(serializedResponse, null);
+          handleChargeOrAuthorizeOrSaveCardResponse(serializedResponse, null);
       }
 
       @Override
       public void onFailure(GoSellError errorDetails) {
         System.out.println(" confirmChargeOTPCode >>> error : "+ errorDetails.getErrorBody());
-        handleChargeOrAuthorizeResponse(null,errorDetails);
+          handleChargeOrAuthorizeOrSaveCardResponse(null,errorDetails);
       }
     };
 
@@ -560,13 +653,13 @@ final class PaymentProcessManager {
       @Override
       public void onSuccess(int responseCode, Authorize serializedResponse) {
         System.out.println(" confirmAuthorizeOTPCode >>> " + serializedResponse.getResponse().getMessage());
-        handleChargeOrAuthorizeResponse(serializedResponse, null);
+          handleChargeOrAuthorizeOrSaveCardResponse(serializedResponse, null);
       }
 
       @Override
       public void onFailure(GoSellError errorDetails) {
         System.out.println(" confirmAuthorizeOTPCode >>> error : "+ errorDetails.getErrorBody());
-        handleChargeOrAuthorizeResponse(null,errorDetails);
+          handleChargeOrAuthorizeOrSaveCardResponse(null,errorDetails);
       }
     };
 
@@ -585,13 +678,13 @@ final class PaymentProcessManager {
         System.out.println(" resendChargeOTPCode >>> inside call back type "+serializedResponse.getClass());
         System.out.println(" resendChargeOTPCode >>> " + serializedResponse.getResponse().getMessage());
         System.out.println(" resendChargeOTPCode >>> " + serializedResponse.getAuthenticate().getValue());
-        handleChargeOrAuthorizeResponse(serializedResponse, null);
+          handleChargeOrAuthorizeOrSaveCardResponse(serializedResponse, null);
       }
 
       @Override
       public void onFailure(GoSellError errorDetails) {
         System.out.println(" resendChargeOTPCode >>> error : "+ errorDetails.getErrorBody());
-        handleChargeOrAuthorizeResponse(null,errorDetails);
+          handleChargeOrAuthorizeOrSaveCardResponse(null,errorDetails);
       }
     };
 
@@ -612,13 +705,13 @@ final class PaymentProcessManager {
           System.out.println(" resendAuthorizeOTPCode >>> inside call back type "+serializedResponse.getClass());
           System.out.println(" resendAuthorizeOTPCode >>> " + serializedResponse.getResponse().getMessage());
           System.out.println(" resendAuthorizeOTPCode >>> " + serializedResponse.getAuthenticate().getValue());
-          handleChargeOrAuthorizeResponse(serializedResponse, null);
+            handleChargeOrAuthorizeOrSaveCardResponse(serializedResponse, null);
         }
 
         @Override
         public void onFailure(GoSellError errorDetails) {
           System.out.println(" resendAuthorizeOTPCode >>> error : "+ errorDetails.getErrorBody());
-          handleChargeOrAuthorizeResponse(null,errorDetails);
+            handleChargeOrAuthorizeOrSaveCardResponse(null,errorDetails);
         }
       };
     System.out.println(" resendAuthorizeOTPCode >>> before call back type " + (authorize.getClass()));

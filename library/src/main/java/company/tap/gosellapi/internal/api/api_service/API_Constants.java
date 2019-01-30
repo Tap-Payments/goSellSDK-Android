@@ -23,6 +23,11 @@ final class API_Constants {
     static final String CHARGES = "charges";
     static final String CHARGE_ID = "charge_id";
 
+
+    static final String SAVE_CARD="card/verify";
+    static final String SAVE_CARD_ID="verify_id";
+
+
     static final String AUTHENTICATE="authenticate";
 
     static final String BIN = "bin";

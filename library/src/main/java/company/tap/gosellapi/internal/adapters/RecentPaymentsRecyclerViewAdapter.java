@@ -20,6 +20,8 @@ import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.Constants;
 import company.tap.gosellapi.internal.api.models.Card;
 import company.tap.gosellapi.internal.api.models.SavedCard;
+import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
+import company.tap.gosellapi.open.enums.TransactionMode;
 
 public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<RecentPaymentsRecyclerViewAdapter.RecentPaymentsViewHolder> {
 
@@ -138,6 +140,9 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
 
         @Override
         public void onClick(View v) {
+
+            if(PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode()== TransactionMode.SAVE_CARD)return;
+
             RecentPaymentsRecyclerViewAdapter.this.setFocused(position);
             listener.recentPaymentItemClicked(position);
         }

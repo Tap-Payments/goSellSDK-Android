@@ -12,6 +12,7 @@ import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.enums.PaymentType;
 import company.tap.gosellapi.internal.api.enums.Permission;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
+import company.tap.gosellapi.internal.api.models.SaveCard;
 import company.tap.gosellapi.internal.api.models.SavedCard;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.CardCredentialsViewModel;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.RecentSectionViewModel;
@@ -113,6 +114,10 @@ public final class PaymentDataManager {
     return cardBrands;
   }
 
+  public void fireCardSavedBeforeListener() {
+    getProcessListener().didCardSavedBefore();
+  }
+
   /////////////////////////////////////////    ########### Start of Singleton section ##################
 
   /**
@@ -199,8 +204,8 @@ public final class PaymentDataManager {
   }
 
 
-  public void retrieveChargeOrAuthorizeAPI(Charge chargeOrAuthorize) {
-    getPaymentProcessManager().retrieveChargeOrAuthorizeAPI(chargeOrAuthorize);
+  public void retrieveChargeOrAuthorizeOrSaveCardAPI(Charge chargeOrAuthorize) {
+    getPaymentProcessManager().retrieveChargeOrAuthorizeOrSaveCardAPI(chargeOrAuthorize);
   }
 
 
@@ -403,11 +408,27 @@ public final class PaymentDataManager {
     }
 
     @Override
+    public void didReceiveSaveCard(SaveCard saveCard) {
+      for(IPaymentProcessListener listener: getListeners()){
+        listener.didReceiveSaveCard(saveCard);
+      }
+    }
+
+    @Override
     public void didReceiveError(GoSellError error) {
 
       for (IPaymentProcessListener listener : getListeners()) {
 
         listener.didReceiveError(error);
+      }
+    }
+
+
+    @Override
+    public void didCardSavedBefore() {
+      for (IPaymentProcessListener listener : getListeners()) {
+
+        listener.didCardSavedBefore();
       }
     }
 

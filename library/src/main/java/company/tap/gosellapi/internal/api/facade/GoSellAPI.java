@@ -8,9 +8,11 @@ import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.models.Authorize;
 import company.tap.gosellapi.internal.api.models.Charge;
+import company.tap.gosellapi.internal.api.models.SaveCard;
 import company.tap.gosellapi.internal.api.requests.CreateAuthorizeRequest;
 import company.tap.gosellapi.internal.api.requests.CreateOTPRequest;
 import company.tap.gosellapi.internal.api.requests.CreateOTPVerificationRequest;
+import company.tap.gosellapi.internal.api.requests.CreateSaveCardRequest;
 import company.tap.gosellapi.internal.api.requests.CreateTokenWithCardDataRequest;
 import company.tap.gosellapi.internal.api.requests.CreateTokenWithExistingCardDataRequest;
 import company.tap.gosellapi.internal.api.requests.PaymentOptionsRequest;
@@ -51,9 +53,22 @@ public final class GoSellAPI {
         requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.createCharge(createChargeRequest), requestCallback));
     }
 
+
+    public void createSaveCard(final CreateSaveCardRequest createSaveCardRequest, final APIRequestCallback<SaveCard> requestCallback) {
+        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.createSaveCard(createSaveCardRequest), requestCallback));
+    }
+
+
     public void retrieveCharge(final String chargeId, final APIRequestCallback<Charge> requestCallback) {
         requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.retrieveCharge(chargeId), requestCallback));
     }
+
+    public void retrieveSaveCard(final String saveCardId,final APIRequestCallback<SaveCard> requestCallback){
+        System.out.println("#################### saveCardId :"+saveCardId);
+        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.retrieveSaveCard(saveCardId),requestCallback));
+    }
+
+
 
     public void createAuthorize(final CreateAuthorizeRequest createAuthorizeRequest, final APIRequestCallback<Authorize> requestCallback) {
 

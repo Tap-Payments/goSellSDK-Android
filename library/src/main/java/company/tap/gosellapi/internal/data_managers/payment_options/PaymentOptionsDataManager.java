@@ -26,6 +26,7 @@ import company.tap.gosellapi.internal.data_managers.payment_options.view_models_
 import company.tap.gosellapi.internal.utils.ActivityDataExchanger;
 import company.tap.gosellapi.internal.utils.CompoundFilter;
 import company.tap.gosellapi.internal.utils.Utils;
+import company.tap.gosellapi.open.enums.TransactionMode;
 import io.card.payment.CreditCard;
 
 public class PaymentOptionsDataManager {
@@ -397,32 +398,19 @@ public class PaymentOptionsDataManager {
 
 //      ArrayList<PaymentOption> paymentOptions = getPaymentOptionsResponse().getPaymentOptions();
       ArrayList<PaymentOption> paymentOptionsWorker = new ArrayList<>(getPaymentOptionsResponse().getPaymentOptions());
-//      paymentOptionsWorker = (ArrayList<PaymentOption>)getPaymentOptionsResponse().getPaymentOptions().clone();
 
 
       System.out.println("/////////////////////  get web/card payment options   ///////////////");
       /**
        * Haitham Sheshtawy 20/12/2018
-       * I need to test Java 8 way of filtering collection against old Utils filter method
-       * Just Test >>> and I can't apply it now because Java 8 stream only works starting from API 24+
+       * Java 8 way of filtering collection against old Utils filter method
+       * Just Test >>> can't apply it now because Java 8 stream only works starting from API 24+
        * and our project minSDK = 15
        */
-      // 1- Utils filter
+
       ArrayList<PaymentOption> webPaymentOptions = Utils.List
           .filter(paymentOptionsWorker, getPaymentOptionsFilter(PaymentType.WEB));
-//            System.out.println("$$$$$$$$$$$$$$$$         Utils filter result                  $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ ");
-//            for(PaymentOption paymentOption: webPaymentOptions){
-//                System.out.println(paymentOption.getName());
-//            }
-//            // 2- Java 8 stream method
-//            List<PaymentOption> paymentOptions1 = paymentOptions.stream()
-//                                                                      .filter(p -> p.getPaymentType() == PaymentType.WEB)
-//                                                                     .collect(Collectors.toList());
-//            System.out.println("$$$$$$$$$$$$$$$$         Java 8 stream filter result   "+paymentOptions1.size()+"               $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ ");
-//            for(PaymentOption paymentOption: paymentOptions1){
-//                System.out.println(paymentOption.getName());
-//            }
-//            System.out.println( "////////////////////////////////////////////////////////////////////////////////////////////////////////");
+
       ArrayList<PaymentOption> cardPaymentOptions = Utils.List
           .filter(paymentOptionsWorker, getPaymentOptionsFilter(PaymentType.CARD));
 
@@ -480,8 +468,13 @@ public class PaymentOptionsDataManager {
       ArrayList<PaymentOption> paymentOptionsWorker= new ArrayList<>(getPaymentOptionsResponse().getPaymentOptions());
       ArrayList<SavedCard> savedCardsWorker = new ArrayList<>(getPaymentOptionsResponse().getCards());
       ArrayList<PaymentOptionViewModel> viewModelResult = new ArrayList<>();
-      CurrencyViewModel model = findCurrencyModel();
-      viewModelResult.add(model);
+
+      if(PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode() != TransactionMode.SAVE_CARD)
+      {
+        CurrencyViewModel model = findCurrencyModel();
+        viewModelResult.add(model);
+      }
+
 
       ArrayList<SavedCard> savedCards = filterByCurrenciesAndSortList(savedCardsWorker, currency);
 

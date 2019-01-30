@@ -3,8 +3,10 @@ package company.tap.sample;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
@@ -24,18 +26,24 @@ import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.open.buttons.PayButtonView;
 import company.tap.gosellapi.open.controllers.PayButton;
 import company.tap.gosellapi.open.delegate.PaymentProcessDelegate;
+import company.tap.gosellapi.open.enums.TransactionMode;
 
 
 public class MainActivity extends AppCompatActivity {
 private final int SDK_REQUEST_CODE = 1001;
+private PayButton payButton;
+private PayButtonView payButtonView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        PayButton payButton = new PayButton();
-        PayButtonView payButtonView = findViewById(R.id.payButtonId);
+         payButton = new PayButton();
+         payButtonView = findViewById(R.id.payButtonId);
         payButton.setButtonView(payButtonView,this,SDK_REQUEST_CODE);
+
+      setupPayButton();
 
     }
 
@@ -47,13 +55,37 @@ private final int SDK_REQUEST_CODE = 1001;
               showDialog();
                 break;
         }
+      setupPayButton();
     }
 
     public void openSettings(View view){
       startActivity(new Intent(this,SettingsActivity.class));
     }
 
+  @Override
+  protected void onResume() {
+    super.onResume();
+    setupPayButton();
+  }
 
+  @Override
+  protected void onRestart() {
+    super.onRestart();
+    setupPayButton();
+  }
+
+  private void setupPayButton(){
+    SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+    String trx_mode = pref.getString(getString(company.tap.gosellapi.R.string.key_sdk_transaction_mode), "");
+
+    if ("SAVE_CARD".equalsIgnoreCase(trx_mode)) {
+        payButtonView.getPayButton().setText(getString(R.string.save_card));
+    }
+    else {
+      payButtonView.getPayButton().setText(getString(R.string.pay));
+    }
+
+  }
 
   private void showDialog(){
     // show success bar
