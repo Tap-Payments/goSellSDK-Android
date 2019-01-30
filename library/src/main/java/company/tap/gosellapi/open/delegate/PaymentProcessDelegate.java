@@ -31,8 +31,8 @@ public class PaymentProcessDelegate implements company.tap.gosellapi.open.interf
 
   @NonNull
   @Override
-  public void setPaymentResult(Charge _chargeOrAuthorize) {
-   chargeOrAuthorize = _chargeOrAuthorize;
+  public void setPaymentResult(Charge _chargeOrAuthorizeOrSaveCard) {
+   chargeOrAuthorize = _chargeOrAuthorizeOrSaveCard;
   }
 
   @NonNull
@@ -41,12 +41,12 @@ public class PaymentProcessDelegate implements company.tap.gosellapi.open.interf
     return chargeOrAuthorize;
   }
 
-  public void setCustomerID(Charge chargeOrAuthorize,Context context) {
-    if(chargeOrAuthorize!=null){
-      if(chargeOrAuthorize instanceof Charge){
-        System.out.println(" customer id after charge authorized :" + chargeOrAuthorize.getCustomer().getIdentifier());
+  public void setCustomerID(Charge chargeOrAuthorizeOrSaveCard,Context context) {
+    if(chargeOrAuthorizeOrSaveCard!=null){
+      if(chargeOrAuthorizeOrSaveCard instanceof Charge){
+        System.out.println(" customer id after charge or authorized or save card :" + chargeOrAuthorizeOrSaveCard.getCustomer().getIdentifier());
         PaymentResultDataManager paymentResultDataManager = PaymentResultDataManager.getInstance();
-        paymentResultDataManager.saveCustomerReference(chargeOrAuthorize.getCustomer().getIdentifier(),context);
+        paymentResultDataManager.saveCustomerReference(chargeOrAuthorizeOrSaveCard.getCustomer().getIdentifier(),context);
       }
     }
   }

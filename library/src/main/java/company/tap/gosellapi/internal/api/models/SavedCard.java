@@ -64,6 +64,19 @@ public class SavedCard implements Comparable<SavedCard>, CurrenciesSupport {
 
     @SerializedName("image")
     @Nullable private String image;
+
+    @SerializedName("fingerprint")
+    @NonNull private String fingerprint;
+
+
+    /**
+     * @return Card fingerprint
+     */
+    @NonNull
+    public String getFingerprint() {
+        return fingerprint;
+    }
+
     /**
      * @return Card identifier.
      */

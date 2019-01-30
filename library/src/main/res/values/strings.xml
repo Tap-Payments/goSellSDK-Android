@@ -34,6 +34,8 @@
   <string name="textview_title_personal_info">Your Personal Info</string>
 
   <string name="textview_disclaimer_save_card">For faster and more secure checkout, save your card</string>
+  <string name="textview_disclaimer_save_card_info">Saved cards will only be used with your approval, you can remove them at any time.</string>
+
   <string name="textview_disclaimer_otp_sent_number">Please enter the OTP that has been sent to </string>
   <string name="textview_disclaimer_go_pay_checkouts">By enabling goPay, your card details will be saved with Tap Payments in order for you to get faster and more secure checkouts in multiple apps and websites</string>
 
@@ -70,4 +72,6 @@
   <string name="key_sdkLanguage">key_sdkLanguage</string>
   <string name="key_sdk_transaction_mode">key_sdk_transaction_mode</string>
   <string name="key_sdk_transaction_currency">key_sdk_transaction_currency</string>
+  <string name="key_sdk_appearance_mode">key_sdk_appearance_mode</string>
+  <string name="save_card">Save Card</string>
 </resources>

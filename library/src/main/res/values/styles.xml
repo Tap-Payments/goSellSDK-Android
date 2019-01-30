@@ -1,16 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-
     <style name="GoSellSDKAppTheme" parent="Theme.AppCompat.Light">
         <item name="actionBarStyle">@style/GoSellSDKActionBar</item>
     </style>
-
-    <!--<style name="GoSellSDKAppTheme.NoActionBar">-->
-        <!--<item name="windowActionBar">false</item>-->
-        <!--<item name="windowNoTitle">true</item>-->
-        <!--<item name="android:statusBarColor" tools:ignore="NewApi">@color/transparent</item>-->
-        <!---->
-    <!--</style>-->
-
     <style name="GoSellSDKAppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -25,10 +16,23 @@
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
-
     <style name="GoSellSDKActionBar">
         <item name="android:background">@color/french_gray_new</item>
     </style>
+
+
+
+    <style name="GoSellSDKAppTheme_Full" parent="GoSellSDKAppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor" tools:ignore="NewApi">@color/french_gray</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+
+
 
     <style name="TextView"></style>
 
@@ -233,6 +237,13 @@
     </style>
 
 
+    <style name="SecurityText">
+        <item name="android:textColor">@color/security_text_color</item>
+        <item name="android:textSize">@dimen/font_size_13sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/avenir_next_regular</item>
+        <item name="android:lineSpacingExtra">@dimen/title_lineSpacingExtra_0</item>
+    </style>
 
 
     <style name="FullScreenDialogStyle" parent="Theme.AppCompat.Dialog">

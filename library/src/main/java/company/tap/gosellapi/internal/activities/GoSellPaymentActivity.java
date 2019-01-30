@@ -1,12 +1,24 @@
 package company.tap.gosellapi.internal.activities;
 
+import android.app.ActivityManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.PixelFormat;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -23,6 +35,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import company.tap.gosellapi.R;
+import company.tap.gosellapi.internal.Constants;
 import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.enums.AuthenticationStatus;
@@ -34,6 +47,7 @@ import company.tap.gosellapi.internal.api.models.Authenticate;
 import company.tap.gosellapi.internal.api.models.Authorize;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
+import company.tap.gosellapi.internal.api.models.SaveCard;
 import company.tap.gosellapi.internal.api.models.SavedCard;
 import company.tap.gosellapi.internal.api.responses.BINLookupResponse;
 import company.tap.gosellapi.internal.custom_views.DatePicker;
@@ -50,6 +64,7 @@ import company.tap.gosellapi.internal.utils.ActivityDataExchanger;
 import company.tap.gosellapi.internal.utils.Utils;
 import company.tap.gosellapi.open.buttons.PayButtonView;
 import company.tap.gosellapi.open.delegate.PaymentProcessDelegate;
+import company.tap.gosellapi.open.enums.TransactionMode;
 import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
 
@@ -66,15 +81,78 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
   private CardCredentialsViewModel cardCredentialsViewModel;
   private RecentSectionViewModel recentSectionViewModel;
   private boolean saveCardChecked;
-  private Charge chargeOrAuthorize;
+  private Charge chargeOrAuthorizeOrSaveCard;
   private SavedCard savedCard;
   private WebPaymentViewModel webPaymentViewModel;
 
+  private String WINDOW_MODE = "";
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
+
+
+    if(WINDOW_MODE.equalsIgnoreCase(Constants.WINDOWED)) {
+      setTheme(R.style.GoSellSDKAppTheme_Translucent);
+    }
+    else {
+      setTheme(R.style.GoSellSDKAppTheme_Full);
+    }
+
+
     super.onCreate(savedInstanceState);
+
     overridePendingTransition(R.anim.slide_in_top, android.R.anim.fade_out);
-    setContentView(R.layout.gosellapi_activity_main);
+
+    SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+
+    WINDOW_MODE =  pref.getString(getString(R.string.key_sdk_appearance_mode), "");
+
+    System.out.println(" >>> "+ WINDOW_MODE);
+
+    if(WINDOW_MODE.equalsIgnoreCase(Constants.WINDOWED)){
+      setContentView(R.layout.gosellapi_activity_main_windowed);
+    }else{
+      setContentView(R.layout.gosellapi_activity_main);
+    }
+
+//    getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#ff000000")));
+
+//
+//    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//      Bitmap bm = BitmapFactory.decodeResource(getResources(),R.drawable.auxillary_shape_circle);
+//      ActivityManager.TaskDescription taskDescription = new ActivityManager.TaskDescription("AppName", bm , ContextCompat.getColor(this, R.color.colorPrimaryDark));
+//      setTaskDescription(taskDescription);
+//    }
+
+//
+//    Window mainWindow = getWindow();
+//
+////Set Blur
+//    mainWindow.addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+//
+////Set Dim
+//    int dimAmt = 50; //In my application this is actually a setting stored in preferences...
+//    mainWindow.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+//    WindowManager.LayoutParams params = mainWindow.getAttributes();
+//    params.dimAmount = dimAmt / 100f;
+//    mainWindow.setAttributes(params);
+//
+//    WindowManager.LayoutParams ll = new WindowManager.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+//            LinearLayout.LayoutParams.WRAP_CONTENT,WindowManager.LayoutParams.TYPE_SYSTEM_DIALOG,WindowManager.LayoutParams.FLAG_DIM_BEHIND, PixelFormat.TRANSLUCENT);
+//
+//      WindowManager.LayoutParams wlp = getWindow().getAttributes();
+//      wlp.dimAmount = 0;
+//      ll.flags = WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION |
+//              WindowManager.LayoutParams.FLAG_SHOW_WALLPAPER;
+//      getWindow().setAttributes(ll);
+
+
+
+
+
+//    ActivityBackgroundBlur.getInstance().createBlurrScreen(this);
+//    getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+
     fragmentManager = getSupportFragmentManager();
     /**
      *  PaymentOptionsDataManager >> is the main actor who decide layout content
@@ -125,11 +203,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     payButton = findViewById(R.id.payButtonId);
     payButton.setEnabled(false);
 
-    payButton.getPayButton().setText(String
-        .format("%s %s%s", getResources().getString(R.string.pay),
-            dataSource.getSelectedCurrency().getSymbol(),
-            dataSource.getSelectedCurrency().getAmount()));
-
     payButton.setOnClickListener(v -> {
       Utils.hideKeyboard(GoSellPaymentActivity.this);
       if (getSavedCard() != null) {
@@ -139,6 +212,8 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
       }
     });
 
+    setupPayButton();
+
     // cancel icon
     LinearLayout cancel_payment = findViewById(R.id.cancel_payment);
     cancel_payment.setOnClickListener(v ->{
@@ -146,6 +221,45 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
       onBackPressed();
     } );
 
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    setupPayButton();
+  }
+
+
+  @Override
+  protected void onRestart() {
+    super.onRestart();
+    setupPayButton();
+  }
+
+  private void setupPayButton(){
+    if(PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode() == TransactionMode.SAVE_CARD)
+    {
+      setupSaveCardMode();
+    }else {
+      setupChargeOrAuthorizeMode();
+    }
+  }
+
+  private void setupChargeOrAuthorizeMode(){
+    payButton.setBackgroundSelector(R.drawable.btn_pay_selector);
+    payButton.getPayButton().setText(String
+            .format("%s %s%s", getResources().getString(R.string.pay),
+                    dataSource.getSelectedCurrency().getSymbol(),
+                    dataSource.getSelectedCurrency().getAmount()));
+  }
+
+  private void setupSaveCardMode(){
+    // stop it for now it will be updated as per merchant
+//    payButton.setBackgroundSelector(R.drawable.btn_save_selector);
+    payButton.setBackgroundSelector(R.drawable.btn_pay_selector);
+    payButton.getPayButton().setText(getResources().getString(R.string.save_card));
+//    payButton.getLoadingView().setVisibility(View.INVISIBLE);
+    payButton.getSecurityIconView().setVisibility(View.INVISIBLE);
   }
 
 
@@ -170,7 +284,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
     startActivityForResult(intent, CURRENCIES_REQUEST_CODE);
 
-    // custom animation like swapping
+    // custom animation like swapping from left to right
     overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
   }
 
@@ -233,19 +347,38 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
   @Override
   public void updatePayButtonWithExtraFees(PaymentOption paymentOption) {
 
-    BigDecimal feesAmount = PaymentDataManager.getInstance().calculateCardExtraFees(paymentOption);
-    System.out.println(" update pay button with : fees : " + feesAmount);
-    System.out.println(" update pay button with : total :" + PaymentDataManager.getInstance()
-        .calculateTotalAmount(feesAmount));
+//    BigDecimal feesAmount = PaymentDataManager.getInstance().calculateCardExtraFees(paymentOption);
+//    System.out.println(" update pay button with : fees : " + feesAmount);
+//    System.out.println(" update pay button with : total :" + PaymentDataManager.getInstance()
+//        .calculateTotalAmount(feesAmount));
+//
+//   if(PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode()!= TransactionMode.SAVE_CARD)
+//    payButton.getPayButton().setText(
+//        String.format("%s %s", getResources().getString(R.string.pay),
+//            PaymentDataManager.getInstance()
+//                .calculateTotalAmount(feesAmount)));
 
-
-    payButton.getPayButton().setText(
-        String.format("%s %s", getResources().getString(R.string.pay),
-            PaymentDataManager.getInstance()
-                .calculateTotalAmount(feesAmount)));
+   updatePayButtonWithFees(paymentOption);
 
   }
 
+
+
+  private void updatePayButtonWithFees(PaymentOption paymentOption){
+
+    BigDecimal feesAmount = PaymentDataManager.getInstance()
+          .calculateCardExtraFees(paymentOption);
+
+    System.out.println(" update pay button with : fees : " + feesAmount);
+    System.out.println(" update pay button with : total :" + PaymentDataManager.getInstance()
+            .calculateTotalAmount(feesAmount));
+
+    if(PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode()!= TransactionMode.SAVE_CARD)
+    payButton.getPayButton().setText(
+            String.format("%s %s", getResources().getString(R.string.pay),
+                    PaymentDataManager.getInstance()
+                            .calculateTotalAmount(feesAmount)));
+  }
 
   @Override
   public void updatePayButtonWithSavedCardExtraFees(SavedCard recentItem,
@@ -258,18 +391,20 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
       PaymentOption paymentOption = PaymentDataManager.getInstance()
           .findSavedCardPaymentOption(recentItem);
 
-      BigDecimal feesAmount = PaymentDataManager.getInstance()
-          .calculateCardExtraFees(paymentOption);
+//      BigDecimal feesAmount = PaymentDataManager.getInstance()
+//          .calculateCardExtraFees(paymentOption);
 
-      System.out.println(" update pay button with : fees : " + feesAmount);
-      System.out.println(" update pay button with : total :" + PaymentDataManager.getInstance()
-          .calculateTotalAmount(feesAmount));
+      updatePayButtonWithFees(paymentOption);
 
-
-      payButton.getPayButton().setText(
-          String.format("%s %s", getResources().getString(R.string.pay),
-              PaymentDataManager.getInstance()
-                  .calculateTotalAmount(feesAmount)));
+//      System.out.println(" update pay button with : fees : " + feesAmount);
+//      System.out.println(" update pay button with : total :" + PaymentDataManager.getInstance()
+//          .calculateTotalAmount(feesAmount));
+//
+//
+//      payButton.getPayButton().setText(
+//          String.format("%s %s", getResources().getString(R.string.pay),
+//              PaymentDataManager.getInstance()
+//                  .calculateTotalAmount(feesAmount)));
     }
   }
 
@@ -538,34 +673,80 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
           closePaymentActivity(charge);
           break;
       }
-      obtainPaymentURLFromChargeOrAuthorize(charge);
+      obtainPaymentURLFromChargeOrAuthorizeOrSaveCard(charge);
 
   }
 
-  private void obtainPaymentURLFromChargeOrAuthorize(Charge chargeOrAuthorize) {
-    System.out.println("GoSellPaymentActivity..charge_Authorize :" + chargeOrAuthorize.getStatus());
 
-    if (chargeOrAuthorize.getStatus() != ChargeStatus.INITIATED) {
+  @Override
+  public void didReceiveSaveCard(SaveCard saveCard) {
+    System.out.println(" Cards >> didReceiveSaveCard * * * " + saveCard);
+    if (saveCard == null) return;
+    System.out.println(" Cards >> didReceiveSaveCard * * * status :" + saveCard.getStatus());
+
+    switch (saveCard.getStatus()) {
+      case INITIATED:
+        Authenticate authenticate = saveCard.getAuthenticate();
+        if (authenticate != null && authenticate.getStatus() == AuthenticationStatus.INITIATED) {
+          switch (authenticate.getType()) {
+            case BIOMETRICS:
+
+              break;
+
+            case OTP:
+              System.out.println(" start otp for save card mode........");
+              PaymentDataManager.getInstance().setChargeOrAuthorize(saveCard);
+              openOTPScreen(saveCard);
+              break;
+          }
+        }
+        break;
+      case CAPTURED:
+      case AUTHORIZED:
+      case VALID:
+      case INVALID:
+      case FAILED:
+      case ABANDONED:
+      case CANCELLED:
+      case DECLINED:
+      case RESTRICTED:
+        closePaymentActivity(saveCard);
+        break;
+    }
+    obtainPaymentURLFromChargeOrAuthorizeOrSaveCard(saveCard);
+  }
+
+  @Override
+  public void didCardSavedBefore() {
+    System.out.println(" card already saved before ....");
+    stopPayButtonLoadingView();
+
+  }
+
+  private void obtainPaymentURLFromChargeOrAuthorizeOrSaveCard(Charge chargeOrAuthorizeOrSaveCard) {
+    System.out.println("GoSellPaymentActivity..chargeOrAuthorizeOrSaveCard :" + chargeOrAuthorizeOrSaveCard.getStatus());
+
+    if (chargeOrAuthorizeOrSaveCard.getStatus() != ChargeStatus.INITIATED) {
       return;
     }
 
-    Authenticate authentication = chargeOrAuthorize.getAuthenticate();
+    Authenticate authentication = chargeOrAuthorizeOrSaveCard.getAuthenticate();
     if (authentication != null)
       System.out.println(" GoSellPaymentActivity>authentication : " + authentication.getStatus());
     if (authentication != null && authentication.getStatus() == AuthenticationStatus.INITIATED) {
       return;
     }
 
-    String url = chargeOrAuthorize.getTransaction().getUrl();
+    String url = chargeOrAuthorizeOrSaveCard.getTransaction().getUrl();
     System.out.println("GoSellPaymentActivity >> Transaction().getUrl() :" + url);
-    System.out.println("GoSellPaymentActivity >> chargeOrAuthorize :" + chargeOrAuthorize.getId());
+    System.out.println("GoSellPaymentActivity >> chargeOrAuthorize :" + chargeOrAuthorizeOrSaveCard.getId());
 
 
     if (url != null) {
       // save charge id
-      setChargeOrAuthorize(chargeOrAuthorize);
+      setChargeOrAuthorizeOrSaveCard(chargeOrAuthorizeOrSaveCard);
       LoadingScreenManager.getInstance().closeLoadingScreen();
-      showWebView(chargeOrAuthorize.getTransaction().getUrl());
+      showWebView(chargeOrAuthorizeOrSaveCard.getTransaction().getUrl());
     }
   }
 
@@ -607,7 +788,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
       System.out.println(" shouldOverrideUrlLoading : decision : " + shouldOverride);
       if (shouldOverride) { // if decision is true and response has TAP_ID
         // call backend to get charge response >> based of charge object type [Authorize - Charge] call retrieveCharge / retrieveAuthorize
-        PaymentDataManager.getInstance().retrieveChargeOrAuthorizeAPI(getChargeOrAuthorize());
+        PaymentDataManager.getInstance().retrieveChargeOrAuthorizeOrSaveCardAPI(getChargeOrAuthorize());
       }
       return shouldOverride;
     }
@@ -652,7 +833,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         closePaymentActivity(authorize);
         break;
     }
-    obtainPaymentURLFromChargeOrAuthorize(authorize);
+    obtainPaymentURLFromChargeOrAuthorizeOrSaveCard(authorize);
   }
 
   @Override
@@ -662,18 +843,18 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-  private void setChargeOrAuthorize(Charge chargeOrAuthorize) {
-    this.chargeOrAuthorize = chargeOrAuthorize;
+  private void setChargeOrAuthorizeOrSaveCard(Charge chargeOrAuthorizeOrSaveCard) {
+    this.chargeOrAuthorizeOrSaveCard = chargeOrAuthorizeOrSaveCard;
   }
 
 
   private Charge getChargeOrAuthorize() {
-    return chargeOrAuthorize;
+    return chargeOrAuthorizeOrSaveCard;
   }
 
-  private void setPaymentResult(Charge chargeOrAuthorize) {
-    PaymentProcessDelegate.getInstance().setCustomerID(chargeOrAuthorize, getApplicationContext());
-    PaymentProcessDelegate.getInstance().setPaymentResult(chargeOrAuthorize);
+  private void setPaymentResult(Charge chargeOrAuthorizeOrSaveCard) {
+    PaymentProcessDelegate.getInstance().setCustomerID(chargeOrAuthorizeOrSaveCard, getApplicationContext());
+    PaymentProcessDelegate.getInstance().setPaymentResult(chargeOrAuthorizeOrSaveCard);
   }
 
 

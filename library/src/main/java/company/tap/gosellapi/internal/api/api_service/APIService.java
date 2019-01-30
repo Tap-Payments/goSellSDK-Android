@@ -5,8 +5,11 @@ import android.support.annotation.RestrictTo;
 import company.tap.gosellapi.internal.api.enums.AuthenticationType;
 import company.tap.gosellapi.internal.api.models.Authorize;
 import company.tap.gosellapi.internal.api.models.Charge;
+import company.tap.gosellapi.internal.api.models.SaveCard;
+import company.tap.gosellapi.internal.api.models.SavedCard;
 import company.tap.gosellapi.internal.api.requests.CreateAuthorizeRequest;
 import company.tap.gosellapi.internal.api.requests.CreateOTPVerificationRequest;
+import company.tap.gosellapi.internal.api.requests.CreateSaveCardRequest;
 import company.tap.gosellapi.internal.api.requests.CreateTokenWithCardDataRequest;
 import company.tap.gosellapi.internal.api.requests.CreateTokenWithExistingCardDataRequest;
 import company.tap.gosellapi.internal.api.requests.PaymentOptionsRequest;
@@ -56,8 +59,14 @@ public interface APIService {
     @POST(API_Constants.CHARGES)
     Call<Charge> createCharge(@Body CreateChargeRequest createChargeRequest);
 
+    @POST(API_Constants.SAVE_CARD)
+    Call<SaveCard> createSaveCard(@Body CreateSaveCardRequest createSaveCardRequest);
+
     @GET(API_Constants.CHARGES + "/{" + API_Constants.CHARGE_ID + "}")
     Call<Charge> retrieveCharge(@Path(API_Constants.CHARGE_ID) String chargeId);
+
+    @GET(API_Constants.SAVE_CARD +"/{"+API_Constants.SAVE_CARD_ID+"}")
+    Call<SaveCard> retrieveSaveCard(@Path(API_Constants.SAVE_CARD_ID) String saveCardId);
 
     @POST(API_Constants.AUTHORIZE)
     Call<Authorize> createAuthorize(@Body CreateAuthorizeRequest createAuthorizeRequest);
@@ -87,6 +96,12 @@ public interface APIService {
 
     @PUT(API_Constants.CHARGES + "/{" + API_Constants.CHARGE_ID + "}")
     Call<Charge> updateCharge(@Path(API_Constants.CHARGE_ID) String chargeId);
+
+
+    // save card API's
+
+
+
 
 
 }

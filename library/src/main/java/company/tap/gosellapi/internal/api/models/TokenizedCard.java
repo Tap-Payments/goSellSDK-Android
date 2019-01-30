@@ -1,5 +1,6 @@
 package company.tap.gosellapi.internal.api.models;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.Expose;
@@ -43,6 +44,7 @@ public final class TokenizedCard {
     @Nullable private String customer;
 
     @SerializedName("fingerprint")
+    @Expose
     private String fingerprint;
 
     @SerializedName("address")
@@ -50,5 +52,10 @@ public final class TokenizedCard {
 
     public String getFirstSix() {
         return firstSix;
+    }
+
+    @NonNull
+    public String getFingerprint() {
+        return fingerprint;
     }
 }

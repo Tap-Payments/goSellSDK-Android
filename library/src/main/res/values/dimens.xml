@@ -3,6 +3,7 @@
 
     <dimen name="pay_btn_min_height">44dp</dimen>
     <dimen name="pay_btn_corners_radius">50dp</dimen>
+    <dimen name="save_btn_corners_radius">0dp</dimen>
 
     <dimen name="pay_btn_margin_vertical">10dp</dimen>
 
@@ -59,6 +60,7 @@
     <dimen name="corner_radius_small">8dp</dimen>
 
     <dimen name="font_size_11sp">11sp</dimen>
+    <dimen name="font_size_12sp">12sp</dimen>
     <dimen name="font_size_13sp">13sp</dimen>
     <dimen name="font_size_14sp">14sp</dimen>
     <dimen name="font_size_16sp">16sp</dimen>

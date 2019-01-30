@@ -14,7 +14,8 @@
         android:name=".internal.activities.GoSellPaymentActivity"
         android:screenOrientation="portrait"
         android:windowSoftInputMode="adjustResize"
-        android:theme="@style/GoSellSDKAppTheme.NoActionBar"/>
+
+        />
     <activity
         android:name=".internal.activities.GoSellCardAddressActivity"
         android:theme="@style/GoSellSDKAppTheme"/>

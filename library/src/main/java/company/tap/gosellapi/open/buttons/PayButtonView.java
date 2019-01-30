@@ -61,14 +61,17 @@ public final class PayButtonView extends FrameLayout  {
     private PaymentOption paymentOption;
     private IPaymentProcessListener observer;
 
+    private Context context;
 
     public PayButtonView(Context context) {
         super(context);
+        this.context = context;
         init(context, null);
     }
 
     public PayButtonView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        this.context = context;
         init(context, attrs);
     }
 
@@ -77,6 +80,12 @@ public final class PayButtonView extends FrameLayout  {
         super.setEnabled(enabled);
         payButton.setEnabled(enabled);
     }
+
+    public void setBackgroundSelector(int selectorId){
+        mBackground = ContextCompat.getDrawable(context, selectorId);
+        payButton.setBackgroundDrawable(mBackground);
+    }
+
 
     private void init(Context context, AttributeSet attrs) {
         loadingView = new TapLoadingView(context, attrs);
