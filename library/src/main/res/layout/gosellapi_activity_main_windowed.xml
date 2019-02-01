@@ -4,8 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/transparent_red"
+    android:background="#C0000000"
     >
+
+    <ImageView
+        android:id="@+id/blurredBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
 
     <ScrollView
         android:layout_width="match_parent"

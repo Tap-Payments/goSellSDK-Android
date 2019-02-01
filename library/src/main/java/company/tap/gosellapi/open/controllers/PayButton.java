@@ -20,7 +20,7 @@ public class PayButton implements View.OnClickListener {
 
   private PayButtonView payButtonView;
   private PaymentDataSource paymentDataSource;
-  private Activity activity;
+  private Activity activityListener;
   private int SDK_REQUEST_CODE;
 
   public PayButton() {
@@ -33,7 +33,7 @@ public class PayButton implements View.OnClickListener {
       this.payButtonView.getPayButton().setOnClickListener(this);
       this.payButtonView.getSecurityIconView().setOnClickListener(this);
     }
-    this.activity = activity;
+    this.activityListener = activity;
 
   }
 
@@ -47,7 +47,7 @@ public class PayButton implements View.OnClickListener {
     int i = v.getId();
 
     if (i == payButtonView.getLayoutId() || i == R.id.pay_button_id) {
-      setPaymentDataSource(new company.tap.gosellapi.open.data_manager.PaymentDataSource(activity));
+      setPaymentDataSource(new company.tap.gosellapi.open.data_manager.PaymentDataSource(activityListener));
       getPaymentOptions();
     } else if (i == R.id.pay_security_icon_id) {
     }
@@ -87,11 +87,7 @@ public class PayButton implements View.OnClickListener {
   }
 
   private void startMainActivity() {
-
-    ActivityDataExchanger activityDataExchanger = ActivityDataExchanger.getInstance();
-    activityDataExchanger.saveClientActivity(activity.getClass());
     Intent intent = new Intent(payButtonView.getContext(), GoSellPaymentActivity.class);
-    activity.startActivityForResult(intent,SDK_REQUEST_CODE );
-
+    activityListener.startActivityForResult(intent,SDK_REQUEST_CODE );
   }
 }

@@ -3,7 +3,7 @@
     android:id="@+id/basicLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/french_gray_new"
+    android:background="#C0000000"
     android:orientation="vertical">
 
     <include layout="@layout/gosellapi_toolbar_main"/>
