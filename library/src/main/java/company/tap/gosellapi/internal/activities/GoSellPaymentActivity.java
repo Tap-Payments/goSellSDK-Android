@@ -1,17 +1,14 @@
 package company.tap.gosellapi.internal.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -91,7 +88,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         } else {
             //setTheme(R.style.GoSellSDKAppTheme_Full);
         }
-        setTheme(R.style.GoSellSDKAppTheme_Full);
+        //setTheme(R.style.GoSellSDKAppTheme_Full);
 
         super.onCreate(savedInstanceState);
 
@@ -101,11 +98,11 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
         WINDOW_MODE = pref.getString(getString(R.string.key_sdk_appearance_mode), "");
 
-        if (WINDOW_MODE.equalsIgnoreCase(Constants.WINDOWED)) {
+        //if (WINDOW_MODE.equalsIgnoreCase(Constants.WINDOWED)) {
             setContentView(R.layout.gosellapi_activity_main_windowed);
-        } else {
-            setContentView(R.layout.gosellapi_activity_main);
-        }
+        //} else {
+           // setContentView(R.layout.gosellapi_activity_main);
+       // }
 
 //    getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#ff000000")));
 

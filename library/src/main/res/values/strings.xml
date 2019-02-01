@@ -74,4 +74,5 @@
   <string name="key_sdk_transaction_currency">key_sdk_transaction_currency</string>
   <string name="key_sdk_appearance_mode">key_sdk_appearance_mode</string>
   <string name="save_card">Save Card</string>
+    <string name="textview_disclaimer_save_card_header_title">Enter Card Details</string>
 </resources>
