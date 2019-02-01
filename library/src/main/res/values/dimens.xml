@@ -37,8 +37,8 @@
     <dimen name="icon_height_basic">40dp</dimen>
     <dimen name="icon_width_basic">40dp</dimen>
 
-    <dimen name="cancel_icon_width">17dp</dimen>
-    <dimen name="cancel_icon_height">17dp</dimen>
+    <dimen name="cancel_icon_width">20dp</dimen>
+    <dimen name="cancel_icon_height">20dp</dimen>
 
 
     <dimen name="toolbar_height_basic">56dp</dimen>
@@ -71,6 +71,8 @@
  <dimen name="title_lineSpacingExtra_0">0sp</dimen>
     <dimen name="recycler_view_bottom_offset">29dp</dimen>
 
+
+    <dimen name="cancel_icon_container_width">48</dimen>
 
     <dimen name="bt_margin">8dp</dimen>
     <dimen name="bt_edit_text_icon_padding">24dp</dimen>
