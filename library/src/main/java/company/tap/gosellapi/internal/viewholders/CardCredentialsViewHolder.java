@@ -173,12 +173,12 @@ public class CardCredentialsViewHolder
 /////////////////////////////////////////////////// CARD SCANNER START ///////////////////////////////////////////////////////
 //        viewModel.bindCardNumberFieldWithWatcher(cardNumberField);
 
-      cardScannerButton = itemView.findViewById(R.id.cardScannerButton);
+          cardScannerButton = itemView.findViewById(R.id.cardScannerButton);
 
 /////////////////////////////////////////////////// CARD EXPIRATION_DATE START ///////////////////////////////////////////////////////
         expirationDateField = itemView.findViewById(R.id.expirationDateField);
         // enable Expiration date dialog
-        expirationDateField.useDialogForExpirationDateEntry((Activity) view.getContext(), true);
+        expirationDateField.useDialogForExpirationDateEntry((Activity) view.getContext(), false);
 
 /////////////////////////////////////////////////// CVV START ///////////////////////////////////////////////////////
         cvvField = itemView.findViewById(R.id.cvvField);
@@ -248,7 +248,6 @@ public class CardCredentialsViewHolder
 //            saveCardDescriptionTextView.setTextSize(12);
             TextViewCompat.setTextAppearance(saveCardDescriptionTextView,R.style.SecurityText);
         }
-
 
 /////////////////////////////////////////////////// SETUP CARD PAYMENT OPTIONS START ///////////////////////////////////////////////////////
         initCardSystemsRecyclerView(getPaymentOption());
@@ -344,7 +343,6 @@ public class CardCredentialsViewHolder
 
       }
     }
-
 
 
   private boolean validateCardFields() {

@@ -4,6 +4,7 @@ package company.tap.sample;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
@@ -13,6 +14,13 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StrikethroughSpan;
+import android.text.style.StyleSpan;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,6 +82,20 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // transaction currency listener
                bindPreferenceSummaryToValue(findPreference(getString(R.string.key_sdk_transaction_currency)));
 
+            // appearance header text color listener
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.appearance_header_preference_color_key)));
+
+            // appearance header background color listener
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.appearance_header_preference_background_color_key)));
+
+
+
+//            ///////////////////////////////    appearance_card_input_fields  //////////////////////////////////
+            // appearance header background color listener
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.appearance_card_input_fields_text_color_key)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.appearance_card_input_fields_invalid_text_color_key)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.appearance_card_input_fields_placeholder_text_color_key)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.appearance_card_input_fields_description_color_key)));
         }
     }
 
@@ -103,7 +125,19 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         public boolean onPreferenceChange(Preference preference, Object newValue) {
             String stringValue = newValue.toString();
 
-            if (preference instanceof ListPreference) {
+            System.out.println(" &&&& " +preference.getKey() + " >>> "+ stringValue);
+
+            SpannableString coloredText = new SpannableString(stringValue);
+
+            if(preference instanceof com.tap.tapcolorskit.ColorPreferences){
+//
+//                Spannable summary = new SpannableString("Currently This Color");
+//                summary.setSpan(new ForegroundColorSpan(Color.RED), 0, summary.length(), 0);
+
+                preference.setSummary(stringValue);
+            }
+
+            else if (preference instanceof ListPreference) {
                 // For list preferences, look up the correct display value in
                 // the preference's 'entries' list.
                 ListPreference listPreference = (ListPreference) preference;
@@ -116,10 +150,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                                 : null);
 
             }else if (preference instanceof EditTextPreference) {
-                if (preference.getKey().equals("key_gallery_name")) {
-                    // update the changed gallery name to summary filed
                     preference.setSummary(stringValue);
-                }
             } else {
                 preference.setSummary(stringValue);
             }
@@ -127,27 +158,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
     };
 
-    /**
-     * Email client intent to send support mail
-     * Appends the necessary device information to email body
-     * useful when providing support
-     */
-    public static void sendFeedback(Context context) {
-        String body = null;
-        try {
-            body = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
-            body = "\n\n-----------------------------\nPlease don't remove this information\n Device OS: Android \n Device OS version: " +
-                    Build.VERSION.RELEASE + "\n App Version: " + body + "\n Device Brand: " + Build.BRAND +
-                    "\n Device Model: " + Build.MODEL + "\n Device Manufacturer: " + Build.MANUFACTURER;
-        } catch (PackageManager.NameNotFoundException e) {
-        }
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("message/rfc822");
-        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"contact@androidhive.info"});
-        intent.putExtra(Intent.EXTRA_SUBJECT, "Query from android app");
-        intent.putExtra(Intent.EXTRA_TEXT, body);
-        context.startActivity(Intent.createChooser(intent, context.getString(R.string.choose_email_client)));
-    }
+
+
 
     public void back(View v){
         onBackPressed();

@@ -46,12 +46,12 @@ public class CustomerCRUDActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_crudactvity);
 
-        name  = findViewById(R.id.customer_name);
-        middleName  = findViewById(R.id.middlename);
-        lastName  = findViewById(R.id.lastname);
-        email  = findViewById(R.id.customer_email);
-        sdn  = findViewById(R.id.sdn);
-        mobile  = findViewById(R.id.customer_mobile);
+        name            = findViewById(R.id.customer_name);
+        middleName      = findViewById(R.id.middlename);
+        lastName        = findViewById(R.id.lastname);
+        email           = findViewById(R.id.customer_email);
+        sdn             = findViewById(R.id.sdn);
+        mobile          = findViewById(R.id.customer_mobile);
 
         name_l          = findViewById(R.id.name_il);
         middlename_l    = findViewById(R.id.middlename_il);

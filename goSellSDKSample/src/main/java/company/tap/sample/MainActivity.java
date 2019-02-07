@@ -112,11 +112,16 @@ public class MainActivity extends AppCompatActivity {
                     switch (chargeOrAuthorizeResult.getStatus()) {
                         case CAPTURED:
                         case AUTHORIZED:
+                        case VALID:
                             msg = getString(company.tap.gosellapi.R.string.payment_status_alert_successful);
                             status_icon.setImageResource(company.tap.gosellapi.R.drawable.ic_checkmark_normal);
                             break;
                         case FAILED:
                             msg = getString(company.tap.gosellapi.R.string.payment_status_alert_failed);
+                            status_icon.setImageResource(company.tap.gosellapi.R.drawable.icon_failed);
+                            break;
+                        case INVALID:
+                            msg = getString(company.tap.gosellapi.R.string.payment_status_alert_invalid);
                             status_icon.setImageResource(company.tap.gosellapi.R.drawable.icon_failed);
                             break;
                         case DECLINED:

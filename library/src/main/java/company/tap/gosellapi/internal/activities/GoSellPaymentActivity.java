@@ -98,11 +98,11 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
         WINDOW_MODE = pref.getString(getString(R.string.key_sdk_appearance_mode), "");
 
-        //if (WINDOW_MODE.equalsIgnoreCase(Constants.WINDOWED)) {
+        if (WINDOW_MODE.equalsIgnoreCase(Constants.WINDOWED)) {
             setContentView(R.layout.gosellapi_activity_main_windowed);
-        //} else {
-           // setContentView(R.layout.gosellapi_activity_main);
-       // }
+        } else {
+            setContentView(R.layout.gosellapi_activity_main);
+        }
 
 //    getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#ff000000")));
 

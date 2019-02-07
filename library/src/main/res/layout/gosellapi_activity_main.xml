@@ -3,8 +3,10 @@
     android:id="@+id/basicLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#C0000000"
-    android:orientation="vertical">
+    android:background="#ffffff"
+    android:orientation="vertical"
+
+    >
 
     <include layout="@layout/gosellapi_toolbar_main"/>
 
