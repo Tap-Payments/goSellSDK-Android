@@ -33,29 +33,25 @@ public class ExpirationDateEditText extends ErrorEditText implements TextWatcher
 
     public ExpirationDateEditText(Context context) {
         super(context);
-        System.out.println("ExpirationDateEditText >> instantiate 1");
         init();
     }
 
     public ExpirationDateEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
-        System.out.println("ExpirationDateEditText >> instantiate 2");
         init();
     }
 
     public ExpirationDateEditText(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        System.out.println("ExpirationDateEditText >> instantiate 3");
         init();
     }
 
     private void init() {
         setInputType(InputType.TYPE_CLASS_NUMBER);
-        InputFilter[] filters = { new LengthFilter(6) };
+        InputFilter[] filters = { new LengthFilter(4) };
         setFilters(filters);
         addTextChangedListener(this);
         setShowKeyboardOnFocus(!mUseExpirationDateDialog);
-        System.out.println("ExpirationDateEditText >> mUseExpirationDateDialog: "+ mUseExpirationDateDialog);
         setCursorVisible(!mUseExpirationDateDialog);
         super.setOnClickListener(this);
     }

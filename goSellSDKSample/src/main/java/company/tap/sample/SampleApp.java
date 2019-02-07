@@ -13,7 +13,8 @@ public class SampleApp extends Application{
         super.onCreate();
 //        GoSellSDK.init(this, "YOUR_SANDBOX_SECRET_KEY"); // original
 //        GoSellSDK.init(this, "YOUR_SANDBOX_SECRET_KEY"); // from waqas just for test
-        GoSellSDK.init(this, "YOUR_SANDBOX_SECRET_KEY"); // from Kalai just for test
+//        GoSellSDK.init(this, "YOUR_SANDBOX_SECRET_KEY");                 // from Kalai just for test  // sandbox test
+        GoSellSDK.init(this, "YOUR_PRODUCTION_SECRET_KEY"); // from Kalai production
 
     }
 }

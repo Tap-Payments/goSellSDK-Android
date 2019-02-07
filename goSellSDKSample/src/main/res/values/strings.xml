@@ -48,7 +48,7 @@
 
 
     <string name="category_customer_title">Customers</string>
-    <string name="select_customer">Configure customers</string>
+    <string name="select_customer">Customers</string>
     <string name="customer_name">Customer name</string>
     <string name="customer_email">Customer email</string>
     <string name="customer_phone">Customer phone</string>
@@ -102,6 +102,68 @@
     <string name="name_invalid_msg">name must be 3 characters at least!</string>
     <string name="mobile_invalid_msg">invalid mobile number!</string>
     <string name="settings_title">goSell SDK Settings</string>
+    <string name="session_data_source">Session Data Source</string>
+    <string name="appearance">Appearance</string>
+    <string name="threeDSecureTitle">3D Secure</string>
+    <string name="threeDSecureKey">threeDSecureKey</string>
+    <string name="SaveCardMultipleKey">SaveCardMultipleKey</string>
+    <string name="SaveCardMultipleTitle">Save Card Multiple Times</string>
+    <string name="select_shipping">Shipping</string>
+    <string name="select_taxes">Taxes</string>
+    <string name="status_popup">Status Popup</string>
+    <string name="status_popup_key">statusPopupKey</string>
+    <string name="appearance_card_input_fields">Appearance: Card Input Fields</string>
+
+    <!--  font section -->
+    <string name="font_face_default_value">fonts/NicksFont.ttf</string>
+
+    <string name="appearance_header_preference_font_key">appearance_header_preference_font_key</string>
+    <string name="appearance_header_preference_color_key">appearance_header_preference_color_key</string>
 
 
+
+
+    <string name="font_preview_string">PreviewString</string>
+    <string name="font_face_font_directory">fonts</string>
+    <string name="card_input_font_face">Font</string>
+    <string name="default_text_color">Black-#000000</string>
+
+    <!--      Appearance: Header      -->
+    <string name="appearance_header">Appearance Header</string>
+
+    <string name="appearance_header_preference_font_title">Font</string>
+    <string name="appearance_header_preference_color_title">Text Color</string>
+
+    <string name="appearance_header_preference_background_color_title">Background Color</string>
+    <string name="appearance_header_preference_background_color_key">appearance_header_preference_background_color_key</string>
+
+    <string name="appearance_header_preference_cancel_button_font_title">Cancel Button Font</string>
+    <string name="appearance_header_preference_cancel_button_font_key">appearance_header_preference_cancel_button_font_key</string>
+
+
+
+    <!--         Appearance: Card Input Fields -->
+
+    <string name="appearance_card_input_fields_font_key">appearance_card_input_fields_font_key</string>
+    <string name="appearance_card_input_fields_font_title">Font</string>
+
+    <string name="appearance_card_input_fields_text_color_key">appearance_card_input_fields_text_color_key</string>
+    <string name="appearance_card_input_fields_text_color_title">Text Color</string>
+
+    <string name="appearance_card_input_fields_invalid_text_color_key">appearance_card_input_fields_invalid_text_color_key</string>
+    <string name="appearance_card_input_fields_invalid_text_color_title">Invalid text color</string>
+
+    <string name="appearance_card_input_fields_placeholder_text_color_key">appearance_card_input_fields_placeholder_text_color_key</string>
+    <string name="appearance_card_input_fields_placeholder_text_color_title">Placeholder Text Color</string>
+
+    <string name="appearance_card_input_fields_description_font_key">appearance_card_input_fields_description_font_key</string>
+    <string name="appearance_card_input_fields_description_font_title">Description Font</string>
+
+    <string name="appearance_card_input_fields_description_color_key">appearance_card_input_fields_description_color_key</string>
+    <string name="appearance_card_input_fields_description_color_title">Description Color</string>
+
+
+
+    <!--        appearance_tap_button                         -->
+    <string name="appearance_tap_button">Appearance Tap Button</string>
 </resources>

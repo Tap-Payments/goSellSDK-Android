@@ -23,6 +23,7 @@
             android:textSize="16sp"
             android:gravity="center"
             android:layout_marginBottom="10dp"/>
+
         <com.aigestudio.wheelpicker.WheelPicker
             android:id="@+id/npMonthPicker"
             android:layout_width="match_parent"
@@ -39,6 +40,7 @@
             app:wheel_item_space="20dp"
             android:layout_gravity="bottom"
             tools:ignore="PxUsage"/>
+
     </LinearLayout>
     <LinearLayout
         android:layout_height="wrap_content"

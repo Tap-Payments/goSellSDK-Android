@@ -534,7 +534,7 @@ final class PaymentProcessManager {
                     paymentDescription,
                     paymentMetadata,
                     reference,
-                    shouldSaveCard,
+                    true,
                     statementDescriptor,
                     require3DSecure,
                     receipt,
