@@ -166,4 +166,22 @@
 
     <!--        appearance_tap_button                         -->
     <string name="appearance_tap_button">Appearance Tap Button</string>
+
+    <string name="appearance_tap_button_disabled_background_color_key">appearance_tap_button_disabled_background_color_key</string>
+    <string name="appearance_tap_button_disabled_background_color_title">Disabled Background Color</string>
+
+    <string name="appearance_tap_button_enabled_background_color_key">appearance_tap_button_enabled_background_color_key</string>
+    <string name="appearance_tap_button_enabled_background_color_title">Enabled Background Color</string>
+
+    <string name="appearance_tap_button_font_key">appearance_tap_button_font_key</string>
+    <string name="appearance_tap_button_font_title">Font</string>
+
+    <string name="appearance_tap_button_disabled_titled_color_key">appearance_tap_button_disabled_titled_color_key</string>
+    <string name="appearance_tap_button_disabled_titled_color_title">Disabled Title Color</string>
+
+    <string name="appearance_tap_button_enabled_titled_color_key">appearance_tap_button_enabled_titled_color_key</string>
+    <string name="appearance_tap_button_enabled_titled_color_title">Enabled Title Color</string>
+
+    <string name="appearance_tap_button_height_key">appearance_tap_button_height_key</string>
+    <string name="appearance_tap_button_height_title">Tap Button Height</string>
 </resources>

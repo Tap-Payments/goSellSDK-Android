@@ -1,4 +1,4 @@
-package company.tap.sample;
+package company.tap.sample.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,40 +21,35 @@ import android.widget.TextView;
 
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.open.buttons.PayButtonView;
-import company.tap.gosellapi.open.controllers.PayButton;
+import company.tap.gosellapi.open.controllers.SDKTrigger;
+import company.tap.gosellapi.open.data_manager.PaymentDataSource;
 import company.tap.gosellapi.open.delegate.PaymentProcessDelegate;
+import company.tap.sample.R;
 
 
 public class MainActivity extends AppCompatActivity {
     private final int SDK_REQUEST_CODE = 1001;
-    private PayButton payButton;
+    private SDKTrigger sdkTrigger;
     private PayButtonView payButtonView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         setupPayButton();
     }
 
 
     private void setupPayButton() {
-        if (payButton == null)
-            payButton = new PayButton();
+        if (sdkTrigger == null)
+            sdkTrigger = new SDKTrigger();
 
         payButtonView = findViewById(R.id.payButtonId);
 
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-        String trx_mode = pref.getString(getString(company.tap.gosellapi.R.string.key_sdk_transaction_mode), "");
+        sdkTrigger.setButtonView(payButtonView, this, SDK_REQUEST_CODE);
 
-        if ("SAVE_CARD".equalsIgnoreCase(trx_mode)) {
-            payButtonView.getPayButton().setText(getString(R.string.save_card));
-        } else {
-            payButtonView.getPayButton().setText(getString(R.string.pay));
-        }
-
-        payButton.setButtonView(payButtonView, this, SDK_REQUEST_CODE);
+        sdkTrigger.generatePaymentDataSource();
+        //sdkTrigger.start();   //  start without PayButton
 
     }
 
@@ -73,17 +68,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(this, SettingsActivity.class));
     }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        setupPayButton();
-//    }
-//
-//    @Override
-//    protected void onRestart() {
-//        super.onRestart();
-//        setupPayButton();
-//    }
 
     private void showDialog() {
         // show success bar

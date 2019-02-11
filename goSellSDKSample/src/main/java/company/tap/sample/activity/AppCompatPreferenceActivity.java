@@ -1,4 +1,4 @@
-package company.tap.sample;
+package company.tap.sample.activity;
 
 
 import android.content.res.Configuration;

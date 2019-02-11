@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tapfontlistpreference="http://schemas.android.com/apk/res-auto"
     xmlns:tapcolorlistpreference="http://schemas.android.com/apk/res-auto"
+    xmlns:tapdimensionpreference="http://schemas.android.com/apk/res-auto"
     >
 
     <PreferenceCategory android:title="General">
@@ -191,6 +192,53 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/appearance_tap_button">
+
+        <com.tap.tapcolorskit.ColorPreferences
+            android:defaultValue="@string/default_text_color"
+            android:key="@string/appearance_tap_button_disabled_background_color_key"
+            android:title="@string/appearance_tap_button_disabled_background_color_title"
+            tapcolorlistpreference:tap_fontPreviewString="@string/font_preview_string"
+            />
+
+        <com.tap.tapcolorskit.ColorPreferences
+            android:defaultValue="@string/default_text_color"
+            android:key="@string/appearance_tap_button_enabled_background_color_key"
+            android:title="@string/appearance_tap_button_enabled_background_color_title"
+            tapcolorlistpreference:tap_fontPreviewString="@string/font_preview_string"
+            />
+
+        <com.tap.tapfontskit.FontPreferences
+            android:defaultValue="@string/font_face_default_value"
+            android:key="@string/appearance_tap_button_font_key"
+            android:title="@string/appearance_tap_button_font_title"
+            tapfontlistpreference:tap_fontPreviewString="@string/font_preview_string"
+            tapfontlistpreference:tap_fontDirectory="@string/font_face_font_directory"
+            />
+
+        <com.tap.tapcolorskit.ColorPreferences
+            android:defaultValue="@string/default_text_color"
+            android:key="@string/appearance_tap_button_disabled_titled_color_key"
+            android:title="@string/appearance_tap_button_disabled_titled_color_title"
+            tapcolorlistpreference:tap_fontPreviewString="@string/font_preview_string"
+            />
+
+        <com.tap.tapcolorskit.ColorPreferences
+            android:defaultValue="@string/default_text_color"
+            android:key="@string/appearance_tap_button_enabled_titled_color_key"
+            android:title="@string/appearance_tap_button_enabled_titled_color_title"
+            tapcolorlistpreference:tap_fontPreviewString="@string/font_preview_string"
+            />
+
+
+        <com.tap.tapdimensionskit.TapDimensionsPreference
+            android:defaultValue="2"
+            android:key="@string/appearance_tap_button_height_key"
+            tapdimensionpreference:title="@string/appearance_tap_button_height_title"
+            tapdimensionpreference:counterMinVal="1"
+            tapdimensionpreference:counterMaxVal="10"
+            tapdimensionpreference:counterStepVal="1"
+            />
+
 
     </PreferenceCategory>
 

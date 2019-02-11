@@ -62,4 +62,5 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.github.Tap-Payments:TapFontsKit-Android:1.0'
     implementation 'com.github.Tap-Payments:TapColorsKit-Android:1.0'
+    implementation 'com.github.Tap-Payments:TapDimensionsKit-Android:1.0'
 }

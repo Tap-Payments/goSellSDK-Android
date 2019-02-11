@@ -1,11 +1,7 @@
-package company.tap.sample;
+package company.tap.sample.activity;
 
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
@@ -14,16 +10,12 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
-import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.StrikethroughSpan;
-import android.text.style.StyleSpan;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import company.tap.sample.R;
 
 public class SettingsActivity extends AppCompatPreferenceActivity {
 
@@ -90,12 +82,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
 
 
-//            ///////////////////////////////    appearance_card_input_fields  //////////////////////////////////
-            // appearance header background color listener
             bindPreferenceSummaryToValue(findPreference(getString(R.string.appearance_card_input_fields_text_color_key)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.appearance_card_input_fields_invalid_text_color_key)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.appearance_card_input_fields_placeholder_text_color_key)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.appearance_card_input_fields_description_color_key)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.appearance_tap_button_disabled_background_color_key)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.appearance_tap_button_enabled_background_color_key)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.appearance_tap_button_disabled_titled_color_key)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.appearance_tap_button_enabled_titled_color_key)));
         }
     }
 

@@ -12,34 +12,80 @@ import company.tap.gosellapi.internal.api.facade.GoSellAPI;
 import company.tap.gosellapi.internal.api.requests.PaymentOptionsRequest;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
-import company.tap.gosellapi.internal.utils.ActivityDataExchanger;
 import company.tap.gosellapi.open.buttons.PayButtonView;
-import company.tap.gosellapi.open.interfaces.PaymentDataSource;
+import company.tap.gosellapi.open.data_manager.PaymentDataSource;
+import company.tap.gosellapi.open.enums.TransactionMode;
 
-public class PayButton implements View.OnClickListener {
+public class SDKTrigger implements View.OnClickListener {
 
   private PayButtonView payButtonView;
   private PaymentDataSource paymentDataSource;
   private Activity activityListener;
   private int SDK_REQUEST_CODE;
 
-  public PayButton() {
+  public SDKTrigger() {
   }
 
   public void setButtonView(View buttonView, Activity activity, int SDK_REQUEST_CODE) {
+
     this.SDK_REQUEST_CODE = SDK_REQUEST_CODE;
+
     if (buttonView instanceof PayButtonView) {
       this.payButtonView = (PayButtonView) buttonView;
       this.payButtonView.getPayButton().setOnClickListener(this);
       this.payButtonView.getSecurityIconView().setOnClickListener(this);
+
+      SettingsManager settingsManager = SettingsManager.getInstance();
+      settingsManager.setPref(activity);
+
+        TransactionMode trx_mode = settingsManager.getTransactionsMode();
+      if (TransactionMode.SAVE_CARD == trx_mode) {
+        payButtonView.getPayButton().setText(activity.getString(R.string.save_card));
+      } else {
+        payButtonView.getPayButton().setText(activity.getString(R.string.pay));
+      }
     }
     this.activityListener = activity;
-
   }
 
-  private void setPaymentDataSource(PaymentDataSource paymentDataSource) {
+  public void generatePaymentDataSource() {
+
+    this.paymentDataSource  = company.tap.gosellapi.open.data_manager.PaymentDataSource.getInstance();
+
+    SettingsManager settingsManager = SettingsManager.getInstance();
+
+    settingsManager.setPref(activityListener);
+
+    paymentDataSource.setTransactionCurrency(settingsManager.getTransactionCurrency());
+
+    paymentDataSource.setTransactionMode(settingsManager.getTransactionsMode());
+
+    paymentDataSource.setCustomer(settingsManager.getCustomer());
+
+    paymentDataSource.setPaymentItems(settingsManager.getPaymentItems());
+
+    paymentDataSource.setTaxes(settingsManager.getTaxes());
+
+    paymentDataSource.setShipping(settingsManager.getShippingList());
+
+    paymentDataSource.setPostURL(settingsManager.getPostURL());
+
+    paymentDataSource.setPaymentDescription(settingsManager.getPaymentDescription());
+
+    paymentDataSource.setPaymentMetadata(settingsManager.getPaymentMetaData());
+
+    paymentDataSource.setPaymentReference(settingsManager.getPaymentReference());
+
+    paymentDataSource.setPaymentStatementDescriptor(settingsManager.getPaymentStatementDescriptor());
+
+    paymentDataSource.isRequires3DSecure(settingsManager.is3DSecure());
+
+    paymentDataSource.setReceiptSettings(settingsManager.getReceipt());
+
+    paymentDataSource.setAuthorizeAction(settingsManager.getAuthorizeAction());
+
+
     PaymentDataManager.getInstance().setExternalDataSource(paymentDataSource);
-    this.paymentDataSource = paymentDataSource;
   }
 
   @Override
@@ -47,10 +93,14 @@ public class PayButton implements View.OnClickListener {
     int i = v.getId();
 
     if (i == payButtonView.getLayoutId() || i == R.id.pay_button_id) {
-      setPaymentDataSource(new company.tap.gosellapi.open.data_manager.PaymentDataSource(activityListener));
       getPaymentOptions();
     } else if (i == R.id.pay_security_icon_id) {
     }
+  }
+
+
+  public void start(){
+    getPaymentOptions();
   }
 
 
