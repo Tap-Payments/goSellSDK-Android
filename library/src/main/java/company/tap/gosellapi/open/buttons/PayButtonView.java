@@ -171,7 +171,7 @@ public final class PayButtonView extends FrameLayout  {
                 mMarginEnd = marginEnd;
             }
 
-            //paddings
+            //padding
             int paddingTop = a.getDimensionPixelSize(R.styleable.PayButtonView_android_paddingTop, VALUE_IS_MISSING);
             if (paddingTop != VALUE_IS_MISSING) {
                 mPaddingTop = paddingTop;

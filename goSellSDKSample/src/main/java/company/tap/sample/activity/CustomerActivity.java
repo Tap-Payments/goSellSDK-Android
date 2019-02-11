@@ -13,7 +13,6 @@ import android.view.View;
 import java.util.List;
 
 import company.tap.sample.R;
-import company.tap.sample.SettingsActivity;
 import company.tap.sample.adapters.CustomerAdapter;
 import company.tap.sample.managers.SettingsManager;
 import company.tap.sample.viewmodels.CustomerViewModel;
