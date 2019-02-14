@@ -453,7 +453,7 @@ public class CardCredentialsViewHolder
 
         else if (cardBrand.getRawValue().contains("UNION_PAY") || cardBrand.getRawValue().contains("UNIONPAY"))
             cvvField.setCardType(CardType.UNIONPAY);
-else
+        else
         cvvField.setCardType(CardType.UNKNOWN);
     }
 

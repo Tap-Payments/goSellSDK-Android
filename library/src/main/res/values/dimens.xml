@@ -37,8 +37,8 @@
     <dimen name="icon_height_basic">40dp</dimen>
     <dimen name="icon_width_basic">40dp</dimen>
 
-    <dimen name="cancel_icon_width">20dp</dimen>
-    <dimen name="cancel_icon_height">20dp</dimen>
+    <dimen name="cancel_icon_width">16dp</dimen>
+    <dimen name="cancel_icon_height">16dp</dimen>
 
 
     <dimen name="toolbar_height_basic">56dp</dimen>
@@ -88,6 +88,8 @@
     <dimen name="bt_expiration_date_sheet_label_padding_bottom">8dp</dimen>
     <dimen name="bt_expiration_date_item_selected_background_radius">2dp</dimen>
 
+
+    <dimen name="cancel_payment_width">48dp</dimen>
 
 
 </resources>

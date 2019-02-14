@@ -83,12 +83,12 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        if (WINDOW_MODE.equalsIgnoreCase(Constants.WINDOWED)) {
-            //setTheme(R.style.GoSellSDKAppTheme_Translucent);
-        } else {
-            //setTheme(R.style.GoSellSDKAppTheme_Full);
-        }
-        //setTheme(R.style.GoSellSDKAppTheme_Full);
+//        if (WINDOW_MODE.equalsIgnoreCase(Constants.WINDOWED)) {
+//            //setTheme(R.style.GoSellSDKAppTheme_Translucent);
+//        } else {
+//            //setTheme(R.style.GoSellSDKAppTheme_Full);
+//        }
+//        //setTheme(R.style.GoSellSDKAppTheme_Full);
 
         super.onCreate(savedInstanceState);
 
@@ -104,40 +104,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
             setContentView(R.layout.gosellapi_activity_main);
         }
 
-//    getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#ff000000")));
 
-//
-//    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//      Bitmap bm = BitmapFactory.decodeResource(getResources(),R.drawable.auxillary_shape_circle);
-//      ActivityManager.TaskDescription taskDescription = new ActivityManager.TaskDescription("AppName", bm , ContextCompat.getColor(this, R.color.colorPrimaryDark));
-//      setTaskDescription(taskDescription);
-//    }
-
-//
-//    Window mainWindow = getWindow();
-//
-////Set Blur
-//    mainWindow.addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
-//
-////Set Dim
-//    int dimAmt = 50; //In my application this is actually a setting stored in preferences...
-//    mainWindow.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-//    WindowManager.LayoutParams params = mainWindow.getAttributes();
-//    params.dimAmount = dimAmt / 100f;
-//    mainWindow.setAttributes(params);
-//
-//    WindowManager.LayoutParams ll = new WindowManager.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-//            LinearLayout.LayoutParams.WRAP_CONTENT,WindowManager.LayoutParams.TYPE_SYSTEM_DIALOG,WindowManager.LayoutParams.FLAG_DIM_BEHIND, PixelFormat.TRANSLUCENT);
-//
-//      WindowManager.LayoutParams wlp = getWindow().getAttributes();
-//      wlp.dimAmount = 0;
-//      ll.flags = WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION |
-//              WindowManager.LayoutParams.FLAG_SHOW_WALLPAPER;
-//      getWindow().setAttributes(ll);
-
-
-//    ActivityBackgroundBlur.getInstance().createBlurrScreen(this);
-//    getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
 
         fragmentManager = getSupportFragmentManager();
         /**
@@ -195,20 +162,8 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
     private void setupHeader() {
         ImageView cancel_payment_icon = findViewById(R.id.cancel_payment_icon);
-        LinearLayout cancel_payment_ll = findViewById(R.id.cancel_payment);
-        cancel_payment_ll.removeView(cancel_payment_icon);
 
-        LinearLayout.LayoutParams ll2 = new LinearLayout.LayoutParams(30,
-                30);
-        ll2.rightMargin = 0;
-        ll2.bottomMargin = 16;
-        ll2.gravity = Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL;
-        if (isTransactionModeSaveCard())
-           ll2.topMargin = 24;
-        else
-           ll2.topMargin = 16;
-        cancel_payment_icon.setLayoutParams(ll2);
-        cancel_payment_ll.addView(cancel_payment_icon);
+        RelativeLayout cancel_payment_ll = findViewById(R.id.cancel_payment);
 
         cancel_payment_ll.setOnClickListener(v -> {
             setPaymentResult(null);
@@ -228,7 +183,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
             LinearLayout.LayoutParams ll = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             ll.leftMargin = 0;
             ll.bottomMargin = 16;
-            ll.topMargin = 25;
+            ll.topMargin = 14;
             ll.gravity = Gravity.CENTER_VERTICAL;
             businessName.setLayoutParams(ll);
             pll.addView(businessName);

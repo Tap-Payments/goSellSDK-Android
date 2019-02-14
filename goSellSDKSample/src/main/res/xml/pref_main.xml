@@ -50,7 +50,7 @@
             android:title="@string/SaveCardMultipleTitle" />
 
         <ListPreference
-            android:defaultValue="0"
+            android:defaultValue="kwd"
             android:dialogTitle="@string/title_sdk_transaction_currency"
             android:entries="@array/pref_array_sdk_transactions_currency_entries"
             android:entryValues="@array/pref_array_sdk_transaction_currency_values"

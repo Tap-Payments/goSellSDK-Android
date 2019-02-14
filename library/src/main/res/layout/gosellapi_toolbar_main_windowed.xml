@@ -45,25 +45,25 @@
 
         </LinearLayout>
 
-        
-        <LinearLayout
-            android:layout_width="@dimen/font_size_16sp"
+
+        <RelativeLayout
+            android:layout_width="@dimen/cancel_payment_width"
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:id="@+id/cancel_payment"
-            android:layout_marginEnd="@dimen/margin_basic_16dp"
-            android:layout_marginRight="@dimen/margin_basic_16dp"
-            android:paddingTop="5dp"
+
+
             >
             <ImageView
                 android:layout_width="@dimen/cancel_icon_width"
                 android:layout_height="@dimen/cancel_icon_height"
                 android:src="@drawable/cancel1"
                 android:id="@+id/cancel_payment_icon"
-                android:layout_gravity="center_vertical"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="@dimen/margin_basic_29dp"
                 />
-        </LinearLayout>
+        </RelativeLayout>
 
 
     </RelativeLayout>

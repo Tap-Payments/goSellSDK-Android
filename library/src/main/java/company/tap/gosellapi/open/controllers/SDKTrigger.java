@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.activities.GoSellPaymentActivity;
 import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
@@ -15,6 +18,14 @@ import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 import company.tap.gosellapi.open.buttons.PayButtonView;
 import company.tap.gosellapi.open.data_manager.PaymentDataSource;
 import company.tap.gosellapi.open.enums.TransactionMode;
+import company.tap.gosellapi.open.models.AuthorizeAction;
+import company.tap.gosellapi.open.models.Customer;
+import company.tap.gosellapi.open.models.PaymentItem;
+import company.tap.gosellapi.open.models.Receipt;
+import company.tap.gosellapi.open.models.Reference;
+import company.tap.gosellapi.open.models.Shipping;
+import company.tap.gosellapi.open.models.TapCurrency;
+import company.tap.gosellapi.open.models.Tax;
 
 public class SDKTrigger implements View.OnClickListener {
 
@@ -23,8 +34,7 @@ public class SDKTrigger implements View.OnClickListener {
   private Activity activityListener;
   private int SDK_REQUEST_CODE;
 
-  public SDKTrigger() {
-  }
+  public SDKTrigger() {}
 
   public void setButtonView(View buttonView, Activity activity, int SDK_REQUEST_CODE) {
 
@@ -37,18 +47,15 @@ public class SDKTrigger implements View.OnClickListener {
 
       SettingsManager settingsManager = SettingsManager.getInstance();
       settingsManager.setPref(activity);
-
-        TransactionMode trx_mode = settingsManager.getTransactionsMode();
-      if (TransactionMode.SAVE_CARD == trx_mode) {
-        payButtonView.getPayButton().setText(activity.getString(R.string.save_card));
-      } else {
-        payButtonView.getPayButton().setText(activity.getString(R.string.pay));
-      }
     }
     this.activityListener = activity;
   }
 
-  public void generatePaymentDataSource() {
+  public void setPayButtonTitle(String title){
+    payButtonView.getPayButton().setText(title);
+  }
+
+  public void instantiatePaymentDataSource() {
 
     this.paymentDataSource  = company.tap.gosellapi.open.data_manager.PaymentDataSource.getInstance();
 
@@ -56,37 +63,77 @@ public class SDKTrigger implements View.OnClickListener {
 
     settingsManager.setPref(activityListener);
 
-    paymentDataSource.setTransactionCurrency(settingsManager.getTransactionCurrency());
-
-    paymentDataSource.setTransactionMode(settingsManager.getTransactionsMode());
-
-    paymentDataSource.setCustomer(settingsManager.getCustomer());
-
-    paymentDataSource.setPaymentItems(settingsManager.getPaymentItems());
-
-    paymentDataSource.setTaxes(settingsManager.getTaxes());
-
-    paymentDataSource.setShipping(settingsManager.getShippingList());
-
-    paymentDataSource.setPostURL(settingsManager.getPostURL());
-
-    paymentDataSource.setPaymentDescription(settingsManager.getPaymentDescription());
-
-    paymentDataSource.setPaymentMetadata(settingsManager.getPaymentMetaData());
-
-    paymentDataSource.setPaymentReference(settingsManager.getPaymentReference());
-
-    paymentDataSource.setPaymentStatementDescriptor(settingsManager.getPaymentStatementDescriptor());
-
-    paymentDataSource.isRequires3DSecure(settingsManager.is3DSecure());
-
-    paymentDataSource.setReceiptSettings(settingsManager.getReceipt());
-
-    paymentDataSource.setAuthorizeAction(settingsManager.getAuthorizeAction());
+  }
 
 
+  public void persistPaymentDataSource(){
     PaymentDataManager.getInstance().setExternalDataSource(paymentDataSource);
   }
+
+
+
+  public void setTransactionCurrency(TapCurrency tapCurrency){
+    paymentDataSource.setTransactionCurrency(tapCurrency);
+  }
+
+
+  public void setTransactionMode(TransactionMode transactionMode){
+    paymentDataSource.setTransactionMode(transactionMode);
+  }
+
+
+  public void setCustomer(Customer customer){
+    paymentDataSource.setCustomer(customer);
+  }
+
+  public void setPaymentItems(ArrayList<PaymentItem> paymentItems){
+    paymentDataSource.setPaymentItems(paymentItems);
+  }
+
+  public void setTaxes(ArrayList<Tax> taxes){
+    paymentDataSource.setTaxes(taxes);
+  }
+
+  public void setShipping(ArrayList<Shipping> shipping){
+    paymentDataSource.setShipping(shipping);
+  }
+
+  public void setPostURL(String postURL){
+    paymentDataSource.setPostURL(postURL);
+  }
+
+  public void setPaymentDescription(String paymentDescription){
+    paymentDataSource.setPaymentDescription(paymentDescription);
+  }
+
+  public void setPaymentMetadata(HashMap<String,String> paymentMetadata){
+    paymentDataSource.setPaymentMetadata(paymentMetadata);
+  }
+
+
+  public void setPaymentReference(Reference paymentReference){
+    paymentDataSource.setPaymentReference(paymentReference);
+  }
+
+  public void setPaymentStatementDescriptor(String setPaymentStatementDescriptor){
+    paymentDataSource.setPaymentStatementDescriptor(setPaymentStatementDescriptor);
+  }
+
+
+  public void isRequires3DSecure(boolean is3DSecure){
+    paymentDataSource.isRequires3DSecure(is3DSecure);
+  }
+
+  public void setReceiptSettings(Receipt receipt){
+    paymentDataSource.setReceiptSettings(receipt);
+  }
+
+
+
+  public void setAuthorizeAction(AuthorizeAction authorizeAction){
+    paymentDataSource.setAuthorizeAction(authorizeAction);
+  }
+
 
   @Override
   public void onClick(View v) {
@@ -94,15 +141,16 @@ public class SDKTrigger implements View.OnClickListener {
 
     if (i == payButtonView.getLayoutId() || i == R.id.pay_button_id) {
       getPaymentOptions();
-    } else if (i == R.id.pay_security_icon_id) {
+    } else if (i != R.id.pay_security_icon_id) {
+      return;
     }
+
   }
 
 
   public void start(){
     getPaymentOptions();
   }
-
 
   private void getPaymentOptions() {
     payButtonView.getLoadingView().start();

@@ -16,19 +16,19 @@ public class PaymentResultDataManager {
   public void saveCustomerReference(@Nullable String customerRef, @NonNull Context context) {
 
     if (pref == null)
-      pref = context.getSharedPreferences("MyPref", 0); // 0 - for private mode
+      pref = context.getSharedPreferences("sdkPref", 0); // 0 - for private mode
 
     SharedPreferences.Editor editor = pref.edit();
-    editor.putString("cut_ref", customerRef);
+    editor.putString("cust_ref", customerRef);
     editor.commit();
   }
 
   @Nullable
   public String getCustomerRef(Context context) {
     if (pref == null)
-      pref = context.getSharedPreferences("MyPref", 0); // 0 - for private mode
+      pref = context.getSharedPreferences("sdkPref", 0); // 0 - for private mode
 
-    return pref.getString("cut_ref", null);
+    return pref.getString("cust_ref", null);
   }
 
 

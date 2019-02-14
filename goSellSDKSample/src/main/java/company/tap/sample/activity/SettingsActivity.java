@@ -75,10 +75,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                bindPreferenceSummaryToValue(findPreference(getString(R.string.key_sdk_transaction_currency)));
 
             // appearance header text color listener
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.appearance_header_preference_color_key)));
+               bindPreferenceSummaryToValue(findPreference(getString(R.string.appearance_header_preference_color_key)));
 
             // appearance header background color listener
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.appearance_header_preference_background_color_key)));
+               bindPreferenceSummaryToValue(findPreference(getString(R.string.appearance_header_preference_background_color_key)));
 
 
 
