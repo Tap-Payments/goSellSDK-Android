@@ -2,10 +2,8 @@ package company.tap.sample.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
@@ -22,25 +20,31 @@ import android.widget.TextView;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.open.buttons.PayButtonView;
 import company.tap.gosellapi.open.controllers.SDKTrigger;
-import company.tap.gosellapi.open.data_manager.PaymentDataSource;
 import company.tap.gosellapi.open.delegate.PaymentProcessDelegate;
+import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.sample.R;
+import company.tap.sample.managers.SettingsManager;
 
 
 public class MainActivity extends AppCompatActivity {
     private final int SDK_REQUEST_CODE = 1001;
     private SDKTrigger sdkTrigger;
     private PayButtonView payButtonView;
+    private SettingsManager settingsManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setupPayButton();
+        settingsManager = SettingsManager.getInstance();
+        settingsManager.setPref(this);
+
+        triggerSDK();
     }
 
 
-    private void setupPayButton() {
+    private void triggerSDK() {
+
         if (sdkTrigger == null)
             sdkTrigger = new SDKTrigger();
 
@@ -48,8 +52,51 @@ public class MainActivity extends AppCompatActivity {
 
         sdkTrigger.setButtonView(payButtonView, this, SDK_REQUEST_CODE);
 
-        sdkTrigger.generatePaymentDataSource();
-        //sdkTrigger.start();   //  start without PayButton
+        TransactionMode trx_mode = settingsManager.getTransactionsMode();
+
+        if (TransactionMode.SAVE_CARD == trx_mode) {
+           sdkTrigger.setPayButtonTitle(getString(company.tap.gosellapi.R.string.save_card));
+        } else {
+            sdkTrigger.setPayButtonTitle(getString(company.tap.gosellapi.R.string.pay));
+        }
+
+        // initiate PaymentDataSource
+        sdkTrigger.instantiatePaymentDataSource();
+
+        // setup Payment Data Source
+        sdkTrigger.setTransactionCurrency(settingsManager.getTransactionCurrency());
+
+        sdkTrigger.setTransactionMode(settingsManager.getTransactionsMode());
+
+        sdkTrigger.setCustomer(settingsManager.getCustomer());
+
+        sdkTrigger.setPaymentItems(settingsManager.getPaymentItems());
+
+        sdkTrigger.setTaxes(settingsManager.getTaxes());
+
+        sdkTrigger.setShipping(settingsManager.getShippingList());
+
+        sdkTrigger.setPostURL(settingsManager.getPostURL());
+
+        sdkTrigger.setPaymentDescription(settingsManager.getPaymentDescription());
+
+        sdkTrigger.setPaymentMetadata(settingsManager.getPaymentMetaData());
+
+        sdkTrigger.setPaymentReference(settingsManager.getPaymentReference());
+
+        sdkTrigger.setPaymentStatementDescriptor(settingsManager.getPaymentStatementDescriptor());
+
+        sdkTrigger.isRequires3DSecure(settingsManager.is3DSecure());
+
+        sdkTrigger.setReceiptSettings(settingsManager.getReceipt());
+
+        sdkTrigger.setAuthorizeAction(settingsManager.getAuthorizeAction());
+
+        // Persist Payment Data Source
+        sdkTrigger.persistPaymentDataSource();
+
+        //start without PayButton
+        //sdkTrigger.start();
 
     }
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <dimen name="cancel_icon_width">20dp</dimen>
-  <dimen name="cancel_icon_height">20dp</dimen>
+  <dimen name="cancel_icon_width">16dp</dimen>
+  <dimen name="cancel_icon_height">16dp</dimen>
+  <dimen name="cancel_payment_width">48dp</dimen>
 </resources>

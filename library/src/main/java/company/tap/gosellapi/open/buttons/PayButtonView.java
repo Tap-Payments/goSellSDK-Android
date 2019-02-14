@@ -1,11 +1,17 @@
 package company.tap.gosellapi.open.buttons;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
@@ -19,6 +25,8 @@ import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.interfaces.IPaymentProcessListener;
 import company.tap.gosellapi.internal.utils.Utils;
+import company.tap.gosellapi.open.constants.SettingsKeys;
+import company.tap.gosellapi.open.controllers.SettingsManager;
 import gotap.com.tapglkitandroid.gl.Views.TapLoadingView;
 
 public final class PayButtonView extends FrameLayout  {
@@ -63,6 +71,8 @@ public final class PayButtonView extends FrameLayout  {
 
     private Context context;
 
+    private SettingsManager settingsManager;
+
     public PayButtonView(Context context) {
         super(context);
         this.context = context;
@@ -72,6 +82,7 @@ public final class PayButtonView extends FrameLayout  {
     public PayButtonView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
+
         init(context, attrs);
     }
 
@@ -88,6 +99,9 @@ public final class PayButtonView extends FrameLayout  {
 
 
     private void init(Context context, AttributeSet attrs) {
+        settingsManager = SettingsManager.getInstance();
+        settingsManager.setPref(context);
+
         loadingView = new TapLoadingView(context, attrs);
         payButton = new AppCompatTextView(context, attrs);
         securityIconView = new ImageView(context, attrs);
@@ -127,7 +141,10 @@ public final class PayButtonView extends FrameLayout  {
         mTextColor = ContextCompat.getColor(context, R.color.white);
         mTextStyle = Typeface.BOLD;
 
-        mBackground = ContextCompat.getDrawable(context, R.drawable.btn_pay_selector);
+
+        setupBackground();
+
+
         mGravity = Gravity.CENTER;
         mText = context.getResources().getString(R.string.pay);
 
@@ -241,6 +258,8 @@ public final class PayButtonView extends FrameLayout  {
         mAdditionalViewDimension = mHeight * 4 / 6;
     }
 
+
+
     private void setAttributes() {
         payButton.setPadding(mPaddingLeft, mPaddingTop, mPaddingRight, mPaddingBottom);
 
@@ -249,8 +268,11 @@ public final class PayButtonView extends FrameLayout  {
         }
 
         payButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);
-        payButton.setTextColor(mTextColor);
-        payButton.setTypeface(payButton.getTypeface(), mTextStyle);
+
+        setupTextColor();
+
+        setupFontTypeFace();
+
         payButton.setAllCaps(true);
 
         payButton.setBackgroundDrawable(mBackground);
@@ -268,6 +290,63 @@ public final class PayButtonView extends FrameLayout  {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             securityIconView.setPaddingRelative(mAdditionalViewMarginHorizontal * 2, mAdditionalViewMarginVertical, mAdditionalViewMarginHorizontal * 2, mAdditionalViewMarginVertical);
         }
+    }
+
+    private void setupBackground() {
+
+        mBackground = ContextCompat.getDrawable(context, R.drawable.btn_pay_selector);
+
+        int disabledTitleColorKey =   settingsManager.getTapButtonDisabledTitleColor(SettingsKeys.TAP_BUTTON_DISABLED_BACKGROUND_COLOR_KEY);
+        int enabledTitleColorKey  =   settingsManager.getTapButtonEnabledTitleColor(SettingsKeys.TAP_BUTTON_ENABLED_BACKGROUND_COLOR_KEY);
+
+        System.out.println(" disabledTitleColorKey >>> "+  disabledTitleColorKey);
+        System.out.println(" enabledTitleColorKey  >>> "+  enabledTitleColorKey);
+
+        ColorStateList myColorStateList = new ColorStateList(
+                new int[][]{
+                        new int[]{android.R.attr.state_enabled}, // enabled
+                        new int[]{-android.R.attr.state_enabled} // disabled
+                },
+                new int[] {
+                        enabledTitleColorKey,   // enabled
+                        disabledTitleColorKey, //  disabled
+                }
+
+        );
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            payButton.setBackgroundTintList(myColorStateList);
+        }
+
+    }
+
+    private void setupFontTypeFace() {
+        String tapButtonFontFace =   settingsManager.getTapButtonFont(SettingsKeys.TAP_BUTTON_FONT_KEY);
+
+        if(tapButtonFontFace!=null && !tapButtonFontFace.trim().equalsIgnoreCase("")){
+            Typeface font = Typeface.createFromAsset(getContext().getAssets(), tapButtonFontFace);
+            payButton.setTypeface(font, mTextStyle);
+        }else {
+            payButton.setTypeface(payButton.getTypeface(), mTextStyle);
+        }
+    }
+
+    private void setupTextColor(){
+        // payButton.setTextColor(mTextColor);
+
+        int disabledTitleColorKey =   settingsManager.getTapButtonDisabledTitleColor(SettingsKeys.TAP_BUTTON_DISABLED_TITLE_COLOR_KEY);
+        int enabledTitleColorKey  =   settingsManager.getTapButtonEnabledTitleColor(SettingsKeys.TAP_BUTTON_ENABLED_TITLE_COLOR_KEY);
+
+        if (payButton.isEnabled())
+            payButton.setTextColor(enabledTitleColorKey);
+        else
+            payButton.setTextColor(disabledTitleColorKey);
+
+
+    }
+
+    private void setupHeight(){
+
     }
 
     @Override
