@@ -168,6 +168,14 @@ public class MainActivity extends AppCompatActivity {
                             msg = getString(company.tap.gosellapi.R.string.payment_status_alert_declined);
                             status_icon.setImageResource(company.tap.gosellapi.R.drawable.icon_failed);
                             break;
+                        case UNKNOWN:
+                            msg = getString(company.tap.gosellapi.R.string.payment_status_alert_unknown);
+                            status_icon.setImageResource(company.tap.gosellapi.R.drawable.icon_failed);
+                            break;
+                        case TIMEDOUT:
+                            msg = getString(company.tap.gosellapi.R.string.payment_status_alert_timedout);
+                            status_icon.setImageResource(company.tap.gosellapi.R.drawable.icon_failed);
+                            break;
                     }
                     chargeText.setText(chargeOrAuthorizeResult.getId());
                 } else {

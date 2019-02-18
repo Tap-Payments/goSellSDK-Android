@@ -146,7 +146,7 @@ public class WebPaymentActivity extends BaseActionBarActivity implements IPaymen
   @Override
   public void didReceiveCharge(Charge charge) {
     if (charge != null) {
-      System.out.println("* * * " + charge.getStatus());
+      System.out.println(" web payment activity* * * " + charge.getStatus());
       switch (charge.getStatus()) {
         case INITIATED:
           break;
@@ -157,6 +157,8 @@ public class WebPaymentActivity extends BaseActionBarActivity implements IPaymen
         case CANCELLED:
         case DECLINED:
         case RESTRICTED:
+        case UNKNOWN:
+        case TIMEDOUT:
           closePaymentActivity(charge);
         break;
       }

@@ -8,7 +8,9 @@
     android:orientation="horizontal"
     android:paddingBottom="@dimen/margin_basic_15dp"
     android:paddingEnd="@dimen/margin_basic_16dp"
+    android:paddingRight="@dimen/margin_basic_16dp"
     android:paddingStart="@dimen/margin_basic_23dp"
+    android:paddingLeft="@dimen/margin_basic_23dp"
     android:paddingTop="@dimen/margin_basic_15dp">
 
     <TextView
@@ -17,6 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:layout_centerInParent="true" />
 
     <TextView
@@ -28,7 +31,9 @@
         android:layout_marginEnd="@dimen/margin_basic_20dp"
         android:layout_marginStart="@dimen/margin_basic_20dp"
         android:layout_toEndOf="@id/tvTitle"
+        android:layout_toRightOf="@id/tvTitle"
         android:layout_toStartOf="@+id/ivArrowIcon"
+        android:layout_toLeftOf="@+id/ivArrowIcon"
         android:gravity="end"
         android:maxLines="1" />
 
@@ -37,6 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_centerInParent="true"
         android:src="@drawable/ic_arrow_right_normal" />
 
