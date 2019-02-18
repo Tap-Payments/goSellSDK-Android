@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.TextInputLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tilNumberInput"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/layout_main_section_background_shape"
+    app:hintTextAppearance="@style/TextInputLayout.Hint">
+
+    <EditText
+        android:id="@+id/etNumberInput"
+        style="@style/EditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:cursorVisible="false"
+        android:inputType="numberDecimal"
+        android:imeOptions="actionNext"
+        android:maxLines="1"
+        app:backgroundTint="@color/mercury" />
+
+</android.support.design.widget.TextInputLayout>
