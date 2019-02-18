@@ -1,6 +1,8 @@
-# goSellSDK-Android
-Android SDK to use [goSell API][1].<br>
-Minimum API version is 14.
+# goSell Android SDK
+Android SDK to use [goSell API][1].
+
+[![Platform](https://img.shields.io/badge/platform-Android-inactive.svg?style=flat)](https://tap-payments.github.io/goSellSDK-Android/)
+[![Build Status](https://img.shields.io/badge/build-passing-success.svg?branch=development_2.0)](https://travis-ci.org/Tap-Payments/goSellSDK-Android/builds/494970284)
 
 Install
 --------
