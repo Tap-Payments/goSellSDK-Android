@@ -627,6 +627,8 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
             case CANCELLED:
             case DECLINED:
             case RESTRICTED:
+            case UNKNOWN:
+            case TIMEDOUT:
                 closePaymentActivity(charge);
                 break;
         }

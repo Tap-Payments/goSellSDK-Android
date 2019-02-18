@@ -13,6 +13,9 @@ public enum ChargeStatus {
     @SerializedName("RESTRICTED")   RESTRICTED,
     @SerializedName("CAPTURED")     CAPTURED,
     @SerializedName("VOID")         VOID,
+    @SerializedName("UNKNOWN")      UNKNOWN,
+    @SerializedName("AUTHORIZED")   AUTHORIZED,
+    @SerializedName("TIMEDOUT")     TIMEDOUT,
 
 
     @SerializedName("VALID")        VALID,
@@ -21,5 +24,5 @@ public enum ChargeStatus {
 
 
 
-    @SerializedName("AUTHORIZED")   AUTHORIZED,
+
 }

@@ -48,6 +48,8 @@
   <string name="payment_status_alert_failed">Failed</string>
   <string name="payment_status_alert_invalid">Invalid</string>
   <string name="payment_status_alert_declined">Declined</string>
+  <string name="payment_status_alert_timedout">TIMEDOUT</string>
+  <string name="payment_status_alert_unknown">UNKNOWN</string>
 
   <string name="bt_month">Month</string>
   <string name="bt_year">Year</string>
