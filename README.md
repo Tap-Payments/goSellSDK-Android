@@ -4,8 +4,8 @@ Android SDK to use [goSell API][1].
 [![Platform](https://img.shields.io/badge/platform-Android-inactive.svg?style=flat)](https://tap-payments.github.io/goSellSDK-Android/)
 [![Build Status](https://img.shields.io/badge/build-passing-success.svg?branch=development_2.0)](https://travis-ci.org/Tap-Payments/goSellSDK-Android/builds/494970284)
 [![Documentation](https://img.shields.io/badge/documentation-100%25-bright%20green.svg)](https://tap-payments.github.io/goSellSDK-Android/)
-[![SDK Version](https://img.shields.io/badge/minSdkVersion-16-blue.svg)]
-[![SDK Version](https://img.shields.io/badge/targetSdkVersion-28-informational.svg)]
+[![SDK Version](https://img.shields.io/badge/minSdkVersion-16-blue.svg)](https://stuff.mit.edu/afs/sipb/project/android/docs/reference/packages.html)
+[![SDK Version](https://img.shields.io/badge/targetSdkVersion-28-informational.svg)](https://stuff.mit.edu/afs/sipb/project/android/docs/reference/packages.html)
 Install
 --------
 Add it in your **root** `build.gradle` at the end of repositories:
