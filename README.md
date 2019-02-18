@@ -1,6 +1,8 @@
 # goSellSDK-Android
-Android SDK to use [goSell API][1].<br>
-Minimum API version is 14.
+
+<img src="https://camo.githubusercontent.com/0c96fa3c59c1956329e63f517c47dcb75abda150/68747470733a2f2f696d672e736869656c64732e696f2f636f636f61706f64732f702f676f53656c6c53444b2e7376673f7374796c653d666c6174" alt="Platform" data-canonical src="https://img.shields.io/cocoapods/p/goSellSDK.svg?style=flat" style="max-width:100%;">
+
+####### A library that fully covers payment/authorization/card saving process inside your iOS application.
 
 Install
 --------
