@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="PayButtonView">
+        <attr name="android:layout_height"/>
+
+        <attr name="android:layout_marginTop"/>
+        <attr name="android:layout_marginBottom"/>
+        <attr name="android:layout_marginLeft"/>
+        <attr name="android:layout_marginRight"/>
+        <attr name="android:layout_marginStart"/>
+        <attr name="android:layout_marginEnd"/>
+
+        <attr name="android:paddingTop"/>
+        <attr name="android:paddingBottom"/>
+        <attr name="android:paddingLeft"/>
+        <attr name="android:paddingStart"/>
+        <attr name="android:paddingRight"/>
+        <attr name="android:paddingEnd"/>
+
+        <attr name="android:textSize"/>
+        <attr name="android:textColor"/>
+        <attr name="android:textStyle"/>
+
+        <attr name="android:background"/>
+        <attr name="android:gravity"/>
+        <attr name="android:text"/>
+    </declare-styleable>
+
+    <item name="pay_layout_id" type="id"/>
+    <item name="pay_button_id" type="id"/>
+    <item name="pay_security_icon_id" type="id"/>
+
+
+    <attr name="bt_expiration_date_sheet_background" format="color"/>
+    <attr name="bt_expiration_date_dialog_label" format="color"/>
+    <attr name="bt_expiration_date_dialog_divider" format="color" />
+    <attr name="bt_expiration_date_scrollbar_thumb_vertical" format="color" />
+    <attr name="bt_expiration_date_scrollbar_track_vertical" format="color" />
+
+
+</resources>

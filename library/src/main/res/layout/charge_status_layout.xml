@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:id="@+id/popup_element"
+    android:background="@color/white"
+    android:layout_height="60dp"
+    android:padding="1dp"
+    >
+
+
+  <ImageView
+      android:layout_width="17.4dp"
+      android:layout_height="11.6dp"
+      android:id="@+id/status_icon"
+      android:src="@drawable/ic_checkmark_normal"
+      android:layout_marginLeft="23dp"
+      android:layout_marginTop="23dp"
+      android:layout_marginBottom="21.4dp"
+      android:layout_alignParentStart="true"
+      android:layout_alignParentLeft="true"
+      />
+  <TextView
+      android:text="TextView"
+      android:layout_width="wrap_content"
+      android:layout_height="20dp"
+      android:id="@+id/status_text"
+      android:layout_marginLeft="60dp"
+      android:layout_marginTop="10dp"
+      android:layout_alignParentStart="true"
+      android:layout_alignParentLeft="true"
+      android:layout_marginBottom="26dp"
+      android:textSize="18sp"
+      android:textColor="@color/black"
+      />
+  <TextView
+      android:text="TextView"
+      android:layout_width="wrap_content"
+      android:layout_height="17dp"
+      android:id="@+id/charge_id_txt"
+      android:layout_marginLeft="59dp"
+      android:layout_alignParentStart="true"
+      android:layout_alignParentLeft="true"
+      android:layout_marginTop="31dp"
+      android:layout_marginBottom="10dp"
+      />
+  <LinearLayout
+      android:layout_width="48dp"
+      android:layout_height="56dp"
+      android:layout_marginEnd="@dimen/margin_basic_16dp"
+      android:layout_marginRight="@dimen/margin_basic_16dp"
+      android:layout_alignParentEnd="true"
+      android:layout_alignParentRight="true"
+      android:id="@+id/close_icon_ll"
+      android:gravity="center_horizontal"
+      >
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:srcCompat="@drawable/btn_close_normal"
+        android:id="@+id/close_icon"
+        android:layout_gravity="center_vertical|center_horizontal"
+        />
+
+  </LinearLayout>
+
+
+</RelativeLayout>

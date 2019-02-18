@@ -1,6 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <color name="vibrant_green">#2ACE00</color>
+    <color name="vibrant_green_pressed">#1F9A00</color>
+    <color name="silver_light">#C9C9C9</color>
+    <color name="white">#FFFFFF</color>
+    <color name="alto_gray">#DDDDDD</color>
+    <color name="gray">#888888</color>
+    <color name="greyish_brown" tools:ignore="MissingDefaultResource">#535353</color>
+    <color name="dark_gray">#595959</color>
+    <color name="french_gray">#A8B5B5B5</color>
+    <color name="french_gray_new">#e6f7f7f7</color>
+    <color name="aluminium">#A9ABB0</color>
+    <color name="mischka">#D2D5DB</color>
+    <color name="oslo_gray">#8D8F93</color>
+    <color name="silver">#BFBFBF</color>
+    <color name="mercury">#E1E1E1</color>
+    <color name="alabaster">#F7F7F7</color>
+    <color name="black">#000000</color>
+    <color name="azure_radiance">#0090FF</color>
+    <color name="azure_radiance_pressed">#0077FF</color>
+    <color name="gallery">#EAEAEA</color>
+    <color name="red">#EE0000</color>
+    <color name="separator">#0C000000</color>
+    <color name="transparent">#00000000</color>
+
+    <color name="bt_white">#ffffff</color>
+    <color name="bt_black">#001129</color>
+    <color name="bt_blue">#009bde</color>
+    <color name="bt_light_gray">#6d6d6d</color>
+    <color name="bt_expiration_date_sheet_background_light">#eceff0</color>
+    <color name="bt_expiration_date_sheet_background_dark">#20272b</color>
+    <color name="bt_black_12">#1e000000</color>
+    <color name="bt_white_12">#1effffff</color>
+    <color name="bt_black_38">#61000000</color>
+    <color name="bt_white_38">#61ffffff</color>
+    <color name="bt_black_54">#8a000000</color>
+    <color name="bt_white_54">#8affffff</color>
+    <color name="bt_black_87">#de000000</color>
+    <color name="bt_white_87">#deffffff</color>
+
+
+    <color name="transparent_red">#0DCC0000</color>
+    
+    <color name="security_text_color">#C9C9C9</color>
+
 </resources>
