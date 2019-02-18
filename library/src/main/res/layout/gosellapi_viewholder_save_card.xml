@@ -16,9 +16,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginBottom="@dimen/margin_basic_16dp"
             android:layout_marginStart="@dimen/margin_basic_23dp"
+            android:layout_marginLeft="@dimen/margin_basic_23dp"
             android:layout_marginTop="@dimen/margin_basic_16dp"
             android:text="@string/textview_title_save_for_merchant" />
 
@@ -26,10 +28,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/margin_basic_16dp"
             android:layout_marginStart="@dimen/margin_basic_16dp"
             android:layout_toEndOf="@id/saveCheckoutsTitle"
+            android:layout_toRightOf="@id/saveCheckoutsTitle"
             android:theme="@style/SwitchSecondary" />
 
     </RelativeLayout>
@@ -45,9 +49,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginBottom="@dimen/margin_basic_16dp"
             android:layout_marginStart="@dimen/margin_basic_23dp"
+            android:layout_marginLeft="@dimen/margin_basic_23dp"
             android:layout_marginTop="@dimen/margin_basic_16dp"
             android:text="@string/textview_title_save_for_gopay" />
 
@@ -55,10 +61,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/margin_basic_16dp"
             android:layout_marginStart="@dimen/margin_basic_16dp"
             android:layout_toEndOf="@id/saveGoPayCheckoutsTitle"
+            android:layout_toRightOf="@id/saveGoPayCheckoutsTitle"
             android:theme="@style/SwitchSecondary" />
 
     </RelativeLayout>
