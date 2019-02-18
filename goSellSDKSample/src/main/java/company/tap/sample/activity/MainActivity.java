@@ -39,7 +39,16 @@ public class MainActivity extends AppCompatActivity {
         settingsManager = SettingsManager.getInstance();
         settingsManager.setPref(this);
 
+        setPayButtonAppearance();
+        setCardSectionAppearance();
         triggerSDK();
+    }
+
+    private void setPayButtonAppearance() {
+    }
+
+    private void setCardSectionAppearance(){
+
     }
 
 
