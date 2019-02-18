@@ -15,7 +15,8 @@
         android:layout_weight="1"
         android:paddingStart="@dimen/margin_basic_10dp"
         android:gravity="center"
-        tools:ignore="RtlSymmetry">
+        tools:ignore="RtlSymmetry"
+        android:paddingLeft="@dimen/margin_basic_10dp">
         <TextView
             android:id="@+id/tvMonth"
             android:layout_width="wrap_content"
@@ -49,7 +50,8 @@
         android:layout_weight="1"
         android:paddingEnd="@dimen/margin_basic_10dp"
         android:gravity="center"
-        tools:ignore="RtlSymmetry">
+        tools:ignore="RtlSymmetry"
+        android:paddingRight="@dimen/margin_basic_10dp">
         <TextView
             android:id="@+id/tvYear"
             android:layout_width="wrap_content"
