@@ -50,9 +50,16 @@ A library that fully covers payment/authorization/card saving process inside you
 ---
 To use the SDK the following requirements must be met:
 
-1. **Android Studio 3.3 or newer
+1. **Android Studio 3.3** or newer
 2. **Android SDK Tools 26.1.1** or newer
-3. **Android Platform Version: API 28: Android 9.0 (Pie) revision 6 or later
+3. **Android Platform Version: API 28: Android 9.0 (Pie) revision 6** or later
+
+<a name="installation"></a>
+# Installation
+---
+<a name="installation_with_gradle"></a>
+##Installation with Gradle
+---
 
 
 
