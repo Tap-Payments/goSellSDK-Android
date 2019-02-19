@@ -22,10 +22,10 @@ A library that fully covers payment/authorization/card saving process inside you
 4. [Usage](#usage)
     1. [Pay Button](#paybutton)
          1. [Start SDK with Pay Button](#start_sdk_with_pay_button)
-             1. [Init Pay Button](#pay_button_init)
-             2. [Appearance](#pay_button_appearance)
-             3. [Methods](#pay_button_methods)
-    	    4. [Properties](#sdkTrigger_properties)
+             1.[Init Pay Button](#pay_button_init)
+             2.[Appearance](#pay_button_appearance)
+             3.[Methods](#pay_button_methods)
+    	     4.[Properties](#sdkTrigger_properties)
     2. [API SDKTrigger](#api_sdkTrigger)
     	 1. [Properties](#api_sdkTrigger_properties)
     	 2. [Methods](#api_sdkTrigger_methods)
@@ -135,11 +135,13 @@ Don't forget to import the class at the beginning of the file:
 ### Pay Button
 ---
 <a name="start_sdk_with_pay_button"></a>
-**Pay Button** is an instance of android button view customized by tap with loader.Pay button look and feel is totally customized through SDKTrigger class.
+**Pay Button** is an instance of android button view customized by tap .Pay button look and feel is totally customized.
 
-If you would like to include it just initialize it through SDKTrigger class as following:
+Pay Button is restricted to the height of exactly **40 dp**. For better experience, make sure that it has enough **width** to display the content.
 
-1. include PayButton into your layout xml
+If you would like to include it do the following:
+
+1. include PayButton view into your layout xml
 ```android
    <company.tap.gosellapi.open.buttons.PayButtonView
         android:id="@+id/payButtonId"
@@ -151,5 +153,20 @@ If you would like to include it just initialize it through SDKTrigger class as f
 ```android
     payButtonView = findViewById(R.id.payButtonId);
  ```
- 3. customize pay button look and feel or just use default one.
+ 3. customize pay button look and feel or just use default one through SDKTrigeer instance.
+
+<a name="pay_button_appearance"></a>
+## Appearnce
+ To customize pay button appearnce you must inistantaite an object of SDKTrigger and then use it to do the customizatio as following
+
+ 1. Instantiate an instance of SDKTrigger
+ ```android
+      sdkTrigger = new SDKTrigger();
+ ```
+ 2. set button view
+ ```android
+     sdkTrigger.setButtonView(payButtonView, this, SDK_REQUEST_CODE);
+ ```
+
+
 
