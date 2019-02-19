@@ -92,10 +92,7 @@ public final class PayButtonView extends FrameLayout  {
         payButton.setEnabled(enabled);
     }
 
-    public void setBackgroundSelector(int selectorId){
-        mBackground = ContextCompat.getDrawable(context, selectorId);
-        payButton.setBackgroundDrawable(mBackground);
-    }
+
 
 
     private void init(Context context, AttributeSet attrs) {
@@ -142,7 +139,7 @@ public final class PayButtonView extends FrameLayout  {
         mTextStyle = Typeface.BOLD;
 
 
-        setupBackground();
+        setInitialBackground();
 
 
         mGravity = Gravity.CENTER;
@@ -269,9 +266,9 @@ public final class PayButtonView extends FrameLayout  {
 
         payButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);
 
-        setupTextColor();
+        //setupTextColor();
 
-        setupFontTypeFace();
+        //setupFontTypeFace();
 
         payButton.setAllCaps(true);
 
@@ -292,26 +289,25 @@ public final class PayButtonView extends FrameLayout  {
         }
     }
 
-    private void setupBackground() {
-
+    private void setInitialBackground(){
         mBackground = ContextCompat.getDrawable(context, R.drawable.btn_pay_selector);
+    }
 
-        int disabledTitleColorKey =   settingsManager.getTapButtonDisabledTitleColor(SettingsKeys.TAP_BUTTON_DISABLED_BACKGROUND_COLOR_KEY);
-        int enabledTitleColorKey  =   settingsManager.getTapButtonEnabledTitleColor(SettingsKeys.TAP_BUTTON_ENABLED_BACKGROUND_COLOR_KEY);
+    public void setBackgroundSelector(int selectorId){
+        mBackground = ContextCompat.getDrawable(context, selectorId);
+        payButton.setBackgroundDrawable(mBackground);
+    }
 
-        System.out.println(" disabledTitleColorKey >>> "+  disabledTitleColorKey);
-        System.out.println(" enabledTitleColorKey  >>> "+  enabledTitleColorKey);
-
+    public void setupBackgroundWithColorList(int enabledBackgroundColor,int disabledBackgroundColor) {
         ColorStateList myColorStateList = new ColorStateList(
                 new int[][]{
                         new int[]{android.R.attr.state_enabled}, // enabled
                         new int[]{-android.R.attr.state_enabled} // disabled
                 },
                 new int[] {
-                        enabledTitleColorKey,   // enabled
-                        disabledTitleColorKey, //  disabled
+                        enabledBackgroundColor,   // enabled
+                        disabledBackgroundColor, //  disabled
                 }
-
         );
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -320,34 +316,26 @@ public final class PayButtonView extends FrameLayout  {
 
     }
 
-    private void setupFontTypeFace() {
-        String tapButtonFontFace =   settingsManager.getTapButtonFont(SettingsKeys.TAP_BUTTON_FONT_KEY);
-
-        if(tapButtonFontFace!=null && !tapButtonFontFace.trim().equalsIgnoreCase("")){
-            Typeface font = Typeface.createFromAsset(getContext().getAssets(), tapButtonFontFace);
-            payButton.setTypeface(font, mTextStyle);
+    public void setupFontTypeFace(Typeface typeface) {
+        if(typeface!=null){
+            payButton.setTypeface(typeface, mTextStyle);
         }else {
             payButton.setTypeface(payButton.getTypeface(), mTextStyle);
         }
     }
 
-    private void setupTextColor(){
-        // payButton.setTextColor(mTextColor);
-
-        int disabledTitleColorKey =   settingsManager.getTapButtonDisabledTitleColor(SettingsKeys.TAP_BUTTON_DISABLED_TITLE_COLOR_KEY);
-        int enabledTitleColorKey  =   settingsManager.getTapButtonEnabledTitleColor(SettingsKeys.TAP_BUTTON_ENABLED_TITLE_COLOR_KEY);
-
+    public void setupTextColor(int enabledTextColor,int disabledTextColor){
         if (payButton.isEnabled())
-            payButton.setTextColor(enabledTitleColorKey);
+            payButton.setTextColor(enabledTextColor);
         else
-            payButton.setTextColor(disabledTitleColorKey);
-
-
+            payButton.setTextColor(disabledTextColor);
     }
 
     private void setupHeight(){
 
     }
+
+
 
     @Override
     protected void onAttachedToWindow() {

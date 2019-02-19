@@ -2,9 +2,11 @@ package company.tap.sample.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -18,11 +20,13 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import company.tap.gosellapi.internal.api.models.Charge;
+import company.tap.gosellapi.internal.api.responses.SDKSettings;
 import company.tap.gosellapi.open.buttons.PayButtonView;
 import company.tap.gosellapi.open.controllers.SDKTrigger;
 import company.tap.gosellapi.open.delegate.PaymentProcessDelegate;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.sample.R;
+import company.tap.sample.constants.SettingsKeys;
 import company.tap.sample.managers.SettingsManager;
 
 
@@ -39,13 +43,46 @@ public class MainActivity extends AppCompatActivity {
         settingsManager = SettingsManager.getInstance();
         settingsManager.setPref(this);
 
-        initButtonAppearance();
+        if (sdkTrigger == null)
+            sdkTrigger = new SDKTrigger();
+
+        initButton();
         setCardSectionAppearance();
         triggerSDK();
     }
 
-    private void initButtonAppearance() {
+    private void initButton() {
         payButtonView = findViewById(R.id.payButtonId);
+        /***
+         *  setPayButtonBackgroundSelector
+          */
+         //sdkTrigger.setPayButtonBackgroundSelector(ContextCompat.getDrawable(this, company.tap.gosellapi.R.drawable.btn_pay_selector);
+        /***
+         * setupBackgroundWithColorList
+         */
+//        sdkTrigger.setupBackgroundWithColorList(settingsManager.getTapButtonEnabledBackgroundColor(SettingsKeys.TAP_BUTTON_ENABLED_BACKGROUND_COLOR_KEY),
+//                settingsManager.getTapButtonDisabledBackgroundColor(SettingsKeys.TAP_BUTTON_DISABLED_BACKGROUND_COLOR_KEY)
+//                );
+
+        /***
+         * setupFontTypeFace
+         */
+//        String tapButtonFontFace =   settingsManager.getTapButtonFont(SettingsKeys.TAP_BUTTON_FONT_KEY);
+//        Typeface font = null;
+//        if(tapButtonFontFace!=null && !tapButtonFontFace.trim().equalsIgnoreCase("")){
+//            font = Typeface.createFromAsset(getAssets(), tapButtonFontFace);
+//        sdkTrigger.setupPayButtonFontTypeFace(font);
+
+        /***
+         * settextcolor
+         */
+//        sdkTrigger.setupTextColor(
+//                settingsManager.getTapButtonEnabledTitleColor(SettingsKeys.TAP_BUTTON_ENABLED_TITLE_COLOR_KEY),
+//                settingsManager.getTapButtonDisabledTitleColor(SettingsKeys.TAP_BUTTON_DISABLED_TITLE_COLOR_KEY)
+//        );
+
+
+
     }
 
     private void setCardSectionAppearance(){
@@ -54,11 +91,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void triggerSDK() {
-
-        if (sdkTrigger == null)
-            sdkTrigger = new SDKTrigger();
-
-
 
         sdkTrigger.setButtonView(payButtonView, this, SDK_REQUEST_CODE);
 
