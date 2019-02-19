@@ -31,8 +31,8 @@ Usage
 Setup
 --------------
 First of all, `goSellSDK` should be set up. To set it up, add the following lines of code somewhere in your project and make sure they will be called before any usage of `goSellSDK`.
-```
-   Android
+Android
+```java
     GoSellSDK.init(this, "sk_test_kovrMB0mupFJXfNZWx6Etg5y");
 ```
 1. **`authToken`** - to authorize your requests.
