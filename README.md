@@ -183,7 +183,7 @@ If you would like to include it do the following:
   ```
 <a name="api_sdkTrigger"></a>
 ## SDKTrigger
-**SDKTrigger** is the main interface for goSellSDK from you application, so you can use it to start SDK with pay button or without pay button is up to you.
+**SDKTrigger** is the main interface for goSellSDK library from you application, so you can use it to start SDK with pay button or without pay button.
 
 <a name="api_sdkTrigger_properties"></a>
 ### Properties
@@ -194,13 +194,20 @@ If you would like to include it do the following:
     <th rowspan=1>Description</th>
 
    <tr>
-	<td> payButtonView  </td> <td> PayButtonView </td> Pay Button View can be used to start SDK <td></td>
+	<td> payButtonView  </td>
+	<td> PayButtonView </td>
+	<td> Pay Button View can be used to start SDK <td>
    <tr>
+
    <tr>
-	<td> paymentDataSource  </td> <td> PaymentDataSource </td> Payment data source. All input payment information is passed through this protocol. Required. <td></td>
+	<td> paymentDataSource  </td>
+	<td> PaymentDataSource </td>
+	<td> Payment data source. All input payment information is passed through this protocol. Required. <td>
    <tr>
   <tr>
-	<td> activityListener  </td> <td> Activity </td> Activity. used as a context to setup sdk and to receive also, it is used to notify Merchant application when goSellSDK finish's its work . <td></td>
+	<td> activityListener  </td>
+	<td> Activity </td>
+	<td> Activity. used as a context to setup sdk and to receive also, it is used to notify Merchant application when goSellSDK finish's its work . <td>
    <tr>
 
 
