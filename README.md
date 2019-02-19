@@ -156,7 +156,7 @@ If you would like to include it do the following:
 
 <a name="pay_button_appearance"></a>
 ## Appearance
- To customize pay button appearance you must instantiate an object of SDKTrigger and then use it to do the customization as following
+ To customize pay button appearance you must instantiate an object of SDKTrigger and then use it to do the customization as following:
 
  1. Instantiate an instance of SDKTrigger
  ```android
@@ -166,6 +166,23 @@ If you would like to include it do the following:
  ```android
      sdkTrigger.setButtonView(payButtonView, this, SDK_REQUEST_CODE);
  ```
+ 3. setup button view background
+     1. setup pay button using xml selector
+     ```android
+         sdkTrigger.setPayButtonBackgroundSelector(YOUR_XML_SELECTOR);
+     ```
+     2. setup pay button using color list
+     ```android
+         sdkTrigger.setupBackgroundWithColorList(ENABLED_COLOR_CODE,DISABLED_COLOR_CODE);
+     ```
+  4. setup pay button font type face
+  ```android
+         sdkTrigger.setupPayButtonFontTypeFace(FONT_FACE);
+  ```
+  5. set pay button text color
+  ```android
+         sdkTrigger.setupTextColor(ENABLED_TEXT_COLOR, DISABLED_TEXT_COLOR);
+  ```
 
 
 
