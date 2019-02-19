@@ -136,5 +136,3 @@ Don't forget to import the class at the beginning of the file:
 ---
 <a name="start_sdk_with_pay_button"></a>
 you can initialize goSellSDK with pay button as following:
-
-
