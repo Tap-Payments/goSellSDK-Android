@@ -20,14 +20,13 @@ A library that fully covers payment/authorization/card saving process inside you
     1. [goSellSDK Class Properties](#setup_gosellsdk_class_properties)
     2. [Setup Steps](#setup_steps)
 4. [Usage](#usage)
-    1. [Pay Button](#pay_button)
-        1. [Pay Button Placement](#pay_button_placement)
-        2. [Properties](#pay_button_properties)
-        3. [Methods](#pay_button_methods)
     2. [SDKTrigger](#sdkTrigger)
-    	 1. [Properties](#sdkTrigger_properties)
-    	 2. [Methods](#sdkTrigger_methods)
-    3. [API Session](#api_sdkTrigger)
+         1.[Start SDK with Pay Button](#start_sdk_with_pay_button)
+           1. [Init Pay Button](#pay_button_init)
+           2. [Appearance](#pay_button_appearance)
+           3. [Methods](#pay_button_methods)
+    	   4. [Properties](#sdkTrigger_properties)
+    3. [API SDKTrigger](#api_sdkTrigger)
     	 1. [Properties](#api_sdkTrigger_properties)
     	 2. [Methods](#api_sdkTrigger_methods)
     4. [SDKTrigger Data Source](#sdkTrigger_data_source)
@@ -125,6 +124,17 @@ Don't forget to import the class at the beginning of the file:
 ```
 <a name="setup_steps"></a>
 ## Setup Steps
-### With PayButton
+### With SDKTrigger
+...
+...
+...
+<a name="usage"></a>
+#Usage
+---
+<a name="sdkTrigger"></a>
+### SDKTrigger
+---
+<a name="start_sdk_with_pay_button"></a>
+you can initialize goSellSDK with pay button as following:
 
-For those, who would like to use PayButton
+
