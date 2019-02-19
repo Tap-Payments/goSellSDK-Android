@@ -45,6 +45,14 @@ A library that fully covers payment/authorization/card saving process inside you
         10. [Session Cancel Callback](#session_cancel_callback)
     6. [SDK Appearance](#sdk_appearance)
 
+<a name="requirements"></a>
+# Requirements
+---
+To use the SDK the following requirements must be met:
+
+1. **Android Studio 3.3 or newer
+2. **Android SDK Tools 26.1.1** or newer
+3. **Android Platform Version: API 28: Android 9.0 (Pie) revision 6 or later
 
 
 
