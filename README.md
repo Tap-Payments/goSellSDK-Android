@@ -20,12 +20,12 @@ A library that fully covers payment/authorization/card saving process inside you
     1. [goSellSDK Class Properties](#setup_gosellsdk_class_properties)
     2. [Setup Steps](#setup_steps)
 4. [Usage](#usage)
-    1. [SDKTrigger](#sdkTrigger)
+    1. [Pay Button](#paybutton)
          1. [Start SDK with Pay Button](#start_sdk_with_pay_button)
-           1. [Init Pay Button](#pay_button_init)
-           2. [Appearance](#pay_button_appearance)
-           3. [Methods](#pay_button_methods)
-    	   4. [Properties](#sdkTrigger_properties)
+             1. [Init Pay Button](#pay_button_init)
+             2. [Appearance](#pay_button_appearance)
+             3. [Methods](#pay_button_methods)
+    	    4. [Properties](#sdkTrigger_properties)
     2. [API SDKTrigger](#api_sdkTrigger)
     	 1. [Properties](#api_sdkTrigger_properties)
     	 2. [Methods](#api_sdkTrigger_methods)
@@ -131,13 +131,13 @@ Don't forget to import the class at the beginning of the file:
 <a name="usage"></a>
 #Usage
 ---
-<a name="sdkTrigger"></a>
-### SDKTrigger
+<a name="paybutton"></a>
+### Pay Button
 ---
 <a name="start_sdk_with_pay_button"></a>
 **Pay Button** is an instance of android button view customized by tap with loader.Pay button look and feel is totally customized through SDKTrigger class.
 
-If you would like to include it jsut initialize it through SDKTrigger class as following:
+If you would like to include it just initialize it through SDKTrigger class as following:
 
 1. include PayButton into your layout xml
 ```android
@@ -147,7 +147,7 @@ If you would like to include it jsut initialize it through SDKTrigger class as f
         android:layout_height="40dp"
         android:layout_alignParentBottom="true"/>
 ```
-2. get refernce inside your activity
+2. get reference inside your activity
 ```android
     payButtonView = findViewById(R.id.payButtonId);
  ```
