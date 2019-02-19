@@ -14,7 +14,8 @@ A library that fully covers payment/authorization/card saving process inside you
 
 1. [Requirements](#requirements)
 2. [Installation](#installation)
-   1. [Installation with Gradle](#installation_with_gradle)
+   1. [Include goSellSDK library as a dependency module in your project](#include_library_to_code_locally) 
+   2. [Installation with jitpack](#installation_with_jitpack)
 3. [Setup](#setup)
     1. [goSellSDK Class Properties](#setup_gosellsdk_class_properties)
     2. [Setup Steps](#setup_steps)
@@ -58,7 +59,7 @@ To use the SDK the following requirements must be met:
 # Installation
 ---
 <a name="include_library_to_code_locally"></a>
-### Include goSellSDK library source code to your project
+### Include goSellSDK library as a dependency module in your project
 ---
 1. Clone goSellSDK library from Tap repository 
    ```
@@ -68,18 +69,18 @@ To use the SDK the following requirements must be met:
     ```Android
         include ':library', ':YourAppName'
     ```  
-3. Setup your project to include goSellSDK as a dpenedecy Module.
+3. Setup your project to include goSellSDK as a dependency Module.
    1. File -> Project Structure -> Modules -> << your project name >>
    2. Dependencies -> click on **+** icon in the screen bottom -> add Module Dependency
    3. select goSellSDK library
    
-   
-   
-<a name="installation_with_gradle"></a>
-# Installation with Gradle
+<a name="installation_with_jitpack"></a>
+### Installation with JitPack
 ---
+[JitPack](https://jitpack.io/) is a novel package repository for JVM and Android projects. It builds Git projects on demand and provides you with ready-to-use artifacts (jar, aar).
+
 To integrate goSellSDK into your project add it in your **root** `build.gradle` at the end of repositories:
-```groovy
+```android
 	allprojects {
 		repositories {
 			...
@@ -88,25 +89,32 @@ To integrate goSellSDK into your project add it in your **root** `build.gradle` 
 	}
 ```
 Step 2. Add the dependency
-```groovy
+```android
 	dependencies {
 	        compile 'com.github.Tap-Payments:goSellSDK-Android:1.0.2'
 	}
 ```
+<a name="setup"></a>
+# Setup
+---
+First of all, `goSellSDK` should be set up. In this section only secret key is required.
 
-Usage
--------------
-
-Setup
---------------
+<a name="setup_gosellsdk_class_properties"></a>
+## goSellSDK Class Properties
 First of all, `goSellSDK` should be set up. To set it up, add the following lines of code somewhere in your project and make sure they will be called before any usage of `goSellSDK`.
+
+Below is the list of properties in goSellSDK class you can manipulate. Make sure you do the setup before any usage of the SDK.
+
+<a name="setup_gosellsdk_class_properties_secret_key"></a>
+### Secret Key
+
+To set it up, add the following line of code somewhere in your project and make sure it will be called before any usage of `goSellSDK`, otherwise an exception will be thrown. **Required**.
 
 Android
 ```java
     GoSellSDK.init(context, "sk_test_kovrMB0mupFJXfNZWx6Etg5y"); // Authentication key
 ```
 1. **`authToken`** - to authorize your requests.
-2. **`encryptionKey`** - to protect sensitive card details.
 
 **Step 2.** Obtain an instance of **`GoSellAPI`** class via **`getInstance(authToken)`** method.
 
