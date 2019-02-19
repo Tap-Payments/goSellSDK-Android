@@ -135,7 +135,7 @@ Don't forget to import the class at the beginning of the file:
 ### Pay Button
 ---
 <a name="start_sdk_with_pay_button"></a>
-**Pay Button** is an instance of android button view customized by tap .Pay button look and feel is totally customized.
+**Pay Button** is an instance of android button view customized by tap. Pay button look and feel is totally customized.
 
 Pay Button is restricted to the height of exactly **40 dp**. For better experience, make sure that it has enough **width** to display the content.
 
@@ -153,11 +153,10 @@ If you would like to include it do the following:
 ```android
     payButtonView = findViewById(R.id.payButtonId);
  ```
- 3. customize pay button look and feel or just use default one through SDKTrigeer instance.
 
 <a name="pay_button_appearance"></a>
-## Appearnce
- To customize pay button appearnce you must inistantaite an object of SDKTrigger and then use it to do the customizatio as following
+## Appearance
+ To customize pay button appearance you must instantiate an object of SDKTrigger and then use it to do the customization as following
 
  1. Instantiate an instance of SDKTrigger
  ```android

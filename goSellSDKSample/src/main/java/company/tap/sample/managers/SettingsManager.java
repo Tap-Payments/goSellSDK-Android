@@ -2,6 +2,7 @@ package company.tap.sample.managers;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
@@ -277,6 +278,65 @@ public class SettingsManager {
     public AuthorizeAction getAuthorizeAction(){
         return new AuthorizeAction(AuthorizeActionType.VOID, 10);
     }
+
+
+    //////////////////////////////////////////////////  PayButton /////////////////////////////////
+    public int getTapButtonEnabledBackgroundColor(String key){
+        String color = pref.getString(key, "");
+        return extractEnabledBackgroundColorCode(color);
+    }
+
+
+    public int getTapButtonDisabledBackgroundColor(String key){
+        String color = pref.getString(key, "");
+        return extractDisabledBackgroundColorCode(color);
+    }
+
+    private int extractEnabledBackgroundColorCode(String color) {
+        if(color.trim().equalsIgnoreCase("")) return company.tap.gosellapi.R.color.vibrant_green_pressed;
+        return Color.parseColor(color.split("_")[1]);
+    }
+
+    private int extractDisabledBackgroundColorCode(String color) {
+        if(color.trim().equalsIgnoreCase("")) return company.tap.gosellapi.R.color.silver_light;
+        return Color.parseColor(color.split("_")[1]);
+    }
+
+    public String getTapButtonFont(String key){
+        String font = pref.getString(key, "");
+        return font;
+    }
+
+    public int getTapButtonDisabledTitleColor(String key){
+        String color = pref.getString(key, "");
+        return  extractTitleColorCode(color);
+    }
+
+
+
+    public int getTapButtonEnabledTitleColor(String key){
+        String color = pref.getString(key, "");
+        return extractTitleColorCode(color);
+    }
+
+    private int extractTitleColorCode(String color) {
+        if(color.trim().equalsIgnoreCase("")) return company.tap.gosellapi.R.color.white;
+        return Color.parseColor(color.split("_")[1]);
+    }
+
+
+    public String getTapButtonHeight(String key){
+        String height = pref.getString(key, "");
+        return height;
+    }
+
+
+
+
+
+
+
+
 
 
 

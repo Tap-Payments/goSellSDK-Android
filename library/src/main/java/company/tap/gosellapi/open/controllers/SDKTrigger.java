@@ -2,6 +2,7 @@ package company.tap.gosellapi.open.controllers;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import company.tap.gosellapi.internal.api.requests.PaymentOptionsRequest;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 import company.tap.gosellapi.open.buttons.PayButtonView;
+import company.tap.gosellapi.open.constants.SettingsKeys;
 import company.tap.gosellapi.open.data_manager.PaymentDataSource;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.gosellapi.open.models.AuthorizeAction;
@@ -44,12 +46,26 @@ public class SDKTrigger implements View.OnClickListener {
       this.payButtonView = (PayButtonView) buttonView;
       this.payButtonView.getPayButton().setOnClickListener(this);
       this.payButtonView.getSecurityIconView().setOnClickListener(this);
-
-      SettingsManager settingsManager = SettingsManager.getInstance();
-      settingsManager.setPref(activity);
     }
     this.activityListener = activity;
   }
+
+  public void setPayButtonBackgroundSelector(int selector){
+    payButtonView.setBackgroundSelector(selector);
+  }
+
+  public void setupBackgroundWithColorList(int enabledBackgroundColor,int disabledBackgroundColor){
+    payButtonView.setupBackgroundWithColorList(enabledBackgroundColor,disabledBackgroundColor);
+  }
+
+  public void setupPayButtonFontTypeFace(Typeface typeface){
+    payButtonView.setupFontTypeFace(typeface);
+  }
+
+  public void setupTextColor(int enabledTextColor,int disabledTextColor){
+    payButtonView.setupTextColor(enabledTextColor,disabledTextColor);
+  }
+
 
   public void setPayButtonTitle(String title){
     payButtonView.getPayButton().setText(title);

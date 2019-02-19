@@ -90,58 +90,6 @@ package company.tap.gosellapi.open.controllers;
         return color;
         }
 
-        //////////////////////////////////////////  TAP BUTTON SECTION ////////////////////////
-
-        public int getTapButtonEnabledBackgroundColor(String key){
-        String color = pref.getString(key, "");
-        return extractBackgroundColorCode(color);
-        }
-
-
-        public int getTapButtonDisabledBackgroundColor(String key){
-        String color = pref.getString(key, "");
-        return extractBackgroundColorCode(color);
-        }
-
-
-        public String getTapButtonFont(String key){
-        String font = pref.getString(key, "");
-        return font;
-        }
-
-
-        public int getTapButtonDisabledTitleColor(String key){
-        String color = pref.getString(key, "");
-        return  extractTitleColorCode(color);
-        }
-
-
-
-        public int getTapButtonEnabledTitleColor(String key){
-        String color = pref.getString(key, "");
-        return extractTitleColorCode(color);
-        }
-
-        public String getTapButtonHeight(String key){
-        String height = pref.getString(key, "");
-        return height;
-        }
-
-
-
-        private int extractBackgroundColorCode(String color) {
-        if(color.trim().equalsIgnoreCase("")) return R.color.vibrant_green_pressed;
-        return Color.parseColor(color.split("_")[1]);
-        }
-
-        private int extractTitleColorCode(String color) {
-        if(color.trim().equalsIgnoreCase("")) return R.color.white;
-        return Color.parseColor(color.split("_")[1]);
-        }
-
-
-
-
 
 
 
