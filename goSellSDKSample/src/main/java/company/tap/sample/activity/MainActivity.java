@@ -39,12 +39,13 @@ public class MainActivity extends AppCompatActivity {
         settingsManager = SettingsManager.getInstance();
         settingsManager.setPref(this);
 
-        setPayButtonAppearance();
+        initButtonAppearance();
         setCardSectionAppearance();
         triggerSDK();
     }
 
-    private void setPayButtonAppearance() {
+    private void initButtonAppearance() {
+        payButtonView = findViewById(R.id.payButtonId);
     }
 
     private void setCardSectionAppearance(){
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         if (sdkTrigger == null)
             sdkTrigger = new SDKTrigger();
 
-        payButtonView = findViewById(R.id.payButtonId);
+
 
         sdkTrigger.setButtonView(payButtonView, this, SDK_REQUEST_CODE);
 

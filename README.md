@@ -14,14 +14,14 @@ A library that fully covers payment/authorization/card saving process inside you
 
 1. [Requirements](#requirements)
 2. [Installation](#installation)
-   1. [Include goSellSDK library as a dependency module in your project](#include_library_to_code_locally) 
+   1. [Include goSellSDK library as a dependency module in your project](#include_library_to_code_locally)
    2. [Installation with jitpack](#installation_with_jitpack)
 3. [Setup](#setup)
     1. [goSellSDK Class Properties](#setup_gosellsdk_class_properties)
     2. [Setup Steps](#setup_steps)
 4. [Usage](#usage)
     1. [SDKTrigger](#sdkTrigger)
-         1.[Start SDK with Pay Button](#start_sdk_with_pay_button)
+         1. [Start SDK with Pay Button](#start_sdk_with_pay_button)
            1. [Init Pay Button](#pay_button_init)
            2. [Appearance](#pay_button_appearance)
            3. [Methods](#pay_button_methods)
@@ -60,19 +60,19 @@ To use the SDK the following requirements must be met:
 <a name="include_library_to_code_locally"></a>
 ### Include goSellSDK library as a dependency module in your project
 ---
-1. Clone goSellSDK library from Tap repository 
+1. Clone goSellSDK library from Tap repository
    ```
-       git@github.com:Tap-Payments/goSellSDK-Android.git 
-    ```   
+       git@github.com:Tap-Payments/goSellSDK-Android.git
+    ```
 2. Add goSellSDK library to your project settings.gradle file as following
     ```Android
         include ':library', ':YourAppName'
-    ```  
+    ```
 3. Setup your project to include goSellSDK as a dependency Module.
    1. File -> Project Structure -> Modules -> << your project name >>
    2. Dependencies -> click on **+** icon in the screen bottom -> add Module Dependency
    3. select goSellSDK library
-   
+
 <a name="installation_with_jitpack"></a>
 ### Installation with JitPack
 ---
@@ -135,4 +135,21 @@ Don't forget to import the class at the beginning of the file:
 ### SDKTrigger
 ---
 <a name="start_sdk_with_pay_button"></a>
-you can initialize goSellSDK with pay button as following:
+**Pay Button** is an instance of android button view customized by tap with loader.Pay button look and feel is totally customized through SDKTrigger class.
+
+If you would like to include it jsut initialize it through SDKTrigger class as following:
+
+1. include PayButton into your layout xml
+```android
+   <company.tap.gosellapi.open.buttons.PayButtonView
+        android:id="@+id/payButtonId"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"/>
+```
+2. get refernce inside your activity
+```android
+    payButtonView = findViewById(R.id.payButtonId);
+ ```
+ 3. customize pay button look and feel or just use default one.
+
