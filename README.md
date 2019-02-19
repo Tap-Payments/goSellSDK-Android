@@ -57,6 +57,24 @@ To use the SDK the following requirements must be met:
 <a name="installation"></a>
 # Installation
 ---
+<a name="include_library_to_code_locally"></a>
+### Include goSellSDK library source code to your project
+---
+1. Clone goSellSDK library from Tap repository 
+   ```
+       git@github.com:Tap-Payments/goSellSDK-Android.git 
+    ```   
+2. Add goSellSDK library to your project settings.gradle file as following
+    ```Android
+        include ':library', ':YourAppName'
+    ```  
+3. Setup your project to include goSellSDK as a dpenedecy Module.
+   1. File -> Project Structure -> Modules -> << your project name >>
+   2. Dependencies -> click on **+** icon in the screen bottom -> add Module Dependency
+   3. select goSellSDK library
+   
+   
+   
 <a name="installation_with_gradle"></a>
 # Installation with Gradle
 ---
