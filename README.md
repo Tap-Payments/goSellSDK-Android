@@ -58,45 +58,8 @@ To use the SDK the following requirements must be met:
 # Installation
 ---
 <a name="installation_with_gradle"></a>
-##Installation with Gradle
+# Installation with Gradle
 ---
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Install
----------
 To integrate goSellSDK into your project add it in your **root** `build.gradle` at the end of repositories:
 ```groovy
 	allprojects {
