@@ -24,8 +24,6 @@ A library that fully covers payment/authorization/card saving process inside you
          1. [Start SDK with Pay Button](#start_sdk_with_pay_button)
              1.[Init Pay Button](#pay_button_init)
              2.[Appearance](#pay_button_appearance)
-             3.[Methods](#pay_button_methods)
-    	     4.[Properties](#sdkTrigger_properties)
     2. [API SDKTrigger](#api_sdkTrigger)
     	 1. [Properties](#api_sdkTrigger_properties)
     	 2. [Methods](#api_sdkTrigger_methods)
@@ -183,6 +181,31 @@ If you would like to include it do the following:
   ```android
          sdkTrigger.setupTextColor(ENABLED_TEXT_COLOR, DISABLED_TEXT_COLOR);
   ```
+<a name="api_sdkTrigger"></a>
+## SDKTrigger
+**SDKTrigger** is the main interface for goSellSDK from you application, so you can use it to start SDK with pay button or without pay button is up to you.
+
+<a name="api_sdkTrigger_properties"></a>
+### Properties
+
+<table style="text-align:center">
+    <th colspan=1>Property</th>
+    <th colspan=1>Type</th>
+    <th rowspan=1>Description</th>
+
+   <tr>
+	<td> payButtonView  </td> <td> PayButtonView </td> Pay Button View can be used to start SDK <td></td>
+   <tr>
+   <tr>
+	<td> paymentDataSource  </td> <td> PaymentDataSource </td> Payment data source. All input payment information is passed through this protocol. Required. <td></td>
+   <tr>
+  <tr>
+	<td> activityListener  </td> <td> Activity </td> Activity. used as a context to setup sdk and to receive also, it is used to notify Merchant application when goSellSDK finish's its work . <td></td>
+   <tr>
+
+
+
+</table>
 
 
 
