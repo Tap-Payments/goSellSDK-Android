@@ -9,7 +9,7 @@ Android SDK to use [goSell API][1].
 
 # Install
 ---------
-Add it in your **root** `build.gradle` at the end of repositories:
+To integrate goSellSDK into your project add it in your **root** `build.gradle` at the end of repositories:
 ```groovy
 	allprojects {
 		repositories {
@@ -25,9 +25,16 @@ Step 2. Add the dependency
 	}
 ```
 
-Basic usage
+Usage
 -------------
-**Step 1.** Grab credentials from your dashboard:<br>
+
+Setup
+--------------
+First of all, `goSellSDK` should be set up. To set it up, add the following lines of code somewhere in your project and make sure they will be called before any usage of `goSellSDK`.
+```
+   Android
+    GoSellSDK.init(this, "sk_test_kovrMB0mupFJXfNZWx6Etg5y");
+```
 1. **`authToken`** - to authorize your requests.
 2. **`encryptionKey`** - to protect sensitive card details.
 
