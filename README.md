@@ -196,23 +196,57 @@ If you would like to include it do the following:
    <tr>
 	<td> payButtonView  </td>
 	<td> PayButtonView </td>
-	<td> Pay Button View can be used to start SDK <td>
+	<td> Pay Button View can be used to start SDK </td>
    <tr>
 
    <tr>
 	<td> paymentDataSource  </td>
 	<td> PaymentDataSource </td>
-	<td> Payment data source. All input payment information is passed through this protocol. Required. <td>
+	<td> Payment data source. All input payment information is passed through this protocol. Required. </td>
    <tr>
   <tr>
 	<td> activityListener  </td>
 	<td> Activity </td>
-	<td> Activity. used as a context to setup sdk and to receive also, it is used to notify Merchant application when goSellSDK finish's its work . <td>
+	<td> Activity. used as a context to setup sdk. also, it is used to notify Merchant application when goSellSDK finish's its work . </td>
    <tr>
 
 
 
 </table>
 
+<a name="api_sdkTrigger_methods"></a>
+### Methods
+
+<table style="text-align:center">
+    <th colspan=1>Method</th>
+    <th rowspan=1>Description</th>
+
+   <tr>
+	<td> setButtonView  </td>
+	<td> Set pay button instance. Pay Button can be used to start the payment process </td>
+   </tr>
+
+   <tr>
+	<td> setPayButtonBackgroundSelector  </td>
+	<td> Setup pay button background using selector xml file. </td>
+   </tr>
+  <tr>
+	<td> setupBackgroundWithColorList  </td>
+	<td> Setup pay button background using two colors. You need to provide method with color to be applied in case of button is enabled and also color to be applied in case of button is disabled. </td>
+   </tr>
+   <tr>
+	<td> setupPayButtonFontTypeFace </td>
+	<td> Setup pay button font type face. You need to pass font type face to this method </td>
+   </tr>
+   <tr>
+	<td> setupTextColor </td>
+	<td> Setup pay button text color. You need to pass color code to be applied in case of pay button is enabled and int color to be applied in case of pay button is disabled</td>
+   </tr>
+<tr>
+	<td> persistPaymentDataSource </td>
+	<td> Setup pay button title. You can setup pay button text according to payment type [Payment - Authorize - Save Cards].</td>
+   </tr>
+
+</table>
 
 
