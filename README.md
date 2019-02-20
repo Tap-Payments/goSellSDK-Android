@@ -395,22 +395,22 @@ The following table describes its structure and specifies which fields are requi
           sdkTrigger.setTransactionMode(TransactionMode); // PURCHASE,AUTHORIZE_CAPTURE, SAVE_CARD
      ```
 
-**Transaction Mode** is an enum.
-    ```java
+**Transaction Mode** is an enum:
+```java
        public enum TransactionMode {
 
         @SerializedName("PURCHASE")             PURCHASE,
         @SerializedName("AUTHORIZE_CAPTURE")    AUTHORIZE_CAPTURE,
         @SerializedName("SAVE_CARD")            SAVE_CARD
         }
-    ```
+```
    4. Set Customer
  ```android
       sdkTrigger.setCustomer(Customer);
  ```
 
- **Customer** is an Model Class.
-    ```java
+ **Customer** is an Model Class:
+```java
        class Customer {
 
           @SerializedName("id")
@@ -440,7 +440,7 @@ The following table describes its structure and specifies which fields are requi
           @SerializedName("metadata")
           String metaData;
           }
-    ```
+```
     5. Set Payment Items
  ```java
       sdkTrigger.setPaymentItems(ArraList<Item>);
