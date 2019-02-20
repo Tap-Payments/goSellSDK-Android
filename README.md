@@ -264,13 +264,18 @@ The following table describes its structure and specifies which fields are requi
     <th colspan=1>Type</th>
     <th colspan=3>Required</th>
     <th rowspan=2>Description</th>
+
+    <tr>
+    <th><sub>Purchase</sub></th><th><sub>Authorize</sub></th><th><sub>Card Saving</sub></th>
+    </tr>
+
     <tr>
         <td><i>mode</i></td>
-        <td colspan=2>TransactionMode</td>
+        <td colspan=1>TransactionMode</td>
         <td colspan=3><i>false</i></td>
         <td align="left">Mode of the transactions (purchase or authorize). If this property is not implemented, <i>purchase</i> mode is used.</td>
     </tr>
 
-   
+
 </table>
 
