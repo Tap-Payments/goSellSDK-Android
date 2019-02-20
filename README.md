@@ -636,3 +636,68 @@ The following table describes its structure and specifies which fields are requi
             private int timeInHours;
     }
 ```
+
+<a name="PaymentProcessDelegate"></a>
+## Payment Process Delegate
+
+**PaymentProcessDelegate** is a class which you may use to get payment/authorization/card saving status updates and update your user interface accordingly when payment window closes.
+
+<a name="charge_result"></a>
+## Charge Result
+```java
+    @SerializedName("INITIATED")    INITIATED,
+    @SerializedName("IN_PROGRESS")  IN_PROGRESS,
+    @SerializedName("ABANDONED")    ABANDONED,
+    @SerializedName("CANCELLED")    CANCELLED,
+    @SerializedName("FAILED")       FAILED,
+    @SerializedName("DECLINED")     DECLINED,
+    @SerializedName("RESTRICTED")   RESTRICTED,
+    @SerializedName("CAPTURED")     CAPTURED,
+    @SerializedName("VOID")         VOID,
+    @SerializedName("UNKNOWN")      UNKNOWN,
+    @SerializedName("AUTHORIZED")   AUTHORIZED,
+    @SerializedName("TIMEDOUT")     TIMEDOUT,
+
+    // save card status result
+    @SerializedName("VALID")        VALID,
+    @SerializedName("INVALID")      INVALID,
+```
+
+Below are listed down all available methods:
+
+<a name="getPaymentResult"></a>
+### Get Payment Result
+
+Retreive the payment result.
+```java
+ Charge chargeOrAuthorizeResult = PaymentProcessDelegate.getInstance().getPaymentResult();
+                if (chargeOrAuthorizeResult != null) {
+                    switch (chargeOrAuthorizeResult.getStatus()) {
+                        case CAPTURED:
+			    // write you code
+			    break;
+                        case AUTHORIZED:
+			// write you code
+			    break;
+                        case VALID:
+                            // write you code
+			    break;
+                        case FAILED:
+                            // write you code
+			    break;
+                        case INVALID:
+                           // write you code
+			    break;
+                        case DECLINED:
+                           // write you code
+			    break;
+                        case UNKNOWN:
+                           // write you code
+			    break;
+                        case TIMEDOUT:
+                           // write you code
+			    break;
+                    }
+
+                }
+```
