@@ -82,7 +82,7 @@ public class SDKTrigger implements View.OnClickListener {
   }
 
 
-  public void persistPaymentDataSource(){
+  private void persistPaymentDataSource(){
     PaymentDataManager.getInstance().setExternalDataSource(paymentDataSource);
   }
 
@@ -169,6 +169,7 @@ public class SDKTrigger implements View.OnClickListener {
   }
 
   private void getPaymentOptions() {
+    persistPaymentDataSource();
     payButtonView.getLoadingView().start();
     System.out.println(
         " before call request this.paymentDataSource.getCurrency() : " + this.paymentDataSource
