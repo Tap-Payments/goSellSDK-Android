@@ -367,3 +367,68 @@ The following table describes its structure and specifies which fields are requi
     <td align="left"><sub>Defines if same card can be saved more than once.<br><b>Note:</b> Same cards means absolutely equal data set. For example, if customer specifies same card details, but different cardholder names, we will treat this like different cards.</sub></td>
 </tr>
 </table>
+
+<a name="sdkTrigger_data_source_samples"></a>
+## Samples
+ SDKTrigger class supports you with all methods needed to setup PaymentDataSource object as following:
+
+ 1. Instantiate an instance of PaymentDataSource
+ ```android
+      sdkTrigger.instantiatePaymentDataSource();
+ ```
+ 2. Set TransactionCurrency
+ ```android
+      sdkTrigger.setTransactionCurrency(TapCurrency);
+ ```
+  3. Set TransactionMode
+ ```android
+      sdkTrigger.setTransactionMode(TransactionMode); // PURCHASE,AUTHORIZE_CAPTURE, SAVE_CARD
+ ```
+   4. Set Customer
+ ```android
+      sdkTrigger.setCustomer(Customer);
+ ```
+    5. Set Payment Items
+ ```android
+      sdkTrigger.setPaymentItems(ArraList<Item>);
+ ```
+ 5. Set Taxes
+ ```android
+      sdkTrigger.setTaxes(ArraList<Tax>);
+ ```
+  6. Set Shipping
+ ```android
+      sdkTrigger.setShipping(ArraList<Shipping>);
+ ```
+   7. Set Post URL
+ ```android
+      sdkTrigger.setPostURL(String);
+ ```
+ 8. Set Payment Description
+ ```android
+      sdkTrigger.setPaymentDescription(String);
+ ```
+ 9. Set Payment Metadata
+ ```android
+      sdkTrigger.setPaymentMetadata(HashMap<String,String>);
+ ```
+  10. Set Payment Reference
+ ```android
+      sdkTrigger.setPaymentReference(Reference);
+ ```
+   11. Set Payment Descriptor
+ ```android
+      sdkTrigger.setPaymentStatementDescriptor(String);
+ ```
+   12. Set 3DSecure
+ ```android
+      sdkTrigger.isRequires3DSecure(boolean);
+ ```
+   13. Set Receipt Settings
+ ```android
+      sdkTrigger.setReceiptSettings(Receipt);
+ ```
+    14. Set Authorize Action
+ ```android
+      sdkTrigger.setAuthorizeAction(AuthorizeAction);
+ ```
