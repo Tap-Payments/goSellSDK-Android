@@ -294,11 +294,76 @@ The following table describes its structure and specifies which fields are requi
         <td colspan=3><sub><i>false</i></sub></td>
         <td align="left"><sub>Payment/Authorization amount.<br><b>Note:</b> In order to have payment amount either <i>amount</i> or <i>items</i> should be implemented. If both are implemented, <i>items</i> is preferred.</sub></td>
     </tr>
-
-     <tr>
-        <td><sub><i>items</i></sub></td>
-        <td colspan=1><sub><b>ArrayList <nobr>&lt;PaymentItem *&gt;</nobr></b></sub></td>
-        <td colspan=3><sub><i>false</i></sub></td>
-        <td align="left"><sub>List of items to pay for.<br><b>Note:</b> In order to have payment amount either <i>amount</i> or <i>items</i> should be implemented. If both are implemented, <i>items</i> is preferred.</sub></td>
-    </tr>
-    </table>
+    <tr>
+    <td><sub><i>items</i></sub></td>
+    <td colspan=1><sub><b>ArrayList <nobr>[PaymentItem]</PaymentItem> </nobr></b></sub></td>
+    <td colspan=3><sub><i>false</i></sub></td>
+    <td align="left"><sub>List of items to pay for.<br><b>Note:</b> In order to have payment amount either <i>amount</i> or <i>items</i> should be implemented. If both are implemented, <i>items</i> is preferred.</sub></td>
+</tr>
+<tr>
+    <td><sub><i>taxes</i></sub></td>
+    <td colspan=1><sub><b>ArrayList <nobr>[Tax]</PaymentItem> </nobr></b></sub></td>
+    <td colspan=3><sub><i>false</i></sub></td>
+    <td align="left"><sub>You can specify taxation details here. By default, there are no taxes.<br> <b>Note:</b> Specifying taxes will affect total payment/authorization amount.</sub></td>
+</tr>
+<tr>
+    <td><sub><i>shipping</i></sub></td>
+    <td colspan=1><sub><b>ArrayList <nobr>[Shipping]</PaymentItem> </nobr></b></sub></td>
+    <td colspan=3><sub><i>false</i></sub></td>
+    <td align="left"><sub>You can specify shipping details here. By default, there are no shipping details.<br> <b>Note:</b> Specifying shipping will affect total payment/authorization amount.</sub></td>
+</tr>
+<tr>
+    <td><sub><i>postURL</i></sub></td>
+    <td colspan=1><sub><b>String </b></sub></td>
+    <td colspan=3><sub><i>false</i></sub></td>
+    <td align="left"><sub>The URL which will be called by Tap system notifying that payment has either succeed or failed</sub></td>
+</tr>
+<tr>
+    <td><sub><i>paymentDescription</i></sub></td>
+    <td colspan=1><sub><b>String </b></sub></td>
+    <td colspan=3><sub><i>false</i></sub></td>
+    <td align="left"><sub>Description of the payment.</sub></td>
+</tr>
+<tr>
+    <td><sub><i>paymentMetadata</i></sub></td>
+    <td colspan=1><sub><b>String </b></sub></td>
+    <td colspan=3><sub><i>false</i></sub></td>
+    <td align="left"><sub>Additional information you would like to pass along with the transaction.</sub></td>
+</tr>
+<tr>
+    <td><sub><i>paymentReference</i></sub></td>
+    <td colspan=1><sub><b>Reference </b></sub></td>
+    <td colspan=3><sub><i>false</i></sub></td>
+    <td align="left"><sub>You can keep a reference to the transaction using this property</sub></td>
+</tr>
+<tr>
+    <td><sub><i>paymentStatementDescriptor</i></sub></td>
+    <td colspan=1><sub><b>String </b></sub></td>
+    <td colspan=3><sub><i>false</i></sub></td>
+    <td align="left"><sub>Statement descriptor.</sub></td>
+</tr>
+<tr>
+    <td><sub><i>require3DSecure</i></sub></td>
+    <td colspan=1><sub><b>Boolean </b></sub></td>
+    <td colspan=3><sub><i>false</i></sub></td>
+    <td align="left"><sub>Defines if 3D secure check is required. If not implemented, treated as <i>true</i>.<br><b>Note:</b> If you disable 3D secure check, it still may occure. Final decision is taken by Tap</sub></td>
+</tr>
+<tr>
+    <td><sub><i>receiptSettings</i></sub></td>
+    <td colspan=1><sub><b>Receipt </b></sub></td>
+    <td colspan=3><sub><i>false</i></sub></td>
+    <td align="left"><sub>Receipt recipient details.</sub></td>
+</tr>
+<tr>
+    <td><sub><i>authorizeAction</i></sub></td>
+    <td colspan=1><sub><b>AuthorizeAction </b></sub></td>
+    <td><sub><i>false</i></sub></td><td><sub><i>true</i></sub></td><td><sub><i>false</i></sub></td>
+    <td align="left"><sub>Action to perform after authorization succeeds.</sub></td>
+</tr>
+<tr>
+    <td><sub><i>allowsToSaveSameCardMoreThanOnce</i></sub></td>
+    <td colspan=1><sub><b>Boolean </b></sub></td>
+    <td colspan=3><sub><i>false</i></sub></td>
+    <td align="left"><sub>Defines if same card can be saved more than once.<br><b>Note:</b> Same cards means absolutely equal data set. For example, if customer specifies same card details, but different cardholder names, we will treat this like different cards.</sub></td>
+</tr>
+</table>
