@@ -413,32 +413,32 @@ The following table describes its structure and specifies which fields are requi
 ```java
      class Customer {
 
-          @SerializedName("id")
-          @Expose
-          private String identifier;
+                  @SerializedName("id")
+                  @Expose
+                  private String identifier;
 
-          @SerializedName("first_name")
-          @Expose
-          private String firstName;
+                  @SerializedName("first_name")
+                  @Expose
+                  private String firstName;
 
-          @SerializedName("middle_name")
-          @Expose
-          private String middleName;
+                  @SerializedName("middle_name")
+                  @Expose
+                  private String middleName;
 
-          @SerializedName("last_name")
-          @Expose
-          private String lastName;
+                  @SerializedName("last_name")
+                  @Expose
+                  private String lastName;
 
-          @SerializedName("email")
-          @Expose
-          private String email;
+                  @SerializedName("email")
+                  @Expose
+                  private String email;
 
-          @SerializedName("phone")
-          @Expose
-          private PhoneNumber phone;
+                  @SerializedName("phone")
+                  @Expose
+                  private PhoneNumber phone;
 
-          @SerializedName("metadata")
-          String metaData;
+                  @SerializedName("metadata")
+                  String metaData;
           }
 ```
     5. Set Payment Items
@@ -450,34 +450,34 @@ The following table describes its structure and specifies which fields are requi
 ```java
 	class PaymentItem {
 
-      @SerializedName("name")
-      @Expose
-      private String name;
+          @SerializedName("name")
+          @Expose
+          private String name;
 
 
-      @SerializedName("description")
-      @Expose
-      @Nullable private String description;
+          @SerializedName("description")
+          @Expose
+          @Nullable private String description;
 
-      @SerializedName("quantity")
-      @Expose
-      private Quantity quantity;
+          @SerializedName("quantity")
+          @Expose
+          private Quantity quantity;
 
-      @SerializedName("amount_per_unit")
-      @Expose
-      private BigDecimal amountPerUnit;
+          @SerializedName("amount_per_unit")
+          @Expose
+          private BigDecimal amountPerUnit;
 
-      @SerializedName("discount")
-      @Expose
-      @Nullable private AmountModificator discount;
+          @SerializedName("discount")
+          @Expose
+          @Nullable private AmountModificator discount;
 
-      @SerializedName("taxes")
-      @Expose
-      @Nullable private ArrayList<Tax> taxes;
+          @SerializedName("taxes")
+          @Expose
+          @Nullable private ArrayList<Tax> taxes;
 
-      @SerializedName("total_amount")
-      @Expose
-      private BigDecimal totalAmount;
+          @SerializedName("total_amount")
+          @Expose
+          private BigDecimal totalAmount;
 	}
 ```
 
@@ -489,17 +489,17 @@ The following table describes its structure and specifies which fields are requi
 ```java
 	class class Tax {
 
-    @SerializedName("name")
-    @Expose
-    private String name;
+            @SerializedName("name")
+            @Expose
+            private String name;
 
-    @SerializedName("description")
-    @Expose
-    @Nullable private String description;
+            @SerializedName("description")
+            @Expose
+            @Nullable private String description;
 
-    @SerializedName("amount")
-    @Expose
-    private AmountModificator amount;
+            @SerializedName("amount")
+            @Expose
+            private AmountModificator amount;
     }
 ```
   6. Set Shipping
@@ -510,17 +510,17 @@ The following table describes its structure and specifies which fields are requi
 ```java
 	class class Shipping {
 
-    @SerializedName("name")
-    @Expose
-    private String name;
+            @SerializedName("name")
+            @Expose
+            private String name;
 
-    @SerializedName("description")
-    @Expose
-    @Nullable private String description;
+            @SerializedName("description")
+            @Expose
+            @Nullable private String description;
 
-    @SerializedName("amount")
-    @Expose
-    private BigDecimal amount;
+            @SerializedName("amount")
+            @Expose
+            private BigDecimal amount;
     }
 ```
    7. Set Post URL
@@ -535,7 +535,7 @@ The following table describes its structure and specifies which fields are requi
  ```android
       sdkTrigger.setPaymentDescription(String);
  ```
-  **Payment Description**:
+  **Description**:
 ```java
     return @"Awesome payment description will be here.";
 ```
@@ -543,7 +543,7 @@ The following table describes its structure and specifies which fields are requi
  ```android
       sdkTrigger.setPaymentMetadata(HashMap<String,String>);
  ```
- **Payment Metadata** HashMap:
+ **Metadata** HashMap:
 ```java
     HashMap<String,String> paymentMetadata = new HashMap<>();
         paymentMetadata.put("metadata_key_1", "metadata value 1");
@@ -553,40 +553,40 @@ The following table describes its structure and specifies which fields are requi
  ```android
       sdkTrigger.setPaymentReference(Reference);
  ```
-  **Payment Reference** model class:
+  **Reference** model class:
 ```java
 	class class Reference {
 
-    @SerializedName("acquirer")
-    @Expose
-    @Nullable private String acquirer;
+            @SerializedName("acquirer")
+            @Expose
+            @Nullable private String acquirer;
 
-    @SerializedName("gateway")
-    @Expose
-    @Nullable private String gateway;
+            @SerializedName("gateway")
+            @Expose
+            @Nullable private String gateway;
 
-    @SerializedName("payment")
-    @Expose
-    @Nullable private String payment;
+            @SerializedName("payment")
+            @Expose
+            @Nullable private String payment;
 
-    @SerializedName("track")
-    @Expose
-    @Nullable private String track;
+            @SerializedName("track")
+            @Expose
+            @Nullable private String track;
 
-    @SerializedName("transaction")
-    @Expose
-    @Nullable private String transaction;
+            @SerializedName("transaction")
+            @Expose
+            @Nullable private String transaction;
 
-    @SerializedName("order")
-    @Expose
-    @Nullable private String order;
+            @SerializedName("order")
+            @Expose
+            @Nullable private String order;
     }
 ```
    11. Set Payment Descriptor
  ```android
       sdkTrigger.setPaymentStatementDescriptor(String);
  ```
-   **Payment Descriptor** String:
+   **Descriptor** String:
 ```java
     return @"Payment statement descriptor will be here.";
 ```
@@ -602,37 +602,37 @@ The following table describes its structure and specifies which fields are requi
  ```android
       sdkTrigger.setReceiptSettings(Receipt);
  ```
-   **Payment Receipt** model class:
+   **Receipt** model class:
 ```java
 	class class Receipt {
 
-    @SerializedName("id")
-    @Expose
-    @Nullable private String id;
+            @SerializedName("id")
+            @Expose
+            @Nullable private String id;
 
-    @SerializedName("email")
-    @Expose
-    private boolean email;
+            @SerializedName("email")
+            @Expose
+            private boolean email;
 
-    @SerializedName("sms")
-    @Expose
-    private boolean sms;
+            @SerializedName("sms")
+            @Expose
+            private boolean sms;
     }
 ```
     14. Set Authorize Action
  ```android
       sdkTrigger.setAuthorizeAction(AuthorizeAction);
  ```
-    **Payment AuthorizeAction** model class:
+    **AuthorizeAction** model class:
 ```java
 	class AuthorizeAction {
 
-    @SerializedName("type")
-    @Expose
-    private AuthorizeActionType type;
+            @SerializedName("type")
+            @Expose
+            private AuthorizeActionType type;
 
-    @SerializedName("time")
-    @Expose
-    private int timeInHours;
+            @SerializedName("time")
+            @Expose
+            private int timeInHours;
     }
-```	
+```
