@@ -373,25 +373,114 @@ The following table describes its structure and specifies which fields are requi
  SDKTrigger class supports you with all methods needed to setup PaymentDataSource object as following:
 
  1. Instantiate an instance of PaymentDataSource
- ```android
+ ```java
       sdkTrigger.instantiatePaymentDataSource();
  ```
  2. Set TransactionCurrency
- ```android
+ ```java
       sdkTrigger.setTransactionCurrency(TapCurrency);
  ```
-  3. Set TransactionMode
- ```android
-      sdkTrigger.setTransactionMode(TransactionMode); // PURCHASE,AUTHORIZE_CAPTURE, SAVE_CARD
+ **Transaction Currency** is a TapCurrency object:
+ ```java
+  public TapCurrency(@NonNull String isoCode) throws CurrencyException {
+    String code = isoCode.toLowerCase();
+    if(!LocaleCurrencies.checkUserCurrency(code)) {
+      throw CurrencyException.getUnknown(code);
+    }
+    this.isoCode = code;
+  }
  ```
+  3. Set TransactionMode
+     ```java
+          sdkTrigger.setTransactionMode(TransactionMode); // PURCHASE,AUTHORIZE_CAPTURE, SAVE_CARD
+     ```
+
+**Transaction Mode** is an enum.
+    ```java
+       public enum TransactionMode {
+
+        @SerializedName("PURCHASE")             PURCHASE,
+        @SerializedName("AUTHORIZE_CAPTURE")    AUTHORIZE_CAPTURE,
+        @SerializedName("SAVE_CARD")            SAVE_CARD
+        }
+    ```
    4. Set Customer
  ```android
       sdkTrigger.setCustomer(Customer);
  ```
+
+ **Customer** is an Model Class.
+    ```java
+       class Customer {
+
+          @SerializedName("id")
+          @Expose
+          private String identifier;
+
+          @SerializedName("first_name")
+          @Expose
+          private String firstName;
+
+          @SerializedName("middle_name")
+          @Expose
+          private String middleName;
+
+          @SerializedName("last_name")
+          @Expose
+          private String lastName;
+
+          @SerializedName("email")
+          @Expose
+          private String email;
+
+          @SerializedName("phone")
+          @Expose
+          private PhoneNumber phone;
+
+          @SerializedName("metadata")
+          String metaData;
+          }
+    ```
     5. Set Payment Items
- ```android
+ ```java
       sdkTrigger.setPaymentItems(ArraList<Item>);
  ```
+
+ **Item** is a model class:
+```java
+	class PaymentItem {
+
+      @SerializedName("name")
+      @Expose
+      private String name;
+
+
+      @SerializedName("description")
+      @Expose
+      @Nullable private String description;
+
+      @SerializedName("quantity")
+      @Expose
+      private Quantity quantity;
+
+      @SerializedName("amount_per_unit")
+      @Expose
+      private BigDecimal amountPerUnit;
+
+      @SerializedName("discount")
+      @Expose
+      @Nullable private AmountModificator discount;
+
+      @SerializedName("taxes")
+      @Expose
+      @Nullable private ArrayList<Tax> taxes;
+
+      @SerializedName("total_amount")
+      @Expose
+      private BigDecimal totalAmount;
+	}
+```
+
  5. Set Taxes
  ```android
       sdkTrigger.setTaxes(ArraList<Tax>);
