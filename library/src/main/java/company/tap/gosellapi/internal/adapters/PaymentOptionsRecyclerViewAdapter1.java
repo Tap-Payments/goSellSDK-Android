@@ -9,11 +9,19 @@ import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptio
 import company.tap.gosellapi.internal.viewholders.PaymentOptionsBaseViewHolder;
 import company.tap.gosellapi.internal.viewholders.PaymentOptionsBaseViewHolder1;
 
+/**
+ * The type Payment options recycler view adapter 1.
+ */
 public class PaymentOptionsRecyclerViewAdapter1 extends RecyclerView.Adapter<PaymentOptionsBaseViewHolder1> {
 
   private final PaymentOptionsDataManager dataSource;
 
-  public PaymentOptionsRecyclerViewAdapter1(PaymentOptionsDataManager dataSource) {
+    /**
+     * Instantiates a new Payment options recycler view adapter 1.
+     *
+     * @param dataSource the data source
+     */
+    public PaymentOptionsRecyclerViewAdapter1(PaymentOptionsDataManager dataSource) {
     this.dataSource = dataSource;
   }
 

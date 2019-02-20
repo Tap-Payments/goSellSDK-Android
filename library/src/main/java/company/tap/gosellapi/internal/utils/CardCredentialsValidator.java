@@ -1,5 +1,8 @@
 package company.tap.gosellapi.internal.utils;
 
+/**
+ * The type Card credentials validator.
+ */
 public class CardCredentialsValidator {
 
 //  public boolean validateCard() {

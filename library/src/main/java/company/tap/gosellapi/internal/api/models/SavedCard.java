@@ -12,6 +12,9 @@ import company.tap.gosellapi.internal.api.enums.CardScheme;
 import company.tap.gosellapi.internal.api.interfaces.CurrenciesSupport;
 import company.tap.tapcardvalidator_android.CardBrand;
 
+/**
+ * The type Saved card.
+ */
 public class SavedCard implements Comparable<SavedCard>, CurrenciesSupport {
 
     @SerializedName("id")
@@ -70,6 +73,8 @@ public class SavedCard implements Comparable<SavedCard>, CurrenciesSupport {
 
 
     /**
+     * Gets fingerprint.
+     *
      * @return Card fingerprint
      */
     @NonNull
@@ -78,6 +83,8 @@ public class SavedCard implements Comparable<SavedCard>, CurrenciesSupport {
     }
 
     /**
+     * Gets id.
+     *
      * @return Card identifier.
      */
     @Nullable public String getId() {
@@ -85,6 +92,8 @@ public class SavedCard implements Comparable<SavedCard>, CurrenciesSupport {
     }
 
     /**
+     * Gets object.
+     *
      * @return Object type.
      */
     @NonNull public String getObject() {
@@ -92,6 +101,8 @@ public class SavedCard implements Comparable<SavedCard>, CurrenciesSupport {
     }
 
     /**
+     * Gets last four.
+     *
      * @return Last 4 digits of the card.
      */
     @NonNull public String getLastFour() {
@@ -99,6 +110,8 @@ public class SavedCard implements Comparable<SavedCard>, CurrenciesSupport {
     }
 
     /**
+     * Gets expiry.
+     *
      * @return Expiration date.
      */
     @Nullable public ExpirationDate getExpiry() {
@@ -106,6 +119,8 @@ public class SavedCard implements Comparable<SavedCard>, CurrenciesSupport {
     }
 
     /**
+     * Gets brand.
+     *
      * @return Card brand.
      */
     @NonNull public CardBrand getBrand() {
@@ -113,6 +128,8 @@ public class SavedCard implements Comparable<SavedCard>, CurrenciesSupport {
     }
 
     /**
+     * Gets cardholder name.
+     *
      * @return Cardholder name.
      */
     @Nullable public String getCardholderName() {
@@ -120,30 +137,51 @@ public class SavedCard implements Comparable<SavedCard>, CurrenciesSupport {
     }
 
     /**
+     * Gets first six.
+     *
      * @return Card BIN number.
      */
-
     @NonNull public String getFirstSix() {
         return firstSix;
     }
 
     /**
+     * Gets currency.
+     *
      * @return Card currency.
      */
     @Nullable public String getCurrency() {
         return currency;
     }
 
+    /**
+     * Gets payment option identifier.
+     *
+     * @return the payment option identifier
+     */
     @Nullable public String getPaymentOptionIdentifier() { return paymentOptionIdentifier; }
 
+    /**
+     * Gets scheme.
+     *
+     * @return the scheme
+     */
     @Nullable public CardScheme getScheme() { return scheme; }
 
     @Nullable public ArrayList<String> getSupportedCurrencies() { return supportedCurrencies; }
 
+    /**
+     * Get image string.
+     *
+     * @return the string
+     */
     @Nullable public String getImage(){
         return image;
     }
+
     /**
+     * Gets order by.
+     *
      * @return Ordering field.
      */
 

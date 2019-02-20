@@ -52,9 +52,18 @@ import company.tap.gosellapi.internal.interfaces.IPaymentDataProvider;
 import company.tap.gosellapi.internal.interfaces.IPaymentProcessListener;
 import company.tap.gosellapi.internal.utils.AmountCalculator;
 
+/**
+ * The type Payment process manager.
+ */
 final class PaymentProcessManager {
 
-  PaymentDataManager.WebPaymentURLDecision decisionForWebPaymentURL(String url) {
+    /**
+     * Decision for web payment url payment data manager . web payment url decision.
+     *
+     * @param url the url
+     * @return the payment data manager . web payment url decision
+     */
+    PaymentDataManager.WebPaymentURLDecision decisionForWebPaymentURL(String url) {
 
     boolean urlIsReturnURL = url.startsWith(Constants.RETURN_URL);
     boolean shouldLoad = !urlIsReturnURL;
@@ -86,14 +95,27 @@ final class PaymentProcessManager {
   }
 
 
-  public void checkSavedCardPaymentExtraFees(SavedCard savedCard,
+    /**
+     * Check saved card payment extra fees.
+     *
+     * @param savedCard                  the saved card
+     * @param paymentOptionsDataListener the payment options data listener
+     */
+    public void checkSavedCardPaymentExtraFees(SavedCard savedCard,
                                              PaymentOptionsDataManager.PaymentOptionsDataListener paymentOptionsDataListener) {
     PaymentOption paymentOption = findSavedCardPaymentOption(savedCard);
     checkPaymentExtraFees(paymentOption, paymentOptionsDataListener,PaymentType.SavedCard);
 
   }
 
- public void  checkPaymentExtraFees(
+    /**
+     * Check payment extra fees.
+     *
+     * @param paymentOption              the payment option
+     * @param paymentOptionsDataListener the payment options data listener
+     * @param paymentType                the payment type
+     */
+    public void  checkPaymentExtraFees(
                          @NonNull final PaymentOption paymentOption,
                          PaymentOptionsDataManager.PaymentOptionsDataListener paymentOptionsDataListener,
                          PaymentType paymentType) {
@@ -175,8 +197,13 @@ final class PaymentProcessManager {
   }
 
 
-
-  public BigDecimal calculateExtraFeesAmount(PaymentOption paymentOption) {
+    /**
+     * Calculate extra fees amount big decimal.
+     *
+     * @param paymentOption the payment option
+     * @return the big decimal
+     */
+    public BigDecimal calculateExtraFeesAmount(PaymentOption paymentOption) {
     if (paymentOption != null) {
       IPaymentDataProvider provider = getDataProvider();
       AmountedCurrency amount = provider.getSelectedCurrency();
@@ -191,7 +218,13 @@ final class PaymentProcessManager {
       return BigDecimal.ZERO;
   }
 
-  public String calculateTotalAmount(BigDecimal feesAmount) {
+    /**
+     * Calculate total amount string.
+     *
+     * @param feesAmount the fees amount
+     * @return the string
+     */
+    public String calculateTotalAmount(BigDecimal feesAmount) {
     IPaymentDataProvider provider = getDataProvider();
     AmountedCurrency amount = provider.getSelectedCurrency();
     AmountedCurrency extraFeesAmount = new AmountedCurrency(amount.getCurrency(), feesAmount);
@@ -201,29 +234,56 @@ final class PaymentProcessManager {
     return totalAmountText;
   }
 
-  void startPaymentProcess(@NonNull final PaymentOptionViewModel paymentOptionModel) {
+    /**
+     * Start payment process.
+     *
+     * @param paymentOptionModel the payment option model
+     */
+    void startPaymentProcess(@NonNull final PaymentOptionViewModel paymentOptionModel) {
     forceStartPaymentProcess(paymentOptionModel);
   }
 
-  void startSavedCardPaymentProcess(@NonNull final SavedCard paymentOptionModel,
+    /**
+     * Start saved card payment process.
+     *
+     * @param paymentOptionModel     the payment option model
+     * @param recentSectionViewModel the recent section view model
+     */
+    void startSavedCardPaymentProcess(@NonNull final SavedCard paymentOptionModel,
                                     RecentSectionViewModel recentSectionViewModel){
     forceStartSavedCardPaymentProcess(paymentOptionModel,recentSectionViewModel);
   }
 
-  PaymentProcessManager(@NonNull IPaymentDataProvider dataProvider,
+    /**
+     * Instantiates a new Payment process manager.
+     *
+     * @param dataProvider the data provider
+     * @param listener     the listener
+     */
+    PaymentProcessManager(@NonNull IPaymentDataProvider dataProvider,
                         @NonNull IPaymentProcessListener listener) {
 
     this.dataProvider = dataProvider;
     this.processListener = listener;
   }
 
-  @NonNull
+    /**
+     * Gets data provider.
+     *
+     * @return the data provider
+     */
+    @NonNull
   IPaymentDataProvider getDataProvider() {
 
     return dataProvider;
   }
 
-  @NonNull
+    /**
+     * Gets process listener.
+     *
+     * @return the process listener
+     */
+    @NonNull
   IPaymentProcessListener getProcessListener() {
 
     return processListener;
@@ -231,13 +291,23 @@ final class PaymentProcessManager {
 
   @Nullable private PaymentOptionViewModel currentPaymentViewModel;
 
-  public void setCurrentPaymentViewModel(
+    /**
+     * Sets current payment view model.
+     *
+     * @param currentPaymentViewModel the current payment view model
+     */
+    public void setCurrentPaymentViewModel(
       @Nullable PaymentOptionViewModel currentPaymentViewModel) {
     this.currentPaymentViewModel = currentPaymentViewModel;
   }
 
 
-  @Nullable
+    /**
+     * Gets current payment view model.
+     *
+     * @return the current payment view model
+     */
+    @Nullable
   public PaymentOptionViewModel getCurrentPaymentViewModel() {
     return currentPaymentViewModel;
   }
@@ -588,10 +658,11 @@ final class PaymentProcessManager {
 
     /**
      * verify
-     * @param chargeOrAuthorizeOrSaveCard
-     * @param <T>
+     *
+     * @param <T>                         the type parameter
+     * @param chargeOrAuthorizeOrSaveCard the charge or authorize or save card
      */
-  <T extends Charge> void retrieveChargeOrAuthorizeOrSaveCardAPI(T chargeOrAuthorizeOrSaveCard) {
+    <T extends Charge> void retrieveChargeOrAuthorizeOrSaveCardAPI(T chargeOrAuthorizeOrSaveCard) {
     APIRequestCallback<T> callBack = new APIRequestCallback<T>() {
       @Override
       public void onSuccess(int responseCode, T serializedResponse) {
@@ -623,11 +694,23 @@ final class PaymentProcessManager {
   }
 
 
-  public PaymentOption findPaymentOption(SavedCard savedCard) {
+    /**
+     * Find payment option payment option.
+     *
+     * @param savedCard the saved card
+     * @return the payment option
+     */
+    public PaymentOption findPaymentOption(SavedCard savedCard) {
     return findSavedCardPaymentOption(savedCard);
   }
 
-     void confirmChargeOTPCode(@NonNull Charge charge,String otpCode) {
+    /**
+     * Confirm charge otp code.
+     *
+     * @param charge  the charge
+     * @param otpCode the otp code
+     */
+    void confirmChargeOTPCode(@NonNull Charge charge,String otpCode) {
     CreateOTPVerificationRequest createOTPVerificationRequest = new CreateOTPVerificationRequest.Builder(AuthenticationType.OTP,otpCode).build();
     APIRequestCallback<Charge> callBack = new APIRequestCallback<Charge>() {
       @Override
@@ -647,7 +730,13 @@ final class PaymentProcessManager {
   }
 
 
-  void confirmAuthorizeOTPCode(@NonNull Authorize authorize, String otpCode) {
+    /**
+     * Confirm authorize otp code.
+     *
+     * @param authorize the authorize
+     * @param otpCode   the otp code
+     */
+    void confirmAuthorizeOTPCode(@NonNull Authorize authorize, String otpCode) {
     CreateOTPVerificationRequest createOTPVerificationRequest = new CreateOTPVerificationRequest.Builder(AuthenticationType.OTP,otpCode).build();
     APIRequestCallback<Authorize> callBack = new APIRequestCallback<Authorize>() {
       @Override
@@ -669,7 +758,13 @@ final class PaymentProcessManager {
   }
 
 
-  <T extends Charge> void resendChargeOTPCode(@NonNull Charge charge) {
+    /**
+     * Resend charge otp code.
+     *
+     * @param <T>    the type parameter
+     * @param charge the charge
+     */
+    <T extends Charge> void resendChargeOTPCode(@NonNull Charge charge) {
 
 
     APIRequestCallback<Charge> callBack = new APIRequestCallback<Charge>() {
@@ -696,7 +791,12 @@ final class PaymentProcessManager {
   }
 
 
-     void resendAuthorizeOTPCode(@NonNull Authorize authorize) {
+    /**
+     * Resend authorize otp code.
+     *
+     * @param authorize the authorize
+     */
+    void resendAuthorizeOTPCode(@NonNull Authorize authorize) {
 
 
       APIRequestCallback<Authorize> callBack = new APIRequestCallback<Authorize>() {

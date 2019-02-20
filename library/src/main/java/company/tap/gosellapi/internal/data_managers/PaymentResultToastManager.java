@@ -16,6 +16,9 @@ import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.enums.ChargeStatus;
 import company.tap.gosellapi.internal.api.enums.RedirectStatus;
 
+/**
+ * The type Payment result toast manager.
+ */
 public class PaymentResultToastManager {
 
     private PaymentResultToastManager() {
@@ -25,10 +28,21 @@ public class PaymentResultToastManager {
         private static final PaymentResultToastManager INSTANCE = new PaymentResultToastManager();
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static PaymentResultToastManager getInstance() {
         return SingletonHolder.INSTANCE;
     }
 
+    /**
+     * Show payment result.
+     *
+     * @param context the context
+     * @param message the message
+     */
     public void showPaymentResult(Context context, ChargeStatus message) {
 
         LayoutInflater inflater = LayoutInflater.from(context);

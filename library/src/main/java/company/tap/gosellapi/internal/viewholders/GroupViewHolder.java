@@ -6,8 +6,16 @@ import android.widget.TextView;
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.GroupViewModel;
 
+/**
+ * The type Group view holder.
+ */
 public class GroupViewHolder extends PaymentOptionsBaseViewHolder<String, GroupViewHolder, GroupViewModel> {
 
+    /**
+     * Instantiates a new Group view holder.
+     *
+     * @param view the view
+     */
     public GroupViewHolder(View view) {
 
         super(view);

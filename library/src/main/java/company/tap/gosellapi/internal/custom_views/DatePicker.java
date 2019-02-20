@@ -17,14 +17,37 @@ import java.util.List;
 
 import company.tap.gosellapi.R;
 
+/**
+ * The type Date picker.
+ */
 public class DatePicker {
 
+    /**
+     * The interface Date picker listener.
+     */
     public interface DatePickerListener {
+        /**
+         * Date selected.
+         *
+         * @param month the month
+         * @param year  the year
+         */
         void dateSelected(String month, String year);
     }
 
+    /**
+     * The constant expirationData.
+     */
     public static String expirationData = null;
 
+    /**
+     * Show in context.
+     *
+     * @param context       the context
+     * @param selectedMonth the selected month
+     * @param selectedYear  the selected year
+     * @param listener      the listener
+     */
     public static void showInContext(Context context, @Nullable String selectedMonth, @Nullable String selectedYear, final DatePickerListener listener){
         //init custom view
         LayoutInflater inflater = LayoutInflater.from(context);

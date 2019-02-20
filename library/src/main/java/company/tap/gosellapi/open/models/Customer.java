@@ -7,6 +7,9 @@ import android.support.annotation.Nullable;
 
 import company.tap.gosellapi.internal.api.models.PhoneNumber;
 
+/**
+ * The type Customer.
+ */
 public final class Customer {
 
   @SerializedName("id")
@@ -33,6 +36,9 @@ public final class Customer {
   @Expose
   private PhoneNumber phone;
 
+  /**
+   * The Meta data.
+   */
   @SerializedName("metadata")
   String metaData;
 
@@ -49,35 +55,70 @@ public final class Customer {
   }
 
 
+  /**
+   * Gets identifier.
+   *
+   * @return the identifier
+   */
   public String getIdentifier() {
     return this.identifier;
   }
 
+  /**
+   * Gets first name.
+   *
+   * @return the first name
+   */
   @Nullable
   public String getFirstName() {
     return this.firstName;
   }
 
+  /**
+   * Gets middle name.
+   *
+   * @return the middle name
+   */
   @Nullable
   public String getMiddleName() {
     return this.middleName;
   }
 
+  /**
+   * Gets last name.
+   *
+   * @return the last name
+   */
   @Nullable
   public String getLastName() {
     return this.lastName;
   }
 
+  /**
+   * Gets email.
+   *
+   * @return the email
+   */
   @Nullable
   public String getEmail() {
     return this.email;
   }
 
+  /**
+   * Gets phone.
+   *
+   * @return the phone
+   */
   @Nullable
   public PhoneNumber getPhone() {
     return this.phone;
   }
 
+  /**
+   * Gets meta data.
+   *
+   * @return the meta data
+   */
   @Nullable
   public String getMetaData() {
     return this.metaData;
@@ -99,6 +140,9 @@ public final class Customer {
 
   ////////////////////////// ############################ Start of Builder Region ########################### ///////////////////////
 
+  /**
+   * The type Customer builder.
+   */
   public static class CustomerBuilder {
 
     private String nestedIdentifier;
@@ -111,41 +155,84 @@ public final class Customer {
 
     /**
      * Client app can create a customer object with only customer id
+     *
+     * @param innerId the inner id
      */
     public CustomerBuilder(String innerId) {
       this.nestedIdentifier = innerId;
     }
 
+    /**
+     * First name customer builder.
+     *
+     * @param innerFirstName the inner first name
+     * @return the customer builder
+     */
     public CustomerBuilder firstName(String innerFirstName) {
       this.nestedFirstName = innerFirstName;
       return this;
     }
 
+    /**
+     * Middle name customer builder.
+     *
+     * @param innerMiddle the inner middle
+     * @return the customer builder
+     */
     public CustomerBuilder middleName(String innerMiddle) {
       this.nestedMiddleName = innerMiddle;
       return this;
     }
 
+    /**
+     * Last name customer builder.
+     *
+     * @param innerLastName the inner last name
+     * @return the customer builder
+     */
     public CustomerBuilder lastName(String innerLastName) {
       this.nestedLastName = innerLastName;
       return this;
     }
 
+    /**
+     * Email customer builder.
+     *
+     * @param innerEmail the inner email
+     * @return the customer builder
+     */
     public CustomerBuilder email(String innerEmail) {
       this.nestedEmail = innerEmail;
       return this;
     }
 
+    /**
+     * Phone customer builder.
+     *
+     * @param innerPhone the inner phone
+     * @return the customer builder
+     */
     public CustomerBuilder phone(PhoneNumber innerPhone) {
       this.nestedPhone = innerPhone;
       return this;
     }
 
+    /**
+     * Metadata customer builder.
+     *
+     * @param innerMetadata the inner metadata
+     * @return the customer builder
+     */
     public CustomerBuilder metadata(String innerMetadata) {
       this.nestedMetaData = innerMetadata;
       return this;
     }
 
+    /**
+     * Build customer.
+     *
+     * @return the customer
+     */
     public Customer build() {
       return new Customer(nestedIdentifier, nestedFirstName, nestedMiddleName, nestedLastName,
           nestedEmail, nestedPhone, nestedMetaData);

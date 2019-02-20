@@ -16,6 +16,10 @@ import company.tap.gosellapi.open.models.Shipping;
 import company.tap.gosellapi.open.models.Tax;
 import company.tap.gosellapi.internal.utils.AmountCalculator;
 import company.tap.gosellapi.open.models.TapCurrency;
+
+/**
+ * The type Payment options request.
+ */
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 public final class PaymentOptionsRequest {
 
@@ -47,6 +51,17 @@ public final class PaymentOptionsRequest {
     @Expose
     @NonNull private BigDecimal totalAmount;
 
+    /**
+     * Instantiates a new Payment options request.
+     *
+     * @param transactionMode the transaction mode
+     * @param amount          the amount
+     * @param items           the items
+     * @param shipping        the shipping
+     * @param taxes           the taxes
+     * @param currency        the currency
+     * @param customer        the customer
+     */
     public PaymentOptionsRequest(@Nullable TransactionMode transactionMode,
                                  @Nullable BigDecimal amount,
                                  @Nullable ArrayList<PaymentItem> items,
@@ -75,11 +90,21 @@ public final class PaymentOptionsRequest {
         }
     }
 
+    /**
+     * Gets transaction mode.
+     *
+     * @return the transaction mode
+     */
     @NonNull
     public TransactionMode getTransactionMode() {
         return transactionMode;
     }
 
+    /**
+     * Get payment option request info string.
+     *
+     * @return the string
+     */
     public String getPaymentOptionRequestInfo(){
         return
             "trx_mode : " + this.transactionMode + " /n " +

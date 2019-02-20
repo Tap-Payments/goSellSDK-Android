@@ -17,7 +17,6 @@ import company.tap.tapcardvalidator_android.CardBrand;
  * <br>
  * Model for Source object
  */
-
 public final class Source {
 
     @SerializedName("id")
@@ -46,12 +45,16 @@ public final class Source {
 
     /**
      * Constructor with id field only (token id, card id etc.)
+     *
+     * @param id the id
      */
     public Source(String id) {
         this.id = id;
     }
 
     /**
+     * Gets id.
+     *
      * @return Unique identifier for the object.
      */
     public String getId() {

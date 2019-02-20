@@ -6,19 +6,38 @@ import company.tap.gosellapi.internal.data_managers.payment_options.view_models.
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.WebPaymentViewModel;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models_data.EmptyViewModelData;
 
+/**
+ * The type Payment options data manager utils.
+ */
 public abstract class PaymentOptionsDataManagerUtils {
 
-  public static class ViewModelUtils{
+    /**
+     * The type View model utils.
+     */
+    public static class ViewModelUtils{
 
 
-
-    public static EmptyViewModel generateEmptyModel(String identifier, PaymentOptionsDataManager parent) {
+        /**
+         * Generate empty model empty view model.
+         *
+         * @param identifier the identifier
+         * @param parent     the parent
+         * @return the empty view model
+         */
+        public static EmptyViewModel generateEmptyModel(String identifier, PaymentOptionsDataManager parent) {
       EmptyViewModelData modelData = new EmptyViewModelData(identifier);
       return new EmptyViewModel(parent, modelData);
     }
 
 
-    public static  WebPaymentViewModel generateWebPaymentModel(PaymentOption paymentOption, PaymentOptionsDataManager parent) {
+        /**
+         * Generate web payment model web payment view model.
+         *
+         * @param paymentOption the payment option
+         * @param parent        the parent
+         * @return the web payment view model
+         */
+        public static  WebPaymentViewModel generateWebPaymentModel(PaymentOption paymentOption, PaymentOptionsDataManager parent) {
       return new WebPaymentViewModel(parent, paymentOption);
     }
 

@@ -16,7 +16,6 @@ import company.tap.tapcardvalidator_android.CardBrand;
  * <br>
  * Model for Customer object
  */
-
 public final class PaymentOption implements Comparable<PaymentOption>, CurrenciesSupport {
     @SerializedName("id")
     @Expose
@@ -54,30 +53,70 @@ public final class PaymentOption implements Comparable<PaymentOption>, Currencie
     @Expose
     private int orderBy;
 
+    /**
+     * Gets id.
+     *
+     * @return the id
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * Gets source id.
+     *
+     * @return the source id
+     */
     public String getSourceId() {
         return sourceId;
     }
 
+    /**
+     * Gets name.
+     *
+     * @return the name
+     */
     public String getName() { return getBrand().getRawValue(); }
 
+    /**
+     * Gets brand.
+     *
+     * @return the brand
+     */
     public CardBrand getBrand() {
         return brand;
     }
 
+    /**
+     * Gets image.
+     *
+     * @return the image
+     */
     public String getImage() { return image; }
 
+    /**
+     * Gets payment type.
+     *
+     * @return the payment type
+     */
     public PaymentType getPaymentType() {
         return paymentType;
     }
 
+    /**
+     * Gets supported card brands.
+     *
+     * @return the supported card brands
+     */
     public ArrayList<CardBrand> getSupportedCardBrands() {
         return supportedCardBrands;
     }
 
+    /**
+     * Gets extra fees.
+     *
+     * @return the extra fees
+     */
     public ArrayList<ExtraFee> getExtraFees() {
         return extraFees;
     }
@@ -86,6 +125,11 @@ public final class PaymentOption implements Comparable<PaymentOption>, Currencie
         return supportedCurrencies;
     }
 
+    /**
+     * Gets order by.
+     *
+     * @return the order by
+     */
     public int getOrderBy() {
         return orderBy;
     }

@@ -17,6 +17,9 @@ import company.tap.gosellapi.internal.adapters.PaymentOptionsRecyclerViewAdapter
 import company.tap.gosellapi.internal.adapters.PaymentOptionsRecyclerViewAdapter1;
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
 
+/**
+ * The type Go sell payment options fragment.
+ */
 public class GoSellPaymentOptionsFragment extends Fragment {
     private static final String DATA_SOURCE_ARGUMENT = "dataSourceArgument";
 
@@ -27,10 +30,19 @@ public class GoSellPaymentOptionsFragment extends Fragment {
     private PaymentOptionsDataManager dataSource;
     private Parcelable layoutManagerState;
 
+    /**
+     * Instantiates a new Go sell payment options fragment.
+     */
     public GoSellPaymentOptionsFragment() {
         // Required empty public constructor
     }
 
+    /**
+     * New instance go sell payment options fragment.
+     *
+     * @param dataSource the data source
+     * @return the go sell payment options fragment
+     */
     public static GoSellPaymentOptionsFragment newInstance(PaymentOptionsDataManager dataSource) {
         GoSellPaymentOptionsFragment fragment = new GoSellPaymentOptionsFragment();
         fragment.dataSource = dataSource;
@@ -70,6 +82,11 @@ public class GoSellPaymentOptionsFragment extends Fragment {
         };
     }
 
+    /**
+     * Scroll recycler to position.
+     *
+     * @param position the position
+     */
     public void scrollRecyclerToPosition(final int position) {
         smoothScroller.setTargetPosition(position);
         paymentOptionsRecyclerView.getLayoutManager().startSmoothScroll(smoothScroller);

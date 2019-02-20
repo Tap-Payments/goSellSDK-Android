@@ -16,6 +16,9 @@ import okhttp3.RequestBody;
 import okio.Buffer;
 import retrofit2.Call;
 
+/**
+ * The type Request manager.
+ */
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 class RequestManager {
     private APIService apiHelper;
@@ -24,11 +27,21 @@ class RequestManager {
     private boolean initIsRunning;
     private ArrayList<DelayedRequest> delayedRequests;
 
+    /**
+     * Instantiates a new Request manager.
+     *
+     * @param apiHelper the api helper
+     */
     RequestManager(APIService apiHelper) {
         this.apiHelper = apiHelper;
         delayedRequests = new ArrayList<>();
     }
 
+    /**
+     * Request.
+     *
+     * @param delayedRequest the delayed request
+     */
     void request(DelayedRequest delayedRequest) {
         delayedRequests.add(delayedRequest);
         if (PaymentDataManager.getInstance().getSDKSettings() == null) {
@@ -89,10 +102,21 @@ class RequestManager {
         delayedRequests.clear();
     }
 
+    /**
+     * The type Delayed request.
+     *
+     * @param <T> the type parameter
+     */
     static class DelayedRequest<T extends BaseResponse> {
         private Call<T> request;
         private APIRequestCallback<T> requestCallback;
 
+        /**
+         * Instantiates a new Delayed request.
+         *
+         * @param request         the request
+         * @param requestCallback the request callback
+         */
         DelayedRequest(Call<T> request, APIRequestCallback<T> requestCallback) {
             this.request = request;
             this.requestCallback = requestCallback;
@@ -115,14 +139,27 @@ class RequestManager {
       }
 
 
+        /**
+         * Run.
+         */
         void run() {
             request.enqueue(new BaseCallback<>(requestCallback));
         }
 
+        /**
+         * Fail.
+         *
+         * @param errorDetails the error details
+         */
         void fail(GoSellError errorDetails) {
             requestCallback.onFailure(errorDetails);
         }
 
+        /**
+         * Get request call.
+         *
+         * @return the call
+         */
         Call  getRequest(){
           return this.request;
         }

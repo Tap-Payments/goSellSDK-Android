@@ -12,6 +12,9 @@ import company.tap.gosellapi.internal.api.models.AmountModificator;
 import company.tap.gosellapi.internal.api.models.Quantity;
 import company.tap.gosellapi.internal.utils.AmountCalculator;
 
+/**
+ * The type Payment item.
+ */
 public class PaymentItem {
 
   @SerializedName("name")
@@ -64,26 +67,51 @@ public class PaymentItem {
     System.out.println("calculated total amount : " + this.totalAmount);
   }
 
-  public BigDecimal getAmountPerUnit() {
+    /**
+     * Gets amount per unit.
+     *
+     * @return the amount per unit
+     */
+    public BigDecimal getAmountPerUnit() {
     return this.amountPerUnit;
   }
 
-  public Quantity getQuantity() {
+    /**
+     * Gets quantity.
+     *
+     * @return the quantity
+     */
+    public Quantity getQuantity() {
     return this.quantity;
   }
 
-  public AmountModificator getDiscount() {
+    /**
+     * Gets discount.
+     *
+     * @return the discount
+     */
+    public AmountModificator getDiscount() {
     return this.discount;
   }
 
-  public BigDecimal getPlainAmount() {
+    /**
+     * Gets plain amount.
+     *
+     * @return the plain amount
+     */
+    public BigDecimal getPlainAmount() {
     System.out.println("  #### getPlainAmount : " + this.getAmountPerUnit() );
     System.out.println("  #### this.getQuantity().getValue() : " + this.getQuantity().getValue() );
     System.out.println("  #### result : " + this.getAmountPerUnit().multiply(this.getQuantity().getValue()) );
     return this.getAmountPerUnit().multiply(this.getQuantity().getValue());
   }
 
-  public BigDecimal getDiscountAmount() {
+    /**
+     * Gets discount amount.
+     *
+     * @return the discount amount
+     */
+    public BigDecimal getDiscountAmount() {
 
     if (this.getDiscount() == null) {
 
@@ -105,13 +133,22 @@ public class PaymentItem {
     }
   }
 
-  public BigDecimal getTaxesAmount() {
+    /**
+     * Gets taxes amount.
+     *
+     * @return the taxes amount
+     */
+    public BigDecimal getTaxesAmount() {
 
     BigDecimal taxationAmount = this.getPlainAmount().subtract(this.getDiscountAmount());
 
     return AmountCalculator.calculateTaxesOn(taxationAmount, this.taxes);
   }
-  ////////////////////////// ############################ Start of Builder Region ########################### ///////////////////////
+
+    /**
+     * The type Payment item builder.
+     */
+////////////////////////// ############################ Start of Builder Region ########################### ///////////////////////
   public static class PaymentItemBuilder {
 
     private String nestedName;
@@ -122,10 +159,14 @@ public class PaymentItem {
     @Nullable private ArrayList<Tax> nestedTaxes;
     private BigDecimal nestedTotalAmount;
 
-    /**
-     * public constructor with only required data
-     */
-    public PaymentItemBuilder(String name,
+        /**
+         * public constructor with only required data
+         *
+         * @param name          the name
+         * @param quantity      the quantity
+         * @param amountPerUnit the amount per unit
+         */
+        public PaymentItemBuilder(String name,
                               Quantity quantity,
                               BigDecimal amountPerUnit) {
       this.nestedName = name;
@@ -133,27 +174,56 @@ public class PaymentItem {
       this.nestedAmountPerUnit = amountPerUnit;
     }
 
-    public PaymentItemBuilder description(String innerDescription) {
+        /**
+         * Description payment item builder.
+         *
+         * @param innerDescription the inner description
+         * @return the payment item builder
+         */
+        public PaymentItemBuilder description(String innerDescription) {
       this.nestedDescription = innerDescription;
       return this;
     }
 
-    public PaymentItemBuilder discount(AmountModificator innerDiscount) {
+        /**
+         * Discount payment item builder.
+         *
+         * @param innerDiscount the inner discount
+         * @return the payment item builder
+         */
+        public PaymentItemBuilder discount(AmountModificator innerDiscount) {
       this.nestedDiscount = innerDiscount;
       return this;
     }
 
-    public PaymentItemBuilder taxes(ArrayList<Tax> innerTaxes) {
+        /**
+         * Taxes payment item builder.
+         *
+         * @param innerTaxes the inner taxes
+         * @return the payment item builder
+         */
+        public PaymentItemBuilder taxes(ArrayList<Tax> innerTaxes) {
       this.nestedTaxes = innerTaxes;
       return this;
     }
 
-    public PaymentItemBuilder totalAmount(BigDecimal innerTotalAmount) {
+        /**
+         * Total amount payment item builder.
+         *
+         * @param innerTotalAmount the inner total amount
+         * @return the payment item builder
+         */
+        public PaymentItemBuilder totalAmount(BigDecimal innerTotalAmount) {
       this.nestedTotalAmount = innerTotalAmount;
       return this;
     }
 
-    public PaymentItem build() {
+        /**
+         * Build payment item.
+         *
+         * @return the payment item
+         */
+        public PaymentItem build() {
       return new PaymentItem(nestedName, nestedDescription, nestedQuantity, nestedAmountPerUnit,
           nestedDiscount, nestedTaxes);
     }

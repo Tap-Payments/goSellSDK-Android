@@ -12,6 +12,9 @@ import company.tap.gosellapi.internal.api.crypto.CryptoUtil;
 import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 import company.tap.gosellapi.internal.interfaces.SecureSerializable;
 
+/**
+ * The type Secure serializer.
+ */
 public class SecureSerializer implements JsonSerializer<SecureSerializable> {
 
     @Override

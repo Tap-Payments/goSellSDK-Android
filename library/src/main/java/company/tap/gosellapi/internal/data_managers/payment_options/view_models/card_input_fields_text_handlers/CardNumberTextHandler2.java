@@ -8,19 +8,45 @@ import company.tap.gosellapi.internal.data_managers.payment_options.view_models.
 import company.tap.tapcardvalidator_android.CardBrand;
 import company.tap.tapcardvalidator_android.CardValidator;
 
+/**
+ * The type Card number text handler 2.
+ */
 public class CardNumberTextHandler2 extends TextHandler {
 
-  public interface DataProvider {
+    /**
+     * The interface Data provider.
+     */
+    public interface DataProvider {
 
-    CardCredentialsViewModel.BrandWithScheme getRecognizedCardType();
+        /**
+         * Gets recognized card type.
+         *
+         * @return the recognized card type
+         */
+        CardCredentialsViewModel.BrandWithScheme getRecognizedCardType();
   }
 
-  public interface DataListener {
+    /**
+     * The interface Data listener.
+     */
+    public interface DataListener {
 
-    void cardNumberTextHandlerDidUpdateCardNumber(String cardNumber);
+        /**
+         * Card number text handler did update card number.
+         *
+         * @param cardNumber the card number
+         */
+        void cardNumberTextHandlerDidUpdateCardNumber(String cardNumber);
   }
 
-  public CardNumberTextHandler2(@NonNull EditText editText, @NonNull DataProvider dataProvider, @NonNull DataListener dataListener) {
+    /**
+     * Instantiates a new Card number text handler 2.
+     *
+     * @param editText     the edit text
+     * @param dataProvider the data provider
+     * @param dataListener the data listener
+     */
+    public CardNumberTextHandler2(@NonNull EditText editText, @NonNull DataProvider dataProvider, @NonNull DataListener dataListener) {
 
     super(editText);
     this.dataProvider = dataProvider;

@@ -16,15 +16,24 @@ import org.json.JSONTokener;
  * <br>
  * And vice versa, if {@link #getErrorCode()} or {@link #getErrorBody()} return {@link #ERROR_CODE_UNAVAILABLE} and null accordingly, then use {@link #getThrowable()} to obtain error details.
  */
-
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 public class GoSellError {
+    /**
+     * The constant ERROR_CODE_UNAVAILABLE.
+     */
     public static final int ERROR_CODE_UNAVAILABLE = -1;
 
     private int errorCode;
     private String errorBody;
     private Throwable throwable;
 
+    /**
+     * Instantiates a new Go sell error.
+     *
+     * @param errorCode the error code
+     * @param errorBody the error body
+     * @param throwable the throwable
+     */
     GoSellError(int errorCode, String errorBody, Throwable throwable) {
         this.errorCode = errorCode;
         this.errorBody = errorBody;
@@ -32,7 +41,12 @@ public class GoSellError {
     }
 
 
-  public String getErrorMessage(){
+    /**
+     * Get error message string.
+     *
+     * @return the string
+     */
+    public String getErrorMessage(){
     String res = "";
     if (errorBody != null && !"".equals(errorBody.trim())) {
       try {
@@ -58,6 +72,8 @@ public class GoSellError {
   }
 
     /**
+     * Gets error code.
+     *
      * @return HTTP error response code (4x, 5x)
      */
     public int getErrorCode() {
@@ -65,6 +81,8 @@ public class GoSellError {
     }
 
     /**
+     * Gets error body.
+     *
      * @return Json string returned by server, containing error explanation
      */
     public String getErrorBody() {
@@ -72,6 +90,8 @@ public class GoSellError {
     }
 
     /**
+     * Gets throwable.
+     *
      * @return {@link Throwable}, returned by connection (timeout, failed to connect etc.)
      */
     public Throwable getThrowable() {

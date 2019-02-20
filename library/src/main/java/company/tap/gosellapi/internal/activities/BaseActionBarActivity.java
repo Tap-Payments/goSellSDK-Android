@@ -17,8 +17,14 @@ import com.bumptech.glide.request.RequestOptions;
 
 import company.tap.gosellapi.R;
 
+/**
+ * The type Base action bar activity.
+ */
 public class BaseActionBarActivity extends BaseActivity {
     private View actionBarCustomView;
+    /**
+     * The Action bar image.
+     */
     ImageView actionBarImage;
     private TextView actionBarTitle;
 
@@ -70,6 +76,11 @@ public class BaseActionBarActivity extends BaseActivity {
         actionBarTitle.setText(title);
     }
 
+    /**
+     * Sets image.
+     *
+     * @param source the source
+     */
     public void setImage(String source) {
         actionBarImage.setVisibility(View.VISIBLE);
         Glide.with(this).load(source).into(actionBarImage);

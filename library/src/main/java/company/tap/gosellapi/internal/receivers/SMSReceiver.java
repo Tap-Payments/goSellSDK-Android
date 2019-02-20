@@ -11,6 +11,9 @@ import android.telephony.SmsMessage;
 import company.tap.gosellapi.internal.interfaces.OTPListener;
 
 
+/**
+ * The type Sms receiver.
+ */
 public class SMSReceiver extends BroadcastReceiver {
 
   private static OTPListener mListener;
@@ -79,7 +82,12 @@ public class SMSReceiver extends BroadcastReceiver {
     System.out.println("SMS ... "+ intent.getAction());
   }
 
-  public void setListener(OTPListener _listener) {
+    /**
+     * Sets listener.
+     *
+     * @param _listener the listener
+     */
+    public void setListener(OTPListener _listener) {
     listener = _listener;
   }
 

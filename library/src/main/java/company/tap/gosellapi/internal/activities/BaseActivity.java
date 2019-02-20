@@ -3,8 +3,16 @@ package company.tap.gosellapi.internal.activities;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+/**
+ * The type Base activity.
+ */
 public class BaseActivity extends AppCompatActivity {
 
+    /**
+     * Gets current.
+     *
+     * @return the current
+     */
     @Nullable public static BaseActivity getCurrent() {
 
         return currentActivity;

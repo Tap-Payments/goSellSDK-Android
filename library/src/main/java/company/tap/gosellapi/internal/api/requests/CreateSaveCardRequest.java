@@ -17,6 +17,9 @@ import company.tap.gosellapi.open.models.Customer;
 import company.tap.gosellapi.open.models.Receipt;
 import company.tap.gosellapi.open.models.Reference;
 
+/**
+ * The type Create save card request.
+ */
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 public class CreateSaveCardRequest {
 
@@ -92,6 +95,28 @@ public class CreateSaveCardRequest {
     @Expose
     @Nullable private Boolean issuer = true;
 
+    /**
+     * Instantiates a new Create save card request.
+     *
+     * @param currency            the currency
+     * @param customer            the customer
+     * @param order               the order
+     * @param redirect            the redirect
+     * @param post                the post
+     * @param source              the source
+     * @param description         the description
+     * @param metadata            the metadata
+     * @param reference           the reference
+     * @param saveCard            the save card
+     * @param statementDescriptor the statement descriptor
+     * @param threeDSecure        the three d secure
+     * @param receipt             the receipt
+     * @param card                the card
+     * @param risk                the risk
+     * @param issuer              the issuer
+     * @param promo               the promo
+     * @param loyalty             the loyalty
+     */
     public CreateSaveCardRequest(@NonNull     String                  currency,
                                  @NonNull     Customer                customer,
                                  @NonNull     Order                   order,

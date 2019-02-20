@@ -12,23 +12,56 @@ import company.tap.tapcardvalidator_android.CardValidationState;
 import company.tap.tapcardvalidator_android.CardValidator;
 import company.tap.tapcardvalidator_android.DefinedCardBrand;
 
+/**
+ * The type Card number text handler.
+ */
 public class CardNumberTextHandler extends TextHandler {
   private static final int BIN_NUMBER_LENGTH = 6;
   private boolean justRemovedWhitespace = false;
   @NonNull private CardNumberTextHandler.DataProvider dataProvider;
   @NonNull private CardNumberTextHandler.DataListener dataListener;
 
-  public interface DataListener {
-    void cardNumberTextHandlerDidUpdateCardNumber(String cardNumber);
-    void updateCardsRecyclerViewWithCardAndSchema(CardBrand cardBrand, CardScheme cardScheme);
+    /**
+     * The interface Data listener.
+     */
+    public interface DataListener {
+        /**
+         * Card number text handler did update card number.
+         *
+         * @param cardNumber the card number
+         */
+        void cardNumberTextHandlerDidUpdateCardNumber(String cardNumber);
+
+        /**
+         * Update cards recycler view with card and schema.
+         *
+         * @param cardBrand  the card brand
+         * @param cardScheme the card scheme
+         */
+        void updateCardsRecyclerViewWithCardAndSchema(CardBrand cardBrand, CardScheme cardScheme);
   }
 
-  public interface DataProvider {
+    /**
+     * The interface Data provider.
+     */
+    public interface DataProvider {
 
-    CardCredentialsViewModel.BrandWithScheme getRecognizedCardType();
+        /**
+         * Gets recognized card type.
+         *
+         * @return the recognized card type
+         */
+        CardCredentialsViewModel.BrandWithScheme getRecognizedCardType();
   }
 
-  public CardNumberTextHandler(@NonNull EditText editText, @NonNull
+    /**
+     * Instantiates a new Card number text handler.
+     *
+     * @param editText     the edit text
+     * @param dataProvider the data provider
+     * @param dataListener the data listener
+     */
+    public CardNumberTextHandler(@NonNull EditText editText, @NonNull
       CardNumberTextHandler.DataProvider dataProvider,
                                 @NonNull CardNumberTextHandler.DataListener dataListener) {
 

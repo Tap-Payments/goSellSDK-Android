@@ -6,6 +6,9 @@ import android.support.annotation.Nullable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * The type Transaction details.
+ */
 public final class TransactionDetails {
 
     @SerializedName("created")
@@ -25,6 +28,8 @@ public final class TransactionDetails {
     @Nullable private String url;
 
     /**
+     * Gets created.
+     *
      * @return Receipt identifier.
      */
     public long getCreated() {
@@ -32,17 +37,29 @@ public final class TransactionDetails {
     }
 
     /**
+     * Gets timezone.
+     *
      * @return Defines whether receipt email should be sent.
      */
     public String getTimezone() {
         return timezone;
     }
 
+    /**
+     * Gets authorization id.
+     *
+     * @return the authorization id
+     */
     @Nullable
     public String getAuthorizationID() {
         return authorizationID;
     }
 
+    /**
+     * Gets url.
+     *
+     * @return the url
+     */
     @Nullable
     public String getUrl() {
         return url;

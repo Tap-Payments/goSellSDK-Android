@@ -9,12 +9,21 @@ import java.util.Map;
 import company.tap.gosellapi.BuildConfig;
 import company.tap.gosellapi.internal.logger.lo;
 
+/**
+ * The type App info.
+ */
 public class AppInfo {
     //auth information for headers
     private static String authToken;
     private static LinkedHashMap<Object, Object> applicationInfo;
     private static String localeString = "en";
 
+    /**
+     * Sets auth token.
+     *
+     * @param context   the context
+     * @param authToken the auth token
+     */
     public static void setAuthToken(Context context, String authToken) {
         AppInfo.authToken = authToken;
         initApplicationInfo(context.getPackageName());
@@ -22,10 +31,20 @@ public class AppInfo {
         lo.init(context);
     }
 
+    /**
+     * Gets auth token.
+     *
+     * @return the auth token
+     */
     static String getAuthToken() {
         return authToken;
     }
 
+    /**
+     * Sets locale.
+     *
+     * @param locale the locale
+     */
     public static void setLocale(String locale) {
         AppInfo.localeString = locale.length() < 2 ? locale : locale.substring(0, 2);
         AppInfo.applicationInfo.put("app_locale", SupportedLocales.findByString(localeString).language);
@@ -43,10 +62,20 @@ public class AppInfo {
         applicationInfo.put("app_locale", SupportedLocales.findByString(localeString).language);
     }
 
+    /**
+     * Gets locale string.
+     *
+     * @return the locale string
+     */
     public static String getLocaleString() {
         return localeString;
     }
 
+    /**
+     * Gets application info.
+     *
+     * @return the application info
+     */
     static String getApplicationInfo() {
         StringBuilder stringBuilder = new StringBuilder();
         for (Map.Entry entry : applicationInfo.entrySet()) {
@@ -62,6 +91,9 @@ public class AppInfo {
     }
 
     private enum SupportedLocales {
+        /**
+         * En supported locales.
+         */
         EN("en");
 
         private String language;
@@ -70,6 +102,12 @@ public class AppInfo {
             this.language = language;
         }
 
+        /**
+         * Find by string supported locales.
+         *
+         * @param localeString the locale string
+         * @return the supported locales
+         */
         static SupportedLocales findByString(String localeString) {
             for (SupportedLocales locale : values()) {
                 if (locale.language.equalsIgnoreCase(localeString)) {

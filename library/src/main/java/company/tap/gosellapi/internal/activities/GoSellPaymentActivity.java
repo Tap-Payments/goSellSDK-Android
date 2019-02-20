@@ -61,6 +61,9 @@ import company.tap.gosellapi.open.enums.TransactionMode;
 import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
 
+/**
+ * The type Go sell payment activity.
+ */
 public class GoSellPaymentActivity extends BaseActivity implements PaymentOptionsDataManager.PaymentOptionsDataListener, IPaymentProcessListener, OTPFullScreenDialog.ConfirmOTP {
     private static final int SCAN_REQUEST_CODE = 123;
     private static final int CURRENCIES_REQUEST_CODE = 124;
@@ -729,6 +732,9 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     }
 
 
+    /**
+     * The type Card payment web view client.
+     */
     public class CardPaymentWebViewClient extends WebViewClient {
 
         @Override

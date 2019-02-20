@@ -10,11 +10,19 @@ import company.tap.gosellapi.internal.data_managers.payment_options.view_models.
 import company.tap.gosellapi.internal.utils.CurrencyFormatter;
 import company.tap.gosellapi.internal.utils.Utils;
 
+/**
+ * The type Currency view holder.
+ */
 public class CurrencyViewHolder extends PaymentOptionsBaseViewHolder<CurrencyViewModelData, CurrencyViewHolder, CurrencyViewModel> {
 
     private TextView currencyMainText;
     private TextView currencySecondaryText;
 
+    /**
+     * Instantiates a new Currency view holder.
+     *
+     * @param view the view
+     */
     CurrencyViewHolder(View view) {
 
         super(view);

@@ -17,9 +17,18 @@ import company.tap.gosellapi.R;
 import gotap.com.tapglkitandroid.gl.Views.TapLoadingView;
 import jp.wasabeef.blurry.Blurry;
 
+/**
+ * The type Loading screen manager.
+ */
 public class LoadingScreenManager {
 
+    /**
+     * The interface Loading screen listener.
+     */
     public interface LoadingScreenListener {
+        /**
+         * On loading screen closed.
+         */
         void onLoadingScreenClosed();
     }
 
@@ -42,19 +51,37 @@ public class LoadingScreenManager {
         private static final LoadingScreenManager INSTANCE = new LoadingScreenManager();
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static LoadingScreenManager getInstance() {
         return SingletonHolder.INSTANCE;
     }
 
+    /**
+     * Show loading screen.
+     *
+     * @param activity the activity
+     */
     public void showLoadingScreen(AppCompatActivity activity) {
         this.hostActivity = activity;
         createLoadingScreen();
     }
 
+    /**
+     * Close loading screen.
+     */
     public void closeLoadingScreen() {
        removeLoadingView();
     }
 
+    /**
+     * Close loading screen with listener.
+     *
+     * @param listener the listener
+     */
     public void closeLoadingScreenWithListener(LoadingScreenListener listener) {
         this.listener = listener;
         removeLoadingView();

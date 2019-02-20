@@ -7,18 +7,43 @@ import android.support.annotation.Nullable;
 
 import company.tap.gosellapi.internal.activities.BaseActivity;
 
+/**
+ * The type Dialog manager.
+ */
 class DialogManager {
 
+    /**
+     * The interface Dialog result.
+     */
     interface DialogResult {
 
+        /**
+         * Dialog closed.
+         *
+         * @param positiveButtonClicked the positive button clicked
+         */
         void dialogClosed(boolean positiveButtonClicked);
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static DialogManager getInstance() {
 
         return DialogManager.SingletonHolder.INSTANCE;
     }
 
+    /**
+     * Show dialog.
+     *
+     * @param title               the title
+     * @param message             the message
+     * @param positiveButtonTitle the positive button title
+     * @param negativeButtonTitle the negative button title
+     * @param callback            the callback
+     */
     void showDialog(@NonNull String title, @NonNull String message, @NonNull String positiveButtonTitle, @Nullable String negativeButtonTitle, final @Nullable DialogResult callback) {
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(BaseActivity.getCurrent());

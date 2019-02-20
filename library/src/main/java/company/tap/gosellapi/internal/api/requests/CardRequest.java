@@ -13,7 +13,6 @@ import company.tap.gosellapi.internal.api.crypto.CryptoUtil;
  * <br>
  * Model for {@link CardRequest} object
  */
-
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 public final class CardRequest {
     /**
@@ -37,41 +36,88 @@ public final class CardRequest {
             this.encryptionKey = encryptionKey;
         }
 
+        /**
+         * Name builder.
+         *
+         * @param name the name
+         * @return the builder
+         */
         public Builder name(String name) {
             card.setName(name);
             return this;
         }
 
+        /**
+         * Address city builder.
+         *
+         * @param address_city the address city
+         * @return the builder
+         */
         public Builder address_city(String address_city) {
             card.address_city = address_city;
             return this;
         }
 
+        /**
+         * Address country builder.
+         *
+         * @param address_country the address country
+         * @return the builder
+         */
         public Builder address_country(String address_country) {
             card.address_country = address_country;
             return this;
         }
 
+        /**
+         * Address line 1 builder.
+         *
+         * @param address_line1 the address line 1
+         * @return the builder
+         */
         public Builder address_line1(String address_line1) {
             card.address_line1 = address_line1;
             return this;
         }
 
+        /**
+         * Address line 2 builder.
+         *
+         * @param address_line2 the address line 2
+         * @return the builder
+         */
         public Builder address_line2(String address_line2) {
             card.address_line2 = address_line2;
             return this;
         }
 
+        /**
+         * Address state builder.
+         *
+         * @param address_state the address state
+         * @return the builder
+         */
         public Builder address_state(String address_state) {
             card.address_state = address_state;
             return this;
         }
 
+        /**
+         * Address zip builder.
+         *
+         * @param address_zip the address zip
+         * @return the builder
+         */
         public Builder address_zip(String address_zip) {
             card.address_zip = address_zip;
             return this;
         }
 
+        /**
+         * Build card request.
+         *
+         * @return the card request
+         */
         public CardRequest build() {
             String cryptedDataJson = new Gson().toJson(card.cryptedDataInternal);
             card.cryptedData = CryptoUtil.encryptJsonString(cryptedDataJson, encryptionKey);
@@ -175,6 +221,11 @@ public final class CardRequest {
         }
     }
 
+    /**
+     * Gets crypted data internal.
+     *
+     * @return the crypted data internal
+     */
     public CryptedData getCryptedDataInternal() {
         return cryptedDataInternal;
     }

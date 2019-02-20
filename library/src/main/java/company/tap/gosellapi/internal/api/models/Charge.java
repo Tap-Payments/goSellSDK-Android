@@ -19,7 +19,6 @@ import company.tap.gosellapi.open.models.Reference;
  * <br>
  * Charge response
  */
-
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 public class Charge implements BaseResponse{
     @SerializedName("id")
@@ -99,6 +98,8 @@ public class Charge implements BaseResponse{
     @Nullable private String statementDescriptor;
 
     /**
+     * Gets id.
+     *
      * @return Charge identifier.
      */
     public String getId() {
@@ -106,6 +107,8 @@ public class Charge implements BaseResponse{
     }
 
     /**
+     * Gets amount.
+     *
      * @return Charge amount.
      */
     public double getAmount() {
@@ -113,6 +116,8 @@ public class Charge implements BaseResponse{
     }
 
     /**
+     * Gets currency.
+     *
      * @return Transaction currency.
      */
     public String getCurrency() {
@@ -120,6 +125,8 @@ public class Charge implements BaseResponse{
     }
 
     /**
+     * Gets customer.
+     *
      * @return Customer information.
      */
     public Customer getCustomer() {
@@ -127,6 +134,8 @@ public class Charge implements BaseResponse{
     }
 
     /**
+     * Is live mode boolean.
+     *
      * @return Defines whether the charge is in real environment.
      */
     public boolean isLiveMode() {
@@ -134,6 +143,8 @@ public class Charge implements BaseResponse{
     }
 
     /**
+     * Gets object.
+     *
      * @return Object type. For charge, “charge” always.
      */
     public String getObject() {
@@ -141,6 +152,8 @@ public class Charge implements BaseResponse{
     }
 
     /**
+     * Gets authenticate.
+     *
      * @return Required authentication options (if any).
      */
     public Authenticate getAuthenticate() {
@@ -148,18 +161,27 @@ public class Charge implements BaseResponse{
     }
 
     /**
+     * Gets redirect.
+     *
      * @return Charge redirect.
      */
     public TrackingURL getRedirect() {
         return redirect;
     }
 
+    /**
+     * Gets post.
+     *
+     * @return the post
+     */
     public @Nullable TrackingURL getPost() {
 
         return post;
     }
 
     /**
+     * Gets source.
+     *
      * @return Charge source
      */
     public Source getSource() {
@@ -167,6 +189,8 @@ public class Charge implements BaseResponse{
     }
 
     /**
+     * Gets status.
+     *
      * @return Charge status.
      */
     public ChargeStatus getStatus() {
@@ -174,6 +198,8 @@ public class Charge implements BaseResponse{
     }
 
     /**
+     * Is three d secure boolean.
+     *
      * @return Defines if 3D secure is required
      */
     public boolean isThreeDSecure() {
@@ -181,6 +207,8 @@ public class Charge implements BaseResponse{
     }
 
     /**
+     * Gets transaction.
+     *
      * @return Transaction details.
      */
     public TransactionDetails getTransaction() {
@@ -188,6 +216,8 @@ public class Charge implements BaseResponse{
     }
 
     /**
+     * Gets description.
+     *
      * @return Charge description
      */
     public String getDescription() {
@@ -195,6 +225,8 @@ public class Charge implements BaseResponse{
     }
 
     /**
+     * Gets metadata.
+     *
      * @return Charge metadata.
      */
     public HashMap<String, String> getMetadata() {
@@ -202,6 +234,8 @@ public class Charge implements BaseResponse{
     }
 
     /**
+     * Gets reference.
+     *
      * @return Merchant reference object.
      */
     public Reference getReference() {
@@ -209,6 +243,8 @@ public class Charge implements BaseResponse{
     }
 
     /**
+     * Gets receipt.
+     *
      * @return Receipt settings.
      */
     public Receipt getReceipt() {
@@ -216,6 +252,8 @@ public class Charge implements BaseResponse{
     }
 
     /**
+     * Gets response.
+     *
      * @return Charge response code and message.
      */
     public Response getResponse() {
@@ -223,6 +261,8 @@ public class Charge implements BaseResponse{
     }
 
     /**
+     * Gets statement descriptor.
+     *
      * @return Statement descriptor.
      */
     public String getStatementDescriptor() {

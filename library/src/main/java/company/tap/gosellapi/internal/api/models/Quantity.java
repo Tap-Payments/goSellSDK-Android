@@ -6,6 +6,9 @@ import java.math.BigDecimal;
 import company.tap.gosellapi.internal.api.enums.measurements.Measurement;
 import company.tap.gosellapi.internal.api.enums.measurements.MeasurementUnit;
 
+/**
+ * The type Quantity.
+ */
 public final class Quantity {
     @SerializedName("measurement_group")
     @Expose
@@ -19,14 +22,30 @@ public final class Quantity {
     @Expose
     private BigDecimal value;
 
+    /**
+     * Gets measurement unit.
+     *
+     * @return the measurement unit
+     */
     public MeasurementUnit getMeasurementUnit() {
         return measurementUnit;
     }
 
+    /**
+     * Gets value.
+     *
+     * @return the value
+     */
     public BigDecimal getValue() {
         return value;
     }
 
+    /**
+     * Instantiates a new Quantity.
+     *
+     * @param measurementUnit the measurement unit
+     * @param value           the value
+     */
     public Quantity(MeasurementUnit measurementUnit, BigDecimal value) {
 
         this.measurementGroup = measurementUnit.getMeasurementGroup();

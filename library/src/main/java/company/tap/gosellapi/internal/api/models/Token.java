@@ -10,11 +10,10 @@ import company.tap.gosellapi.internal.api.enums.TokenType;
 import company.tap.gosellapi.internal.api.responses.BaseResponse;
 
 /**
- Created by eugene.goltsev on 12.02.2018.
- <br>
- Model for Token object
+ * Created by eugene.goltsev on 12.02.2018.
+ * <br>
+ * Model for Token object
  */
-
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 public final class Token implements BaseResponse {
     @SerializedName("id")
@@ -58,6 +57,8 @@ public final class Token implements BaseResponse {
     private String name;
 
     /**
+     * Gets id.
+     *
      * @return Unique identifier for the object.
      */
     public String getId() {
@@ -65,6 +66,8 @@ public final class Token implements BaseResponse {
     }
 
     /**
+     * Gets object.
+     *
      * @return String representing the object&#8217;s type. Objects of the same type share the same value.
      */
     public String getObject() {
@@ -72,6 +75,8 @@ public final class Token implements BaseResponse {
     }
 
     /**
+     * Gets card.
+     *
      * @return {@link TokenizedCard} object used to make the charge
      */
     public TokenizedCard getCard() {
@@ -79,6 +84,8 @@ public final class Token implements BaseResponse {
     }
 
     /**
+     * Gets client ip.
+     *
      * @return IP address of the client that generated the token.
      */
     public String getClient_ip() {
@@ -86,6 +93,8 @@ public final class Token implements BaseResponse {
     }
 
     /**
+     * Gets created.
+     *
      * @return Time at which the object was created. Measured in seconds since the Unix epoch.
      */
     public long getCreated() {
@@ -93,6 +102,8 @@ public final class Token implements BaseResponse {
     }
 
     /**
+     * Is livemode boolean.
+     *
      * @return Flag indicating whether the object exists in live mode or test mode.
      */
     public boolean isLivemode() {
@@ -100,6 +111,8 @@ public final class Token implements BaseResponse {
     }
 
     /**
+     * Gets type.
+     *
      * @return Type of the token: card
      */
     public TokenType getType() {
@@ -107,6 +120,8 @@ public final class Token implements BaseResponse {
     }
 
     /**
+     * Is used boolean.
+     *
      * @return Whether this token has already been used (tokens can be used only once).
      */
     public boolean isUsed() {
@@ -114,13 +129,17 @@ public final class Token implements BaseResponse {
     }
 
     /**
-     * @return Three-letter ISO currency code, in lowercase. Must be a supported currency.
+     * Gets currency.
+     *
+     * @return Three -letter ISO currency code, in lowercase. Must be a supported currency.
      */
     public String getCurrency() {
         return currency;
     }
 
     /**
+     * Gets name.
+     *
      * @return Cardholder name.
      */
     public String getName() {

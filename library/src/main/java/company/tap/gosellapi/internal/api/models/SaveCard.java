@@ -6,6 +6,9 @@ import android.support.annotation.Nullable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * The type Save card.
+ */
 public final class SaveCard extends Charge{
 
     @SerializedName("save_card")
@@ -33,28 +36,57 @@ public final class SaveCard extends Charge{
     @Nullable private boolean loyalty;
 
 
-
+    /**
+     * Is save card boolean.
+     *
+     * @return the boolean
+     */
     public boolean isSave_card() {
         return save_card;
     }
 
+    /**
+     * Gets card.
+     *
+     * @return the card
+     */
     @NonNull
     public Card getCard() {
         return card;
     }
 
+    /**
+     * Is risk boolean.
+     *
+     * @return the boolean
+     */
     public boolean isRisk() {
         return risk;
     }
 
+    /**
+     * Is issuer boolean.
+     *
+     * @return the boolean
+     */
     public boolean isIssuer() {
         return issuer;
     }
 
+    /**
+     * Is promo boolean.
+     *
+     * @return the boolean
+     */
     public boolean isPromo() {
         return promo;
     }
 
+    /**
+     * Is loyalty boolean.
+     *
+     * @return the boolean
+     */
     public boolean isLoyalty() {
         return loyalty;
     }

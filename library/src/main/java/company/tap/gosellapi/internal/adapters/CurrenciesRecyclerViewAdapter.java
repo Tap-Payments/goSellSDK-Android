@@ -22,6 +22,9 @@ import company.tap.gosellapi.internal.utils.CurrencyFormatter;
 import company.tap.gosellapi.internal.utils.LocalizedCurrency;
 import company.tap.gosellapi.internal.utils.Utils;
 
+/**
+ * The type Currencies recycler view adapter.
+ */
 public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<CurrenciesRecyclerViewAdapter.CurrencyCellViewHolder> {
 
     private CurrenciesAdapterCallback callback;
@@ -37,6 +40,13 @@ public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<Currenci
 
     private int selectedPosition = NO_SELECTION;
 
+    /**
+     * Instantiates a new Currencies recycler view adapter.
+     *
+     * @param allCurrencies    the all currencies
+     * @param selectedCurrency the selected currency
+     * @param callback         the callback
+     */
     public CurrenciesRecyclerViewAdapter(ArrayList<AmountedCurrency> allCurrencies, AmountedCurrency selectedCurrency, CurrenciesAdapterCallback callback) {
 
         this.allCurrencies = new ArrayList<>();
@@ -104,6 +114,11 @@ public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<Currenci
         notifyItemChanged(selectedPosition);
     }
 
+    /**
+     * Filter.
+     *
+     * @param newText the new text
+     */
     public void filter(@NonNull String newText) {
         if ( searchQuery == newText ) { return; }
         searchQuery = newText;
@@ -139,6 +154,9 @@ public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<Currenci
     };
 
 
+    /**
+     * The type Currency cell view holder.
+     */
     class CurrencyCellViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView tvCurrencyName;

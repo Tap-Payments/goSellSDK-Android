@@ -36,9 +36,15 @@ import company.tap.gosellapi.internal.utils.Utils;
 import company.tap.gosellapi.open.buttons.PayButtonView;
 import okhttp3.internal.Util;
 
+/**
+ * The type Otp full screen dialog.
+ */
 public class OTPFullScreenDialog extends DialogFragment {
 
-  public static String TAG = "OTPFullScreenDialog";
+    /**
+     * The constant TAG.
+     */
+    public static String TAG = "OTPFullScreenDialog";
   private static final int TICK_LENGTH = 1000;
   private static final String TIMER_STRING_FORMAT = "%02d:%02d";
   private static final int CONFIRMATION_CODE_LENGTH = 6;
@@ -53,9 +59,19 @@ public class OTPFullScreenDialog extends DialogFragment {
   private ArrayList<TextView> textViewsArray = new ArrayList<>();
 
 
-  public interface ConfirmOTP{
-    void confirmOTP();
-    void resendOTP();
+    /**
+     * The interface Confirm otp.
+     */
+    public interface ConfirmOTP{
+        /**
+         * Confirm otp.
+         */
+        void confirmOTP();
+
+        /**
+         * Resend otp.
+         */
+        void resendOTP();
   }
 
 

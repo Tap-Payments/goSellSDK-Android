@@ -12,6 +12,9 @@ import java.util.Collections;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 
 
+/**
+ * The type Payment options response deserializer.
+ */
 public class PaymentOptionsResponseDeserializer implements JsonDeserializer<PaymentOptionsResponse> {
     @Override
     public PaymentOptionsResponse deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {

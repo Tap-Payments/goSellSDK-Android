@@ -8,6 +8,9 @@ import com.google.gson.annotations.SerializedName;
 
 import company.tap.tapcardvalidator_android.CardBrand;
 
+/**
+ * The type Tokenized card.
+ */
 public final class TokenizedCard {
 
     @SerializedName("id")
@@ -50,10 +53,20 @@ public final class TokenizedCard {
     @SerializedName("address")
     @Nullable private Address address;
 
+    /**
+     * Gets first six.
+     *
+     * @return the first six
+     */
     public String getFirstSix() {
         return firstSix;
     }
 
+    /**
+     * Gets fingerprint.
+     *
+     * @return the fingerprint
+     */
     @NonNull
     public String getFingerprint() {
         return fingerprint;

@@ -23,12 +23,20 @@ import company.tap.gosellapi.internal.utils.Utils;
 import company.tap.tapcardvalidator_android.CardBrand;
 
 
+/**
+ * The type Card systems recycler view adapter.
+ */
 public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSystemViewHolder> {
 
   private ArrayList<PaymentOption> data;
   private ArrayList<PaymentOption> initialData;
 
-  public CardSystemsRecyclerViewAdapter(ArrayList<PaymentOption> _data) {
+    /**
+     * Instantiates a new Card systems recycler view adapter.
+     *
+     * @param _data the data
+     */
+    public CardSystemsRecyclerViewAdapter(ArrayList<PaymentOption> _data) {
     data = new ArrayList<>(_data);
     for (PaymentOption option : _data) {
       System.out.println(" filter based on  currency inside card view holder : " + option
@@ -98,7 +106,13 @@ public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSys
     return false;
   }
 
-  public void updateForCardBrand(CardBrand brand, CardScheme cardScheme) {
+    /**
+     * Update for card brand.
+     *
+     * @param brand      the brand
+     * @param cardScheme the card scheme
+     */
+    public void updateForCardBrand(CardBrand brand, CardScheme cardScheme) {
 
     if (brand == null) {
       data = new ArrayList<>(initialData);
@@ -156,10 +170,21 @@ public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSys
 }
 
 
+/**
+ * The type Card system view holder.
+ */
 class CardSystemViewHolder extends RecyclerView.ViewHolder {
-  ImageView cardSystemIcon;
+    /**
+     * The Card system icon.
+     */
+    ImageView cardSystemIcon;
 
-  CardSystemViewHolder(View itemView) {
+    /**
+     * Instantiates a new Card system view holder.
+     *
+     * @param itemView the item view
+     */
+    CardSystemViewHolder(View itemView) {
     super(itemView);
 
     cardSystemIcon = itemView.findViewById(R.id.cardSystemIcon);

@@ -18,7 +18,6 @@ import company.tap.gosellapi.internal.api.models.SavedCard;
  * <br>
  * Model for {@link PaymentOptionsResponse} object
  */
-
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 public final class PaymentOptionsResponse implements BaseResponse {
 
@@ -51,29 +50,64 @@ public final class PaymentOptionsResponse implements BaseResponse {
     @Nullable private ArrayList<SavedCard> cards;
 
 
+    /**
+     * Gets id.
+     *
+     * @return the id
+     */
 ///////////////////////////////////////////////////////////////////////////////////////////////
     @NonNull public String getId() {
         return id;
     }
 
+    /**
+     * Gets order id.
+     *
+     * @return the order id
+     */
     @NonNull public String getOrderID() {
         return orderID;
     }
 
+    /**
+     * Gets object.
+     *
+     * @return the object
+     */
     @NonNull public String getObject() {
         return object;
     }
 
+    /**
+     * Gets payment options.
+     *
+     * @return the payment options
+     */
     @NonNull public ArrayList<PaymentOption> getPaymentOptions() {
         return paymentOptions;
     }
 
+    /**
+     * Gets currency.
+     *
+     * @return the currency
+     */
     @NonNull public String getCurrency() {
         return currency;
     }
 
+    /**
+     * Gets supported currencies.
+     *
+     * @return the supported currencies
+     */
     @NonNull public ArrayList<AmountedCurrency> getSupportedCurrencies() { return supportedCurrencies; }
 
+    /**
+     * Gets cards.
+     *
+     * @return the cards
+     */
     @NonNull public ArrayList<SavedCard> getCards() {
 
         if ( cards == null ) {

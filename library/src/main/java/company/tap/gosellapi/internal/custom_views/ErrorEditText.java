@@ -29,16 +29,34 @@ public class ErrorEditText extends TextInputEditText {
     private boolean mError;
     private boolean mOptional;
 
+    /**
+     * Instantiates a new Error edit text.
+     *
+     * @param context the context
+     */
     public ErrorEditText(Context context) {
         super(context);
         init();
     }
 
+    /**
+     * Instantiates a new Error edit text.
+     *
+     * @param context the context
+     * @param attrs   the attrs
+     */
     public ErrorEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
+    /**
+     * Instantiates a new Error edit text.
+     *
+     * @param context  the context
+     * @param attrs    the attrs
+     * @param defStyle the def style
+     */
     public ErrorEditText(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
@@ -92,6 +110,8 @@ public class ErrorEditText extends TextInputEditText {
 
     /**
      * Request focus for the next view.
+     *
+     * @return the view
      */
     @SuppressWarnings("WrongConstant")
     public View focusNextView() {
@@ -118,14 +138,15 @@ public class ErrorEditText extends TextInputEditText {
      * Set this {@link ErrorEditText} as optional. Optional fields are always valid and show no
      * error message.
      *
-     * @param optional {@code true} to set this {@link ErrorEditText} to optional, {@code false}
-     *                             to set it to required.
+     * @param optional {@code true} to set this {@link ErrorEditText} to optional, {@code false}                             to set it to required.
      */
     public void setOptional(boolean optional) {
         mOptional = optional;
     }
 
     /**
+     * Is optional boolean.
+     *
      * @return If this {@link ErrorEditText} is optional or not. See {@link #setOptional(boolean)}.
      */
     public boolean isOptional() {
@@ -133,6 +154,8 @@ public class ErrorEditText extends TextInputEditText {
     }
 
     /**
+     * Is error boolean.
+     *
      * @return the current error state of the {@link android.widget.EditText}
      */
     public boolean isError() {
@@ -199,6 +222,8 @@ public class ErrorEditText extends TextInputEditText {
     }
 
     /**
+     * Gets text input layout parent.
+     *
      * @return the {@link TextInputLayout} parent if present, otherwise {@code null}.
      */
     @Nullable

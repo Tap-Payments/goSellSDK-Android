@@ -28,15 +28,41 @@ import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.api_service.AppInfo;
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 
+/**
+ * The type Utils.
+ */
 public class Utils {
 
+    /**
+     * The type List.
+     */
     public static class List {
 
+        /**
+         * The interface Filter.
+         *
+         * @param <T> the type parameter
+         */
         public interface Filter<T> {
 
+            /**
+             * Is included boolean.
+             *
+             * @param object the object
+             * @return the boolean
+             */
             boolean isIncluded(T object);
         }
 
+        /**
+         * Filter t.
+         *
+         * @param <E>    the type parameter
+         * @param <T>    the type parameter
+         * @param list   the list
+         * @param filter the filter
+         * @return the t
+         */
         public static <E, T extends java.util.List<E>> T filter(T list, Filter<E> filter) {
 
             T result;
@@ -62,6 +88,12 @@ public class Utils {
         }
     }
 
+    /**
+     * Convert dp to pixel float.
+     *
+     * @param dp the dp
+     * @return the float
+     */
     public static float convertDpToPixel(float dp){
 
         DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
@@ -70,6 +102,14 @@ public class Utils {
         return px;
     }
 
+    /**
+     * Sets image tint.
+     *
+     * @param context    the context
+     * @param drawableId the drawable id
+     * @param colorId    the color id
+     * @return the image tint
+     */
     public static Drawable setImageTint(Context context, int drawableId, int colorId) {
 
         Drawable drawable = ContextCompat.getDrawable(context, drawableId);
@@ -80,6 +120,12 @@ public class Utils {
         return drawable;
     }
 
+    /**
+     * Show keyboard.
+     *
+     * @param context       the context
+     * @param focusableView the focusable view
+     */
     public static void showKeyboard(Context context, View focusableView) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
@@ -87,6 +133,11 @@ public class Utils {
         }
     }
 
+    /**
+     * Hide keyboard.
+     *
+     * @param activity the activity
+     */
     public static void hideKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         //Find the currently focused view, so we can grab the correct window token from it.
@@ -99,10 +150,23 @@ public class Utils {
     }
 
 
+    /**
+     * Hide keyboard from.
+     *
+     * @param context the context
+     * @param view    the view
+     */
     public static void hideKeyboardFrom(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
+
+    /**
+     * Get formatted currency string.
+     *
+     * @param amountedCurrency the amounted currency
+     * @return the string
+     */
     public static String getFormattedCurrency(AmountedCurrency amountedCurrency){
 
         Locale locale = new Locale(AppInfo.getLocaleString());
@@ -130,6 +194,12 @@ public class Utils {
         return symbol;
     }
 
+    /**
+     * Gets currency.
+     *
+     * @param currencyCode the currency code
+     * @return the currency
+     */
     public static Currency getCurrency(String currencyCode) {
         try {
             return Currency.getInstance(currencyCode);
@@ -138,6 +208,13 @@ public class Utils {
         }
     }
 
+    /**
+     * Gets currency name.
+     *
+     * @param currencyCode the currency code
+     * @param currency     the currency
+     * @return the currency name
+     */
     public static String getCurrencyName(String currencyCode, Currency currency) {
         String name = "";
 
@@ -147,23 +224,51 @@ public class Utils {
         return name;
     }
 
-    //for text
+    /**
+     * Highlight text.
+     *
+     * @param context         the context
+     * @param sb              the sb
+     * @param index           the index
+     * @param textToHighlight the text to highlight
+     */
+//for text
     public static void highlightText(Context context, SpannableStringBuilder sb, int index, String textToHighlight) {
         BackgroundColorSpan fcs = new BackgroundColorSpan(ContextCompat.getColor(context, R.color.vibrant_green));
         sb.setSpan(fcs, index, index + textToHighlight.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 
-    //for single char
+    /**
+     * Highlight text.
+     *
+     * @param context the context
+     * @param sb      the sb
+     * @param index   the index
+     */
+//for single char
     public static void highlightText(Context context, SpannableStringBuilder sb, int index) {
         BackgroundColorSpan fcs = new BackgroundColorSpan(ContextCompat.getColor(context, R.color.vibrant_green));
         sb.setSpan(fcs, index, index + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 
+    /**
+     * Highlight phone number.
+     *
+     * @param context         the context
+     * @param sb              the sb
+     * @param startIndex      the start index
+     * @param textToHighlight the text to highlight
+     */
     public static void highlightPhoneNumber(Context context,SpannableStringBuilder sb,int startIndex,String textToHighlight){
         ForegroundColorSpan fcs = new ForegroundColorSpan(ContextCompat.getColor(context,R.color.bt_blue));
         sb.setSpan(fcs,startIndex,startIndex+textToHighlight.length(),Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 
+    /**
+     * Get window display metrics display metrics.
+     *
+     * @return the display metrics
+     */
     public static DisplayMetrics  getWindowDisplayMetrics(){
         return Resources.getSystem().getDisplayMetrics();
     }

@@ -6,9 +6,17 @@ import android.view.ViewGroup;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models_data.EmptyViewModelData;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.EmptyViewModel;
 
+/**
+ * The type Empty view holder.
+ */
 public class EmptyViewHolder
         extends PaymentOptionsBaseViewHolder<EmptyViewModelData, EmptyViewHolder, EmptyViewModel> {
 
+    /**
+     * Instantiates a new Empty view holder.
+     *
+     * @param view the view
+     */
     EmptyViewHolder(View view) {
         super(view);
     }

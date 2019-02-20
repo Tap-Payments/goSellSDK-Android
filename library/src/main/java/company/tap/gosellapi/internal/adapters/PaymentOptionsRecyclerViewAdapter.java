@@ -7,10 +7,18 @@ import android.view.ViewGroup;
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
 import company.tap.gosellapi.internal.viewholders.PaymentOptionsBaseViewHolder;
 
+/**
+ * The type Payment options recycler view adapter.
+ */
 public class PaymentOptionsRecyclerViewAdapter extends RecyclerView.Adapter<PaymentOptionsBaseViewHolder> {
 
     private PaymentOptionsDataManager dataSource;
 
+    /**
+     * Instantiates a new Payment options recycler view adapter.
+     *
+     * @param dataSource the data source
+     */
     public PaymentOptionsRecyclerViewAdapter(PaymentOptionsDataManager dataSource) {
 
         this.dataSource = dataSource;
