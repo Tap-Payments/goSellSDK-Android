@@ -266,8 +266,39 @@ The following table describes its structure and specifies which fields are requi
     <th rowspan=2>Description</th>
     <tr>
         <th><sub>Android</sub></th>
-        <th><sub>Purchase</sub></th><th><sub>Authorize</sub></th><th><sub>Card Saving</sub></th>
+        <th><sub>Purchase</sub></th>
+        <th><sub>Authorize</sub></th>
+        <th><sub>Card Saving</sub></th>
+    </tr>
+    <tr>
+        <td><sub><i>mode</i></sub></td>
+        <td colspan=1><sub><b>TransactionMode</b></sub></td>
+        <td colspan=3><sub><i>false</i></sub></td>
+        <td align="left"><sub>Mode of the transactions (purchase or authorize). If this    property is not implemented, <i>purchase</i> mode is used.</sub></td>
+    </tr>
+     <tr>
+        <td><sub><i>customer</i></sub></td>
+        <td colspan=1><sub><b>Customer</b></sub></td>
+        <td colspan=3><sub><i>true</i></sub></td>
+        <td align="left"><sub>Customer information. For more details on how to create the customer, please refer to <i>Customer</i> class reference.</sub></td>
+    </tr>
+     <tr>
+        <td><sub><i>currency</i></sub></td>
+        <td colspan=1><sub><b>Currency</b></sub></td>
+        <td colspan=2><sub><i>true</i></sub></td><td><sub><i>false</i></sub></td>
+        <td align="left"><sub>Currency of the transaction.</sub></td>
+    </tr>
+    <tr>
+        <td><sub><i>amount</i></sub></td>
+        <td colspan=1><sub><b><nobr>BigDecimal</nobr></b></sub></td>
+        <td colspan=3><sub><i>false</i></sub></td>
+        <td align="left"><sub>Payment/Authorization amount.<br><b>Note:</b> In order to have payment amount either <i>amount</i> or <i>items</i> should be implemented. If both are implemented, <i>items</i> is preferred.</sub></td>
     </tr>
 
-   </table>
-
+     <tr>
+        <td><sub><i>items</i></sub></td>
+        <td colspan=1><sub><b>ArrayList <nobr>&lt;PaymentItem *&gt;</nobr></b></sub></td>
+        <td colspan=3><sub><i>false</i></sub></td>
+        <td align="left"><sub>List of items to pay for.<br><b>Note:</b> In order to have payment amount either <i>amount</i> or <i>items</i> should be implemented. If both are implemented, <i>items</i> is preferred.</sub></td>
+    </tr>
+    </table>
