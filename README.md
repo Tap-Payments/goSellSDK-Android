@@ -32,6 +32,7 @@ A library that fully covers payment/authorization/card saving process inside you
     4. [SDK Delegate](#sdk_delegate)
         1. [Charge Result Enum](#charge_result)
         2. [Get Payment result](#getPaymentResult)
+    5. [Documentation](#docs)
 
 
 <a name="requirements"></a>
@@ -692,6 +693,7 @@ Retreive the payment result.
 ```
 
 -----
+<a name="docs"></a>
 # Documentation
 Documentation is available at [github-pages][2].<br>
 Also documented sources are attached to the library.
