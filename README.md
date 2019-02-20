@@ -18,7 +18,6 @@ A library that fully covers payment/authorization/card saving process inside you
    2. [Installation with jitpack](#installation_with_jitpack)
 3. [Setup](#setup)
     1. [goSellSDK Class Properties](#setup_gosellsdk_class_properties)
-    2. [Setup Steps](#setup_steps)
 4. [Usage](#usage)
     1. [Pay Button](#paybutton)
          1. [Start SDK with Pay Button](#start_sdk_with_pay_button)
@@ -31,16 +30,8 @@ A library that fully covers payment/authorization/card saving process inside you
         1. [Structure](#sdkTrigger_data_source_structure)
         2. [Samples](#sdkTrigger_data_source_samples)
     4. [SDK Delegate](#sdk_delegate)
-        1. [Payment Success Callback](#payment_success_callback)
-        2. [Payment Failure Callback](#payment_failure_callback)
-        3. [Authorization Success Callback](#authorization_success_callback)
-        4. [Authorization Failure Callback](#authorization_failure_callback)
-        5. [Card Saving Success Callback](#card_saving_success_callback)
-        6. [Card Saving Failure Callback](#card_saving_failure_callback)
-        7. [Session Is Starting Callback](#session_is_starting_callback)
-        8. [Session Has Started Callback](#session_has_started_callback)
-        9. [Session Has Failed to Start Callback](#session_has_failed_to_start_callback)
-        10. [Session Cancel Callback](#session_cancel_callback)
+        1. [Charge Result Enum](#charge_result)
+        2. [Get Payment result](#getPaymentResult)
     5. [SDK Appearance](#sdk_appearance)
 
 <a name="requirements"></a>
@@ -120,12 +111,7 @@ Don't forget to import the class at the beginning of the file:
 ```android
  import company.tap.gosellapi.GoSellSDK;
 ```
-<a name="setup_steps"></a>
-## Setup Steps
-### With SDKTrigger
-...
-...
-...
+
 <a name="usage"></a>
 #Usage
 ---
