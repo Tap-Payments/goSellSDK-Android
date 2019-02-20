@@ -5,8 +5,17 @@ import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptio
 import company.tap.gosellapi.internal.viewholders.EmptyViewHolder;
 import company.tap.gosellapi.internal.viewholders.PaymentOptionsBaseViewHolder;
 
+/**
+ * The type Empty view model.
+ */
 public class EmptyViewModel extends PaymentOptionViewModel<EmptyViewModelData, EmptyViewHolder, EmptyViewModel> {
 
+    /**
+     * Instantiates a new Empty view model.
+     *
+     * @param parentDataManager the parent data manager
+     * @param data              the data
+     */
     public EmptyViewModel(PaymentOptionsDataManager parentDataManager, EmptyViewModelData data) {
 
         super(parentDataManager, data, PaymentOptionsBaseViewHolder.ViewHolderType.EMPTY);

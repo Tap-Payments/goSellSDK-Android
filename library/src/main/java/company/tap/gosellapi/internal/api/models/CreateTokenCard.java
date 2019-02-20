@@ -11,6 +11,9 @@ import company.tap.gosellapi.internal.api.crypto.CryptoUtil;
 import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 import company.tap.gosellapi.internal.interfaces.SecureSerializable;
 
+/**
+ * The type Create token card.
+ */
 public final class CreateTokenCard {
 
   @SerializedName("crypted_data")
@@ -22,7 +25,17 @@ public final class CreateTokenCard {
   @Nullable private Address address;
 
 
-  public CreateTokenCard(String cardNumber, String expirationMonth, String expirationYear, String cvc, String cardholderName, @Nullable Address address) {
+    /**
+     * Instantiates a new Create token card.
+     *
+     * @param cardNumber      the card number
+     * @param expirationMonth the expiration month
+     * @param expirationYear  the expiration year
+     * @param cvc             the cvc
+     * @param cardholderName  the cardholder name
+     * @param address         the address
+     */
+    public CreateTokenCard(String cardNumber, String expirationMonth, String expirationYear, String cvc, String cardholderName, @Nullable Address address) {
 
     SensitiveCardData _sensitiveCardData  = new SensitiveCardData(cardNumber, expirationYear, expirationMonth, cvc, cardholderName);
 

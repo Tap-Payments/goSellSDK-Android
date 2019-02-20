@@ -10,13 +10,29 @@ import android.util.TypedValue;
 import company.tap.gosellapi.R;
 
 
+/**
+ * The type View utils.
+ */
 public class ViewUtils {
 
+    /**
+     * Dp 2 px int.
+     *
+     * @param context the context
+     * @param dp      the dp
+     * @return the int
+     */
     public static int dp2px(Context context, float dp) {
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
                 context.getResources().getDisplayMetrics()));
     }
 
+    /**
+     * Is dark background boolean.
+     *
+     * @param activity the activity
+     * @return the boolean
+     */
     public static boolean isDarkBackground(Activity activity) {
         int color = activity.getResources().getColor(R.color.bt_white);
         try {

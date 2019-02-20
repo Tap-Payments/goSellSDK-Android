@@ -11,11 +11,19 @@ import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.WebPaymentViewModel;
 import company.tap.tapcardvalidator_android.CardBrand;
 
+/**
+ * The type Web payment view holder.
+ */
 public class WebPaymentViewHolder
         extends PaymentOptionsBaseViewHolder<PaymentOption, WebPaymentViewHolder, WebPaymentViewModel> {
     private ImageView paymentSystemIcon;
     private TextView paymentSystemName;
 
+    /**
+     * Instantiates a new Web payment view holder.
+     *
+     * @param itemView the item view
+     */
     WebPaymentViewHolder(final View itemView) {
         super(itemView);
         paymentSystemIcon = itemView.findViewById(R.id.paymentSystemIcon);

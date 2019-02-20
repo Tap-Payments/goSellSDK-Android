@@ -28,10 +28,21 @@ public class BlurDrawable extends Drawable {
     private int radius;
 
 
+    /**
+     * Instantiates a new Blur drawable.
+     *
+     * @param target the target
+     */
     public BlurDrawable(View target) {
         this(target, 10);
     }
 
+    /**
+     * Instantiates a new Blur drawable.
+     *
+     * @param target the target
+     * @param radius the radius
+     */
     public BlurDrawable(View target, int radius) {
         this.targetRef = new WeakReference<View>(target);
         setRadius(radius);
@@ -73,6 +84,11 @@ public class BlurDrawable extends Drawable {
     }
 
 
+    /**
+     * Gets radius.
+     *
+     * @return the radius
+     */
     public int getRadius() {
         return radius;
     }

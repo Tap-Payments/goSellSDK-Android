@@ -9,6 +9,9 @@ import company.tap.gosellapi.internal.api.enums.AuthenticationRequirer;
 import company.tap.gosellapi.internal.api.enums.AuthenticationStatus;
 import company.tap.gosellapi.internal.api.enums.AuthenticationType;
 
+/**
+ * The type Authenticate.
+ */
 public final class Authenticate {
 
     @SerializedName("id")
@@ -56,6 +59,8 @@ public final class Authenticate {
     private String value;
 
     /**
+     * Gets id.
+     *
      * @return Unique authentication identifier.
      */
     public String getId() {
@@ -63,6 +68,8 @@ public final class Authenticate {
     }
 
     /**
+     * Gets object.
+     *
      * @return Object type. Here "authenticate" always.
      */
     public String getObject() {
@@ -70,6 +77,8 @@ public final class Authenticate {
     }
 
     /**
+     * Gets type.
+     *
      * @return Authentication type.
      */
     public AuthenticationType getType() {
@@ -77,6 +86,8 @@ public final class Authenticate {
     }
 
     /**
+     * Gets by.
+     *
      * @return Defines the initiator of the authentication.
      */
     public AuthenticationRequirer getBy() {
@@ -84,6 +95,8 @@ public final class Authenticate {
     }
 
     /**
+     * Gets status.
+     *
      * @return Authentication status.
      */
     public AuthenticationStatus getStatus() {
@@ -91,6 +104,8 @@ public final class Authenticate {
     }
 
     /**
+     * Gets retry attempt.
+     *
      * @return Number of attempts per code.
      */
     public int getRetryAttempt() {
@@ -98,6 +113,8 @@ public final class Authenticate {
     }
 
     /**
+     * Gets url.
+     *
      * @return The URL to perform the authentication.
      */
     public String getUrl() {
@@ -105,6 +122,8 @@ public final class Authenticate {
     }
 
     /**
+     * Gets created.
+     *
      * @return Authentication creation date.
      */
     public long getCreated() {
@@ -112,6 +131,8 @@ public final class Authenticate {
     }
 
     /**
+     * Gets authenticated.
+     *
      * @return Authentication date (when was authenticated)
      */
     public long getAuthenticated() {
@@ -119,6 +140,8 @@ public final class Authenticate {
     }
 
     /**
+     * Gets count.
+     *
      * @return Number of used authentication attempts.
      */
     public int getCount() {
@@ -126,6 +149,8 @@ public final class Authenticate {
     }
 
     /**
+     * Gets value.
+     *
      * @return In case of OTP - masked mobile number where SMS was dispatched.
      */
     public String getValue() {

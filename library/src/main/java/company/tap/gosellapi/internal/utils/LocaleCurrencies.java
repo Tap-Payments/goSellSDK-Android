@@ -9,6 +9,9 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
+/**
+ * The type Locale currencies.
+ */
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 public class LocaleCurrencies {
 
@@ -16,14 +19,25 @@ public class LocaleCurrencies {
   private static Set<String> isoCodesArray;
 
 
-  @NonNull
+    /**
+     * Gets iso codes array.
+     *
+     * @return the iso codes array
+     */
+    @NonNull
   public static Set<String> getIsoCodesArray() {
     if (isoCodesArray == null)
       isoCodesArray = getLocalizedArray();
     return isoCodesArray;
   }
 
-  public static boolean checkUserCurrency(@NonNull String userProvidedCurrency) {
+    /**
+     * Check user currency boolean.
+     *
+     * @param userProvidedCurrency the user provided currency
+     * @return the boolean
+     */
+    public static boolean checkUserCurrency(@NonNull String userProvidedCurrency) {
     return isIsoCodeContainsUserCurrency(userProvidedCurrency.toLowerCase());
   }
 

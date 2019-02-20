@@ -24,14 +24,29 @@ import company.tap.gosellapi.internal.adapters.CurrenciesRecyclerViewAdapter;
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models_data.CurrencyViewModelData;
 
+/**
+ * The type Currencies activity.
+ */
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 public class CurrenciesActivity extends BaseActionBarActivity implements CurrenciesAdapterCallback {
 
+    /**
+     * The constant CURRENCIES_ACTIVITY_DATA.
+     */
     public static final String CURRENCIES_ACTIVITY_DATA = "currenciesActivityData";
+    /**
+     * The constant CURRENCIES_ACTIVITY_INITIAL_SELECTED_CURRENCY.
+     */
     public static final String CURRENCIES_ACTIVITY_INITIAL_SELECTED_CURRENCY = "currenciesActivityInitialSelectedCurrency";
+    /**
+     * The constant CURRENCIES_ACTIVITY_USER_CHOICE_CURRENCY.
+     */
     public static final String CURRENCIES_ACTIVITY_USER_CHOICE_CURRENCY = "currenciesActivityUserChoiceCurrency";
     private SearchView mSearchView;
 
+    /**
+     * The Currencies.
+     */
     ArrayList<AmountedCurrency> currencies;
     private AmountedCurrency selectedCurrency;
 

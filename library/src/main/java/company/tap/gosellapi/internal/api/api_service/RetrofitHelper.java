@@ -29,11 +29,19 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * The type Retrofit helper.
+ */
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 public final class RetrofitHelper {
     private static Retrofit retrofit;
     private static APIService helper;
 
+    /**
+     * Gets api helper.
+     *
+     * @return the api helper
+     */
     @Nullable
     public static APIService getApiHelper() {
         /**

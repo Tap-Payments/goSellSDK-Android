@@ -14,12 +14,18 @@ import retrofit2.Response;
  * Created by eugene.goltsev on 14.02.2018.
  * <br>
  * Base callback with response handling
+ *
+ * @param <K> the type parameter
  */
-
 public final class BaseCallback<K extends BaseResponse> implements Callback<K> {
     private static final String UNABLE_TO_FETCH_ERROR_INFO = "Unable to fetch error information";
     private APIRequestCallback<K> requestCallback;
 
+    /**
+     * Instantiates a new Base callback.
+     *
+     * @param requestCallback the request callback
+     */
     public BaseCallback(APIRequestCallback<K> requestCallback) {
         this.requestCallback = requestCallback;
     }

@@ -4,6 +4,9 @@ import android.support.annotation.NonNull;
 
 import java.io.Serializable;
 
+/**
+ * The type Customer view model.
+ */
 public class CustomerViewModel implements Serializable ,Comparable<CustomerViewModel>{
 
     private String name;
@@ -13,6 +16,16 @@ public class CustomerViewModel implements Serializable ,Comparable<CustomerViewM
     private String mobile;
     private String sdn;
 
+    /**
+     * Instantiates a new Customer view model.
+     *
+     * @param name   the name
+     * @param middle the middle
+     * @param last   the last
+     * @param email  the email
+     * @param sdn    the sdn
+     * @param mobile the mobile
+     */
     public CustomerViewModel(@NonNull final String name,
                              @NonNull final String middle,
                              @NonNull final String last,
@@ -22,23 +35,48 @@ public class CustomerViewModel implements Serializable ,Comparable<CustomerViewM
         setSimpleText(name,middle,last,email,sdn,mobile);
     }
 
+    /**
+     * Gets name.
+     *
+     * @return the name
+     */
     @NonNull
     public String getName() {
         return name;
     }
 
 
+    /**
+     * Gets email.
+     *
+     * @return the email
+     */
     @NonNull
     public String getEmail()
     {
         return email;
     }
 
+    /**
+     * Get mobile string.
+     *
+     * @return the string
+     */
     @NonNull
     public String getMobile(){
         return mobile;
     }
 
+    /**
+     * Sets simple text.
+     *
+     * @param name   the name
+     * @param middle the middle
+     * @param last   the last
+     * @param email  the email
+     * @param sdn    the sdn
+     * @param mobile the mobile
+     */
     public void setSimpleText(@NonNull final String name,
                               @NonNull final String middle,
                               @NonNull final String last,
@@ -54,14 +92,29 @@ public class CustomerViewModel implements Serializable ,Comparable<CustomerViewM
     }
 
 
+    /**
+     * Gets middle name.
+     *
+     * @return the middle name
+     */
     public String getMiddleName() {
         return middleName;
     }
 
+    /**
+     * Gets last name.
+     *
+     * @return the last name
+     */
     public String getLastName() {
         return lastName;
     }
 
+    /**
+     * Gets sdn.
+     *
+     * @return the sdn
+     */
     public String getSdn() {
         return sdn;
     }

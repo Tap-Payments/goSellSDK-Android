@@ -9,14 +9,31 @@ import company.tap.gosellapi.open.models.PaymentItem;
 import company.tap.gosellapi.open.models.Shipping;
 import company.tap.gosellapi.open.models.Tax;
 
+/**
+ * The type Amount calculator.
+ */
 public abstract class AmountCalculator {
 
+    /**
+     * Calculate total amount of big decimal.
+     *
+     * @param item the item
+     * @return the big decimal
+     */
     public static BigDecimal calculateTotalAmountOf(PaymentItem item) {
 
         BigDecimal result = item.getPlainAmount().subtract(item.getDiscountAmount()).add(item.getTaxesAmount());
         return result;
     }
 
+    /**
+     * Calculate total amount of big decimal.
+     *
+     * @param items     the items
+     * @param taxes     the taxes
+     * @param shippings the shippings
+     * @return the big decimal
+     */
     public static BigDecimal calculateTotalAmountOf(ArrayList<PaymentItem> items, ArrayList<Tax> taxes, ArrayList<Shipping> shippings) {
 
         BigDecimal itemsPlainAmount     = BigDecimal.ZERO;
@@ -49,6 +66,13 @@ public abstract class AmountCalculator {
         return result;
     }
 
+    /**
+     * Calculate taxes on big decimal.
+     *
+     * @param amount the amount
+     * @param taxes  the taxes
+     * @return the big decimal
+     */
     public static BigDecimal calculateTaxesOn(BigDecimal amount, ArrayList<Tax> taxes) {
 
         BigDecimal result = BigDecimal.ZERO;
@@ -75,6 +99,14 @@ public abstract class AmountCalculator {
         return result;
     }
 
+    /**
+     * Calculate extra fees amount big decimal.
+     *
+     * @param fees                the fees
+     * @param supportedCurrencies the supported currencies
+     * @param currency            the currency
+     * @return the big decimal
+     */
     public static BigDecimal calculateExtraFeesAmount(ArrayList<ExtraFee> fees, ArrayList<AmountedCurrency> supportedCurrencies, AmountedCurrency currency) {
 
         BigDecimal result = BigDecimal.ZERO;

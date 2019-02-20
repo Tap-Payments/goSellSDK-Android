@@ -18,9 +18,15 @@ import company.tap.gosellapi.internal.exceptions.EmptyStringToEncryptException;
  * <br>
  * Util class for RSA encryption
  */
-
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 public final class CryptoUtil {
+    /**
+     * Encrypt json string string.
+     *
+     * @param jsonString    the json string
+     * @param encryptionKey the encryption key
+     * @return the string
+     */
     public static String encryptJsonString(@NonNull String jsonString, String encryptionKey) {
         if(jsonString.length() == 0) {
             throw new EmptyStringToEncryptException();

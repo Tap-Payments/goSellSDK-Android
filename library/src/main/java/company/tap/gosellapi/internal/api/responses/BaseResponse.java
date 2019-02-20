@@ -7,7 +7,6 @@ import android.support.annotation.RestrictTo;
  * <br>
  * Marker for response classes
  */
-
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 public interface BaseResponse {
 }

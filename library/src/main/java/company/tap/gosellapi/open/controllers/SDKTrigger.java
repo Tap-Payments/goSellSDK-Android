@@ -29,6 +29,9 @@ import company.tap.gosellapi.open.models.Shipping;
 import company.tap.gosellapi.open.models.TapCurrency;
 import company.tap.gosellapi.open.models.Tax;
 
+/**
+ * The type Sdk trigger.
+ */
 public class SDKTrigger implements View.OnClickListener {
 
   private PayButtonView payButtonView;
@@ -36,8 +39,18 @@ public class SDKTrigger implements View.OnClickListener {
   private Activity activityListener;
   private int SDK_REQUEST_CODE;
 
+  /**
+   * Instantiates a new Sdk trigger.
+   */
   public SDKTrigger() {}
 
+  /**
+   * Sets button view.
+   *
+   * @param buttonView       the button view
+   * @param activity         the activity
+   * @param SDK_REQUEST_CODE the sdk request code
+   */
   public void setButtonView(View buttonView, Activity activity, int SDK_REQUEST_CODE) {
 
     this.SDK_REQUEST_CODE = SDK_REQUEST_CODE;
@@ -50,27 +63,57 @@ public class SDKTrigger implements View.OnClickListener {
     this.activityListener = activity;
   }
 
+  /**
+   * Set pay button background selector.
+   *
+   * @param selector the selector
+   */
   public void setPayButtonBackgroundSelector(int selector){
     payButtonView.setBackgroundSelector(selector);
   }
 
+  /**
+   * Setup background with color list.
+   *
+   * @param enabledBackgroundColor  the enabled background color
+   * @param disabledBackgroundColor the disabled background color
+   */
   public void setupBackgroundWithColorList(int enabledBackgroundColor,int disabledBackgroundColor){
     payButtonView.setupBackgroundWithColorList(enabledBackgroundColor,disabledBackgroundColor);
   }
 
+  /**
+   * Setup pay button font type face.
+   *
+   * @param typeface the typeface
+   */
   public void setupPayButtonFontTypeFace(Typeface typeface){
     payButtonView.setupFontTypeFace(typeface);
   }
 
+  /**
+   * Setup text color.
+   *
+   * @param enabledTextColor  the enabled text color
+   * @param disabledTextColor the disabled text color
+   */
   public void setupTextColor(int enabledTextColor,int disabledTextColor){
     payButtonView.setupTextColor(enabledTextColor,disabledTextColor);
   }
 
 
+  /**
+   * Set pay button title.
+   *
+   * @param title the title
+   */
   public void setPayButtonTitle(String title){
     payButtonView.getPayButton().setText(title);
   }
 
+  /**
+   * Instantiate payment data source.
+   */
   public void instantiatePaymentDataSource() {
 
     this.paymentDataSource  = company.tap.gosellapi.open.data_manager.PaymentDataSource.getInstance();
@@ -87,70 +130,138 @@ public class SDKTrigger implements View.OnClickListener {
   }
 
 
-
+  /**
+   * set transaction currency
+   *
+   * @param tapCurrency the tap currency
+   */
   public void setTransactionCurrency(TapCurrency tapCurrency){
     paymentDataSource.setTransactionCurrency(tapCurrency);
   }
 
 
+  /**
+   * set transaction mode
+   *
+   * @param transactionMode the transaction mode
+   */
   public void setTransactionMode(TransactionMode transactionMode){
     paymentDataSource.setTransactionMode(transactionMode);
   }
 
-
+  /**
+   * set customer
+   *
+   * @param customer the customer
+   */
   public void setCustomer(Customer customer){
     paymentDataSource.setCustomer(customer);
   }
 
+  /**
+   * set payment items
+   *
+   * @param paymentItems the payment items
+   */
   public void setPaymentItems(ArrayList<PaymentItem> paymentItems){
     paymentDataSource.setPaymentItems(paymentItems);
   }
 
+  /**
+   * set payment tax
+   *
+   * @param taxes the taxes
+   */
   public void setTaxes(ArrayList<Tax> taxes){
     paymentDataSource.setTaxes(taxes);
   }
 
+  /**
+   * set payment shipping
+   *
+   * @param shipping the shipping
+   */
   public void setShipping(ArrayList<Shipping> shipping){
     paymentDataSource.setShipping(shipping);
   }
 
+  /**
+   * set post url
+   *
+   * @param postURL the post url
+   */
   public void setPostURL(String postURL){
     paymentDataSource.setPostURL(postURL);
   }
 
+  /**
+   * set payment description
+   *
+   * @param paymentDescription the payment description
+   */
   public void setPaymentDescription(String paymentDescription){
     paymentDataSource.setPaymentDescription(paymentDescription);
   }
 
+  /**
+   * set payment meta data
+   *
+   * @param paymentMetadata the payment metadata
+   */
   public void setPaymentMetadata(HashMap<String,String> paymentMetadata){
     paymentDataSource.setPaymentMetadata(paymentMetadata);
   }
 
-
+  /**
+   * set payment reference
+   *
+   * @param paymentReference the payment reference
+   */
   public void setPaymentReference(Reference paymentReference){
     paymentDataSource.setPaymentReference(paymentReference);
   }
 
+  /**
+   * set payment statement descriptor
+   *
+   * @param setPaymentStatementDescriptor the set payment statement descriptor
+   */
   public void setPaymentStatementDescriptor(String setPaymentStatementDescriptor){
     paymentDataSource.setPaymentStatementDescriptor(setPaymentStatementDescriptor);
   }
 
-
+  /**
+   * enable or disable 3dsecure
+   *
+   * @param is3DSecure the is 3 d secure
+   */
   public void isRequires3DSecure(boolean is3DSecure){
     paymentDataSource.isRequires3DSecure(is3DSecure);
   }
 
+  /**
+   * set payment receipt
+   *
+   * @param receipt the receipt
+   */
   public void setReceiptSettings(Receipt receipt){
     paymentDataSource.setReceiptSettings(receipt);
   }
 
 
-
+  /**
+   * set Authorize Action
+   *
+   * @param authorizeAction the authorize action
+   */
   public void setAuthorizeAction(AuthorizeAction authorizeAction){
     paymentDataSource.setAuthorizeAction(authorizeAction);
   }
 
-
+  /**
+   * Handle pay button click event
+   * @param v
+   */
   @Override
   public void onClick(View v) {
     int i = v.getId();
@@ -163,11 +274,16 @@ public class SDKTrigger implements View.OnClickListener {
 
   }
 
-
+  /**
+   * start goSellSDK without pay button
+   */
   public void start(){
     getPaymentOptions();
   }
 
+  /**
+   * call payment methods API
+   */
   private void getPaymentOptions() {
     persistPaymentDataSource();
     payButtonView.getLoadingView().start();
@@ -201,6 +317,9 @@ public class SDKTrigger implements View.OnClickListener {
         });
   }
 
+  /**
+   * launch goSellSDK activity
+   */
   private void startMainActivity() {
     Intent intent = new Intent(payButtonView.getContext(), GoSellPaymentActivity.class);
     activityListener.startActivityForResult(intent,SDK_REQUEST_CODE );

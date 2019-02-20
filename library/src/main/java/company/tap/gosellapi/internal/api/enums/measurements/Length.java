@@ -2,13 +2,25 @@ package company.tap.gosellapi.internal.api.enums.measurements;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * The enum Length.
+ */
 public enum  Length implements MeasurementUnit{
 
-  @SerializedName("millimeter")        MILLIMETER,
+    /**
+     * Millimeter length.
+     */
+    @SerializedName("millimeter")        MILLIMETER,
 
-  @SerializedName("centimeter")        CENTIMETER,
+    /**
+     * Centimeter length.
+     */
+    @SerializedName("centimeter")        CENTIMETER,
 
-  @SerializedName("meter")             METER,
+    /**
+     * Meter length.
+     */
+    @SerializedName("meter")             METER,
   ;
   @Override
   public Measurement getMeasurementGroup() {

@@ -11,6 +11,9 @@ import java.lang.reflect.Type;
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 import company.tap.gosellapi.internal.utils.CurrencyFormatter;
 
+/**
+ * The type Amounted currency deserializer.
+ */
 public class AmountedCurrencyDeserializer implements JsonDeserializer<AmountedCurrency> {
 
     @Override

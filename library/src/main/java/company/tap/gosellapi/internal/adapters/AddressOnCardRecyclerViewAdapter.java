@@ -19,12 +19,21 @@ import company.tap.gosellapi.internal.api.enums.AddressFieldInputType;
 import company.tap.gosellapi.internal.api.models.AddressField;
 import company.tap.gosellapi.internal.api.models.BillingAddressField;
 
+/**
+ * The type Address on card recycler view adapter.
+ */
 public class AddressOnCardRecyclerViewAdapter extends RecyclerView.Adapter {
     private static final int VH_TYPE_DROPDOWN = 0;
     private static final int VH_TYPE_NUMBER = 1;
     private static final int VH_TYPE_TEXT = 2;
 
+    /**
+     * The interface Addresson card recycler view interface.
+     */
     public interface AddressonCardRecyclerViewInterface {
+        /**
+         * Country dropdown clicked.
+         */
         void countryDropdownClicked();
     }
 
@@ -35,6 +44,14 @@ public class AddressOnCardRecyclerViewAdapter extends RecyclerView.Adapter {
     private AddressonCardRecyclerViewInterface listener;
     private String currentCountry;
 
+    /**
+     * Instantiates a new Address on card recycler view adapter.
+     *
+     * @param currentCountry the current country
+     * @param datasource     the datasource
+     * @param fields         the fields
+     * @param listener       the listener
+     */
     public AddressOnCardRecyclerViewAdapter(String currentCountry, ArrayList<BillingAddressField> datasource, ArrayList<AddressField> fields, AddressonCardRecyclerViewInterface listener) {
         this.datasource = datasource;
         this.fields = fields;
@@ -135,9 +152,20 @@ public class AddressOnCardRecyclerViewAdapter extends RecyclerView.Adapter {
     }
 
     private class CardAddressDropdownViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        /**
+         * The Tv title.
+         */
         TextView tvTitle;
+        /**
+         * The Tv value.
+         */
         TextView tvValue;
 
+        /**
+         * Instantiates a new Card address dropdown view holder.
+         *
+         * @param itemView the item view
+         */
         public CardAddressDropdownViewHolder(View itemView)
         {
             super(itemView);
@@ -158,9 +186,20 @@ public class AddressOnCardRecyclerViewAdapter extends RecyclerView.Adapter {
 
     private class CardAddressTextInputViewHolder extends RecyclerView.ViewHolder implements TextWatcher {
 
+        /**
+         * The Et text input.
+         */
         EditText etTextInput;
+        /**
+         * The Til text input.
+         */
         TextInputLayout tilTextInput;
 
+        /**
+         * Instantiates a new Card address text input view holder.
+         *
+         * @param itemView the item view
+         */
         public CardAddressTextInputViewHolder(View itemView) {
             super(itemView);
 
@@ -188,9 +227,20 @@ public class AddressOnCardRecyclerViewAdapter extends RecyclerView.Adapter {
 
     private class CardAddressNumberInputViewHolder extends RecyclerView.ViewHolder implements TextWatcher {
 
+        /**
+         * The Et number input.
+         */
         EditText etNumberInput;
+        /**
+         * The Til number input.
+         */
         TextInputLayout tilNumberInput;
 
+        /**
+         * Instantiates a new Card address number input view holder.
+         *
+         * @param itemView the item view
+         */
         public CardAddressNumberInputViewHolder(View itemView) {
             super(itemView);
 

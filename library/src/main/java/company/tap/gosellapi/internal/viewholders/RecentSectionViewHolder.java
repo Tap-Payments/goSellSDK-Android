@@ -12,10 +12,18 @@ import company.tap.gosellapi.internal.adapters.RecentPaymentsRecyclerViewAdapter
 import company.tap.gosellapi.internal.api.models.SavedCard;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.RecentSectionViewModel;
 
+/**
+ * The type Recent section view holder.
+ */
 public class RecentSectionViewHolder
         extends PaymentOptionsBaseViewHolder<ArrayList<SavedCard>, RecentSectionViewHolder, RecentSectionViewModel>
         implements RecentPaymentsRecyclerViewAdapter.RecentPaymentsRecyclerViewAdapterListener {
 
+    /**
+     * Instantiates a new Recent section view holder.
+     *
+     * @param itemView the item view
+     */
     RecentSectionViewHolder(View itemView) {
         super(itemView);
     }

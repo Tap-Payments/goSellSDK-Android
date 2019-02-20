@@ -29,6 +29,9 @@ import company.tap.gosellapi.open.constants.SettingsKeys;
 import company.tap.gosellapi.open.controllers.SettingsManager;
 import gotap.com.tapglkitandroid.gl.Views.TapLoadingView;
 
+/**
+ * The type Pay button view.
+ */
 public final class PayButtonView extends FrameLayout  {
 
     private static final int VALUE_IS_MISSING = -11111;
@@ -73,12 +76,23 @@ public final class PayButtonView extends FrameLayout  {
 
     private SettingsManager settingsManager;
 
+    /**
+     * instantiate PayButtonView
+     *
+     * @param context the context
+     */
     public PayButtonView(Context context) {
         super(context);
         this.context = context;
         init(context, null);
     }
 
+    /**
+     * instantiate PayButtonView
+     *
+     * @param context the context
+     * @param attrs   the attrs
+     */
     public PayButtonView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
@@ -86,6 +100,10 @@ public final class PayButtonView extends FrameLayout  {
         init(context, attrs);
     }
 
+    /**
+     * set PayButtonView status [enabled - disabled]
+     * @param enabled
+     */
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
@@ -93,8 +111,11 @@ public final class PayButtonView extends FrameLayout  {
     }
 
 
-
-
+    /**
+     * initialize PayButtonView and load loading view
+     * @param context
+     * @param attrs
+     */
     private void init(Context context, AttributeSet attrs) {
         settingsManager = SettingsManager.getInstance();
         settingsManager.setPref(context);
@@ -117,6 +138,11 @@ public final class PayButtonView extends FrameLayout  {
         addView(securityIconView, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.END | Gravity.CENTER_VERTICAL));
     }
 
+    /**
+     * initialize PayButtonView from xml
+     * @param context
+     * @param attrs
+     */
     private void initAttributes(Context context, AttributeSet attrs) {
         mHeight = context.getResources().getDimensionPixelSize(R.dimen.pay_btn_min_height);
 
@@ -256,7 +282,9 @@ public final class PayButtonView extends FrameLayout  {
     }
 
 
-
+    /**
+     * set PayButtonView attributes
+     */
     private void setAttributes() {
         payButton.setPadding(mPaddingLeft, mPaddingTop, mPaddingRight, mPaddingBottom);
 
@@ -289,15 +317,29 @@ public final class PayButtonView extends FrameLayout  {
         }
     }
 
+    /**
+     * set pay button background from xml file
+     */
     private void setInitialBackground(){
         mBackground = ContextCompat.getDrawable(context, R.drawable.btn_pay_selector);
     }
 
+    /**
+     * set pay button background from xml file
+     *
+     * @param selectorId the selector id
+     */
     public void setBackgroundSelector(int selectorId){
         mBackground = ContextCompat.getDrawable(context, selectorId);
         payButton.setBackgroundDrawable(mBackground);
     }
 
+    /**
+     * set pay button background using color code
+     *
+     * @param enabledBackgroundColor  the enabled background color
+     * @param disabledBackgroundColor the disabled background color
+     */
     public void setupBackgroundWithColorList(int enabledBackgroundColor,int disabledBackgroundColor) {
         ColorStateList myColorStateList = new ColorStateList(
                 new int[][]{
@@ -316,6 +358,11 @@ public final class PayButtonView extends FrameLayout  {
 
     }
 
+    /**
+     * set pay button text type face
+     *
+     * @param typeface the typeface
+     */
     public void setupFontTypeFace(Typeface typeface) {
         if(typeface!=null){
             payButton.setTypeface(typeface, mTextStyle);
@@ -324,6 +371,12 @@ public final class PayButtonView extends FrameLayout  {
         }
     }
 
+    /**
+     * Setup text color.
+     *
+     * @param enabledTextColor  the enabled text color
+     * @param disabledTextColor the disabled text color
+     */
     public void setupTextColor(int enabledTextColor,int disabledTextColor){
         if (payButton.isEnabled())
             payButton.setTextColor(enabledTextColor);
@@ -336,7 +389,9 @@ public final class PayButtonView extends FrameLayout  {
     }
 
 
-
+    /**
+     * handle pay button on attached to window
+     */
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
@@ -380,18 +435,38 @@ public final class PayButtonView extends FrameLayout  {
         }
     }
 
+    /**
+     * Gets layout id.
+     *
+     * @return the layout id
+     */
     public int getLayoutId() {
         return layoutId;
     }
 
+    /**
+     * get loading view
+     *
+     * @return loading view
+     */
     public TapLoadingView getLoadingView() {
         return loadingView;
     }
 
+    /**
+     * get pay button
+     *
+     * @return pay button
+     */
     public AppCompatTextView getPayButton() {
         return payButton;
     }
 
+    /**
+     * get security icon
+     *
+     * @return security icon view
+     */
     public ImageView getSecurityIconView() {
         return securityIconView;
     }

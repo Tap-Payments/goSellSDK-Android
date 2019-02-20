@@ -7,6 +7,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.math.BigDecimal;
 
+/**
+ * The type Shipping.
+ */
 public final class Shipping {
 
     @SerializedName("name")
@@ -21,6 +24,13 @@ public final class Shipping {
     @Expose
     private BigDecimal amount;
 
+    /**
+     * Instantiates a new Shipping.
+     *
+     * @param name        the name
+     * @param description the description
+     * @param amount      the amount
+     */
     public Shipping(String name, @Nullable String description, BigDecimal amount) {
 
         this.name           = name;
@@ -28,6 +38,11 @@ public final class Shipping {
         this.amount         = amount;
     }
 
+    /**
+     * Gets amount.
+     *
+     * @return the amount
+     */
     public BigDecimal getAmount() {
 
         return amount;

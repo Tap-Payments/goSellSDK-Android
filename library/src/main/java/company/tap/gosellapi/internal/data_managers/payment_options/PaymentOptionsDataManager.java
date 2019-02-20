@@ -29,6 +29,9 @@ import company.tap.gosellapi.internal.utils.Utils;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import io.card.payment.CreditCard;
 
+/**
+ * The type Payment options data manager.
+ */
 public class PaymentOptionsDataManager {
 
   private int availableHeight;
@@ -36,11 +39,22 @@ public class PaymentOptionsDataManager {
   private int cardSwitchHeight;
   private AmountedCurrency selectedCurrency;
 
-  public PaymentOptionsResponse getPaymentOptionsResponse() {
+    /**
+     * Gets payment options response.
+     *
+     * @return the payment options response
+     */
+    public PaymentOptionsResponse getPaymentOptionsResponse() {
     return paymentOptionsResponse;
   }
 
-  public PaymentOption findPaymentOption(String paymentOptionIdentifier) {
+    /**
+     * Find payment option payment option.
+     *
+     * @param paymentOptionIdentifier the payment option identifier
+     * @return the payment option
+     */
+    public PaymentOption findPaymentOption(String paymentOptionIdentifier) {
     for(PaymentOption paymentOption: paymentOptionsResponse.getPaymentOptions()){
       if((paymentOptionIdentifier).equals(paymentOption.getId())){
         return paymentOption;
@@ -49,40 +63,113 @@ public class PaymentOptionsDataManager {
     return null;
   }
 
-  public void filterViewModelsWithAmountedCurrency(AmountedCurrency amountedCurrency) {
+    /**
+     * Filter view models with amounted currency.
+     *
+     * @param amountedCurrency the amounted currency
+     */
+    public void filterViewModelsWithAmountedCurrency(AmountedCurrency amountedCurrency) {
     //getModelsHandler().generateViewModels();
     getModelsHandler().filterViewModels(amountedCurrency.getCurrency());
   }
 
-  //outer interface (for fragment, containing recyclerView)
+    /**
+     * The interface Payment options data listener.
+     */
+//outer interface (for fragment, containing recyclerView)
   public interface PaymentOptionsDataListener {
 
-    void startCurrencySelection(ArrayList<AmountedCurrency> currencies,
+        /**
+         * Start currency selection.
+         *
+         * @param currencies       the currencies
+         * @param selectedCurrency the selected currency
+         */
+        void startCurrencySelection(ArrayList<AmountedCurrency> currencies,
                                 AmountedCurrency selectedCurrency);
 
-    void updatePayButtonWithSavedCardExtraFees(SavedCard recentItem,RecentSectionViewModel recentSectionViewModel);
+        /**
+         * Update pay button with saved card extra fees.
+         *
+         * @param recentItem             the recent item
+         * @param recentSectionViewModel the recent section view model
+         */
+        void updatePayButtonWithSavedCardExtraFees(SavedCard recentItem,RecentSectionViewModel recentSectionViewModel);
 
-    void startWebPayment(WebPaymentViewModel model);
+        /**
+         * Start web payment.
+         *
+         * @param model the model
+         */
+        void startWebPayment(WebPaymentViewModel model);
 
-    void startScanCard();
+        /**
+         * Start scan card.
+         */
+        void startScanCard();
 
-    void cardDetailsFilled(boolean isFilled, CardCredentialsViewModel cardCredentialsViewModel);
+        /**
+         * Card details filled.
+         *
+         * @param isFilled                 the is filled
+         * @param cardCredentialsViewModel the card credentials view model
+         */
+        void cardDetailsFilled(boolean isFilled, CardCredentialsViewModel cardCredentialsViewModel);
 
-    void saveCardSwitchClicked(boolean isChecked, int saveCardBlockPosition);
+        /**
+         * Save card switch clicked.
+         *
+         * @param isChecked             the is checked
+         * @param saveCardBlockPosition the save card block position
+         */
+        void saveCardSwitchClicked(boolean isChecked, int saveCardBlockPosition);
 
-    void addressOnCardClicked();
+        /**
+         * Address on card clicked.
+         */
+        void addressOnCardClicked();
 
-    void cardExpirationDateClicked(CardCredentialsViewModel model);
+        /**
+         * Card expiration date clicked.
+         *
+         * @param model the model
+         */
+        void cardExpirationDateClicked(CardCredentialsViewModel model);
 
-    void binNumberEntered(String binNumber);
+        /**
+         * Bin number entered.
+         *
+         * @param binNumber the bin number
+         */
+        void binNumberEntered(String binNumber);
 
-    void fireWebPaymentExtraFeesUserDecision(ExtraFeesStatus userChoice);
+        /**
+         * Fire web payment extra fees user decision.
+         *
+         * @param userChoice the user choice
+         */
+        void fireWebPaymentExtraFeesUserDecision(ExtraFeesStatus userChoice);
 
-    void fireCardPaymentExtraFeesUserDecision(ExtraFeesStatus userChoice);
+        /**
+         * Fire card payment extra fees user decision.
+         *
+         * @param userChoice the user choice
+         */
+        void fireCardPaymentExtraFeesUserDecision(ExtraFeesStatus userChoice);
 
-    void fireSavedCardPaymentExtraFeesUserDecision(ExtraFeesStatus userChoice);
+        /**
+         * Fire saved card payment extra fees user decision.
+         *
+         * @param userChoice the user choice
+         */
+        void fireSavedCardPaymentExtraFeesUserDecision(ExtraFeesStatus userChoice);
 
-    void updatePayButtonWithExtraFees(PaymentOption paymentOption);
+        /**
+         * Update pay button with extra fees.
+         *
+         * @param paymentOption the payment option
+         */
+        void updatePayButtonWithExtraFees(PaymentOption paymentOption);
 
   }
 
@@ -96,7 +183,12 @@ public class PaymentOptionsDataManager {
   private String lastFilteredCurrency;
 
 
-  public ViewModelsHandler getModelsHandler() {
+    /**
+     * Gets models handler.
+     *
+     * @return the models handler
+     */
+    public ViewModelsHandler getModelsHandler() {
     return modelsHandler;
   }
 
@@ -112,7 +204,12 @@ public class PaymentOptionsDataManager {
 
   private int focusedPosition = Constants.NO_FOCUS;
 
-  public PaymentOptionsDataManager(PaymentOptionsResponse paymentOptionsResponse) {
+    /**
+     * Instantiates a new Payment options data manager.
+     *
+     * @param paymentOptionsResponse the payment options response
+     */
+    public PaymentOptionsDataManager(PaymentOptionsResponse paymentOptionsResponse) {
 
     this.paymentOptionsResponse = paymentOptionsResponse;
     this.modelsHandler = new ViewModelsHandler();
@@ -120,12 +217,22 @@ public class PaymentOptionsDataManager {
     getModelsHandler().filterViewModels(getPaymentOptionsResponse().getCurrency());
   }
 
-  //region data for adapter
+    /**
+     * Gets size.
+     *
+     * @return the size
+     */
+//region data for adapter
   public int getSize() {
     return getVisibleViewModels().size();
   }
 
-  public AmountedCurrency getSelectedCurrency() {
+    /**
+     * Gets selected currency.
+     *
+     * @return the selected currency
+     */
+    public AmountedCurrency getSelectedCurrency() {
 
     if (this.selectedCurrency == null) {
       this.selectedCurrency = getTransactionCurrency();
@@ -145,7 +252,12 @@ public class PaymentOptionsDataManager {
     return null;
   }
 
-  public void setSelectedCurrency(AmountedCurrency selectedCurrency) {
+    /**
+     * Sets selected currency.
+     *
+     * @param selectedCurrency the selected currency
+     */
+    public void setSelectedCurrency(AmountedCurrency selectedCurrency) {
 
     this.selectedCurrency = selectedCurrency;
 
@@ -155,24 +267,47 @@ public class PaymentOptionsDataManager {
     currencyViewModel.setData(currencyViewModelData);
   }
 
-  public int getItemViewType(int position) {
+    /**
+     * Gets item view type.
+     *
+     * @param position the position
+     * @return the item view type
+     */
+    public int getItemViewType(int position) {
 
     return getViewModel(position).getType().getViewType();
   }
 
-  public PaymentOptionViewModel getViewModel(int position) {
+    /**
+     * Gets view model.
+     *
+     * @param position the position
+     * @return the view model
+     */
+    public PaymentOptionViewModel getViewModel(int position) {
 
     return getVisibleViewModels().get(position);
   }
 
-  public PaymentOptionsDataManager setListener(PaymentOptionsDataListener listener) {
+    /**
+     * Sets listener.
+     *
+     * @param listener the listener
+     * @return the listener
+     */
+    public PaymentOptionsDataManager setListener(PaymentOptionsDataListener listener) {
 
     this.listener = listener;
     return this;
   }
   //endregion
 
-  //region callback actions from child viewModels
+    /**
+     * Currency holder clicked.
+     *
+     * @param position the position
+     */
+//region callback actions from child viewModels
   public void currencyHolderClicked(int position) {
     ArrayList<AmountedCurrency> currencies = getPaymentOptionsResponse().getSupportedCurrencies();
 
@@ -181,44 +316,83 @@ public class PaymentOptionsDataManager {
     listener.startCurrencySelection(currencies, currencyViewModelData.getSelectedCurrency());
   }
 
-  public void recentPaymentItemClicked(int position, SavedCard recentItem,RecentSectionViewModel recentSectionViewModel) {
+    /**
+     * Recent payment item clicked.
+     *
+     * @param position               the position
+     * @param recentItem             the recent item
+     * @param recentSectionViewModel the recent section view model
+     */
+    public void recentPaymentItemClicked(int position, SavedCard recentItem,RecentSectionViewModel recentSectionViewModel) {
     setRecentPaymentFocusedCard(position);
     CardCredentialsViewModel model = getModelsHandler().findCardPaymentModel();
     listener.updatePayButtonWithSavedCardExtraFees(recentItem,recentSectionViewModel);
   }
 
-  public void webPaymentSystemViewHolderClicked(WebPaymentViewModel sender, int position) {
+    /**
+     * Web payment system view holder clicked.
+     *
+     * @param sender   the sender
+     * @param position the position
+     */
+    public void webPaymentSystemViewHolderClicked(WebPaymentViewModel sender, int position) {
     setFocused(position);
     listener.startWebPayment(sender);
   }
 
-  public void cardScannerButtonClicked() {
+    /**
+     * Card scanner button clicked.
+     */
+    public void cardScannerButtonClicked() {
     listener.startScanCard();
   }
 
-  public void saveCardSwitchCheckedChanged(boolean isChecked, int saveCardBlockPosition) {
+    /**
+     * Save card switch checked changed.
+     *
+     * @param isChecked             the is checked
+     * @param saveCardBlockPosition the save card block position
+     */
+    public void saveCardSwitchCheckedChanged(boolean isChecked, int saveCardBlockPosition) {
     if (isChecked) {
       listener.saveCardSwitchClicked(isChecked, saveCardBlockPosition);
     }
   }
 
-  public void cardDetailsFilled(boolean isFilled,
+    /**
+     * Card details filled.
+     *
+     * @param isFilled                 the is filled
+     * @param cardCredentialsViewModel the card credentials view model
+     */
+    public void cardDetailsFilled(boolean isFilled,
                                 CardCredentialsViewModel cardCredentialsViewModel) {
 
     listener.cardDetailsFilled(isFilled, cardCredentialsViewModel);
   }
 
-  public void addressOnCardClicked() {
+    /**
+     * Address on card clicked.
+     */
+    public void addressOnCardClicked() {
     listener.addressOnCardClicked();
   }
 
-  public void binNumberEntered(String binNumber) {
+    /**
+     * Bin number entered.
+     *
+     * @param binNumber the bin number
+     */
+    public void binNumberEntered(String binNumber) {
 
     listener.binNumberEntered(binNumber);
 
   }
 
-  public void cardExpirationDateClicked() {
+    /**
+     * Card expiration date clicked.
+     */
+    public void cardExpirationDateClicked() {
 
     CardCredentialsViewModel model = getModelsHandler().findCardPaymentModel();
     if (model != null) {
@@ -231,19 +405,34 @@ public class PaymentOptionsDataManager {
 
   //region update actions (from activity mainly)
 
-  public void setAvailableHeight(int availableHeight) {
+    /**
+     * Sets available height.
+     *
+     * @param availableHeight the available height
+     */
+    public void setAvailableHeight(int availableHeight) {
 
     this.availableHeight = availableHeight;
     applyEmptyHolderHeight();
   }
 
-  public void setCardSwitchHeight(int cardSwitchHeight) {
+    /**
+     * Sets card switch height.
+     *
+     * @param cardSwitchHeight the card switch height
+     */
+    public void setCardSwitchHeight(int cardSwitchHeight) {
 
     this.cardSwitchHeight = cardSwitchHeight;
     applyEmptyHolderHeight();
   }
 
-  public void setSaveCardHeight(int neededHeight) {
+    /**
+     * Sets save card height.
+     *
+     * @param neededHeight the needed height
+     */
+    public void setSaveCardHeight(int neededHeight) {
 
     saveCardHeight = neededHeight;
     applyEmptyHolderHeight();
@@ -264,14 +453,22 @@ public class PaymentOptionsDataManager {
 //            }
   }
 
-  public void currencySelectedByUser(AmountedCurrency selectedCurrency) {
+    /**
+     * Currency selected by user.
+     *
+     * @param selectedCurrency the selected currency
+     */
+    public void currencySelectedByUser(AmountedCurrency selectedCurrency) {
 
     this.selectedCurrency = selectedCurrency;
     filterViewModelsWithAmountedCurrency(selectedCurrency);
   }
 
 
-  public void updateCurrencySection(){
+    /**
+     * Update currency section.
+     */
+    public void updateCurrencySection(){
     //update currency section
     CurrencyViewModel currencyViewModel = getModelsHandler().findCurrencyModel();
     if (currencyViewModel == null) return;
@@ -281,7 +478,13 @@ public class PaymentOptionsDataManager {
     currencyViewModel.updateData();
   }
 
-  public void cardExpirationDateSelected(String month, String year) {
+    /**
+     * Card expiration date selected.
+     *
+     * @param month the month
+     * @param year  the year
+     */
+    public void cardExpirationDateSelected(String month, String year) {
 
     CardCredentialsViewModel cardCredentialsViewModel = getModelsHandler().findCardPaymentModel();
     if (cardCredentialsViewModel == null) return;
@@ -292,7 +495,12 @@ public class PaymentOptionsDataManager {
     cardCredentialsViewModel.updateData();
   }
 
-  public void cardScanned(CreditCard card) {
+    /**
+     * Card scanned.
+     *
+     * @param card the card
+     */
+    public void cardScanned(CreditCard card) {
 
     CardCredentialsViewModel cardCredentialsViewModel = getModelsHandler().findCardPaymentModel();
     if (cardCredentialsViewModel == null) return;
@@ -329,11 +537,21 @@ public class PaymentOptionsDataManager {
   }
 
 
-  public void updatePayButtonWithExtraFees(PaymentOption paymentOption) {
+    /**
+     * Update pay button with extra fees.
+     *
+     * @param paymentOption the payment option
+     */
+    public void updatePayButtonWithExtraFees(PaymentOption paymentOption) {
          listener.updatePayButtonWithExtraFees(paymentOption);
   }
 
-  public void showAddressOnCardCell(boolean isShow) {
+    /**
+     * Show address on card cell.
+     *
+     * @param isShow the is show
+     */
+    public void showAddressOnCardCell(boolean isShow) {
 
     CardCredentialsViewModel cardCredentialsViewModel = getModelsHandler().findCardPaymentModel();
     if (cardCredentialsViewModel == null) return;
@@ -342,7 +560,12 @@ public class PaymentOptionsDataManager {
     //cardCredentialsViewModel.updateData();
   }
 
-  public void setCurrentBINData(
+    /**
+     * Set current bin data.
+     *
+     * @param currentBINData the current bin data
+     */
+    public void setCurrentBINData(
     BINLookupResponse currentBINData){
     CardCredentialsViewModel cardCredentialsViewModel = getModelsHandler().findCardPaymentModel();
     if (cardCredentialsViewModel == null) return;
@@ -363,23 +586,40 @@ public class PaymentOptionsDataManager {
     viewModels.get(focusedPosition).setViewFocused(true);
   }
 
-  public void setRecentPaymentFocusedCard(int position) {
+    /**
+     * Sets recent payment focused card.
+     *
+     * @param position the position
+     */
+    public void setRecentPaymentFocusedCard(int position) {
     focusedPosition = position;
   }
 
-  public void clearFocus() {
+    /**
+     * Clear focus.
+     */
+    public void clearFocus() {
     if (focusedPosition != Constants.NO_FOCUS) {
       viewModels.get(focusedPosition).setViewFocused(false);
     }
     focusedPosition = Constants.NO_FOCUS;
   }
 
-  public boolean isPositionInFocus(int position) {
+    /**
+     * Is position in focus boolean.
+     *
+     * @param position the position
+     * @return the boolean
+     */
+    public boolean isPositionInFocus(int position) {
     return position == focusedPosition;
   }
   //endregion
 
-  //save/restore state
+    /**
+     * Save state.
+     */
+//save/restore state
   public void saveState() {
 
     for (PaymentOptionViewModel viewModel : viewModels) {
@@ -464,7 +704,12 @@ public class PaymentOptionsDataManager {
       viewModels = viewModelsResult;
     }
 
-    public void filterViewModels(String currency) {
+      /**
+       * Filter view models.
+       *
+       * @param currency the currency
+       */
+      public void filterViewModels(String currency) {
       ArrayList<PaymentOption> paymentOptionsWorker= new ArrayList<>(getPaymentOptionsResponse().getPaymentOptions());
       ArrayList<SavedCard> savedCardsWorker = new ArrayList<>(getPaymentOptionsResponse().getCards());
       ArrayList<PaymentOptionViewModel> viewModelResult = new ArrayList<>();

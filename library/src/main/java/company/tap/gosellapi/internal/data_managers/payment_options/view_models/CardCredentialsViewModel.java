@@ -39,6 +39,9 @@ import company.tap.tapcardvalidator_android.CardValidationState;
 import company.tap.tapcardvalidator_android.CardValidator;
 import company.tap.tapcardvalidator_android.DefinedCardBrand;
 
+/**
+ * The type Card credentials view model.
+ */
 public class CardCredentialsViewModel
         extends PaymentOptionViewModel<CardCredentialsViewModelData, CardCredentialsViewHolder, CardCredentialsViewModel>
         implements CardCredentialsViewHolder.Data, CardNumberTextHandler.DataProvider, CardNumberTextHandler.DataListener {
@@ -113,6 +116,11 @@ public class CardCredentialsViewModel
     @Nullable private BINLookupResponse currentBINData;
     @Nullable private BINLookupResponse getCurrentBINData() { return currentBINData; }
 
+    /**
+     * Set current bin data.
+     *
+     * @param _currentBINData the current bin data
+     */
     public void setCurrentBINData(
         company.tap.gosellapi.internal.api.responses.BINLookupResponse _currentBINData){
         currentBINData = _currentBINData;
@@ -126,6 +134,12 @@ public class CardCredentialsViewModel
     @NonNull private ArrayList<CardBrand> preferredCardBrands;
     @NonNull private ArrayList<CardBrand> getPreferredCardBrands() { return preferredCardBrands; }
 
+    /**
+     * Instantiates a new Card credentials view model.
+     *
+     * @param parentDataManager the parent data manager
+     * @param data              the data
+     */
     public CardCredentialsViewModel(PaymentOptionsDataManager parentDataManager, CardCredentialsViewModelData data) {
 
         super(parentDataManager, data, PaymentOptionsBaseViewHolder.ViewHolderType.CARD);
@@ -148,61 +162,131 @@ public class CardCredentialsViewModel
         this.shouldSaveCard = false;
     }
 
+    /**
+     * Card scanner button clicked.
+     */
     public void cardScannerButtonClicked() {
         parentDataManager.cardScannerButtonClicked();
     }
 
 
+    /**
+     * Card details filled.
+     *
+     * @param isFilled                 the is filled
+     * @param cardCredentialsViewModel the card credentials view model
+     */
     public void cardDetailsFilled(boolean isFilled, CardCredentialsViewModel cardCredentialsViewModel) {
         parentDataManager.cardDetailsFilled(isFilled, cardCredentialsViewModel);
     }
 
+    /**
+     * Address on card clicked.
+     */
     public void addressOnCardClicked() {
         parentDataManager.addressOnCardClicked();
     }
 
+    /**
+     * Save card switch clicked.
+     *
+     * @param state the state
+     */
     public void saveCardSwitchClicked(boolean state) {
 
         this.shouldSaveCard = state;
         parentDataManager.saveCardSwitchCheckedChanged(state, position + 1);
     }
 
+    /**
+     * Card expiration date clicked.
+     */
     public void cardExpirationDateClicked() {
         parentDataManager.cardExpirationDateClicked();
     }
 
+    /**
+     * Sets card switch height.
+     *
+     * @param cardSwitchHeight the card switch height
+     */
     public void setCardSwitchHeight(int cardSwitchHeight) {
         parentDataManager.setCardSwitchHeight(cardSwitchHeight);
     }
 
+    /**
+     * Bin number entered.
+     *
+     * @param binNumber the bin number
+     */
     public void binNumberEntered(String binNumber) { parentDataManager.binNumberEntered(binNumber);}
 
+    /**
+     * Gets card number.
+     *
+     * @return the card number
+     */
     public String getCardNumber() {
         return cardNumber;
     }
 
+    /**
+     * Gets expiration month.
+     *
+     * @return the expiration month
+     */
     public String getExpirationMonth() {
         return expirationMonth;
     }
 
+    /**
+     * Gets expiration year.
+     *
+     * @return the expiration year
+     */
     public String getExpirationYear() {
         return expirationYear;
     }
 
+    /**
+     * Should save card boolean.
+     *
+     * @return the boolean
+     */
     public boolean shouldSaveCard() { return shouldSaveCard; }
 
+    /**
+     * Is show address on card cell boolean.
+     *
+     * @return the boolean
+     */
     public boolean isShowAddressOnCardCell() {
         return isShowAddressOnCardCell;
     }
 
+    /**
+     * Gets cv vnumber.
+     *
+     * @return the cv vnumber
+     */
     public String getCVVnumber() {
         return CVVnumber;
     }
 
+    /**
+     * Gets name on card.
+     *
+     * @return the name on card
+     */
     public String getNameOnCard() {
         return nameOnCard;
     }
 
+    /**
+     * Gets card.
+     *
+     * @return the card
+     */
     @Nullable public CreateTokenCard getCard() {
 
         String number           = getCardNumber();
@@ -227,26 +311,56 @@ public class CardCredentialsViewModel
             null);
     }
 
+    /**
+     * Show address on card cell.
+     *
+     * @param isShow the is show
+     */
     public void showAddressOnCardCell(boolean isShow) {
         this.isShowAddressOnCardCell = isShow;
     }
 
+    /**
+     * Sets card number.
+     *
+     * @param cardNumber the card number
+     */
     public void setCardNumber(String cardNumber) {
         this.cardNumber = cardNumber;
     }
 
+    /**
+     * Sets expiration month.
+     *
+     * @param expirationMonth the expiration month
+     */
     public void setExpirationMonth(String expirationMonth) {
         this.expirationMonth = expirationMonth;
     }
 
+    /**
+     * Sets expiration year.
+     *
+     * @param expirationYear the expiration year
+     */
     public void setExpirationYear(String expirationYear) {
         this.expirationYear = expirationYear;
     }
 
+    /**
+     * Sets cv vnumber.
+     *
+     * @param CVVnumber the cv vnumber
+     */
     public void setCVVnumber(String CVVnumber) {
         this.CVVnumber = CVVnumber;
     }
 
+    /**
+     * Sets name on card.
+     *
+     * @param nameOnCard the name on card
+     */
     public void setNameOnCard(String nameOnCard) {
         this.nameOnCard = nameOnCard;
     }
@@ -293,16 +407,32 @@ public class CardCredentialsViewModel
     }
 
 
+    /**
+     * View holder reference.
+     *
+     * @param cardCredentialsViewHolder the card credentials view holder
+     */
     public void ViewHolderReference(CardCredentialsViewHolder cardCredentialsViewHolder) {
       this.cardCredentialsViewHolder = cardCredentialsViewHolder;
   }
 
 
-  public CardCredentialsViewHolder getCardCredentialsViewHolder(){
+    /**
+     * Get card credentials view holder card credentials view holder.
+     *
+     * @return the card credentials view holder
+     */
+    public CardCredentialsViewHolder getCardCredentialsViewHolder(){
       return cardCredentialsViewHolder;
   }
 
-  public void setPaymentOption(CardBrand cardBrand,CardScheme cardScheme) {
+    /**
+     * Sets payment option.
+     *
+     * @param cardBrand  the card brand
+     * @param cardScheme the card scheme
+     */
+    public void setPaymentOption(CardBrand cardBrand,CardScheme cardScheme) {
       if(cardScheme!=null){
           for(PaymentOption paymentOption:  data.getPaymentOptions()){
               if(paymentOption.getName().equalsIgnoreCase(cardScheme.name())){
@@ -332,10 +462,20 @@ public class CardCredentialsViewModel
       parentDataManager.updatePayButtonWithExtraFees(paymentOption);
   }
 
-  public PaymentOption getSelectedCardPaymentOption(){
+    /**
+     * Get selected card payment option payment option.
+     *
+     * @return the payment option
+     */
+    public PaymentOption getSelectedCardPaymentOption(){
       return selectedCardPaymentOption;
   }
 
+    /**
+     * Sets card number color.
+     *
+     * @param color the color
+     */
     public void setCardNumberColor(int color) {
         cardCredentialsViewHolder.setCardNumberColor(color);
     }
@@ -343,6 +483,9 @@ public class CardCredentialsViewModel
 
     //endregion
 
+    /**
+     * The type Brand with scheme.
+     */
     public class BrandWithScheme {
 
         @Nullable   private CardScheme          scheme;
@@ -356,8 +499,18 @@ public class CardCredentialsViewModel
             this.validationState    = validationState;
         }
 
+        /**
+         * Gets brand.
+         *
+         * @return the brand
+         */
         @NonNull public CardBrand getBrand() { return brand; }
 
+        /**
+         * Get scheme card scheme.
+         *
+         * @return the card scheme
+         */
         @NonNull public CardScheme getScheme(){return scheme;}
     }
 }

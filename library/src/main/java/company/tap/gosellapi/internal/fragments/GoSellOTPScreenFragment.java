@@ -24,6 +24,9 @@ import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.utils.Utils;
 import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 
+/**
+ * The type Go sell otp screen fragment.
+ */
 public class GoSellOTPScreenFragment extends Fragment {
     private static final int TICK_LENGTH = 1000;
     private static final String TIMER_STRING_FORMAT = "%02d:%02d";
@@ -32,9 +35,15 @@ public class GoSellOTPScreenFragment extends Fragment {
     private CountDownTimer timer;
     private int resendConfirmationCodeTimeout;
 
+    /**
+     * The Timer text view.
+     */
     TextView timerTextView;
     private ArrayList<TextView> textViewsArray = new ArrayList<>();
 
+    /**
+     * Instantiates a new Go sell otp screen fragment.
+     */
     public GoSellOTPScreenFragment() {
         // Required empty public constructor
     }

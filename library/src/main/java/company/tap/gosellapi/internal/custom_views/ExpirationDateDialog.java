@@ -31,6 +31,9 @@ import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.utils.DateValidator;
 import company.tap.gosellapi.internal.utils.ExpirationDateDialogTheme;
 
+/**
+ * The type Expiration date dialog.
+ */
 public class ExpirationDateDialog extends Dialog implements DialogInterface.OnShowListener {
 
     private static final List<String> MONTHS = Arrays.asList("01", "02", "03", "04", "05", "06",
@@ -48,18 +51,43 @@ public class ExpirationDateDialog extends Dialog implements DialogInterface.OnSh
     private int mSelectedMonth = -1;
     private int mSelectedYear = -1;
 
+    /**
+     * Instantiates a new Expiration date dialog.
+     *
+     * @param context the context
+     */
     protected ExpirationDateDialog(Context context) {
         super(context);
     }
 
+    /**
+     * Instantiates a new Expiration date dialog.
+     *
+     * @param context    the context
+     * @param themeResId the theme res id
+     */
     protected ExpirationDateDialog(Context context, int themeResId) {
         super(context, themeResId);
     }
 
+    /**
+     * Instantiates a new Expiration date dialog.
+     *
+     * @param context        the context
+     * @param cancelable     the cancelable
+     * @param cancelListener the cancel listener
+     */
     protected ExpirationDateDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
         super(context, cancelable, cancelListener);
     }
 
+    /**
+     * Create expiration date dialog.
+     *
+     * @param activity the activity
+     * @param editText the edit text
+     * @return the expiration date dialog
+     */
     public static ExpirationDateDialog create(Activity activity, ExpirationDateEditText editText) {
         ExpirationDateDialogTheme theme = ExpirationDateDialogTheme.detectTheme(activity);
         ExpirationDateDialog dialog;

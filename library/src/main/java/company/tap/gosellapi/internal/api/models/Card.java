@@ -8,7 +8,6 @@ import com.google.gson.annotations.SerializedName;
  * <br>
  * Model for Customer object
  */
-
 public final class Card {
     @SerializedName("id")
     @Expose
@@ -42,34 +41,74 @@ public final class Card {
     @Expose
     private String bin;
 
+    /**
+     * Gets id.
+     *
+     * @return the id
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * Gets object.
+     *
+     * @return the object
+     */
     public String getObject() {
         return object;
     }
 
+    /**
+     * Gets last 4.
+     *
+     * @return the last 4
+     */
     public String getLast4() {
         return last4;
     }
 
+    /**
+     * Gets exp month.
+     *
+     * @return the exp month
+     */
     public String getExp_month() {
         return exp_month;
     }
 
+    /**
+     * Gets exp year.
+     *
+     * @return the exp year
+     */
     public String getExp_year() {
         return exp_year;
     }
 
+    /**
+     * Gets brand.
+     *
+     * @return the brand
+     */
     public String getBrand() {
         return brand;
     }
 
+    /**
+     * Gets name.
+     *
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Gets bin.
+     *
+     * @return the bin
+     */
     public String getBin() {
         return bin;
     }

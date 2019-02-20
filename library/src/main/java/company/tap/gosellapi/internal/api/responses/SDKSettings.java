@@ -14,13 +14,15 @@ import company.tap.gosellapi.internal.api.enums.Permission;
  * <br>
  * Model for {@link SDKSettings} object
  */
-
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 public final class SDKSettings implements BaseResponse {
     @SerializedName("data")
     @Expose
     private Data data;
 
+    /**
+     * The type Data.
+     */
     public static final class Data {
         @SerializedName("live_mode")
         @Expose
@@ -44,27 +46,55 @@ public final class SDKSettings implements BaseResponse {
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////
 
+        /**
+         * Is livemode boolean.
+         *
+         * @return the boolean
+         */
         public boolean isLivemode() {
             return livemode;
         }
 
+        /**
+         * Gets permissions.
+         *
+         * @return the permissions
+         */
         public ArrayList<Permission> getPermissions() {
             return permissions;
         }
 
+        /**
+         * Gets encryption key.
+         *
+         * @return the encryption key
+         */
         public String getEncryptionKey() {
             return encryptionKey;
         }
 
+        /**
+         * Gets merchant.
+         *
+         * @return the merchant
+         */
         public Merchant getMerchant() {
             return merchant;
         }
 
+        /**
+         * Gets internal sdk settings.
+         *
+         * @return the internal sdk settings
+         */
         public InternalSDKSettings getInternalSDKSettings() {
             return internalSDKSettings;
         }
         //////////////////////////////////////////////////////////////////////////////////////////////////////
 
+        /**
+         * The type Merchant.
+         */
         public static final class Merchant {
 
             @SerializedName("name")
@@ -75,15 +105,28 @@ public final class SDKSettings implements BaseResponse {
             @Expose
             private String logo;
 
+            /**
+             * Gets name.
+             *
+             * @return the name
+             */
             public String getName() {
                 return name;
             }
 
+            /**
+             * Gets logo.
+             *
+             * @return the logo
+             */
             public String getLogo() {
                 return logo;
             }
         }
 
+        /**
+         * The type Internal sdk settings.
+         */
         public static final class InternalSDKSettings {
 
             @SerializedName("status_display_duration")
@@ -98,20 +141,40 @@ public final class SDKSettings implements BaseResponse {
             @Expose
             private int otpResendAttempts;
 
+            /**
+             * Gets status display duration.
+             *
+             * @return the status display duration
+             */
             public double getStatusDisplayDuration() {
                 return statusDisplayDuration;
             }
 
+            /**
+             * Gets otp resend interval.
+             *
+             * @return the otp resend interval
+             */
             public double getOtpResendInterval() {
                 return otpResendInterval;
             }
 
+            /**
+             * Gets otp resend attempts.
+             *
+             * @return the otp resend attempts
+             */
             public int getOtpResendAttempts() {
                 return otpResendAttempts;
             }
         }
     }
 
+    /**
+     * Gets data.
+     *
+     * @return the data
+     */
     public Data getData() {
         return data;
     }

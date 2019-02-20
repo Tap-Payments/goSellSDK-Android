@@ -19,12 +19,24 @@ import java.util.Locale;
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.adapters.CountriesRecyclerViewAdapter;
 
+/**
+ * The type Countries activity.
+ */
 public class CountriesActivity extends BaseActionBarActivity implements CountriesRecyclerViewAdapter.CountriesRecyclerViewAdapterCallback {
     private SearchView mSearchView;
 
+    /**
+     * The constant INTENT_EXTRA_KEY_COUNTRIES.
+     */
     public static final String INTENT_EXTRA_KEY_COUNTRIES = "Countries";
+    /**
+     * The constant INTENT_EXTRA_KEY_SELECTED_COUNTRY.
+     */
     public static final String INTENT_EXTRA_KEY_SELECTED_COUNTRY = "selectedCountry";
 
+    /**
+     * The constant COUNTRIES_ACTIVITY_USER_CHOICE_COUNTRY.
+     */
     public static final String COUNTRIES_ACTIVITY_USER_CHOICE_COUNTRY = "CountriesActivityUserChoiceCountry";
 
     private String selectedCountry;

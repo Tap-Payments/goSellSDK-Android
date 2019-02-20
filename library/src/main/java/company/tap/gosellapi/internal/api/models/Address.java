@@ -6,6 +6,9 @@ import com.google.gson.annotations.SerializedName;
 import company.tap.gosellapi.internal.api.enums.AddressFormat;
 import company.tap.gosellapi.internal.api.enums.AddressType;
 
+/**
+ * The type Address.
+ */
 public final class Address {
 
     @SerializedName("format")

@@ -23,9 +23,20 @@ import company.tap.gosellapi.internal.api.models.SavedCard;
 import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 import company.tap.gosellapi.open.enums.TransactionMode;
 
+/**
+ * The type Recent payments recycler view adapter.
+ */
 public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<RecentPaymentsRecyclerViewAdapter.RecentPaymentsViewHolder> {
 
+    /**
+     * The interface Recent payments recycler view adapter listener.
+     */
     public interface RecentPaymentsRecyclerViewAdapterListener {
+        /**
+         * Recent payment item clicked.
+         *
+         * @param position the position
+         */
         void recentPaymentItemClicked(int position);
     }
 
@@ -35,6 +46,12 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
     private RecentPaymentsRecyclerViewAdapterListener listener;
 
 
+    /**
+     * Instantiates a new Recent payments recycler view adapter.
+     *
+     * @param datasource the datasource
+     * @param listener   the listener
+     */
     public RecentPaymentsRecyclerViewAdapter(ArrayList<SavedCard> datasource, RecentPaymentsRecyclerViewAdapterListener listener) {
         this.datasource = datasource;
         this.listener = listener;
@@ -59,12 +76,20 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
         return datasource.size();
     }
 
+    /**
+     * Sets focused.
+     *
+     * @param focused the focused
+     */
     public void setFocused(boolean focused) {
 
         setFocused(focused ? focusedPosition : Constants.NO_FOCUS);
 
     }
 
+    /**
+     * Clear focus.
+     */
     public void clearFocus()
     {
         System.out.println("afterText changed ... adapter.clear "+focusedPosition);
@@ -108,6 +133,9 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
         parent = null;
     }
 
+    /**
+     * The type Recent payments view holder.
+     */
     public class RecentPaymentsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private int position;
         private SavedCard card;

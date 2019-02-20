@@ -21,16 +21,34 @@ public class CvvEditText extends ErrorEditText implements TextWatcher {
 
     private CardType mCardType;
 
+    /**
+     * Instantiates a new Cvv edit text.
+     *
+     * @param context the context
+     */
     public CvvEditText(Context context) {
         super(context);
         init();
     }
 
+    /**
+     * Instantiates a new Cvv edit text.
+     *
+     * @param context the context
+     * @param attrs   the attrs
+     */
     public CvvEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
+    /**
+     * Instantiates a new Cvv edit text.
+     *
+     * @param context  the context
+     * @param attrs    the attrs
+     * @param defStyle the def style
+     */
     public CvvEditText(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
@@ -46,7 +64,6 @@ public class CvvEditText extends ErrorEditText implements TextWatcher {
      * Sets the card type associated with the security code type. {@link CardType#AMEX} has a
      * different icon and length than other card types. Typically handled through
      *
-     *
      * @param cardType Type of card represented by the current value of card number input.
      */
     public void setCardType(CardType cardType) {
@@ -61,11 +78,18 @@ public class CvvEditText extends ErrorEditText implements TextWatcher {
         invalidate();
     }
 
+    /**
+     * Gets card type.
+     *
+     * @return the card type
+     */
     public CardType getmCardType() {
         return mCardType;
     }
 
     /**
+     * Sets mask.
+     *
      * @param mask if {@code true}, this field will be masked.
      */
     public void setMask(boolean mask) {

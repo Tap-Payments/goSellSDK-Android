@@ -6,52 +6,86 @@ import android.text.TextUtils;
 import java.util.regex.Pattern;
 
 import company.tap.gosellapi.R;
+
 /**
-    * Card types and related formatting and validation rules.
-    */
+ * Card types and related formatting and validation rules.
+ */
 public enum CardType {
 
+    /**
+     * Visa card type.
+     */
     VISA("^4\\d*",
         R.drawable.bt_ic_visa,
         16, 16,
         3, R.string.bt_cvv, null),
+    /**
+     * Mastercard card type.
+     */
     MASTERCARD("^(5[1-5]|222[1-9]|22[3-9]|2[3-6]|27[0-1]|2720)\\d*",
         R.drawable.bt_ic_mastercard,
         16, 16,
         3, R.string.bt_cvc, null),
+    /**
+     * Discover card type.
+     */
     DISCOVER("^(6011|65|64[4-9]|622)\\d*",
         R.drawable.bt_ic_discover,
         16, 16,
         3, R.string.bt_cid, null),
+    /**
+     * Amex card type.
+     */
     AMEX("^3[47]\\d*",
         R.drawable.bt_ic_amex,
         15, 15,
         4, R.string.bt_cid, null),
+    /**
+     * Diners club card type.
+     */
     DINERS_CLUB("^(36|38|30[0-5])\\d*",
         R.drawable.bt_ic_diners_club,
         14, 14,
         3, R.string.bt_cvv, null),
+    /**
+     * Jcb card type.
+     */
     JCB("^35\\d*",
         R.drawable.bt_ic_jcb,
         16, 16,
         3, R.string.bt_cvv, null),
+    /**
+     * Maestro card type.
+     */
     MAESTRO("^(5018|5020|5038|5[6-9]|6020|6304|6703|6759|676[1-3])\\d*",
         R.drawable.bt_ic_maestro,
         12, 19,
         3, R.string.bt_cvc,
         "^6\\d*"),
+    /**
+     * Unionpay card type.
+     */
     UNIONPAY("^62\\d*",
         R.drawable.bt_ic_unionpay,
         16, 19,
         3, R.string.bt_cvn, null),
+    /**
+     * Unknown card type.
+     */
     UNKNOWN("\\d+",
         R.drawable.bt_ic_unknown,
         12, 19,
         3, R.string.bt_cvv, null),
+    /**
+     * Empty card type.
+     */
     EMPTY("^$",
         R.drawable.bt_ic_unknown,
         12, 19,
         3, R.string.bt_cvv, null),
+    /**
+     * Mada card type.
+     */
     MADA("^(5[1-5]|222[1-9]|22[3-9]|2[3-6]|27[0-1]|2720)\\d*",
         R.drawable.bt_ic_mastercard,
         16, 16,
@@ -86,6 +120,9 @@ public enum CardType {
      * <p/>
      * A partial account type may be given, with the caveat that it may not have enough digits to
      * match.
+     *
+     * @param cardNumber the card number
+     * @return the card type
      */
     public static CardType forCardNumber(String cardNumber) {
         CardType patternMatch = forCardNumberPattern(cardNumber);
@@ -128,6 +165,8 @@ public enum CardType {
     }
 
     /**
+     * Gets pattern.
+     *
      * @return The regex matching this card type.
      */
     public Pattern getPattern() {
@@ -135,6 +174,8 @@ public enum CardType {
     }
 
     /**
+     * Gets relaxed prefix pattern.
+     *
      * @return The relaxed prefix regex matching this card type. To be used in determining card type if no pattern matches.
      */
     public Pattern getRelaxedPrefixPattern() {
@@ -142,6 +183,8 @@ public enum CardType {
     }
 
     /**
+     * Gets front resource.
+     *
      * @return The android resource id for the front card image, highlighting card number format.
      */
     public int getFrontResource() {
@@ -149,6 +192,8 @@ public enum CardType {
     }
 
     /**
+     * Gets security code name.
+     *
      * @return The android resource id for the security code name for this card type.
      */
     public int getSecurityCodeName() {
@@ -156,6 +201,8 @@ public enum CardType {
     }
 
     /**
+     * Gets security code length.
+     *
      * @return The length of the current card's security code.
      */
     public int getSecurityCodeLength() {
@@ -163,6 +210,8 @@ public enum CardType {
     }
 
     /**
+     * Gets min card length.
+     *
      * @return minimum length of a card for this {@link CardType}
      */
     public int getMinCardLength() {
@@ -170,6 +219,8 @@ public enum CardType {
     }
 
     /**
+     * Gets max card length.
+     *
      * @return max length of a card for this {@link CardType}
      */
     public int getMaxCardLength() {
@@ -177,8 +228,9 @@ public enum CardType {
     }
 
     /**
-     * @return the locations where spaces should be inserted when formatting the card in a user
-     * friendly way. Only for display purposes.
+     * Get space indices int [ ].
+     *
+     * @return the locations where spaces should be inserted when formatting the card in a user friendly way. Only for display purposes.
      */
     public int[] getSpaceIndices() {
         return this == AMEX ? AMEX_SPACE_INDICES : DEFAULT_SPACE_INDICES;
@@ -190,7 +242,7 @@ public enum CardType {
      * @param cardNumber a String consisting of numeric digits (only).
      * @return {@code true} if the sequence passes the checksum
      * @throws IllegalArgumentException if {@code cardNumber} contained a non-digit (where {@link
-     * Character#isDefined(char)} is {@code false}).
+     *                                  Character#isDefined(char)} is {@code false}).
      * @see <a href="http://en.wikipedia.org/wiki/Luhn_algorithm">Luhn Algorithm (Wikipedia)</a>
      */
     public static boolean isLuhnValid(String cardNumber) {
@@ -214,6 +266,8 @@ public enum CardType {
     }
 
     /**
+     * Validate boolean.
+     *
      * @param cardNumber The card number to validate.
      * @return {@code true} if this card number is locally valid.
      */

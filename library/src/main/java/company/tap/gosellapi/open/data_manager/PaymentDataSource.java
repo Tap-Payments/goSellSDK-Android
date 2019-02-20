@@ -22,6 +22,9 @@ import company.tap.gosellapi.open.models.Shipping;
 import company.tap.gosellapi.open.models.TapCurrency;
 import company.tap.gosellapi.open.models.Tax;
 
+/**
+ * The type Payment data source.
+ */
 public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.PaymentDataSource {
 
     /////////////////////////////////    Props Area  //////////////////////////////////////////////
@@ -65,11 +68,19 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
 
     //////////////////////// Instantiation Using Singleton  ///////////////////////////////////////
 
+    /**
+     * Instantiates a new Payment data source.
+     */
     public PaymentDataSource() {
 //        readSampleAppSettingsFromSharedPreferences();
         //generateDefaultPaymentData();
     }
 
+    /**
+     * Get instance payment data source.
+     *
+     * @return the payment data source
+     */
     public static PaymentDataSource getInstance(){
         return  SingletonCreationAdmin.INSTANCE;
     }
@@ -82,102 +93,135 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
     //////////////////////// Setter's Area  ///////////////////////////////////////
 
     /**
-     * @param tapCurrency
+     * Set transaction currency.
+     *
+     * @param tapCurrency the tap currency
      */
     public void setTransactionCurrency(@NonNull TapCurrency tapCurrency){
      this.currency = tapCurrency;
     }
 
     /**
-     * @param customer
+     * Set customer.
+     *
+     * @param customer the customer
      */
     public void setCustomer(@NonNull Customer customer){
       this.customer = customer;
     }
 
+    /**
+     * Set amount.
+     *
+     * @param amount the amount
+     */
     public void setAmount(@Nullable BigDecimal amount){
      this.amount = amount;
     }
 
     /**
-     * @param paymentItems
+     * Set payment items.
+     *
+     * @param paymentItems the payment items
      */
     public void setPaymentItems(@Nullable ArrayList<PaymentItem> paymentItems){
      this.items = paymentItems;
     }
 
     /**
-     * @param transactionMode
+     * Set transaction mode.
+     *
+     * @param transactionMode the transaction mode
      */
     public void setTransactionMode(@Nullable TransactionMode transactionMode){
      this.transactionMode = transactionMode;
     }
 
     /**
-     * @param taxes
+     * Set taxes.
+     *
+     * @param taxes the taxes
      */
     public void setTaxes(@Nullable ArrayList<Tax> taxes){
       this.taxes = taxes;
     }
 
     /**
-     * @param shippingList
+     * Set shipping.
+     *
+     * @param shippingList the shipping list
      */
     public void setShipping(@Nullable ArrayList<Shipping> shippingList){
      this.shipping = shippingList;
     }
 
     /**
-     * @param postURL
+     * Set post url.
+     *
+     * @param postURL the post url
      */
     public void setPostURL(@Nullable String postURL){
       this.postURL = postURL;
     }
 
     /**
-     * @param paymentDescription
+     * Set payment description.
+     *
+     * @param paymentDescription the payment description
      */
     public void setPaymentDescription(@Nullable String paymentDescription){
       this.paymentDescription = paymentDescription;
     }
 
     /**
-     * @param paymentMetadata
+     * Set payment metadata.
+     *
+     * @param paymentMetadata the payment metadata
      */
     public void setPaymentMetadata(@Nullable HashMap<String,String> paymentMetadata){
      this.paymentMetadata = paymentMetadata;
    }
 
     /**
-     * @param paymentReference
+     * Set payment reference.
+     *
+     * @param paymentReference the payment reference
      */
     public void setPaymentReference(@Nullable Reference paymentReference){
      this.paymentReference = paymentReference;
    }
 
     /**
-     * @param paymentDescription
+     * Set payment statement descriptor.
+     *
+     * @param paymentDescription the payment description
      */
     public void setPaymentStatementDescriptor(@Nullable String paymentDescription){
       this.paymentDescription = paymentDescription;
    }
 
     /**
-     * @param requires3DSecure
+     * Is requires 3 d secure.
+     *
+     * @param requires3DSecure the requires 3 d secure
      */
     public void isRequires3DSecure(@Nullable boolean requires3DSecure){
      this.requires3DSecure = requires3DSecure;
    }
 
     /**
-     * @param receipt
+     * Set receipt settings.
+     *
+     * @param receipt the receipt
      */
     public void setReceiptSettings(@Nullable Receipt receipt){
      this.receiptSettings = receipt;
    }
 
     /**
-     * @param authorizeAction
+     * Set authorize action.
+     *
+     * @param authorizeAction the authorize action
      */
     public void setAuthorizeAction(@Nullable AuthorizeAction authorizeAction){
          this.authorizeAction = authorizeAction;

@@ -24,8 +24,14 @@ import company.tap.gosellapi.internal.api.models.BillingAddressFormat;
 import company.tap.gosellapi.internal.api.responses.AddressFormatsResponse;
 import company.tap.gosellapi.internal.data_managers.LoadingScreenManager;
 
+/**
+ * The type Go sell card address activity.
+ */
 public class GoSellCardAddressActivity extends BaseActionBarActivity implements AddressOnCardRecyclerViewAdapter.AddressonCardRecyclerViewInterface, LoadingScreenManager.LoadingScreenListener {
 
+    /**
+     * The constant INTENT_EXTRA_KEY_COUNTRY.
+     */
     public static final String INTENT_EXTRA_KEY_COUNTRY = "Country";
 
     private String currentCountry;
@@ -118,6 +124,11 @@ public class GoSellCardAddressActivity extends BaseActionBarActivity implements 
     private static class BottomOffsetDecoration extends RecyclerView.ItemDecoration {
         private int mBottomOffset;
 
+        /**
+         * Instantiates a new Bottom offset decoration.
+         *
+         * @param bottomOffset the bottom offset
+         */
         public BottomOffsetDecoration(int bottomOffset) {
             mBottomOffset = bottomOffset;
         }

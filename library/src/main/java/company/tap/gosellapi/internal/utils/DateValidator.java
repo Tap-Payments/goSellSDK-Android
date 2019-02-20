@@ -28,6 +28,8 @@ public class DateValidator {
     /**
      * Used in tests to inject a custom {@link Calendar} to stabilize dates. Normal usage will just
      * delegate to the actual date.
+     *
+     * @param calendar the calendar
      */
     protected DateValidator(Calendar calendar) {
         mCalendar = calendar;
@@ -35,14 +37,22 @@ public class DateValidator {
 
     /**
      * Helper for determining whether a date is a valid credit card expiry date.
+     *
      * @param month Two-digit month
-     * @param year Two or four digit year
+     * @param year  Two or four digit year
      * @return Whether the date is a valid credit card expiry date.
      */
     public static boolean isValid(String month, String year) {
         return INSTANCE.isValidHelper(month, year);
     }
 
+    /**
+     * Is valid helper boolean.
+     *
+     * @param monthString the month string
+     * @param yearString  the year string
+     * @return the boolean
+     */
     protected boolean isValidHelper(String monthString, String yearString) {
         if (TextUtils.isEmpty(monthString)) {
             return false;

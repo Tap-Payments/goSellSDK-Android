@@ -8,6 +8,9 @@ import com.google.gson.annotations.SerializedName;
 import company.tap.gosellapi.internal.api.enums.CardScheme;
 import company.tap.tapcardvalidator_android.CardBrand;
 
+/**
+ * The type Bin lookup response.
+ */
 public final class BINLookupResponse implements BaseResponse {
 
     @SerializedName("address_required")
@@ -41,6 +44,7 @@ public final class BINLookupResponse implements BaseResponse {
     /**
      * Defines if a card with the given bin_number requires address fields to be passed to
      * Charge API.
+     *
      * @return flag is address required.
      */
     public boolean isAddressRequired() {
@@ -48,6 +52,8 @@ public final class BINLookupResponse implements BaseResponse {
     }
 
     /**
+     * Gets bank.
+     *
      * @return Bank name.
      */
     public String getBank() {
@@ -55,6 +61,8 @@ public final class BINLookupResponse implements BaseResponse {
     }
 
     /**
+     * Gets bank logo.
+     *
      * @return Bank logo URL.
      */
     public String getBankLogo() {
@@ -62,6 +70,8 @@ public final class BINLookupResponse implements BaseResponse {
     }
 
     /**
+     * Gets bin.
+     *
      * @return Bin number.
      */
     public String getBin() {
@@ -69,15 +79,24 @@ public final class BINLookupResponse implements BaseResponse {
     }
 
     /**
+     * Gets card brand.
+     *
      * @return Card brand.
      */
     public CardBrand getCardBrand() {
         return cardBrand;
     }
 
+    /**
+     * Gets scheme.
+     *
+     * @return the scheme
+     */
     @Nullable public CardScheme getScheme() { return scheme; }
 
     /**
+     * Gets country.
+     *
      * @return Card issuing country.
      */
     public String getCountry() {

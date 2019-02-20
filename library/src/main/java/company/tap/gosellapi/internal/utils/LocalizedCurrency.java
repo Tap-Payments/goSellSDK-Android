@@ -4,6 +4,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
 
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
+
+/**
+ * The type Localized currency.
+ */
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 public class LocalizedCurrency implements Comparable<LocalizedCurrency> {
 
@@ -16,12 +20,28 @@ public class LocalizedCurrency implements Comparable<LocalizedCurrency> {
     return getLocalizedDisplayName().compareToIgnoreCase(o.getLocalizedDisplayName());
   }
 
-  public LocalizedCurrency(AmountedCurrency currency) {
+    /**
+     * Instantiates a new Localized currency.
+     *
+     * @param currency the currency
+     */
+    public LocalizedCurrency(AmountedCurrency currency) {
 
     this.currency = currency;
     this.localizedDisplayName = CurrencyFormatter.getLocalizedCurrencyName(currency.getCurrency());
   }
 
-  public AmountedCurrency getCurrency() { return currency; }
-  public String getLocalizedDisplayName() { return localizedDisplayName; }
+    /**
+     * Gets currency.
+     *
+     * @return the currency
+     */
+    public AmountedCurrency getCurrency() { return currency; }
+
+    /**
+     * Gets localized display name.
+     *
+     * @return the localized display name
+     */
+    public String getLocalizedDisplayName() { return localizedDisplayName; }
 }

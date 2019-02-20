@@ -43,19 +43,59 @@ import company.tap.tapcardvalidator_android.CardValidationState;
 import company.tap.tapcardvalidator_android.CardValidator;
 import company.tap.tapcardvalidator_android.DefinedCardBrand;
 
+/**
+ * The type Card credentials view holder.
+ */
 public class CardCredentialsViewHolder
     extends PaymentOptionsBaseViewHolder<CardCredentialsViewModelData, CardCredentialsViewHolder, CardCredentialsViewModel> {
 
 
-  public void setCardNumberColor(int color) {
+    /**
+     * Sets card number color.
+     *
+     * @param color the color
+     */
+    public void setCardNumberColor(int color) {
     cardNumberField.setTextColor(color);
   }
 
-  public interface Data {
+    /**
+     * The interface Data.
+     */
+    public interface Data {
+        /**
+         * Bind card number field with watcher.
+         *
+         * @param cardNumberField the card number field
+         */
         void bindCardNumberFieldWithWatcher(EditText cardNumberField);
+
+        /**
+         * Gets card number text.
+         *
+         * @return the card number text
+         */
         SpannableString getCardNumberText();
+
+        /**
+         * Gets expiration date text.
+         *
+         * @return the expiration date text
+         */
         String getExpirationDateText();
+
+        /**
+         * Gets cvv text.
+         *
+         * @return the cvv text
+         */
         String getCVVText();
+
+        /**
+         * Gets cardholder name text.
+         *
+         * @return the cardholder name text
+         */
         String getCardholderNameText();
     }
 
@@ -77,6 +117,11 @@ public class CardCredentialsViewHolder
     private CardCredentialsTextWatcher cardCredentialsTextWatcher;
 
 
+    /**
+     * Instantiates a new Card credentials view holder.
+     *
+     * @param view the view
+     */
     CardCredentialsViewHolder(View view) {
 
         super(view);
@@ -325,7 +370,10 @@ public class CardCredentialsViewHolder
 //        initCardSystemsRecyclerView(data.getPaymentOptions());
     }
 
-  class CardCredentialsTextWatcher implements TextWatcher{
+    /**
+     * The type Card credentials text watcher.
+     */
+    class CardCredentialsTextWatcher implements TextWatcher{
 
       @Override
       public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -394,6 +442,12 @@ public class CardCredentialsViewHolder
         cardSystemsRecyclerView.setAdapter(adapter);
     }
 
+    /**
+     * Update card systems recycler view.
+     *
+     * @param brand      the brand
+     * @param cardScheme the card scheme
+     */
     public void updateCardSystemsRecyclerView(CardBrand brand,CardScheme cardScheme) {
         RecyclerView cardSystemsRecyclerView = itemView.findViewById(R.id.cardSystemsRecyclerView);
         cardSystemsRecyclerView.invalidate();
@@ -424,6 +478,11 @@ public class CardCredentialsViewHolder
         return brand;
     }
 
+    /**
+     * Update ccv edit text card type.
+     *
+     * @param cardBrand the card brand
+     */
     public void updateCCVEditTextCardType(CardBrand cardBrand){
       System.out.println("updateCCVEditTextCardType : " + cardBrand);
       if (cardBrand == null) return;
@@ -484,7 +543,12 @@ public class CardCredentialsViewHolder
     }
 
 
-     public void updateAddressOnCardView(boolean isShow) {
+    /**
+     * Update address on card view.
+     *
+     * @param isShow the is show
+     */
+    public void updateAddressOnCardView(boolean isShow) {
     if (isShow) {
       addressOnCardLayout.setVisibility(View.VISIBLE);
     } else {
@@ -496,6 +560,11 @@ public class CardCredentialsViewHolder
 
         private float mTrackingPx;
 
+        /**
+         * Instantiates a new Tracking span.
+         *
+         * @param tracking the tracking
+         */
         public TrackingSpan(float tracking) {
             mTrackingPx = tracking;
         }

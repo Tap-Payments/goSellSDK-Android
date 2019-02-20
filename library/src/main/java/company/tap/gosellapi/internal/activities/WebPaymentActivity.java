@@ -30,11 +30,20 @@ import company.tap.gosellapi.internal.utils.ActivityDataExchanger;
 import company.tap.gosellapi.open.delegate.PaymentProcessDelegate;
 
 
+/**
+ * The type Web payment activity.
+ */
 public class WebPaymentActivity extends BaseActionBarActivity implements IPaymentProcessListener {
   private WebPaymentViewModel viewModel;
   private WebView webView;
-  String paymentURL;
-  String returnURL;
+    /**
+     * The Payment url.
+     */
+    String paymentURL;
+    /**
+     * The Return url.
+     */
+    String returnURL;
   private Charge chargeOrAuthorize;
 
   @Override
@@ -176,7 +185,14 @@ public class WebPaymentActivity extends BaseActionBarActivity implements IPaymen
     System.out.println(" didCardSavedBefore() not available in case of WebPayment ");
   }
 
-  public static Intent getDismissIntent(int notificationId, Context context) {
+    /**
+     * Gets dismiss intent.
+     *
+     * @param notificationId the notification id
+     * @param context        the context
+     * @return the dismiss intent
+     */
+    public static Intent getDismissIntent(int notificationId, Context context) {
     Intent intent = new Intent(context, GoSellPaymentActivity.class);
     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
     intent.putExtra("NOTIFICATION_ID", notificationId);
@@ -251,8 +267,14 @@ public class WebPaymentActivity extends BaseActionBarActivity implements IPaymen
     return viewModel.getData();
   }
 
-  public final class IntentParameters {
+    /**
+     * The type Intent parameters.
+     */
+    public final class IntentParameters {
 
-    public static final String paymentOptionModel = "payment_option_model";
+        /**
+         * The constant paymentOptionModel.
+         */
+        public static final String paymentOptionModel = "payment_option_model";
   }
 }

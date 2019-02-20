@@ -16,18 +16,42 @@ import java.util.Set;
 
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 
+/**
+ * The type Currency formatter.
+ */
 public final class CurrencyFormatter {
 
+    /**
+     * Format string.
+     *
+     * @param amountedCurrency the amounted currency
+     * @return the string
+     */
     public static String format(AmountedCurrency amountedCurrency) {
 
         return format(amountedCurrency, true);
     }
 
+    /**
+     * Format string.
+     *
+     * @param amountedCurrency the amounted currency
+     * @param displayCurrency  the display currency
+     * @return the string
+     */
     public static String format(AmountedCurrency amountedCurrency, boolean displayCurrency) {
 
         return format(amountedCurrency, Locale.US, displayCurrency);
     }
 
+    /**
+     * Format string.
+     *
+     * @param amountedCurrency the amounted currency
+     * @param locale           the locale
+     * @param displayCurrency  the display currency
+     * @return the string
+     */
     public static String format(AmountedCurrency amountedCurrency, Locale locale, boolean displayCurrency) {
 
         NumberFormat formatter = NumberFormat.getCurrencyInstance(locale);
@@ -51,11 +75,24 @@ public final class CurrencyFormatter {
         }
     }
 
+    /**
+     * Gets localized currency symbol.
+     *
+     * @param currencyCode the currency code
+     * @return the localized currency symbol
+     */
     @NonNull public static String getLocalizedCurrencySymbol(String currencyCode) {
 
         return getLocalizedCurrencySymbol(currencyCode, Locale.US);
     }
 
+    /**
+     * Gets localized currency symbol.
+     *
+     * @param currencyCode the currency code
+     * @param locale       the locale
+     * @return the localized currency symbol
+     */
     @NonNull public static String getLocalizedCurrencySymbol(String currencyCode, Locale locale) {
 
         Currency currency = Currency.getInstance(currencyCode);
@@ -65,11 +102,24 @@ public final class CurrencyFormatter {
         return symbol;
     }
 
+    /**
+     * Gets localized currency name.
+     *
+     * @param currencyCode the currency code
+     * @return the localized currency name
+     */
     @NonNull public static String getLocalizedCurrencyName(@NonNull String currencyCode) {
 
         return getLocalizedCurrencyName(currencyCode, Locale.US);
     }
 
+    /**
+     * Gets localized currency name.
+     *
+     * @param currencyCode the currency code
+     * @param locale       the locale
+     * @return the localized currency name
+     */
     @NonNull public static String getLocalizedCurrencyName(@NonNull String currencyCode, @NonNull Locale locale) {
 
         Currency currency = Currency.getInstance(currencyCode);

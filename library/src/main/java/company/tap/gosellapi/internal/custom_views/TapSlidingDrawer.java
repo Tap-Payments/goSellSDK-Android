@@ -11,14 +11,28 @@ import android.widget.LinearLayout;
 
 import company.tap.gosellapi.R;
 
+/**
+ * The type Tap sliding drawer.
+ */
 public class TapSlidingDrawer extends LinearLayout {
+    /**
+     * The constant STATE_OPENED.
+     */
     public static final int STATE_OPENED = 0;
+    /**
+     * The constant STATE_CLOSED.
+     */
     public static final int STATE_CLOSED = 1;
 
     private int m_intState;
     private LinearLayout m_content;
     private ImageButton m_handle;
 
+    /**
+     * Instantiates a new Tap sliding drawer.
+     *
+     * @param context the context
+     */
     public TapSlidingDrawer(Context context) {
       super(context);
       setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));

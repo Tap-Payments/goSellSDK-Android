@@ -17,6 +17,9 @@ import company.tap.gosellapi.open.models.Reference;
 import company.tap.gosellapi.internal.api.models.SourceRequest;
 import company.tap.gosellapi.internal.api.models.TrackingURL;
 
+/**
+ * The type Create charge request.
+ */
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 public class CreateChargeRequest {
 
@@ -80,6 +83,25 @@ public class CreateChargeRequest {
     @Expose
     @Nullable private Receipt receipt;
 
+    /**
+     * Instantiates a new Create charge request.
+     *
+     * @param amount              the amount
+     * @param currency            the currency
+     * @param customer            the customer
+     * @param fee                 the fee
+     * @param order               the order
+     * @param redirect            the redirect
+     * @param post                the post
+     * @param source              the source
+     * @param description         the description
+     * @param metadata            the metadata
+     * @param reference           the reference
+     * @param saveCard            the save card
+     * @param statementDescriptor the statement descriptor
+     * @param threeDSecure        the three d secure
+     * @param receipt             the receipt
+     */
     public CreateChargeRequest(@NonNull     BigDecimal              amount,
                                @NonNull     String                  currency,
                                @NonNull     Customer                customer,

@@ -31,16 +31,34 @@ public class ExpirationDateEditText extends ErrorEditText implements TextWatcher
     private boolean mUseExpirationDateDialog = true;
     private ExpirationDateDialog mExpirationDateDialog;
 
+    /**
+     * Instantiates a new Expiration date edit text.
+     *
+     * @param context the context
+     */
     public ExpirationDateEditText(Context context) {
         super(context);
         init();
     }
 
+    /**
+     * Instantiates a new Expiration date edit text.
+     *
+     * @param context the context
+     * @param attrs   the attrs
+     */
     public ExpirationDateEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
+    /**
+     * Instantiates a new Expiration date edit text.
+     *
+     * @param context  the context
+     * @param attrs    the attrs
+     * @param defStyle the def style
+     */
     public ExpirationDateEditText(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
@@ -60,9 +78,8 @@ public class ExpirationDateEditText extends ErrorEditText implements TextWatcher
      * Used to enable or disable entry of the expiration date using {@link ExpirationDateDialog}.
      * Defaults to false.
      *
-     * @param activity used as the parent activity for the dialog
-     * @param useDialog {@code false} to use a numeric keyboard to enter the expiration date,
-     * {@code true} to use a custom dialog to enter the expiration date. Defaults to {@code true}.
+     * @param activity  used as the parent activity for the dialog
+     * @param useDialog {@code false} to use a numeric keyboard to enter the expiration date, {@code true} to use a custom dialog to enter the expiration date. Defaults to {@code true}.
      */
     public void useDialogForExpirationDateEntry(Activity activity, boolean useDialog) {
         mExpirationDateDialog = ExpirationDateDialog.create(activity, this);
@@ -114,8 +131,9 @@ public class ExpirationDateEditText extends ErrorEditText implements TextWatcher
     }
 
     /**
-     * @return the 2-digit month, formatted with a leading zero if necessary. If no month has been
-     * specified, an empty string is returned.
+     * Gets month.
+     *
+     * @return the 2-digit month, formatted with a leading zero if necessary. If no month has been specified, an empty string is returned.
      */
     public String getMonth() {
         String string = getString();
@@ -126,8 +144,9 @@ public class ExpirationDateEditText extends ErrorEditText implements TextWatcher
     }
 
     /**
-     * @return the 2- or 4-digit year depending on user input.
-     * If no year has been specified, an empty string is returned.
+     * Gets year.
+     *
+     * @return the 2- or 4-digit year depending on user input. If no year has been specified, an empty string is returned.
      */
     public String getYear() {
         String string = getString();

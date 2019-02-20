@@ -1,46 +1,46 @@
 package company.tap.gosellapi.open.delegate;
 
-import android.app.Activity;
 import android.content.Context;
-import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.annotation.RestrictTo;
-import android.util.DisplayMetrics;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
-import android.widget.TextView;
 
-import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
-import company.tap.gosellapi.internal.api.models.Authorize;
 import company.tap.gosellapi.internal.api.models.Charge;
-import company.tap.gosellapi.internal.utils.ActivityDataExchanger;
 import company.tap.gosellapi.open.data_manager.PaymentResultDataManager;
 
-import static company.tap.gosellapi.internal.api.enums.ChargeStatus.DECLINED;
-
+/**
+ * The type Payment process delegate.
+ */
 public class PaymentProcessDelegate implements company.tap.gosellapi.open.interfaces.PaymentProcessDelegate {
 
    private Charge chargeOrAuthorize;
   private GoSellError goSellError;
 
+  /**
+   * save payment result after payment process finished
+   * @param _chargeOrAuthorizeOrSaveCard
+   */
   @NonNull
   @Override
   public void setPaymentResult(Charge _chargeOrAuthorizeOrSaveCard) {
    chargeOrAuthorize = _chargeOrAuthorizeOrSaveCard;
   }
 
+  /**
+   * retrieve payment result
+   * @return
+   */
   @NonNull
   @Override
   public Charge getPaymentResult() {
     return chargeOrAuthorize;
   }
 
+  /**
+   * save customer ref.
+   *
+   * @param chargeOrAuthorizeOrSaveCard the charge or authorize or save card
+   * @param context                     the context
+   */
   public void setCustomerID(Charge chargeOrAuthorizeOrSaveCard,Context context) {
     if(chargeOrAuthorizeOrSaveCard!=null){
       if(chargeOrAuthorizeOrSaveCard instanceof Charge){
@@ -51,10 +51,20 @@ public class PaymentProcessDelegate implements company.tap.gosellapi.open.interf
     }
   }
 
+  /**
+   * set payment error result in case of fail payment
+   *
+   * @param error the error
+   */
   public void setPaymentError(GoSellError error) {
     this.goSellError = error;
   }
 
+  /**
+   * retrieve payment error
+   *
+   * @return go sell error
+   */
   public GoSellError getGoSellError(){
     return goSellError;
   }
@@ -64,6 +74,11 @@ public class PaymentProcessDelegate implements company.tap.gosellapi.open.interf
     private static final PaymentProcessDelegate INSTANCE = new PaymentProcessDelegate();
   }
 
+  /**
+   * Gets instance.
+   *
+   * @return the instance
+   */
   public static PaymentProcessDelegate getInstance() {
     return PaymentDelegateHelper.INSTANCE;
   }

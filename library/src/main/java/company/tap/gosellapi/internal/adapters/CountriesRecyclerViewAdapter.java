@@ -15,8 +15,19 @@ import java.util.Locale;
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.utils.Utils;
 
+/**
+ * The type Countries recycler view adapter.
+ */
 public class CountriesRecyclerViewAdapter extends RecyclerView.Adapter<CountriesRecyclerViewAdapter.CountriesCellViewHolder> {
+    /**
+     * The interface Countries recycler view adapter callback.
+     */
     public interface CountriesRecyclerViewAdapterCallback {
+        /**
+         * Item selected.
+         *
+         * @param country the country
+         */
         void itemSelected(String country);
     }
 
@@ -29,6 +40,12 @@ public class CountriesRecyclerViewAdapter extends RecyclerView.Adapter<Countries
     private String searchText = "";
     private int selectedPosition = NO_SELECTION;
 
+    /**
+     * Instantiates a new Countries recycler view adapter.
+     *
+     * @param datasource the datasource
+     * @param callback   the callback
+     */
     public CountriesRecyclerViewAdapter(ArrayList<String> datasource, CountriesRecyclerViewAdapterCallback callback) {
         this.datasource = datasource;
         this.callback = callback;
@@ -47,6 +64,11 @@ public class CountriesRecyclerViewAdapter extends RecyclerView.Adapter<Countries
         datasourceFiltered = new ArrayList<>(datasource);
     }
 
+    /**
+     * Sets selection.
+     *
+     * @param newSelection the new selection
+     */
     public void setSelection(int newSelection) {
         selectedCountry = datasourceFiltered.get(newSelection);
 
@@ -75,6 +97,9 @@ public class CountriesRecyclerViewAdapter extends RecyclerView.Adapter<Countries
         return datasource.size();
     }
 
+    /**
+     * The type Countries cell view holder.
+     */
     class CountriesCellViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView tvCountryName;
         private ImageView ivCountryChecked;
