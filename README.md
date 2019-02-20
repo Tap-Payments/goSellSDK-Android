@@ -236,17 +236,129 @@ If you would like to include it do the following:
    </tr>
    <tr>
 	<td> setupPayButtonFontTypeFace </td>
-	<td> Setup pay button font type face. You need to pass font type face to this method </td>
+	<td> Setup pay button font type face. You need to passs font type face to this method </td>
    </tr>
    <tr>
 	<td> setupTextColor </td>
-	<td> Setup pay button text color. You need to pass color code to be applied in case of pay button is enabled and int color to be applied in case of pay button is disabled</td>
+	<td> Setup pay button text color. You need to passs color code to be applied in case of pay button is enabled and int color to be applied in case of pay button is disabled</td>
    </tr>
 <tr>
 	<td> persistPaymentDataSource </td>
-	<td> Setup pay button title. You can setup pay button text according to payment type [Payment - Authorize - Save Cards].</td>
+	<td> Setup pay button title. You can setup paay button text according to payment type [Payment - Authorize - Save Cards].</td>
    </tr>
 
 </table>
 
+<a name="sdkTrigger_data_source"></a>
+### SDKTrigger Payment Data Source
+
+**PaymentDataSource** is an interface which you should implement somewhere in your code to pass payment information in order to be able to access payment flow within the SDK.
+
+<a name="session_data_source_structure"></a>
+### Structure
+
+The following table describes its structure and specifies which fields are required for each of the modes.
+
+<table style="text-align:center">
+    <th rowspan=2>Member</th>
+    <th colspan=2>Type</th>
+    <th colspan=3>Required</th>
+    <th rowspan=2>Description</th>
+    <tr>
+        <td><sub><i>mode</i></sub></td>
+        <td colspan=2><sub><b>TransactionMode</b></sub></td>
+        <td colspan=3><sub><i>false</i></sub></td>
+        <td align="left"><sub>Mode of the transactions (purchase or authorize). If this property is not implemented, <i>purchase</i> mode is used.</sub></td>
+    </tr>
+    <tr>
+        <td><sub><i>customer</i></sub></td>
+        <td colspan=2><sub><b>Customer</b></sub></td>
+        <td colspan=3><sub><i>true</i></sub></td>
+        <td align="left"><sub>Customer information. For more details on how to create the customer, please refer to <i>Customer</i> class reference.</sub></td>
+    </tr>
+    <tr>
+        <td><sub><i>currency</i></sub></td>
+        <td colspan=2><sub><b>Currency</b></sub></td>
+        <td colspan=2><sub><i>true</i></sub></td><td><sub><i>false</i></sub></td>
+        <td align="left"><sub>Currency of the transaction.</sub></td>
+    </tr>
+    <tr>
+        <td><sub><i>amount</i></sub></td>
+        <td><sub><b><nobr>NSDecimal</nobr></b></sub></td><td><sub><b><nobr>Decimal</nobr></b></sub></td>
+        <td colspan=3><sub><i>false</i></sub></td>
+        <td align="left"><sub>Payment/Authorization amount.<br><b>Note:</b> In order to have payment amount either <i>amount</i> or <i>items</i> should be implemented. If both are implemented, <i>items</i> is preferred.</sub></td>
+    </tr>
+    <tr>
+        <td><sub><i>items</i></sub></td>
+        <td><sub><b>NSArray <nobr>&lt;PaymentItem *&gt;</nobr></b></sub></td><td><sub><b><nobr>[PaymentItem]</nobr></b></sub></td>
+        <td colspan=3><sub><i>false</i></sub></td>
+        <td align="left"><sub>List of items to pay for.<br><b>Note:</b> In order to have payment amount either <i>amount</i> or <i>items</i> should be implemented. If both are implemented, <i>items</i> is preferred.</sub></td>
+    </tr>
+    <tr>
+        <td><sub><i>taxes</i></sub></td>
+        <td><sub><b>NSArray <nobr>&lt;Tax *&gt;</nobr></b></sub></td><td><sub><b><nobr>[Tax]</nobr></b></sub></td>
+        <td colspan=3><sub><i>false</i></sub></td>
+        <td align="left"><sub>You can specify taxation details here. By default, there are no taxes.<br> <b>Note:</b> Specifying taxes will affect total payment/authorization amount.</sub></td>
+    </tr>
+    <tr>
+        <td><sub><i>shipping</i></sub></td>
+        <td><sub><b>NSArray <nobr>&lt;Shipping *&gt;</nobr></b></sub></td><td><sub><b><nobr>[Shipping]</nobr></b></sub></td>
+        <td colspan=3><sub><i>false</i></sub></td>
+        <td align="left"><sub>You can specify shipping details here. By default, there are no shipping details.<br> <b>Note:</b> Specifying shipping will affect total payment/authorization amount.</sub></td>
+    </tr>
+    <tr>
+        <td><sub><i>postURL</i></sub></td>
+        <td><sub><b>NSURL</b></sub></td><td><sub><b>URL</b></sub></td>
+        <td colspan=3><sub><i>false</i></sub></td>
+        <td align="left"><sub>The URL which will be called by Tap system notifying that payment has either succeed or failed.</sub></td>
+    </tr>
+    <tr>
+        <td><sub><i>paymentDescription</i></sub></td>
+        <td><sub><b>NSString</b></sub></td><td><sub><b>String</b></sub></td>
+        <td colspan=3><sub><i>false</i></sub></td>
+        <td align="left"><sub>Description of the payment.</sub></td>
+    </tr>
+    <tr>
+        <td><sub><i>paymentMetadata</i></sub></td>
+        <td><sub><b>NSDictionary <nobr>&lt;NSString *, NSString *&gt;</nobr></b></sub></td><td><sub><b><nobr>[String: String]</nobr></b></sub></td>
+        <td colspan=3><sub><i>false</i></sub></td>
+        <td align="left"><sub>Additional information you would like to pass along with the transaction.</sub></td>
+    </tr>
+    <tr>
+        <td><sub><i>paymentReference</i></sub></td>
+        <td colspan=2><sub><b>Reference</b></sub></td>
+        <td colspan=3><sub><i>false</i></sub></td>
+        <td align="left"><sub>You can keep a reference to the transaction using this property.</sub></td>
+    </tr>
+    <tr>
+        <td><sub><i>paymentStatementDescriptor</i></sub></td>
+        <td><sub><b>NSString</b></sub></td><td><sub><b>String</b></sub></td>
+        <td colspan=3><sub><i>false</i></sub></td>
+        <td align="left"><sub>Statement descriptor.</sub></td>
+    </tr>
+    <tr>
+        <td><sub><i>require3DSecure</i></sub></td>
+        <td><sub><b>BOOL</b></sub></td><td><sub><b>Bool</b></sub></td>
+        <td colspan=3><sub><i>false</i></sub></td>
+        <td align="left"><sub>Defines if 3D secure check is required. If not implemented, treated as <i>true</i>.<br><b>Note:</b> If you disable 3D secure check, it still may occure. Final decision is taken by Tap.</sub></td>
+    </tr>
+    <tr>
+        <td><sub><i>receiptSettings</i></sub></td>
+        <td colspan=2><sub><b>Receipt</b></sub></td>
+        <td colspan=3><sub><i>false</i></sub></td>
+        <td align="left"><sub>Receipt recipient details.</sub></td>
+    </tr>
+    <tr>
+        <td><sub><i>authorizeAction</i></sub></td>
+        <td colspan=2><sub><b>AuthorizeAction</b></sub></td>
+        <td><sub><i>false</i></sub></td><td><sub><i>true</i></sub></td><td><sub><i>false</i></sub></td>
+        <td align="left"><sub>Action to perform after authorization succeeds.</sub></td>
+    </tr>
+    <tr>
+        <td><sub><i>allowsToSaveSameCardMoreThanOnce</i></sub></td>
+        <td><sub><b>BOOL</b></sub></td><td><sub><b>Bool</b></sub></td>
+        <td colspan=3><sub><i>false</i></sub></td>
+        <td align="left"><sub>Defines if same card can be saved more than once.<br><b>Note:</b> Same cards means absolutely equal data set. For example, if customer specifies same card details, but different cardholder names, we will treat this like different cards.</sub></td>
+    </tr>
+</table>
 
