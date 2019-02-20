@@ -690,3 +690,11 @@ Retreive the payment result.
 
                 }
 ```
+
+-----
+# Documentation
+Documentation is available at [github-pages][2].<br>
+Also documented sources are attached to the library.
+
+[1]:https://www.tap.company/developers/
+[2]:https://tap-payments.github.io/goSellSDK-Android/
