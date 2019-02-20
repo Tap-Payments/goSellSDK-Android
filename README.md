@@ -380,7 +380,7 @@ The following table describes its structure and specifies which fields are requi
  ```java
       sdkTrigger.setTransactionCurrency(TapCurrency);
  ```
- **Transaction Currency** is a TapCurrency object:
+ **Transaction Currency** model class:
  ```java
   public TapCurrency(@NonNull String isoCode) throws CurrencyException {
     String code = isoCode.toLowerCase();
@@ -397,7 +397,7 @@ The following table describes its structure and specifies which fields are requi
 
 **Transaction Mode** is an enum:
 ```java
-       public enum TransactionMode {
+    public enum TransactionMode {
 
         @SerializedName("PURCHASE")             PURCHASE,
         @SerializedName("AUTHORIZE_CAPTURE")    AUTHORIZE_CAPTURE,
@@ -409,9 +409,9 @@ The following table describes its structure and specifies which fields are requi
       sdkTrigger.setCustomer(Customer);
  ```
 
- **Customer** is an Model Class:
+ **Customer** model class:
 ```java
-       class Customer {
+     class Customer {
 
           @SerializedName("id")
           @Expose
@@ -446,7 +446,7 @@ The following table describes its structure and specifies which fields are requi
       sdkTrigger.setPaymentItems(ArraList<Item>);
  ```
 
- **Item** is a model class:
+ **Item** model class:
 ```java
 	class PaymentItem {
 
@@ -485,39 +485,154 @@ The following table describes its structure and specifies which fields are requi
  ```android
       sdkTrigger.setTaxes(ArraList<Tax>);
  ```
+  **Tax** model class:
+```java
+	class class Tax {
+
+    @SerializedName("name")
+    @Expose
+    private String name;
+
+    @SerializedName("description")
+    @Expose
+    @Nullable private String description;
+
+    @SerializedName("amount")
+    @Expose
+    private AmountModificator amount;
+    }
+```
   6. Set Shipping
  ```android
       sdkTrigger.setShipping(ArraList<Shipping>);
  ```
+ **Tax** is a model class:
+```java
+	class class Shipping {
+
+    @SerializedName("name")
+    @Expose
+    private String name;
+
+    @SerializedName("description")
+    @Expose
+    @Nullable private String description;
+
+    @SerializedName("amount")
+    @Expose
+    private BigDecimal amount;
+    }
+```
    7. Set Post URL
  ```android
       sdkTrigger.setPostURL(String);
  ```
+ **Post URL**:
+```java
+   return  "https://tap.company";
+```
  8. Set Payment Description
  ```android
       sdkTrigger.setPaymentDescription(String);
  ```
+  **Payment Description**:
+```java
+    return @"Awesome payment description will be here.";
+```
  9. Set Payment Metadata
  ```android
       sdkTrigger.setPaymentMetadata(HashMap<String,String>);
  ```
+ **Payment Metadata** HashMap:
+```java
+    HashMap<String,String> paymentMetadata = new HashMap<>();
+        paymentMetadata.put("metadata_key_1", "metadata value 1");
+        return paymentMetadata;
+```
   10. Set Payment Reference
  ```android
       sdkTrigger.setPaymentReference(Reference);
  ```
+  **Payment Reference** model class:
+```java
+	class class Reference {
+
+    @SerializedName("acquirer")
+    @Expose
+    @Nullable private String acquirer;
+
+    @SerializedName("gateway")
+    @Expose
+    @Nullable private String gateway;
+
+    @SerializedName("payment")
+    @Expose
+    @Nullable private String payment;
+
+    @SerializedName("track")
+    @Expose
+    @Nullable private String track;
+
+    @SerializedName("transaction")
+    @Expose
+    @Nullable private String transaction;
+
+    @SerializedName("order")
+    @Expose
+    @Nullable private String order;
+    }
+```
    11. Set Payment Descriptor
  ```android
       sdkTrigger.setPaymentStatementDescriptor(String);
  ```
+   **Payment Descriptor** String:
+```java
+    return @"Payment statement descriptor will be here.";
+```
    12. Set 3DSecure
  ```android
       sdkTrigger.isRequires3DSecure(boolean);
  ```
+    **3D Secure** Boolean:
+```java
+    return true;
+```
    13. Set Receipt Settings
  ```android
       sdkTrigger.setReceiptSettings(Receipt);
  ```
+   **Payment Receipt** model class:
+```java
+	class class Receipt {
+
+    @SerializedName("id")
+    @Expose
+    @Nullable private String id;
+
+    @SerializedName("email")
+    @Expose
+    private boolean email;
+
+    @SerializedName("sms")
+    @Expose
+    private boolean sms;
+    }
+```
     14. Set Authorize Action
  ```android
       sdkTrigger.setAuthorizeAction(AuthorizeAction);
  ```
+    **Payment AuthorizeAction** model class:
+```java
+	class AuthorizeAction {
+
+    @SerializedName("type")
+    @Expose
+    private AuthorizeActionType type;
+
+    @SerializedName("time")
+    @Expose
+    private int timeInHours;
+    }
+```	
