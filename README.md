@@ -21,8 +21,8 @@ A library that fully covers payment/authorization/card saving process inside you
 4. [Usage](#usage)
     1. [Pay Button](#paybutton)
        1. [Start SDK with Pay Button](#start_sdk_with_pay_button)
-          1.[Init Pay Button](#pay_button_init)
-          2.[Appearance](#pay_button_appearance)
+       2. [Init Pay Button](#pay_button_init)
+       3. [Appearance](#pay_button_appearance)
     2. [API SDKTrigger](#api_sdkTrigger)
     	 1. [Properties](#api_sdkTrigger_properties)
     	 2. [Methods](#api_sdkTrigger_methods)
@@ -123,6 +123,7 @@ Don't forget to import the class at the beginning of the file:
 
 Pay Button is restricted to the height of exactly **40 dp**. For better experience, make sure that it has enough **width** to display the content.
 
+<a name="start_sdk_with_pay_button"></a>
 If you would like to include it do the following:
 
 1. include PayButton view into your layout xml
@@ -133,6 +134,8 @@ If you would like to include it do the following:
         android:layout_height="40dp"
         android:layout_alignParentBottom="true"/>
 ```
+
+<a name="pay_button_init"></a>
 2. get reference inside your activity
 ```android
     payButtonView = findViewById(R.id.payButtonId);
