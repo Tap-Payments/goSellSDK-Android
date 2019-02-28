@@ -21,6 +21,7 @@ import company.tap.gosellapi.open.data_manager.PaymentResultDataManager;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.gosellapi.open.models.AuthorizeAction;
 import company.tap.gosellapi.open.models.Customer;
+import company.tap.gosellapi.open.models.Destination;
 import company.tap.gosellapi.open.models.PaymentItem;
 import company.tap.gosellapi.open.models.Receipt;
 import company.tap.gosellapi.open.models.Reference;
@@ -330,18 +331,19 @@ public class SettingsManager {
         return height;
     }
 
+    public ArrayList<Destination> getDestination() {
+        ArrayList<Destination> destinations = new ArrayList<Destination>();
+        destinations.
+                add(new Destination(
+                        "1014",
+                        new BigDecimal(10),
+                        new TapCurrency("kwd"),
+                        "please deduct 10 kd for this account",
+                        ""
 
-
-
-
-
-
-
-
-
-
-
-
+                        ));
+        return destinations;
+    }
 
 
     private static class SingleInstanceAdmin{

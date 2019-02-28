@@ -37,6 +37,7 @@ import company.tap.gosellapi.open.models.Customer;
 import company.tap.gosellapi.internal.api.models.ExtraFee;
 import company.tap.gosellapi.internal.api.models.Order;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
+import company.tap.gosellapi.open.models.Destination;
 import company.tap.gosellapi.open.models.Receipt;
 import company.tap.gosellapi.open.models.Reference;
 import company.tap.gosellapi.internal.api.models.SourceRequest;
@@ -513,6 +514,9 @@ final class PaymentProcessManager {
     boolean require3DSecure = provider
         .getRequires3DSecure();// this.dataSource.getRequires3DSecure() || this.chargeRequires3DSecure();
     Receipt receipt = provider.getReceiptSettings();
+
+    ArrayList<Destination> destinations = provider.getDestination();
+
     TransactionMode transactionMode = provider.getTransactionMode();
     System.out.println("transactionMode : " + transactionMode);
     switch (transactionMode) {
@@ -535,7 +539,8 @@ final class PaymentProcessManager {
             shouldSaveCard,
             statementDescriptor,
             require3DSecure,
-            receipt
+            receipt,
+            destinations
         );
 
         GoSellAPI.getInstance().createCharge(chargeRequest, new APIRequestCallback<Charge>() {
@@ -575,7 +580,8 @@ final class PaymentProcessManager {
             statementDescriptor,
             require3DSecure,
             receipt,
-            authorizeAction
+            authorizeAction,
+            destinations
         );
 
         GoSellAPI.getInstance()
