@@ -23,6 +23,7 @@ import company.tap.gosellapi.internal.api.models.Authorize;
 import company.tap.gosellapi.open.models.AuthorizeAction;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.open.models.Customer;
+import company.tap.gosellapi.open.models.Destination;
 import company.tap.gosellapi.open.models.Receipt;
 import company.tap.gosellapi.open.models.Reference;
 import company.tap.gosellapi.internal.api.requests.PaymentOptionsRequest;
@@ -46,7 +47,7 @@ public final class PaymentDataManager {
   @NonNull private IPaymentDataProvider dataProvider = new PaymentDataProvider();
   @NonNull private PaymentProcessListener processListener = new PaymentProcessListener();
   @NonNull private PaymentProcessManager paymentProcessManager = new PaymentProcessManager(
-      getPaymentDataProvider(), getProcessListener());
+          getPaymentDataProvider(), getProcessListener());
 
   private SDKSettings SDKSettings;
   private PaymentOptionsRequest paymentOptionsRequest;
@@ -57,44 +58,44 @@ public final class PaymentDataManager {
   private PaymentDataManager() {
   }
 
-    /**
-     * Calculate total amount string.
-     *
-     * @param feesAmount the fees amount
-     * @return the string
-     */
-    public String calculateTotalAmount(BigDecimal feesAmount) {
+  /**
+   * Calculate total amount string.
+   *
+   * @param feesAmount the fees amount
+   * @return the string
+   */
+  public String calculateTotalAmount(BigDecimal feesAmount) {
     return getPaymentProcessManager().calculateTotalAmount(feesAmount);
   }
 
-    /**
-     * Check saved card payment extra fees.
-     *
-     * @param savedCard                  the saved card
-     * @param paymentOptionsDataListener the payment options data listener
-     */
-    public void checkSavedCardPaymentExtraFees(SavedCard savedCard,
+  /**
+   * Check saved card payment extra fees.
+   *
+   * @param savedCard                  the saved card
+   * @param paymentOptionsDataListener the payment options data listener
+   */
+  public void checkSavedCardPaymentExtraFees(SavedCard savedCard,
                                              PaymentOptionsDataManager.PaymentOptionsDataListener paymentOptionsDataListener) {
     getPaymentProcessManager()
-        .checkSavedCardPaymentExtraFees(savedCard, paymentOptionsDataListener);
+            .checkSavedCardPaymentExtraFees(savedCard, paymentOptionsDataListener);
   }
 
-    /**
-     * Find saved card payment option payment option.
-     *
-     * @param savedCard the saved card
-     * @return the payment option
-     */
-    public PaymentOption findSavedCardPaymentOption(SavedCard savedCard) {
+  /**
+   * Find saved card payment option payment option.
+   *
+   * @param savedCard the saved card
+   * @return the payment option
+   */
+  public PaymentOption findSavedCardPaymentOption(SavedCard savedCard) {
     return getPaymentProcessManager().findPaymentOption(savedCard);
   }
 
-    /**
-     * Confirm otp code.
-     *
-     * @param otpCode the otp code
-     */
-    public void confirmOTPCode(String otpCode) {
+  /**
+   * Confirm otp code.
+   *
+   * @param otpCode the otp code
+   */
+  public void confirmOTPCode(String otpCode) {
     if(getChargeOrAuthorize()!=null ) {
       if(getChargeOrAuthorize() instanceof  Authorize)
         getPaymentProcessManager().confirmAuthorizeOTPCode((Authorize) getChargeOrAuthorize(), otpCode);
@@ -104,44 +105,44 @@ public final class PaymentDataManager {
     }
   }
 
-    /**
-     * Sets charge or authorize.
-     *
-     * @param charge the charge
-     */
-    public void setChargeOrAuthorize(Charge charge) {
+  /**
+   * Sets charge or authorize.
+   *
+   * @param charge the charge
+   */
+  public void setChargeOrAuthorize(Charge charge) {
     this.chargeOrAuthorize = charge;
   }
 
-    /**
-     * Gets charge or authorize.
-     *
-     * @return the charge or authorize
-     */
-    public Charge getChargeOrAuthorize() {
+  /**
+   * Gets charge or authorize.
+   *
+   * @return the charge or authorize
+   */
+  public Charge getChargeOrAuthorize() {
     return chargeOrAuthorize;
   }
 
-    /**
-     * Resend otp code.
-     */
-    public void resendOTPCode() {
+  /**
+   * Resend otp code.
+   */
+  public void resendOTPCode() {
     if(getChargeOrAuthorize()!= null) {
       if (getChargeOrAuthorize() instanceof Authorize)
-            getPaymentProcessManager().resendAuthorizeOTPCode((Authorize) getChargeOrAuthorize());
+        getPaymentProcessManager().resendAuthorizeOTPCode((Authorize) getChargeOrAuthorize());
       else
-            getPaymentProcessManager().resendChargeOTPCode((Charge) getChargeOrAuthorize());
+        getPaymentProcessManager().resendChargeOTPCode((Charge) getChargeOrAuthorize());
     }
   }
 
-    /**
-     * Gets available payment options card brands.
-     *
-     * @return the available payment options card brands
-     */
-    public ArrayList<CardBrand> getAvailablePaymentOptionsCardBrands() {
+  /**
+   * Gets available payment options card brands.
+   *
+   * @return the available payment options card brands
+   */
+  public ArrayList<CardBrand> getAvailablePaymentOptionsCardBrands() {
     PaymentOptionsResponse paymentOptionsResponse = getPaymentOptionsDataManager()
-        .getPaymentOptionsResponse();
+            .getPaymentOptionsResponse();
     if (paymentOptionsResponse != null)
       return getAvailableCardBrandsFromPaymentOptions(paymentOptionsResponse.getPaymentOptions());
     else
@@ -149,7 +150,7 @@ public final class PaymentDataManager {
   }
 
   private ArrayList<CardBrand> getAvailableCardBrandsFromPaymentOptions(
-      @NonNull ArrayList<PaymentOption> paymentOptions) {
+          @NonNull ArrayList<PaymentOption> paymentOptions) {
     ArrayList<CardBrand> cardBrands = new ArrayList<>();
     for (PaymentOption paymentOption : paymentOptions) {
       cardBrands.add(paymentOption.getBrand());
@@ -158,10 +159,10 @@ public final class PaymentDataManager {
     return cardBrands;
   }
 
-    /**
-     * Fire card saved before listener.
-     */
-    public void fireCardSavedBeforeListener() {
+  /**
+   * Fire card saved before listener.
+   */
+  public void fireCardSavedBeforeListener() {
     getProcessListener().didCardSavedBefore();
   }
 
@@ -182,117 +183,117 @@ public final class PaymentDataManager {
     private static final PaymentDataManager INSTANCE = new PaymentDataManager();
   }
 
-    /**
-     * Singleton getInstance method
-     *
-     * @return the instance
-     */
-    public static PaymentDataManager getInstance() {
+  /**
+   * Singleton getInstance method
+   *
+   * @return the instance
+   */
+  public static PaymentDataManager getInstance() {
     return SingletonCreationAdmin.INSTANCE;
   }
   /////////////////////////////////////////  ########### End of Singleton section ##################
 
-    /**
-     * Gets external data source.
-     *
-     * @return the external data source
-     */
-    public PaymentDataSource getExternalDataSource() {
+  /**
+   * Gets external data source.
+   *
+   * @return the external data source
+   */
+  public PaymentDataSource getExternalDataSource() {
     return externalDataSource;
   }
 
-    /**
-     * Sets external data source.
-     *
-     * @param externalDataSource the external data source
-     */
-    public void setExternalDataSource(PaymentDataSource externalDataSource) {
+  /**
+   * Sets external data source.
+   *
+   * @param externalDataSource the external data source
+   */
+  public void setExternalDataSource(PaymentDataSource externalDataSource) {
     this.externalDataSource = externalDataSource;
   }
 
-    /**
-     * Gets sdk settings.
-     *
-     * @return the sdk settings
-     */
-    public SDKSettings getSDKSettings() {
+  /**
+   * Gets sdk settings.
+   *
+   * @return the sdk settings
+   */
+  public SDKSettings getSDKSettings() {
     return SDKSettings;
   }
 
-    /**
-     * Sets sdk settings.
-     *
-     * @param SDKSettings the sdk settings
-     */
-    public void setSDKSettings(SDKSettings SDKSettings) {
+  /**
+   * Sets sdk settings.
+   *
+   * @param SDKSettings the sdk settings
+   */
+  public void setSDKSettings(SDKSettings SDKSettings) {
     this.SDKSettings = SDKSettings;
   }
 
-    /**
-     * Gets payment options request.
-     *
-     * @return the payment options request
-     */
-    public PaymentOptionsRequest getPaymentOptionsRequest() {
+  /**
+   * Gets payment options request.
+   *
+   * @return the payment options request
+   */
+  public PaymentOptionsRequest getPaymentOptionsRequest() {
     return paymentOptionsRequest;
   }
 
-    /**
-     * Gets bin lookup response.
-     *
-     * @return the bin lookup response
-     */
-    public BINLookupResponse getBinLookupResponse() {
+  /**
+   * Gets bin lookup response.
+   *
+   * @return the bin lookup response
+   */
+  public BINLookupResponse getBinLookupResponse() {
     return binLookupResponse;
   }
 
-    /**
-     * Decision for web payment url web payment url decision.
-     *
-     * @param url the url
-     * @return the web payment url decision
-     */
-    public WebPaymentURLDecision decisionForWebPaymentURL(String url) {
+  /**
+   * Decision for web payment url web payment url decision.
+   *
+   * @param url the url
+   * @return the web payment url decision
+   */
+  public WebPaymentURLDecision decisionForWebPaymentURL(String url) {
 
     return getPaymentProcessManager().decisionForWebPaymentURL(url);
   }
 
-    /**
-     * Sets payment options request.
-     *
-     * @param paymentOptionsRequest the payment options request
-     */
-    public void setPaymentOptionsRequest(PaymentOptionsRequest paymentOptionsRequest) {
+  /**
+   * Sets payment options request.
+   *
+   * @param paymentOptionsRequest the payment options request
+   */
+  public void setPaymentOptionsRequest(PaymentOptionsRequest paymentOptionsRequest) {
     this.paymentOptionsRequest = paymentOptionsRequest;
   }
 
-    /**
-     * Sets bin lookup response.
-     *
-     * @param binLookupResponse the bin lookup response
-     */
-    public void setBinLookupResponse(BINLookupResponse binLookupResponse) {
+  /**
+   * Sets bin lookup response.
+   *
+   * @param binLookupResponse the bin lookup response
+   */
+  public void setBinLookupResponse(BINLookupResponse binLookupResponse) {
     this.binLookupResponse = binLookupResponse;
 
   }
 
-    /**
-     * Create payment options data manager.
-     *
-     * @param paymentOptionsResponse the payment options response
-     */
-    public void createPaymentOptionsDataManager(PaymentOptionsResponse paymentOptionsResponse) {
+  /**
+   * Create payment options data manager.
+   *
+   * @param paymentOptionsResponse the payment options response
+   */
+  public void createPaymentOptionsDataManager(PaymentOptionsResponse paymentOptionsResponse) {
     paymentOptionsDataManager = new PaymentOptionsDataManager(paymentOptionsResponse);
   }
 
-    /**
-     * Gets payment options data manager.
-     *
-     * @param dataListener the data listener
-     * @return the payment options data manager
-     */
-    public PaymentOptionsDataManager getPaymentOptionsDataManager(
-      PaymentOptionsDataManager.PaymentOptionsDataListener dataListener) {
+  /**
+   * Gets payment options data manager.
+   *
+   * @param dataListener the data listener
+   * @return the payment options data manager
+   */
+  public PaymentOptionsDataManager getPaymentOptionsDataManager(
+          PaymentOptionsDataManager.PaymentOptionsDataListener dataListener) {
 
     if (paymentOptionsDataManager != null)
       return paymentOptionsDataManager.setListener(dataListener);
@@ -305,91 +306,91 @@ public final class PaymentDataManager {
     return paymentOptionsDataManager.setListener(dataListener);
   }
 
-    /**
-     * Gets payment options data manager.
-     *
-     * @return the payment options data manager
-     */
-    public PaymentOptionsDataManager getPaymentOptionsDataManager() {
+  /**
+   * Gets payment options data manager.
+   *
+   * @return the payment options data manager
+   */
+  public PaymentOptionsDataManager getPaymentOptionsDataManager() {
     return paymentOptionsDataManager;
   }
 
 
-    /**
-     * Retrieve charge or authorize or save card api.
-     *
-     * @param chargeOrAuthorize the charge or authorize
-     */
-    public void retrieveChargeOrAuthorizeOrSaveCardAPI(Charge chargeOrAuthorize) {
+  /**
+   * Retrieve charge or authorize or save card api.
+   *
+   * @param chargeOrAuthorize the charge or authorize
+   */
+  public void retrieveChargeOrAuthorizeOrSaveCardAPI(Charge chargeOrAuthorize) {
     getPaymentProcessManager().retrieveChargeOrAuthorizeOrSaveCardAPI(chargeOrAuthorize);
   }
 
 
-    /**
-     * Check web payment extra fees.
-     *
-     * @param model                      the model
-     * @param paymentOptionsDataListener the payment options data listener
-     */
-    public void checkWebPaymentExtraFees(WebPaymentViewModel model,
+  /**
+   * Check web payment extra fees.
+   *
+   * @param model                      the model
+   * @param paymentOptionsDataListener the payment options data listener
+   */
+  public void checkWebPaymentExtraFees(WebPaymentViewModel model,
                                        PaymentOptionsDataManager.PaymentOptionsDataListener paymentOptionsDataListener) {
     getPaymentProcessManager()
-        .checkPaymentExtraFees(model.getPaymentOption(), paymentOptionsDataListener,
-            PaymentType.WEB);
+            .checkPaymentExtraFees(model.getPaymentOption(), paymentOptionsDataListener,
+                    PaymentType.WEB);
   }
 
-    /**
-     * Check card payment extra fees.
-     *
-     * @param model                      the model
-     * @param paymentOptionsDataListener the payment options data listener
-     */
-    public void checkCardPaymentExtraFees(CardCredentialsViewModel model,
+  /**
+   * Check card payment extra fees.
+   *
+   * @param model                      the model
+   * @param paymentOptionsDataListener the payment options data listener
+   */
+  public void checkCardPaymentExtraFees(CardCredentialsViewModel model,
                                         PaymentOptionsDataManager.PaymentOptionsDataListener paymentOptionsDataListener) {
     getPaymentProcessManager()
-        .checkPaymentExtraFees(model.getSelectedCardPaymentOption(), paymentOptionsDataListener,
-            PaymentType.CARD);
+            .checkPaymentExtraFees(model.getSelectedCardPaymentOption(), paymentOptionsDataListener,
+                    PaymentType.CARD);
   }
 
-    /**
-     * Calculate card extra fees big decimal.
-     *
-     * @param paymentOption the payment option
-     * @return the big decimal
-     */
-    public BigDecimal calculateCardExtraFees(PaymentOption paymentOption) {
+  /**
+   * Calculate card extra fees big decimal.
+   *
+   * @param paymentOption the payment option
+   * @return the big decimal
+   */
+  public BigDecimal calculateCardExtraFees(PaymentOption paymentOption) {
     return getPaymentProcessManager().calculateExtraFeesAmount(paymentOption);
   }
 
-    /**
-     * Initiate payment.
-     *
-     * @param model    the model
-     * @param listener the listener
-     */
-    public void initiatePayment(PaymentOptionViewModel model, IPaymentProcessListener listener) {
+  /**
+   * Initiate payment.
+   *
+   * @param model    the model
+   * @param listener the listener
+   */
+  public void initiatePayment(PaymentOptionViewModel model, IPaymentProcessListener listener) {
     getProcessListener().addListener(listener);
     getPaymentProcessManager().startPaymentProcess(model);
   }
 
-    /**
-     * Initiate saved card payment.
-     *
-     * @param savedCard              the saved card
-     * @param recentSectionViewModel the recent section view model
-     * @param listener               the listener
-     */
-    public void initiateSavedCardPayment(SavedCard savedCard,
+  /**
+   * Initiate saved card payment.
+   *
+   * @param savedCard              the saved card
+   * @param recentSectionViewModel the recent section view model
+   * @param listener               the listener
+   */
+  public void initiateSavedCardPayment(SavedCard savedCard,
                                        RecentSectionViewModel recentSectionViewModel,
                                        IPaymentProcessListener listener) {
     getProcessListener().addListener(listener);
     getPaymentProcessManager().startSavedCardPaymentProcess(savedCard, recentSectionViewModel);
   }
 
-    /**
-     * The type Web payment url decision.
-     */
-    public final class WebPaymentURLDecision {
+  /**
+   * The type Web payment url decision.
+   */
+  public final class WebPaymentURLDecision {
 
     @NonNull private boolean shouldLoad;
     @NonNull private boolean shouldCloseWebPaymentScreen;
@@ -397,59 +398,59 @@ public final class PaymentDataManager {
 
     @Nullable private String tapID;
 
-        /**
-         * Should load boolean.
-         *
-         * @return the boolean
-         */
-        @NonNull
+    /**
+     * Should load boolean.
+     *
+     * @return the boolean
+     */
+    @NonNull
     public boolean shouldLoad() {
 
       return shouldLoad;
     }
 
-        /**
-         * Should close web payment screen boolean.
-         *
-         * @return the boolean
-         */
-        @NonNull
+    /**
+     * Should close web payment screen boolean.
+     *
+     * @return the boolean
+     */
+    @NonNull
     boolean shouldCloseWebPaymentScreen() {
 
       return shouldCloseWebPaymentScreen;
     }
 
-        /**
-         * Redirection finished boolean.
-         *
-         * @return the boolean
-         */
-        @NonNull
+    /**
+     * Redirection finished boolean.
+     *
+     * @return the boolean
+     */
+    @NonNull
     boolean redirectionFinished() {
 
       return redirectionFinished;
     }
 
-        /**
-         * Gets tap id.
-         *
-         * @return the tap id
-         */
-        @Nullable
+    /**
+     * Gets tap id.
+     *
+     * @return the tap id
+     */
+    @Nullable
     String getTapID() {
 
       return tapID;
     }
 
-        /**
-         * Instantiates a new Web payment url decision.
-         *
-         * @param shouldLoad                  the should load
-         * @param shouldCloseWebPaymentScreen the should close web payment screen
-         * @param redirectionFinished         the redirection finished
-         * @param tapID                       the tap id
-         */
-        WebPaymentURLDecision(@NonNull boolean shouldLoad, @NonNull boolean shouldCloseWebPaymentScreen,
+    /**
+     * Instantiates a new Web payment url decision.
+     *
+     * @param shouldLoad                  the should load
+     * @param shouldCloseWebPaymentScreen the should close web payment screen
+     * @param redirectionFinished         the redirection finished
+     * @param tapID                       the tap id
+     */
+    WebPaymentURLDecision(@NonNull boolean shouldLoad, @NonNull boolean shouldCloseWebPaymentScreen,
                           @NonNull boolean redirectionFinished, @Nullable String tapID) {
 
       this.shouldLoad = shouldLoad;
@@ -529,7 +530,7 @@ public final class PaymentDataManager {
     public boolean getRequires3DSecure() {
 
       boolean merchantRequires3DSecure = getSDKSettings().getData().getPermissions()
-          .contains(Permission.THREEDSECURE_DISABLED);
+              .contains(Permission.THREEDSECURE_DISABLED);
       return merchantRequires3DSecure || getExternalDataSource().getRequires3DSecure();
     }
 
@@ -562,6 +563,14 @@ public final class PaymentDataManager {
       }
 
       return authorizeAction;
+    }
+
+
+    @Nullable
+    @Override
+    public ArrayList<Destination> getDestination(){
+      ArrayList<Destination> destinations = getExternalDataSource().getDestination();
+      return destinations;
     }
   }
 
@@ -645,12 +654,12 @@ public final class PaymentDataManager {
     return processListener;
   }
 
-    /**
-     * Gets payment process manager.
-     *
-     * @return the payment process manager
-     */
-    @NonNull
+  /**
+   * Gets payment process manager.
+   *
+   * @return the payment process manager
+   */
+  @NonNull
   public PaymentProcessManager getPaymentProcessManager() {
 
     return paymentProcessManager;

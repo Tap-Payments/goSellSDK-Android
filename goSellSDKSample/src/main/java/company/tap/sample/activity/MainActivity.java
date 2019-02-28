@@ -130,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
 
         sdkSession.setAuthorizeAction(settingsManager.getAuthorizeAction());
 
+        sdkSession.setDestination(settingsManager.getDestination());
 //        // Persist Payment Data Source
 //        sdkSession.persistPaymentDataSource();
 
