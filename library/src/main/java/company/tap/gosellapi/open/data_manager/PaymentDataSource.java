@@ -15,7 +15,6 @@ import java.util.HashMap;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.gosellapi.open.models.AuthorizeAction;
 import company.tap.gosellapi.open.models.Customer;
-import company.tap.gosellapi.open.models.Destination;
 import company.tap.gosellapi.open.models.PaymentItem;
 import company.tap.gosellapi.open.models.Receipt;
 import company.tap.gosellapi.open.models.Reference;
@@ -59,9 +58,6 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
     Receipt receiptSettings;
     private @Nullable
     AuthorizeAction authorizeAction;
-    private @Nullable
-    ArrayList<Destination> destination;
-
     private @NonNull
     Context context;
 
@@ -231,14 +227,6 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
          this.authorizeAction = authorizeAction;
    }
 
-    /**
-     * set Destination
-     * @return
-     */
-    public void setDestination(ArrayList<Destination> destination){
-        this.destination = destination;
-    }
-
 /////////////////   Getter's Area  /////////////////////////////////////////////////////////////////
     @Override
     public @NonNull
@@ -330,9 +318,4 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
         return authorizeAction;
     }
 
-    @Override
-    public @Nullable
-    ArrayList<Destination> getDestination(){
-        return  destination;
-    }
 }

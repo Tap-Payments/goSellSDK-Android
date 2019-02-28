@@ -7,13 +7,11 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import company.tap.gosellapi.open.models.AuthorizeAction;
 import company.tap.gosellapi.open.models.Customer;
 import company.tap.gosellapi.internal.api.models.Order;
-import company.tap.gosellapi.open.models.Destination;
 import company.tap.gosellapi.open.models.Receipt;
 import company.tap.gosellapi.open.models.Reference;
 import company.tap.gosellapi.internal.api.models.SourceRequest;
@@ -63,10 +61,9 @@ public final class CreateAuthorizeRequest extends CreateChargeRequest {
                                   @Nullable String                  statementDescriptor,
                                   @Nullable boolean                 threeDSecure,
                                   @Nullable Receipt                 receipt,
-                                  @NonNull  AuthorizeAction         authorizeAction,
-                                  @Nullable ArrayList<Destination>  destinations) {
+                                  @NonNull  AuthorizeAction         authorizeAction) {
 
-        super(amount, currency, customer, fee, order, redirect, post, source, description, metadata, reference, saveCard, statementDescriptor, threeDSecure, receipt,destinations);
+        super(amount, currency, customer, fee, order, redirect, post, source, description, metadata, reference, saveCard, statementDescriptor, threeDSecure, receipt);
 
         this.authorizeAction = authorizeAction;
     }

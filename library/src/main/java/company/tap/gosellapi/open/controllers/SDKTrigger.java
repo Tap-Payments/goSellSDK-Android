@@ -22,7 +22,6 @@ import company.tap.gosellapi.open.data_manager.PaymentDataSource;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.gosellapi.open.models.AuthorizeAction;
 import company.tap.gosellapi.open.models.Customer;
-import company.tap.gosellapi.open.models.Destination;
 import company.tap.gosellapi.open.models.PaymentItem;
 import company.tap.gosellapi.open.models.Receipt;
 import company.tap.gosellapi.open.models.Reference;
@@ -257,15 +256,6 @@ public class SDKTrigger implements View.OnClickListener {
    */
   public void setAuthorizeAction(AuthorizeAction authorizeAction){
     paymentDataSource.setAuthorizeAction(authorizeAction);
-  }
-
-
-  /**
-   * set Destination
-   */
-
-  public void setDestination(ArrayList<Destination> destination){
-    paymentDataSource.setDestination(destination);
   }
 
   /**
