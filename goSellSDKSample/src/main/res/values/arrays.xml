@@ -90,6 +90,19 @@
         <item>usd</item>
     </string-array>
 
+    <string-array name="pref_array_sdk_transactions_fees_entries">
+        <item>@string/FEES_EXTRA</item>
+        <item>@string/FEES_INCLUDED</item>
+    </string-array>
+
+
+    <string-array name="pref_array_sdk_transaction_fees_values">
+        <item>FEES_EXTRA</item>
+        <item>FEES_INCLUDED</item>
+    </string-array>
+
+
+
 
 
 

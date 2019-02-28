@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">goSellSDKSample</string>
     <string name="title_activity_settings">Settings</string>
 
@@ -46,6 +46,12 @@
     <string name="sr">SR (Saudi Riyal)</string>
     <string name="usd">USD (US Dollar)</string>
 
+
+    <string name="key_sdk_transaction_fees">key_sdk_transaction_fees</string>
+    <string name="FEES_EXTRA">Fees Extra</string>
+    <string name="FEES_INCLUDED">Fees Included</string>
+    <string name="summary_sdk_transaction_fees">Select transaction fees</string>
+    <string name="title_sdk_transaction_fees" tools:ignore="ExtraTranslation">Transaction fees</string>
 
     <string name="category_customer_title">Customers</string>
     <string name="select_customer">Customers</string>

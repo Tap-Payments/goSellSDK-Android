@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import company.tap.gosellapi.open.enums.FeesOptions;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 import company.tap.gosellapi.open.models.AuthorizeAction;
@@ -114,4 +115,10 @@ public interface IPaymentDataProvider {
      * get Destination
      */
     @Nullable   ArrayList<Destination>      getDestination();
+
+    /**
+     * get Fees Options
+     * @return
+     */
+    @NonNull    FeesOptions                 getFeesOptions();
 }

@@ -34,6 +34,7 @@ import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptio
 import company.tap.gosellapi.internal.utils.Utils;
 import company.tap.gosellapi.internal.viewholders.CardCredentialsViewHolder;
 import company.tap.gosellapi.internal.viewholders.PaymentOptionsBaseViewHolder;
+import company.tap.gosellapi.open.enums.FeesOptions;
 import company.tap.tapcardvalidator_android.CardBrand;
 import company.tap.tapcardvalidator_android.CardValidationState;
 import company.tap.tapcardvalidator_android.CardValidator;
@@ -459,7 +460,8 @@ public class CardCredentialsViewModel
   }
 
   private void updatePayButtonWithExtraFees(PaymentOption paymentOption){
-      parentDataManager.updatePayButtonWithExtraFees(paymentOption);
+        if(PaymentDataManager.getInstance().getExternalDataSource().getFeesOptions()== FeesOptions.FEES_EXTRA)
+            parentDataManager.updatePayButtonWithExtraFees(paymentOption);
   }
 
     /**

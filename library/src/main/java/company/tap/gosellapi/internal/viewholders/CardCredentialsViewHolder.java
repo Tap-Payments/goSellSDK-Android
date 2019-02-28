@@ -290,7 +290,7 @@ public class CardCredentialsViewHolder
         if(PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode() == TransactionMode.SAVE_CARD){
             saveCardSwitch.setVisibility(View.GONE);
             saveCardDescriptionTextView.setText(itemView.getResources().getString(R.string.textview_disclaimer_save_card_info));
-//            saveCardDescriptionTextView.setTextSize(12);
+
             TextViewCompat.setTextAppearance(saveCardDescriptionTextView,R.style.SecurityText);
         }
 

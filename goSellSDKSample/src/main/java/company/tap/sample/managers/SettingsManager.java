@@ -18,6 +18,7 @@ import company.tap.gosellapi.internal.api.models.AmountModificator;
 import company.tap.gosellapi.internal.api.models.PhoneNumber;
 import company.tap.gosellapi.internal.api.models.Quantity;
 import company.tap.gosellapi.open.data_manager.PaymentResultDataManager;
+import company.tap.gosellapi.open.enums.FeesOptions;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.gosellapi.open.models.AuthorizeAction;
 import company.tap.gosellapi.open.models.Customer;
@@ -128,6 +129,11 @@ public class SettingsManager {
 
 
     //////////////////////////////////////   Get Payment Settings ////////////////////////////////
+
+    /**
+     * get transaction currency
+     * @return
+     */
     public TapCurrency getTransactionCurrency(){
         String trx_curr = pref.getString(context.getString(company.tap.gosellapi.R.string.key_sdk_transaction_currency), "");
         TapCurrency currency;
@@ -140,10 +146,10 @@ public class SettingsManager {
     }
 
 
-
-
-
-
+    /**
+     * get transaction mode
+     * @return
+     */
     public TransactionMode getTransactionsMode(){
 
         TransactionMode transactionMode = null;
@@ -162,6 +168,10 @@ public class SettingsManager {
         return transactionMode;
     }
 
+    /**
+     * get customer
+     * @return
+     */
     public Customer getCustomer(){
 
         Customer customer;
@@ -206,6 +216,10 @@ public class SettingsManager {
         return customer;
     }
 
+    /**
+     * get payment items
+     * @return
+     */
     public ArrayList<PaymentItem> getPaymentItems(){
         ArrayList<PaymentItem> items = new ArrayList<>();
 
@@ -219,6 +233,10 @@ public class SettingsManager {
         return  items;
     }
 
+    /**
+     * get taxes list
+     * @return
+     */
     public ArrayList<Tax> getTaxes(){
         ArrayList<Tax> taxes = new ArrayList<Tax>();
         taxes.
@@ -228,6 +246,10 @@ public class SettingsManager {
         return taxes;
     }
 
+    /**
+     * get shipping list
+     * @return
+     */
     public ArrayList<Shipping> getShippingList(){
         ArrayList<Shipping> shipping = new ArrayList<Shipping>();
         shipping.
@@ -237,21 +259,37 @@ public class SettingsManager {
         return shipping;
     }
 
+    /**
+     * get post url
+     * @return
+     */
     public String getPostURL(){
 //        Base URL
         return  "https://tap.company";
     }
 
+    /**
+     * get payment description
+     * @return
+     */
     public String getPaymentDescription(){
         return  "Test payment description.";
     }
 
+    /**
+     * get payment meta data
+     * @return
+     */
     public HashMap<String,String> getPaymentMetaData(){
         HashMap<String,String> paymentMetadata = new HashMap<>();
         paymentMetadata.put("metadata_key_1", "metadata value 1");
         return paymentMetadata;
     }
 
+    /**
+     * get payment reference
+     * @return
+     */
     public Reference getPaymentReference(){
         Reference paymentReference = new Reference(
                 "acquirer_1",
@@ -263,25 +301,44 @@ public class SettingsManager {
         return paymentReference;
     }
 
+    /**
+     * get payment statement descriptor
+     * @return
+     */
     public String getPaymentStatementDescriptor(){
         return "Test payment statement descriptor.";
     }
 
+    /**
+     * check if transaction requires 3D secure
+     * @return
+     */
     public boolean is3DSecure(){
         return true;
     }
 
 
+    /**
+     * get receipt settings
+     * @return
+     */
     public Receipt getReceipt(){
         return new Receipt(true, true);
     }
 
+    /**
+     * get authorize action
+     * @return
+     */
     public AuthorizeAction getAuthorizeAction(){
         return new AuthorizeAction(AuthorizeActionType.VOID, 10);
     }
 
 
-
+    /**get array list of destination accounts
+     *
+     * @return
+     */
     public ArrayList<Destination> getDestination() {
         ArrayList<Destination> destinations = new ArrayList<Destination>();
         destinations.
@@ -295,6 +352,25 @@ public class SettingsManager {
                 ));
         return destinations;
     }
+
+    /**
+     * retrieve fees options selected by merchant
+     * @return
+     */
+    public FeesOptions getFeesOption(String key){
+
+        String settings_fees_selection =
+                pref.getString(key, "FEES_EXTRA");
+
+        if ("FEES_INCLUDED".equalsIgnoreCase(settings_fees_selection))
+            return FeesOptions.FEES_INCLUDED;
+
+        else
+        return FeesOptions.FEES_EXTRA;
+
+    }
+
+
     //////////////////////////////////////////////////  PayButton /////////////////////////////////
     public int getTapButtonEnabledBackgroundColor(String key){
         String color = pref.getString(key, "");

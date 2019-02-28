@@ -26,6 +26,7 @@ import company.tap.gosellapi.internal.data_managers.payment_options.view_models_
 import company.tap.gosellapi.internal.utils.ActivityDataExchanger;
 import company.tap.gosellapi.internal.utils.CompoundFilter;
 import company.tap.gosellapi.internal.utils.Utils;
+import company.tap.gosellapi.open.enums.FeesOptions;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import io.card.payment.CreditCard;
 
@@ -90,11 +91,17 @@ public class PaymentOptionsDataManager {
 
         /**
          * Update pay button with saved card extra fees.
-         *
-         * @param recentItem             the recent item
-         * @param recentSectionViewModel the recent section view model
+         * @param recentItem
          */
-        void updatePayButtonWithSavedCardExtraFees(SavedCard recentItem,RecentSectionViewModel recentSectionViewModel);
+        void updatePayButtonWithSavedCardExtraFees(SavedCard recentItem);
+
+      /**
+       * Enable pay button in case of saved card is selected
+        * @param recentItem
+       * @param _recentSectionViewModel
+       */
+        void enablePayButtonWithSavedCard(SavedCard recentItem,
+                                               RecentSectionViewModel _recentSectionViewModel);
 
         /**
          * Start web payment.
@@ -324,9 +331,16 @@ public class PaymentOptionsDataManager {
      * @param recentSectionViewModel the recent section view model
      */
     public void recentPaymentItemClicked(int position, SavedCard recentItem,RecentSectionViewModel recentSectionViewModel) {
-    setRecentPaymentFocusedCard(position);
-    CardCredentialsViewModel model = getModelsHandler().findCardPaymentModel();
-    listener.updatePayButtonWithSavedCardExtraFees(recentItem,recentSectionViewModel);
+
+      setRecentPaymentFocusedCard(position);
+
+      //    CardCredentialsViewModel model = getModelsHandler().findCardPaymentModel();
+
+      listener.enablePayButtonWithSavedCard(recentItem,recentSectionViewModel);
+
+    if(PaymentDataManager.getInstance().getExternalDataSource().getFeesOptions()!= FeesOptions.FEES_INCLUDED)
+    listener.updatePayButtonWithSavedCardExtraFees(recentItem);
+
   }
 
     /**

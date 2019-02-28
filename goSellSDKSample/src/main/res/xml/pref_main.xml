@@ -59,6 +59,15 @@
             android:title="@string/title_sdk_transaction_currency" />
 
 
+        <ListPreference
+            android:defaultValue="FEES_EXTRA"
+            android:dialogTitle="@string/title_sdk_transaction_fees"
+            android:entries="@array/pref_array_sdk_transactions_fees_entries"
+            android:entryValues="@array/pref_array_sdk_transaction_fees_values"
+            android:key="@string/key_sdk_transaction_fees"
+            android:summary="@string/summary_sdk_transaction_fees"
+            android:title="@string/title_sdk_transaction_fees" />
+
         <Preference android:title="@string/select_customer">
             <intent
                 android:action="SETTING_START_CUSTOMER_ACTIVITY"

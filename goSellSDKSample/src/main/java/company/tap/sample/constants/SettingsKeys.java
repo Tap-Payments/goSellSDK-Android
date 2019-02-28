@@ -7,4 +7,8 @@ public class SettingsKeys {
 
     public static String TAP_BUTTON_DISABLED_TITLE_COLOR_KEY = "appearance_tap_button_disabled_titled_color_key";
     public static String TAP_BUTTON_ENABLED_TITLE_COLOR_KEY = "appearance_tap_button_enabled_titled_color_key";
+
+
+
+    public static String FEES_OPTION_KEY = "key_sdk_transaction_fees";
 }
