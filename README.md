@@ -112,6 +112,36 @@ Don't forget to import the class at the beginning of the file:
 ```android
  import company.tap.gosellapi.GoSellSDK;
 ```
+<a name="setup_gosellsdk_class_properties_mode"></a>
+### Mode
+
+SDK mode defines which mode SDK is operating in, either **sandbox** or **production**.
+
+Use this property to test your integration with the sandbox transactions.
+
+**WARNING:** Default value of this property is *production* which means your transaction are real transactions. Switch to *sandbox* while in development.
+
+<a name="setup_gosellsdk_class_properties_language"></a>
+
+Localization language of the UI part of the SDK. This is locale identifier.
+
+Make sure it consists only from 2 lowercased letters and is presented in the list of **availableLanguages** property of *goSellSDK* class.
+
+**Notice:** SDK user interface layout direction is based on the language you select, which means that if you would like to have it in Arabic language, the UI will be switched to RTL (right-to-left).
+
+### Available Languages
+
+This property returns the list of locale identifiers the SDK is currently localized into.
+
+Currently we support the following languages:
+
+<table>
+	<th style="text-align:center">Language</th><th style="text-align:center">Locale Identifier</th>
+	<tr>
+		<td>English</td><td>en</td>
+	</tr>
+</table>
+
 
 <a name="usage"></a>
 #Usage
