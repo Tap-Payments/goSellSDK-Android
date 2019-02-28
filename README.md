@@ -23,12 +23,12 @@ A library that fully covers payment/authorization/card saving process inside you
        1. [Start SDK with Pay Button](#start_sdk_with_pay_button)
        2. [Init Pay Button](#pay_button_init)
        3. [Appearance](#pay_button_appearance)
-    2. [API SDKTrigger](#api_sdkTrigger)
-    	 1. [Properties](#api_sdkTrigger_properties)
-    	 2. [Methods](#api_sdkTrigger_methods)
-    3. [SDKTrigger Data Source](#sdkTrigger_data_source)
-        1. [Structure](#sdkTrigger_data_source_structure)
-        2. [Samples](#sdkTrigger_data_source_samples)
+    2. [API SDKSession](#api_sdkSession)
+    	 1. [Properties](#api_sdkSession_properties)
+    	 2. [Methods](#api_sdkSession_methods)
+    3. [SDKSession Data Source](#sdkSession_data_source)
+        1. [Structure](#sdkSession_data_source_structure)
+        2. [Samples](#sdkSession_data_source_samples)
     4. [SDK Delegate](#sdk_delegate)
         1. [Charge Result Enum](#charge_result)
         2. [Get Payment result](#getPaymentResult)
@@ -174,38 +174,38 @@ If you would like to include it do the following:
 
 <a name="pay_button_appearance"></a>
 ## Appearance
- To customize pay button appearance you must instantiate an object of SDKTrigger and then use it to do the customization as following:
+ To customize pay button appearance you must instantiate an object of SDKSession and then use it to do the customization as following:
 
- 1. Instantiate an instance of SDKTrigger
+ 1. Instantiate an instance of SDKSession
  ```android
-      sdkTrigger = new SDKTrigger();
+      sdkSession = new SDKSession();
  ```
  2. set button view
  ```android
-     sdkTrigger.setButtonView(payButtonView, this, SDK_REQUEST_CODE);
+     sdkSession.setButtonView(payButtonView, this, SDK_REQUEST_CODE);
  ```
  3. setup button view background
      1. setup pay button using xml selector
      ```android
-         sdkTrigger.setPayButtonBackgroundSelector(YOUR_XML_SELECTOR);
+         sdkSession.setPayButtonBackgroundSelector(YOUR_XML_SELECTOR);
      ```
      2. setup pay button using color list
      ```android
-         sdkTrigger.setupBackgroundWithColorList(ENABLED_COLOR_CODE,DISABLED_COLOR_CODE);
+         sdkSession.setupBackgroundWithColorList(ENABLED_COLOR_CODE,DISABLED_COLOR_CODE);
      ```
   4. setup pay button font type face
   ```android
-         sdkTrigger.setupPayButtonFontTypeFace(FONT_FACE);
+         sdkSession.setupPayButtonFontTypeFace(FONT_FACE);
   ```
   5. set pay button text color
   ```android
-         sdkTrigger.setupTextColor(ENABLED_TEXT_COLOR, DISABLED_TEXT_COLOR);
+         sdkSession.setupTextColor(ENABLED_TEXT_COLOR, DISABLED_TEXT_COLOR);
   ```
-<a name="api_sdkTrigger"></a>
-## SDKTrigger
-**SDKTrigger** is the main interface for goSellSDK library from you application, so you can use it to start SDK with pay button or without pay button.
+<a name="api_sdkSession"></a>
+## SDKSession
+**SDKSession** is the main interface for goSellSDK library from you application, so you can use it to start SDK with pay button or without pay button.
 
-<a name="api_sdkTrigger_properties"></a>
+<a name="api_sdkSession_properties"></a>
 ### Properties
 
 <table style="text-align:center">
@@ -234,7 +234,7 @@ If you would like to include it do the following:
 
 </table>
 
-<a name="api_sdkTrigger_methods"></a>
+<a name="api_sdkSession_methods"></a>
 ### Methods
 
 <table style="text-align:center">
@@ -269,8 +269,8 @@ If you would like to include it do the following:
 
 </table>
 
-<a name="sdkTrigger_data_source"></a>
-### SDKTrigger Payment Data Source
+<a name="sdkSession_data_source"></a>
+### SDKSession Payment Data Source
 
 **PaymentDataSource** is an interface which you should implement somewhere in your code to pass payment information in order to be able to access payment flow within the SDK.
 
@@ -388,17 +388,17 @@ The following table describes its structure and specifies which fields are requi
 </tr>
 </table>
 
-<a name="sdkTrigger_data_source_samples"></a>
+<a name="sdkSession_data_source_samples"></a>
 ## Samples
- SDKTrigger class supports you with all methods needed to setup PaymentDataSource object as following:
+ SDKSession class supports you with all methods needed to setup PaymentDataSource object as following:
 
  1. Instantiate an instance of PaymentDataSource
  ```java
-      sdkTrigger.instantiatePaymentDataSource();
+      sdkSession.instantiatePaymentDataSource();
  ```
  2. Set TransactionCurrency
  ```java
-      sdkTrigger.setTransactionCurrency(TapCurrency);
+      sdkSession.setTransactionCurrency(TapCurrency);
  ```
  **Transaction Currency** model class:
  ```java
@@ -412,7 +412,7 @@ The following table describes its structure and specifies which fields are requi
  ```
   3. Set TransactionMode
      ```java
-          sdkTrigger.setTransactionMode(TransactionMode); // PURCHASE,AUTHORIZE_CAPTURE, SAVE_CARD
+          sdkSession.setTransactionMode(TransactionMode); // PURCHASE,AUTHORIZE_CAPTURE, SAVE_CARD
      ```
 
 **Transaction Mode** is an enum:
@@ -426,7 +426,7 @@ The following table describes its structure and specifies which fields are requi
 ```
    4. Set Customer
  ```android
-      sdkTrigger.setCustomer(Customer);
+      sdkSession.setCustomer(Customer);
  ```
 
  **Customer** model class:
@@ -463,7 +463,7 @@ The following table describes its structure and specifies which fields are requi
 ```
     5. Set Payment Items
  ```java
-      sdkTrigger.setPaymentItems(ArraList<Item>);
+      sdkSession.setPaymentItems(ArraList<Item>);
  ```
 
  **Item** model class:
@@ -503,7 +503,7 @@ The following table describes its structure and specifies which fields are requi
 
  5. Set Taxes
  ```android
-      sdkTrigger.setTaxes(ArraList<Tax>);
+      sdkSession.setTaxes(ArraList<Tax>);
  ```
   **Tax** model class:
 ```java
@@ -524,7 +524,7 @@ The following table describes its structure and specifies which fields are requi
 ```
   6. Set Shipping
  ```android
-      sdkTrigger.setShipping(ArraList<Shipping>);
+      sdkSession.setShipping(ArraList<Shipping>);
  ```
  **Tax** is a model class:
 ```java
@@ -545,7 +545,7 @@ The following table describes its structure and specifies which fields are requi
 ```
    7. Set Post URL
  ```android
-      sdkTrigger.setPostURL(String);
+      sdkSession.setPostURL(String);
  ```
  **Post URL**:
 ```java
@@ -553,7 +553,7 @@ The following table describes its structure and specifies which fields are requi
 ```
  8. Set Payment Description
  ```android
-      sdkTrigger.setPaymentDescription(String);
+      sdkSession.setPaymentDescription(String);
  ```
   **Description**:
 ```java
@@ -561,7 +561,7 @@ The following table describes its structure and specifies which fields are requi
 ```
  9. Set Payment Metadata
  ```android
-      sdkTrigger.setPaymentMetadata(HashMap<String,String>);
+      sdkSession.setPaymentMetadata(HashMap<String,String>);
  ```
  **Metadata** HashMap:
 ```java
@@ -571,7 +571,7 @@ The following table describes its structure and specifies which fields are requi
 ```
   10. Set Payment Reference
  ```android
-      sdkTrigger.setPaymentReference(Reference);
+      sdkSession.setPaymentReference(Reference);
  ```
   **Reference** model class:
 ```java
@@ -604,7 +604,7 @@ The following table describes its structure and specifies which fields are requi
 ```
    11. Set Payment Descriptor
  ```android
-      sdkTrigger.setPaymentStatementDescriptor(String);
+      sdkSession.setPaymentStatementDescriptor(String);
  ```
    **Descriptor** String:
 ```java
@@ -612,7 +612,7 @@ The following table describes its structure and specifies which fields are requi
 ```
    12. Set 3DSecure
  ```android
-      sdkTrigger.isRequires3DSecure(boolean);
+      sdkSession.isRequires3DSecure(boolean);
  ```
     **3D Secure** Boolean:
 ```java
@@ -620,7 +620,7 @@ The following table describes its structure and specifies which fields are requi
 ```
    13. Set Receipt Settings
  ```android
-      sdkTrigger.setReceiptSettings(Receipt);
+      sdkSession.setReceiptSettings(Receipt);
  ```
    **Receipt** model class:
 ```java
@@ -641,7 +641,7 @@ The following table describes its structure and specifies which fields are requi
 ```
     14. Set Authorize Action
  ```android
-      sdkTrigger.setAuthorizeAction(AuthorizeAction);
+      sdkSession.setAuthorizeAction(AuthorizeAction);
  ```
     **AuthorizeAction** model class:
 ```java

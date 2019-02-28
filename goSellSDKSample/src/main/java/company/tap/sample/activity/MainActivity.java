@@ -2,11 +2,9 @@ package company.tap.sample.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -20,19 +18,17 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import company.tap.gosellapi.internal.api.models.Charge;
-import company.tap.gosellapi.internal.api.responses.SDKSettings;
 import company.tap.gosellapi.open.buttons.PayButtonView;
-import company.tap.gosellapi.open.controllers.SDKTrigger;
+import company.tap.gosellapi.open.controllers.SDKSession;
 import company.tap.gosellapi.open.delegate.PaymentProcessDelegate;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.sample.R;
-import company.tap.sample.constants.SettingsKeys;
 import company.tap.sample.managers.SettingsManager;
 
 
 public class MainActivity extends AppCompatActivity {
     private final int SDK_REQUEST_CODE = 1001;
-    private SDKTrigger sdkTrigger;
+    private SDKSession sdkSession;
     private PayButtonView payButtonView;
     private SettingsManager settingsManager;
 
@@ -43,12 +39,12 @@ public class MainActivity extends AppCompatActivity {
         settingsManager = SettingsManager.getInstance();
         settingsManager.setPref(this);
 
-        if (sdkTrigger == null)
-            sdkTrigger = new SDKTrigger();
+        if (sdkSession == null)
+            sdkSession = new SDKSession();
 
         initButton();
         setCardSectionAppearance();
-        triggerSDK();
+        startSDKSession();
     }
 
     private void initButton() {
@@ -56,11 +52,11 @@ public class MainActivity extends AppCompatActivity {
         /***
          *  setPayButtonBackgroundSelector
           */
-         //sdkTrigger.setPayButtonBackgroundSelector(ContextCompat.getDrawable(this, company.tap.gosellapi.R.drawable.btn_pay_selector);
+         //sdkSession.setPayButtonBackgroundSelector(ContextCompat.getDrawable(this, company.tap.gosellapi.R.drawable.btn_pay_selector);
         /***
          * setupBackgroundWithColorList
          */
-//        sdkTrigger.setupBackgroundWithColorList(settingsManager.getTapButtonEnabledBackgroundColor(SettingsKeys.TAP_BUTTON_ENABLED_BACKGROUND_COLOR_KEY),
+//        sdkSession.setupBackgroundWithColorList(settingsManager.getTapButtonEnabledBackgroundColor(SettingsKeys.TAP_BUTTON_ENABLED_BACKGROUND_COLOR_KEY),
 //                settingsManager.getTapButtonDisabledBackgroundColor(SettingsKeys.TAP_BUTTON_DISABLED_BACKGROUND_COLOR_KEY)
 //                );
 
@@ -71,12 +67,12 @@ public class MainActivity extends AppCompatActivity {
 //        Typeface font = null;
 //        if(tapButtonFontFace!=null && !tapButtonFontFace.trim().equalsIgnoreCase("")){
 //            font = Typeface.createFromAsset(getAssets(), tapButtonFontFace);
-//        sdkTrigger.setupPayButtonFontTypeFace(font);
+//        sdkSession.setupPayButtonFontTypeFace(font);
 
         /***
          * settextcolor
          */
-//        sdkTrigger.setupTextColor(
+//        sdkSession.setupTextColor(
 //                settingsManager.getTapButtonEnabledTitleColor(SettingsKeys.TAP_BUTTON_ENABLED_TITLE_COLOR_KEY),
 //                settingsManager.getTapButtonDisabledTitleColor(SettingsKeys.TAP_BUTTON_DISABLED_TITLE_COLOR_KEY)
 //        );
@@ -90,55 +86,55 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void triggerSDK() {
+    private void startSDKSession() {
 
-        sdkTrigger.setButtonView(payButtonView, this, SDK_REQUEST_CODE);
+        sdkSession.setButtonView(payButtonView, this, SDK_REQUEST_CODE);
 
         TransactionMode trx_mode = settingsManager.getTransactionsMode();
 
         if (TransactionMode.SAVE_CARD == trx_mode) {
-           sdkTrigger.setPayButtonTitle(getString(company.tap.gosellapi.R.string.save_card));
+           sdkSession.setPayButtonTitle(getString(company.tap.gosellapi.R.string.save_card));
         } else {
-            sdkTrigger.setPayButtonTitle(getString(company.tap.gosellapi.R.string.pay));
+            sdkSession.setPayButtonTitle(getString(company.tap.gosellapi.R.string.pay));
         }
 
         // initiate PaymentDataSource
-        sdkTrigger.instantiatePaymentDataSource();
+        sdkSession.instantiatePaymentDataSource();
 
         // setup Payment Data Source
-        sdkTrigger.setTransactionCurrency(settingsManager.getTransactionCurrency());
+        sdkSession.setTransactionCurrency(settingsManager.getTransactionCurrency());
 
-        sdkTrigger.setTransactionMode(settingsManager.getTransactionsMode());
+        sdkSession.setTransactionMode(settingsManager.getTransactionsMode());
 
-        sdkTrigger.setCustomer(settingsManager.getCustomer());
+        sdkSession.setCustomer(settingsManager.getCustomer());
 
-        sdkTrigger.setPaymentItems(settingsManager.getPaymentItems());
+        sdkSession.setPaymentItems(settingsManager.getPaymentItems());
 
-        sdkTrigger.setTaxes(settingsManager.getTaxes());
+        sdkSession.setTaxes(settingsManager.getTaxes());
 
-        sdkTrigger.setShipping(settingsManager.getShippingList());
+        sdkSession.setShipping(settingsManager.getShippingList());
 
-        sdkTrigger.setPostURL(settingsManager.getPostURL());
+        sdkSession.setPostURL(settingsManager.getPostURL());
 
-        sdkTrigger.setPaymentDescription(settingsManager.getPaymentDescription());
+        sdkSession.setPaymentDescription(settingsManager.getPaymentDescription());
 
-        sdkTrigger.setPaymentMetadata(settingsManager.getPaymentMetaData());
+        sdkSession.setPaymentMetadata(settingsManager.getPaymentMetaData());
 
-        sdkTrigger.setPaymentReference(settingsManager.getPaymentReference());
+        sdkSession.setPaymentReference(settingsManager.getPaymentReference());
 
-        sdkTrigger.setPaymentStatementDescriptor(settingsManager.getPaymentStatementDescriptor());
+        sdkSession.setPaymentStatementDescriptor(settingsManager.getPaymentStatementDescriptor());
 
-        sdkTrigger.isRequires3DSecure(settingsManager.is3DSecure());
+        sdkSession.isRequires3DSecure(settingsManager.is3DSecure());
 
-        sdkTrigger.setReceiptSettings(settingsManager.getReceipt());
+        sdkSession.setReceiptSettings(settingsManager.getReceipt());
 
-        sdkTrigger.setAuthorizeAction(settingsManager.getAuthorizeAction());
+        sdkSession.setAuthorizeAction(settingsManager.getAuthorizeAction());
 
 //        // Persist Payment Data Source
-//        sdkTrigger.persistPaymentDataSource();
+//        sdkSession.persistPaymentDataSource();
 
         //start without PayButton
-        //sdkTrigger.start();
+        //sdkSession.start();
 
     }
 

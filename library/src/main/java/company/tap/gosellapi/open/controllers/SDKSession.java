@@ -30,9 +30,9 @@ import company.tap.gosellapi.open.models.TapCurrency;
 import company.tap.gosellapi.open.models.Tax;
 
 /**
- * The type Sdk trigger.
+ * The type Sdk session.
  */
-public class SDKTrigger implements View.OnClickListener {
+public class SDKSession implements View.OnClickListener {
 
   private PayButtonView payButtonView;
   private PaymentDataSource paymentDataSource;
@@ -40,9 +40,9 @@ public class SDKTrigger implements View.OnClickListener {
   private int SDK_REQUEST_CODE;
 
   /**
-   * Instantiates a new Sdk trigger.
+   * Instantiates a new Sdk session.
    */
-  public SDKTrigger() {}
+  public SDKSession() {}
 
   /**
    * Sets button view.
