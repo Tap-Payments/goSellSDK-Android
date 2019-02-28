@@ -177,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
                 Charge chargeOrAuthorizeResult = PaymentProcessDelegate.getInstance().getPaymentResult();
                 if (chargeOrAuthorizeResult != null) {
                     System.out.println("chargeOrAuthorise.getStatus() : " + chargeOrAuthorizeResult.getStatus());
+                    System.out.println("chargeOrAuthorizeResult.getResponse().getMessage : " + chargeOrAuthorizeResult.getResponse().getMessage());
 
                     switch (chargeOrAuthorizeResult.getStatus()) {
                         case CAPTURED:
