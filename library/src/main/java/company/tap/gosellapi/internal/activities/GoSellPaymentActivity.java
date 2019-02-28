@@ -301,20 +301,9 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////Card Credentials Populated//////////////////////////////////////////////////////
     @Override
     public void updatePayButtonWithExtraFees(PaymentOption paymentOption) {
-
-//    BigDecimal feesAmount = PaymentDataManager.getInstance().calculateCardExtraFees(paymentOption);
-//    System.out.println(" update pay button with : fees : " + feesAmount);
-//    System.out.println(" update pay button with : total :" + PaymentDataManager.getInstance()
-//        .calculateTotalAmount(feesAmount));
-//
-//   if(PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode()!= TransactionMode.SAVE_CARD)
-//    payButton.getPayButton().setText(
-//        String.format("%s %s", getResources().getString(R.string.pay),
-//            PaymentDataManager.getInstance()
-//                .calculateTotalAmount(feesAmount)));
 
         updatePayButtonWithFees(paymentOption);
 
@@ -337,31 +326,25 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                                     .calculateTotalAmount(feesAmount)));
     }
 
+
     @Override
-    public void updatePayButtonWithSavedCardExtraFees(SavedCard recentItem,
-                                                      RecentSectionViewModel _recentSectionViewModel) {
+    public void enablePayButtonWithSavedCard(SavedCard recentItem,
+                                             RecentSectionViewModel _recentSectionViewModel){
         this.recentSectionViewModel = _recentSectionViewModel;
         setSelectedCard(recentItem);
 
-        if (recentItem != null) {
+        if (recentItem != null)
             payButton.setEnabled(true);
+    }
+
+    @Override
+    public void updatePayButtonWithSavedCardExtraFees(SavedCard recentItem) {
+
+        if(recentItem!=null) {
             PaymentOption paymentOption = PaymentDataManager.getInstance()
                     .findSavedCardPaymentOption(recentItem);
 
-//      BigDecimal feesAmount = PaymentDataManager.getInstance()
-//          .calculateCardExtraFees(paymentOption);
-
             updatePayButtonWithFees(paymentOption);
-
-//      System.out.println(" update pay button with : fees : " + feesAmount);
-//      System.out.println(" update pay button with : total :" + PaymentDataManager.getInstance()
-//          .calculateTotalAmount(feesAmount));
-//
-//
-//      payButton.getPayButton().setText(
-//          String.format("%s %s", getResources().getString(R.string.pay),
-//              PaymentDataManager.getInstance()
-//                  .calculateTotalAmount(feesAmount)));
         }
     }
 

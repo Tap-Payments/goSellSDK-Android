@@ -23,6 +23,7 @@ import company.tap.gosellapi.open.controllers.SDKSession;
 import company.tap.gosellapi.open.delegate.PaymentProcessDelegate;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.sample.R;
+import company.tap.sample.constants.SettingsKeys;
 import company.tap.sample.managers.SettingsManager;
 
 
@@ -131,8 +132,8 @@ public class MainActivity extends AppCompatActivity {
         sdkSession.setAuthorizeAction(settingsManager.getAuthorizeAction());
 
         sdkSession.setDestination(settingsManager.getDestination());
-//        // Persist Payment Data Source
-//        sdkSession.persistPaymentDataSource();
+
+        sdkSession.setFeesOption(settingsManager.getFeesOption(SettingsKeys.FEES_OPTION_KEY));
 
         //start without PayButton
         //sdkSession.start();

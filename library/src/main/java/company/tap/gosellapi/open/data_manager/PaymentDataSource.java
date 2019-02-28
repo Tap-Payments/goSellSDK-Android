@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import company.tap.gosellapi.open.enums.FeesOptions;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.gosellapi.open.models.AuthorizeAction;
 import company.tap.gosellapi.open.models.Customer;
@@ -61,6 +62,8 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
     AuthorizeAction authorizeAction;
     private @Nullable
     ArrayList<Destination> destination;
+    private @NonNull
+    FeesOptions feesOptions;
 
     private @NonNull
     Context context;
@@ -240,6 +243,14 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
         this.destination = destination;
     }
 
+    /**
+     * set fees option
+     * @param feesOption
+     */
+    public void setFeesOption(FeesOptions feesOption){
+        this.feesOptions = feesOption;
+    }
+
 /////////////////   Getter's Area  /////////////////////////////////////////////////////////////////
     @Override
     public @NonNull
@@ -336,4 +347,8 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
     ArrayList<Destination> getDestination(){
         return  destination;
     }
+
+    @Override
+    public @NonNull
+    FeesOptions     getFeesOptions(){return feesOptions;}
 }

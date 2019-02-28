@@ -19,6 +19,7 @@ import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 import company.tap.gosellapi.open.buttons.PayButtonView;
 import company.tap.gosellapi.open.constants.SettingsKeys;
 import company.tap.gosellapi.open.data_manager.PaymentDataSource;
+import company.tap.gosellapi.open.enums.FeesOptions;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.gosellapi.open.models.AuthorizeAction;
 import company.tap.gosellapi.open.models.Customer;
@@ -266,6 +267,16 @@ public class SDKSession implements View.OnClickListener {
 
   public void setDestination(ArrayList<Destination> destination){
     paymentDataSource.setDestination(destination);
+  }
+
+
+  /**
+   * set fees options
+   * @param feesOption
+   */
+  public void setFeesOption(FeesOptions feesOption){
+    System.out.println(" fees option: "+ feesOption);
+    paymentDataSource.setFeesOption(feesOption);
   }
 
   /**

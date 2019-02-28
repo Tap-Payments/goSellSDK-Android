@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
+import company.tap.gosellapi.internal.api.enums.ExtraFeesStatus;
 import company.tap.gosellapi.internal.api.enums.PaymentType;
 import company.tap.gosellapi.internal.api.enums.Permission;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
@@ -17,6 +18,7 @@ import company.tap.gosellapi.internal.api.models.SavedCard;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.CardCredentialsViewModel;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.RecentSectionViewModel;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.WebPaymentViewModel;
+import company.tap.gosellapi.open.enums.FeesOptions;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 import company.tap.gosellapi.internal.api.models.Authorize;
@@ -66,18 +68,6 @@ public final class PaymentDataManager {
    */
   public String calculateTotalAmount(BigDecimal feesAmount) {
     return getPaymentProcessManager().calculateTotalAmount(feesAmount);
-  }
-
-  /**
-   * Check saved card payment extra fees.
-   *
-   * @param savedCard                  the saved card
-   * @param paymentOptionsDataListener the payment options data listener
-   */
-  public void checkSavedCardPaymentExtraFees(SavedCard savedCard,
-                                             PaymentOptionsDataManager.PaymentOptionsDataListener paymentOptionsDataListener) {
-    getPaymentProcessManager()
-            .checkSavedCardPaymentExtraFees(savedCard, paymentOptionsDataListener);
   }
 
   /**
@@ -334,9 +324,15 @@ public final class PaymentDataManager {
    */
   public void checkWebPaymentExtraFees(WebPaymentViewModel model,
                                        PaymentOptionsDataManager.PaymentOptionsDataListener paymentOptionsDataListener) {
-    getPaymentProcessManager()
+    /**
+     * check if merchant requested fees to be included or extra
+     */
+    if(getPaymentDataProvider().getFeesOptions() == FeesOptions.FEES_EXTRA)
+        getPaymentProcessManager()
             .checkPaymentExtraFees(model.getPaymentOption(), paymentOptionsDataListener,
                     PaymentType.WEB);
+    else
+      paymentOptionsDataListener.fireWebPaymentExtraFeesUserDecision(ExtraFeesStatus.NO_EXTRA_FEES);
   }
 
   /**
@@ -347,9 +343,36 @@ public final class PaymentDataManager {
    */
   public void checkCardPaymentExtraFees(CardCredentialsViewModel model,
                                         PaymentOptionsDataManager.PaymentOptionsDataListener paymentOptionsDataListener) {
-    getPaymentProcessManager()
+    /**
+     * check if merchant requested fees to be included or extra
+     */
+    if(getPaymentDataProvider().getFeesOptions()==FeesOptions.FEES_EXTRA)
+          getPaymentProcessManager()
             .checkPaymentExtraFees(model.getSelectedCardPaymentOption(), paymentOptionsDataListener,
                     PaymentType.CARD);
+    else
+      paymentOptionsDataListener
+              .fireCardPaymentExtraFeesUserDecision(ExtraFeesStatus.NO_EXTRA_FEES);
+  }
+
+
+  /**
+   * Check saved card payment extra fees.
+   *
+   * @param savedCard                  the saved card
+   * @param paymentOptionsDataListener the payment options data listener
+   */
+  public void checkSavedCardPaymentExtraFees(SavedCard savedCard,
+                                             PaymentOptionsDataManager.PaymentOptionsDataListener paymentOptionsDataListener) {
+    /**
+     * check if merchant requested fees to be included or extra
+     */
+    if(getPaymentDataProvider().getFeesOptions()==FeesOptions.FEES_EXTRA)
+      getPaymentProcessManager()
+              .checkSavedCardPaymentExtraFees(savedCard, paymentOptionsDataListener);
+    else
+      paymentOptionsDataListener
+              .fireSavedCardPaymentExtraFeesUserDecision(ExtraFeesStatus.NO_EXTRA_FEES);
   }
 
   /**
@@ -572,8 +595,17 @@ public final class PaymentDataManager {
       ArrayList<Destination> destinations = getExternalDataSource().getDestination();
       return destinations;
     }
+
+    @NonNull
+    @Override
+    public FeesOptions getFeesOptions(){
+      return  getExternalDataSource().getFeesOptions();
+    }
+
   }
 
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////
   private class PaymentProcessListener implements IPaymentProcessListener {
 
     @Override

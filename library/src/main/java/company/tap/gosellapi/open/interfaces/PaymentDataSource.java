@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import company.tap.gosellapi.open.enums.FeesOptions;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.gosellapi.open.models.AuthorizeAction;
 import company.tap.gosellapi.open.models.Customer;
@@ -106,4 +107,12 @@ public interface PaymentDataSource {
 
     @Nullable
     ArrayList<Destination>                getDestination();
+
+    /**
+     * Fees Options set by Merchant to allow SDK to calculate Fees as Extra and add it to total amount or not calculate it becuase it
+     * is already included in the total amount
+     * @return
+     */
+    @NonNull
+    FeesOptions                           getFeesOptions();
 }
