@@ -234,6 +234,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void test(){
+        
+    }
+
     private void setupTimer(PopupWindow popupWindow) {
         // Hide after some seconds
         final Handler handler = new Handler();
