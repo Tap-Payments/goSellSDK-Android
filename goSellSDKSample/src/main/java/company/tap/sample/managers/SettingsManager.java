@@ -28,6 +28,7 @@ import company.tap.gosellapi.open.models.Shipping;
 import company.tap.gosellapi.open.models.TapCurrency;
 import company.tap.gosellapi.open.models.Tax;
 import company.tap.sample.viewmodels.CustomerViewModel;
+import company.tap.gosellapi.open.models.Destination;
 
 import static company.tap.gosellapi.internal.api.enums.AmountModificatorType.FIXED;
 import static company.tap.gosellapi.internal.api.enums.measurements.Mass.KILOGRAMS;
@@ -280,6 +281,20 @@ public class SettingsManager {
     }
 
 
+
+    public ArrayList<Destination> getDestination() {
+        ArrayList<Destination> destinations = new ArrayList<Destination>();
+        destinations.
+                add(new Destination(
+                        "1014",
+                        new BigDecimal(10),
+                        new TapCurrency("kwd"),
+                        "please deduct 10 kd for this account",
+                        ""
+
+                ));
+        return destinations;
+    }
     //////////////////////////////////////////////////  PayButton /////////////////////////////////
     public int getTapButtonEnabledBackgroundColor(String key){
         String color = pref.getString(key, "");

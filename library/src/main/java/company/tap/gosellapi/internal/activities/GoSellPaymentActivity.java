@@ -86,13 +86,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-//        if (WINDOW_MODE.equalsIgnoreCase(Constants.WINDOWED)) {
-//            //setTheme(R.style.GoSellSDKAppTheme_Translucent);
-//        } else {
-//            //setTheme(R.style.GoSellSDKAppTheme_Full);
-//        }
-//        //setTheme(R.style.GoSellSDKAppTheme_Full);
-
         super.onCreate(savedInstanceState);
 
         overridePendingTransition(R.anim.slide_in_top, android.R.anim.fade_out);

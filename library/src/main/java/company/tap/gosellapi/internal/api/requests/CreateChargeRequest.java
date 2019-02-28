@@ -8,10 +8,12 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import company.tap.gosellapi.open.models.Customer;
 import company.tap.gosellapi.internal.api.models.Order;
+import company.tap.gosellapi.open.models.Destination;
 import company.tap.gosellapi.open.models.Receipt;
 import company.tap.gosellapi.open.models.Reference;
 import company.tap.gosellapi.internal.api.models.SourceRequest;
@@ -83,6 +85,10 @@ public class CreateChargeRequest {
     @Expose
     @Nullable private Receipt receipt;
 
+    @SerializedName("destinations")
+    @Expose
+    @Nullable private ArrayList<Destination> destinations;
+
     /**
      * Instantiates a new Create charge request.
      *
@@ -101,6 +107,7 @@ public class CreateChargeRequest {
      * @param statementDescriptor the statement descriptor
      * @param threeDSecure        the three d secure
      * @param receipt             the receipt
+     * @param destinations        the destinations
      */
     public CreateChargeRequest(@NonNull     BigDecimal              amount,
                                @NonNull     String                  currency,
@@ -116,7 +123,8 @@ public class CreateChargeRequest {
                                @NonNull     boolean                 saveCard,
                                @Nullable    String                  statementDescriptor,
                                @Nullable    boolean                 threeDSecure,
-                               @Nullable    Receipt                 receipt) {
+                               @Nullable    Receipt                 receipt,
+                               @Nullable    ArrayList<Destination>  destinations) {
 
         this.amount                 = amount;
         this.currency               = currency;
@@ -133,5 +141,6 @@ public class CreateChargeRequest {
         this.statementDescriptor    = statementDescriptor;
         this.threeDSecure           = threeDSecure;
         this.receipt                = receipt;
+        this.destinations           = destinations;
     }
 }
