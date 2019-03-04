@@ -1,6 +1,7 @@
 package company.tap.gosellapi.internal.api.facade;
 
 import android.support.annotation.RestrictTo;
+import android.util.Log;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -79,12 +80,12 @@ class RequestManager {
 
     private void runDelayedRequests() {
         for (DelayedRequest delayedRequest : delayedRequests) {
-          System.out.println("delayedRequest.toString() : " + delayedRequest.getRequest().request());
+            Log.d("","delayedRequest.toString() : " + delayedRequest.getRequest().request());
           try {
             final Buffer buffer = new Buffer();
             if(delayedRequest.getRequest().request().body()!=null ) {
               delayedRequest.getRequest().request().body().writeTo(buffer);
-              System.out.println("delayedRequest.toString() :" + buffer.readUtf8().toString());
+                Log.d("","delayedRequest.toString() :" + buffer.readUtf8().toString());
             }
           }catch (IOException s){
             System.out.println("ex : " + s.getLocalizedMessage());

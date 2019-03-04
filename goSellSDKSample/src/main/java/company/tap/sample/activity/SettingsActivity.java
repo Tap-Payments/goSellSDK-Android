@@ -74,22 +74,22 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // transaction currency listener
                bindPreferenceSummaryToValue(findPreference(getString(R.string.key_sdk_transaction_currency)));
 
-            // appearance header text color listener
-               bindPreferenceSummaryToValue(findPreference(getString(R.string.appearance_header_preference_color_key)));
-
-            // appearance header background color listener
-               bindPreferenceSummaryToValue(findPreference(getString(R.string.appearance_header_preference_background_color_key)));
-
-
-
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.appearance_card_input_fields_text_color_key)));
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.appearance_card_input_fields_invalid_text_color_key)));
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.appearance_card_input_fields_placeholder_text_color_key)));
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.appearance_card_input_fields_description_color_key)));
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.appearance_tap_button_disabled_background_color_key)));
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.appearance_tap_button_enabled_background_color_key)));
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.appearance_tap_button_disabled_titled_color_key)));
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.appearance_tap_button_enabled_titled_color_key)));
+//            // appearance header text color listener
+//               bindPreferenceSummaryToValue(findPreference(getString(R.string.appearance_header_preference_color_key)));
+//
+//            // appearance header background color listener
+//               bindPreferenceSummaryToValue(findPreference(getString(R.string.appearance_header_preference_background_color_key)));
+//
+//
+//
+//            bindPreferenceSummaryToValue(findPreference(getString(R.string.appearance_card_input_fields_text_color_key)));
+//            bindPreferenceSummaryToValue(findPreference(getString(R.string.appearance_card_input_fields_invalid_text_color_key)));
+//            bindPreferenceSummaryToValue(findPreference(getString(R.string.appearance_card_input_fields_placeholder_text_color_key)));
+//            bindPreferenceSummaryToValue(findPreference(getString(R.string.appearance_card_input_fields_description_color_key)));
+//            bindPreferenceSummaryToValue(findPreference(getString(R.string.appearance_tap_button_disabled_background_color_key)));
+//            bindPreferenceSummaryToValue(findPreference(getString(R.string.appearance_tap_button_enabled_background_color_key)));
+//            bindPreferenceSummaryToValue(findPreference(getString(R.string.appearance_tap_button_disabled_titled_color_key)));
+//            bindPreferenceSummaryToValue(findPreference(getString(R.string.appearance_tap_button_enabled_titled_color_key)));
         }
     }
 

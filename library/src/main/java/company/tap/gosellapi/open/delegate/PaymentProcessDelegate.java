@@ -2,6 +2,7 @@ package company.tap.gosellapi.open.delegate;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.models.Charge;
@@ -44,7 +45,7 @@ public class PaymentProcessDelegate implements company.tap.gosellapi.open.interf
   public void setCustomerID(Charge chargeOrAuthorizeOrSaveCard,Context context) {
     if(chargeOrAuthorizeOrSaveCard!=null){
       if(chargeOrAuthorizeOrSaveCard instanceof Charge){
-        System.out.println(" customer id after charge or authorized or save card :" + chargeOrAuthorizeOrSaveCard.getCustomer().getIdentifier());
+        Log.d(""," customer id after charge or authorized or save card :" + chargeOrAuthorizeOrSaveCard.getCustomer().getIdentifier());
         PaymentResultDataManager paymentResultDataManager = PaymentResultDataManager.getInstance();
         paymentResultDataManager.saveCustomerReference(chargeOrAuthorizeOrSaveCard.getCustomer().getIdentifier(),context);
       }
