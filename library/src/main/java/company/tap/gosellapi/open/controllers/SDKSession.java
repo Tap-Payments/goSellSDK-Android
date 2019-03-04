@@ -3,6 +3,7 @@ package company.tap.gosellapi.open.controllers;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -287,9 +288,9 @@ public class SDKSession implements View.OnClickListener {
   private void getPaymentOptions() {
     persistPaymentDataSource();
     payButtonView.getLoadingView().start();
-    System.out.println(
-        " before call request this.paymentDataSource.getCurrency() : " + this.paymentDataSource
-            .getCurrency().getIsoCode());
+    Log.d("",
+            " before call request this.paymentDataSource.getCurrency() : " + this.paymentDataSource
+                    .getCurrency().getIsoCode());
     PaymentOptionsRequest request = new PaymentOptionsRequest(
 
         this.paymentDataSource.getTransactionMode(),
