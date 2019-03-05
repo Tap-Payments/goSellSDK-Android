@@ -1,23 +1,23 @@
 # goSellSDK-Android
 
-####### A library that fully covers payment/authorization/card saving process inside your iOS application.
+A library that fully covers payment/authorization/card saving process inside your Android application.
 
 Install
 --------
 Add it in your **root** `build.gradle` at the end of repositories:
 ```groovy
-	allprojects {
-		repositories {
-			...
-			maven { url 'https://jitpack.io' }
-		}
+allprojects {
+	repositories {
+		...
+		maven { url 'https://jitpack.io' }
 	}
+}
 ```
 Step 2. Add the dependency
 ```groovy
-	dependencies {
+dependencies {
         compile 'com.github.Tap-Payments:goSellSDK-Android:1.1.2'
-	}
+}
 ```
 
 Basic usage
