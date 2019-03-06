@@ -15,9 +15,9 @@ public interface SessionDelegate {
         void authorizationSucceed(@NonNull Authorize authorize);
         void authorizationFailed(Authorize authorize);
 
+
         void cardSaved(@NonNull Charge charge);
         void cardSavingFailed(@NonNull Charge charge);
-
 
         void sdkError(@Nullable GoSellError goSellError);
 

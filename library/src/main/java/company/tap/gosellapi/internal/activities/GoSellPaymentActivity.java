@@ -60,8 +60,6 @@ import company.tap.gosellapi.internal.utils.ActivityDataExchanger;
 import company.tap.gosellapi.internal.utils.Utils;
 import company.tap.gosellapi.open.buttons.PayButtonView;
 import company.tap.gosellapi.open.controllers.SDKSession;
-import company.tap.gosellapi.open.delegate.PaymentProcessDelegate;
-import company.tap.gosellapi.open.delegate.SessionDelegate;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
@@ -620,8 +618,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     }
 
     private void closePaymentActivityWithError() {
-//        PaymentProcessDelegate.getInstance().setPaymentResult(null);
-//        PaymentProcessDelegate.getInstance().setPaymentError(error);
         finishActivity();
     }
 
@@ -912,8 +908,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     }
 
     private void setPaymentResult(Charge chargeOrAuthorizeOrSaveCard) {
-//        PaymentProcessDelegate.getInstance().setCustomerID(chargeOrAuthorizeOrSaveCard, getApplicationContext());
-//        PaymentProcessDelegate.getInstance().setPaymentResult(chargeOrAuthorizeOrSaveCard);
     }
 
 
