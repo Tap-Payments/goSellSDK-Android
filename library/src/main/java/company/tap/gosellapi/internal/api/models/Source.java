@@ -6,6 +6,8 @@ import android.support.annotation.RestrictTo;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 import company.tap.gosellapi.internal.api.enums.SourceChannel;
 import company.tap.gosellapi.internal.api.enums.SourceObject;
 import company.tap.gosellapi.internal.api.enums.SourcePaymentType;
@@ -17,7 +19,7 @@ import company.tap.tapcardvalidator_android.CardBrand;
  * <br>
  * Model for Source object
  */
-public final class Source {
+public final class Source implements Serializable {
 
     @SerializedName("id")
     @Expose

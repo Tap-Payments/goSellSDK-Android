@@ -2,10 +2,12 @@ package company.tap.gosellapi.internal.api.enums;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * The enum Charge status.
  */
-public enum ChargeStatus {
+public enum ChargeStatus implements Serializable {
 
     /**
      * Initiated charge status.

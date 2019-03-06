@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
@@ -17,16 +18,20 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import company.tap.gosellapi.internal.api.callbacks.GoSellError;
+import company.tap.gosellapi.internal.api.models.Authorize;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.open.buttons.PayButtonView;
 import company.tap.gosellapi.open.controllers.SDKSession;
 import company.tap.gosellapi.open.delegate.PaymentProcessDelegate;
+import company.tap.gosellapi.open.delegate.SessionDelegate;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.sample.R;
+import company.tap.sample.constants.SettingsKeys;
 import company.tap.sample.managers.SettingsManager;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SessionDelegate {
     private final int SDK_REQUEST_CODE = 1001;
     private SDKSession sdkSession;
     private PayButtonView payButtonView;
@@ -49,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initButton() {
         payButtonView = findViewById(R.id.payButtonId);
+        sdkSession.setButtonView(payButtonView, this, SDK_REQUEST_CODE);
         /***
          *  setPayButtonBackgroundSelector
           */
@@ -72,10 +78,10 @@ public class MainActivity extends AppCompatActivity {
         /***
          * settextcolor
          */
-//        sdkSession.setupTextColor(
-//                settingsManager.getTapButtonEnabledTitleColor(SettingsKeys.TAP_BUTTON_ENABLED_TITLE_COLOR_KEY),
-//                settingsManager.getTapButtonDisabledTitleColor(SettingsKeys.TAP_BUTTON_DISABLED_TITLE_COLOR_KEY)
-//        );
+        sdkSession.setupTextColor(
+                settingsManager.getTapButtonEnabledTitleColor(SettingsKeys.TAP_BUTTON_ENABLED_TITLE_COLOR_KEY),
+                settingsManager.getTapButtonDisabledTitleColor(SettingsKeys.TAP_BUTTON_DISABLED_TITLE_COLOR_KEY)
+        );
 
 
 
@@ -88,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void startSDKSession() {
 
-        sdkSession.setButtonView(payButtonView, this, SDK_REQUEST_CODE);
+         sdkSession.addListener(this);
 
         TransactionMode trx_mode = settingsManager.getTransactionsMode();
 
@@ -130,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
 
         sdkSession.setAuthorizeAction(settingsManager.getAuthorizeAction());
 
+
 //        // Persist Payment Data Source
 //        sdkSession.persistPaymentDataSource();
 
@@ -141,12 +148,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        switch (requestCode) {
-            case SDK_REQUEST_CODE:
-                if (PaymentProcessDelegate.getInstance().getPaymentResult() != null)
-                    showDialog();
-                break;
-        }
+
     }
 
     public void openSettings(View view) {
@@ -154,8 +156,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void showDialog() {
-        // show success bar
+    private void showDialog(String chargeID, String msg,int icon)
+    {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int width = displayMetrics.widthPixels;
@@ -172,49 +174,9 @@ public class MainActivity extends AppCompatActivity {
                 ImageView status_icon = layout.findViewById(company.tap.gosellapi.R.id.status_icon);
                 TextView statusText = layout.findViewById(company.tap.gosellapi.R.id.status_text);
                 TextView chargeText = layout.findViewById(company.tap.gosellapi.R.id.charge_id_txt);
-
-                String msg = "";
-                Charge chargeOrAuthorizeResult = PaymentProcessDelegate.getInstance().getPaymentResult();
-                if (chargeOrAuthorizeResult != null) {
-                    System.out.println("chargeOrAuthorise.getStatus() : " + chargeOrAuthorizeResult.getStatus());
-                    System.out.println("chargeOrAuthorizeResult.getResponse().getMessage : " + chargeOrAuthorizeResult.getResponse().getMessage());
-
-                    switch (chargeOrAuthorizeResult.getStatus()) {
-                        case CAPTURED:
-                        case AUTHORIZED:
-                        case VALID:
-                            msg = getString(company.tap.gosellapi.R.string.payment_status_alert_successful);
-                            status_icon.setImageResource(company.tap.gosellapi.R.drawable.ic_checkmark_normal);
-                            break;
-                        case FAILED:
-                            msg = getString(company.tap.gosellapi.R.string.payment_status_alert_failed);
-                            status_icon.setImageResource(company.tap.gosellapi.R.drawable.icon_failed);
-                            break;
-                        case INVALID:
-                            msg = getString(company.tap.gosellapi.R.string.payment_status_alert_invalid);
-                            status_icon.setImageResource(company.tap.gosellapi.R.drawable.icon_failed);
-                            break;
-                        case DECLINED:
-                            msg = getString(company.tap.gosellapi.R.string.payment_status_alert_declined);
-                            status_icon.setImageResource(company.tap.gosellapi.R.drawable.icon_failed);
-                            break;
-                        case UNKNOWN:
-                            msg = getString(company.tap.gosellapi.R.string.payment_status_alert_unknown);
-                            status_icon.setImageResource(company.tap.gosellapi.R.drawable.icon_failed);
-                            break;
-                        case TIMEDOUT:
-                            msg = getString(company.tap.gosellapi.R.string.payment_status_alert_timedout);
-                            status_icon.setImageResource(company.tap.gosellapi.R.drawable.icon_failed);
-                            break;
-                    }
-                    chargeText.setText(chargeOrAuthorizeResult.getId());
-                } else {
-                    msg = getString(company.tap.gosellapi.R.string.payment_status_alert_failed);
-                    status_icon.setImageResource(company.tap.gosellapi.R.drawable.icon_failed);
-                    chargeText.setText("");
-                }
-
-                statusText.setText(msg);
+                status_icon.setImageResource(icon);
+                chargeText.setText(chargeID);
+                statusText.setText((msg!=null&& msg.length()>30)?msg.substring(0,29):msg);
 
 
                 LinearLayout close_icon_ll = layout.findViewById(company.tap.gosellapi.R.id.close_icon_ll);
@@ -225,14 +187,11 @@ public class MainActivity extends AppCompatActivity {
                 popupWindow.getContentView().startAnimation(AnimationUtils.loadAnimation(this, R.anim.popup_show));
 
                 setupTimer(popupWindow);
-
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
+        }catch(Exception e){
+                e.printStackTrace();
+            }
+            }
 
     private void setupTimer(PopupWindow popupWindow) {
         // Hide after some seconds
@@ -248,4 +207,85 @@ public class MainActivity extends AppCompatActivity {
         handler.postDelayed(runnable, 4000);
     }
 
+    @Override
+    public void paymentSucceed(@NonNull Charge charge) {
+
+        System.out.println("Payment Succeeded : "+ charge.getStatus());
+        System.out.println("Payment Succeeded : "+ charge.getDescription());
+        System.out.println("Payment Succeeded : "+ charge.getResponse().getMessage());
+        showDialog(charge.getId(),charge.getResponse().getMessage(),company.tap.gosellapi.R.drawable.ic_checkmark_normal);
+    }
+
+    @Override
+    public void paymentFailed(@Nullable Charge charge) {
+        System.out.println("Payment Failed : "+ charge.getStatus());
+        System.out.println("Payment Failed : "+ charge.getDescription());
+        System.out.println("Payment Failed : "+ charge.getResponse().getMessage());
+        showDialog(charge.getId(),charge.getResponse().getMessage(),company.tap.gosellapi.R.drawable.icon_failed);
+    }
+
+
+
+    @Override
+    public void authorizationSucceed(@NonNull Authorize authorize) {
+        System.out.println("Authorize Succeeded : "+ authorize.getStatus());
+        System.out.println("Authorize Succeeded : "+ authorize.getDescription());
+        System.out.println("Authorize Succeeded : "+ authorize.getResponse().getMessage());
+        showDialog(authorize.getId(),authorize.getResponse().getMessage(),company.tap.gosellapi.R.drawable.ic_checkmark_normal);
+    }
+
+    @Override
+    public void authorizationFailed(Authorize authorize) {
+        System.out.println("Authorize Failed : "+ authorize.getStatus());
+        System.out.println("Authorize Failed : "+ authorize.getDescription());
+        System.out.println("Authorize Failed : "+ authorize.getResponse().getMessage());
+        showDialog(authorize.getId(),authorize.getResponse().getMessage(),company.tap.gosellapi.R.drawable.icon_failed);
+    }
+
+
+
+
+    @Override
+    public void cardSaved(@NonNull Charge charge) {
+        System.out.println("Card Saved Succeeded : "+ charge.getStatus());
+        System.out.println("Card Saved Succeeded : "+ charge.getDescription());
+        System.out.println("Card Saved Succeeded : "+ charge.getResponse().getMessage());
+        showDialog(charge.getId(),charge.getStatus().toString(),company.tap.gosellapi.R.drawable.ic_checkmark_normal);
+    }
+
+    @Override
+    public void cardSavingFailed(@NonNull Charge charge) {
+        System.out.println("Card Saved Failed : "+ charge.getStatus());
+        System.out.println("Card Saved Failed : "+ charge.getDescription());
+        System.out.println("Card Saved Failed : "+ charge.getResponse().getMessage());
+        showDialog(charge.getId(),charge.getStatus().toString(),company.tap.gosellapi.R.drawable.icon_failed);
+    }
+
+
+    @Override
+    public void sdkError(@Nullable GoSellError goSellError) {
+        if(goSellError!=null) {
+            System.out.println("SDK Process Error : " + goSellError.getErrorBody());
+            System.out.println("SDK Process Error : " + goSellError.getErrorMessage());
+            System.out.println("SDK Process Error : " + goSellError.getErrorCode());
+            showDialog(goSellError.getErrorCode() + "", goSellError.getErrorMessage(), company.tap.gosellapi.R.drawable.icon_failed);
+        }
+    }
+
+
+    @Override
+    public void sessionIsStarting() {
+        System.out.println(" Session Is Starting.....");
+    }
+
+    @Override
+    public void sessionHasStarted() {
+        System.out.println(" Session Has Started .......");
+    }
+
+
+    @Override
+    public void sessionCancelled() {
+
+    }
 }

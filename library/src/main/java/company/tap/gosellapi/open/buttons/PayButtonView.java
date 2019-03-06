@@ -15,6 +15,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.ViewGroup;
@@ -249,6 +250,7 @@ public final class PayButtonView extends FrameLayout  {
             }
 
             int textColor = a.getColor(R.styleable.PayButtonView_android_textColor, VALUE_IS_MISSING);
+            Log.d("PayButton: "," Initial text color: "+textColor);
             if (textColor != VALUE_IS_MISSING) {
                 mTextColor = textColor;
             }
@@ -294,7 +296,7 @@ public final class PayButtonView extends FrameLayout  {
 
         payButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);
 
-        //setupTextColor();
+       // setupTextColor();
 
         //setupFontTypeFace();
 

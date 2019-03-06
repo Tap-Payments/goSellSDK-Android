@@ -9,6 +9,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import java.io.Serializable;
+
 /**
  * Model for response errors
  * <br>
@@ -17,7 +19,7 @@ import org.json.JSONTokener;
  * And vice versa, if {@link #getErrorCode()} or {@link #getErrorBody()} return {@link #ERROR_CODE_UNAVAILABLE} and null accordingly, then use {@link #getThrowable()} to obtain error details.
  */
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-public class GoSellError {
+public class GoSellError implements Serializable {
     /**
      * The constant ERROR_CODE_UNAVAILABLE.
      */
@@ -61,8 +63,13 @@ public class GoSellError {
             if(jsonObj!=null) res = (String)jsonObj.get("description");
           }
         }else if(json instanceof JSONObject){
-          JSONObject jsonObject1 = jsonObject.getJSONObject("error");
-          if(jsonObject1!=null) res = (String)jsonObject1.get("description");
+            JSONArray jsonArray = jsonObject.getJSONArray("errors");
+            if(jsonArray!=null && jsonArray.length()>0)
+            {
+                JSONObject jsonObj =  jsonArray.getJSONObject(0);
+                if(jsonObj!=null) res = (String)jsonObj.get("description");
+            }
+//          if(jsonObject1!=null) res = (String)jsonObject1.get("description");
         }
       }catch(JSONException errorMessage2){
         errorMessage2.printStackTrace();

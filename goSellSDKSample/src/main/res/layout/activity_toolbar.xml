@@ -55,6 +55,7 @@
                 android:layout_height="25dp"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/plus_48"
+                android:visibility="invisible"
                 />
         </LinearLayout>
 

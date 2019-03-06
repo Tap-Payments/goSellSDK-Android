@@ -6,10 +6,12 @@ import android.support.annotation.Nullable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * The type Transaction details.
  */
-public final class TransactionDetails {
+public final class TransactionDetails implements Serializable {
 
     @SerializedName("created")
     @Expose

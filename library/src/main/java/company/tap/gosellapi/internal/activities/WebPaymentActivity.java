@@ -3,7 +3,9 @@ package company.tap.gosellapi.internal.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.webkit.WebResourceError;
@@ -11,6 +13,8 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import java.io.Serializable;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
@@ -27,6 +31,7 @@ import company.tap.gosellapi.internal.data_managers.payment_options.view_models.
 import company.tap.gosellapi.internal.exceptions.TransactionModeException;
 import company.tap.gosellapi.internal.interfaces.IPaymentProcessListener;
 import company.tap.gosellapi.internal.utils.ActivityDataExchanger;
+import company.tap.gosellapi.open.controllers.SDKSession;
 import company.tap.gosellapi.open.delegate.PaymentProcessDelegate;
 
 
@@ -101,10 +106,7 @@ public class WebPaymentActivity extends BaseActionBarActivity implements IPaymen
     webView.loadUrl(paymentURL);
   }
 
-  private void finishActivityWithResultCodeOK() {
-    setResult(RESULT_OK);
-    finish();
-  }
+
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
@@ -161,6 +163,15 @@ public class WebPaymentActivity extends BaseActionBarActivity implements IPaymen
           break;
         case CAPTURED:
         case AUTHORIZED:
+          finishActivityWithResultCodeOK(charge);
+//          try
+//          {
+//            closePaymentActivity();
+//            SDKSession.getListener().paymentSucceed(charge);
+//          }catch (Exception e){
+//            Log.d("WebPaymentActivity"," Error while calling delegate method paymentSucceed(charge)");
+//          }
+          break;
         case FAILED:
         case ABANDONED:
         case CANCELLED:
@@ -168,7 +179,15 @@ public class WebPaymentActivity extends BaseActionBarActivity implements IPaymen
         case RESTRICTED:
         case UNKNOWN:
         case TIMEDOUT:
-          closePaymentActivity(charge);
+          finishActivityWithResultCodeOK(charge);
+//          try
+//          {
+//            closePaymentActivity();
+//            SDKSession.getListener().paymentFailed(charge);
+//          }catch (Exception e){
+//            Log.d("WebPaymentActivity"," Error while calling delegate method paymentFailed(charge)");
+//            closePaymentActivity();
+//          }
         break;
       }
     }
@@ -201,13 +220,26 @@ public class WebPaymentActivity extends BaseActionBarActivity implements IPaymen
   }
 
 
-  private void closePaymentActivity(Charge charge) {
-    setPaymentResult(charge);
-    finishActivityWithResultCodeOK();
+//  private void closePaymentActivity(Charge charge) {
+////    setPaymentResult(charge);
+//    finishActivityWithResultCodeOK(charge);
+//  }
+//
+//  private void closePaymentActivityWithError(GoSellError error){
+//    finishActivityWithResultCancelled(error);
+//  }
+
+  private void finishActivityWithResultCodeOK(Charge charge) {
+    setResult(RESULT_OK,new Intent().putExtra("charge", charge));
+    finish();
   }
 
+  private void finishActivityWithResultCancelled(GoSellError error) {
+    setResult(RESULT_CANCELED,new Intent().putExtra("error", error));
+    finish();
+  }
   private void setPaymentResult(Charge chargeOrAuthorize) {
-    PaymentProcessDelegate.getInstance().setPaymentResult(chargeOrAuthorize);
+//    PaymentProcessDelegate.getInstance().setPaymentResult(chargeOrAuthorize);
   }
 
   @Override
@@ -218,8 +250,17 @@ public class WebPaymentActivity extends BaseActionBarActivity implements IPaymen
 
   @Override
   public void didReceiveError(GoSellError error) {
-
+    System.out.println(" web payment : didReceiveError");
     closeLoadingScreen();
+    finishActivityWithResultCancelled(error);
+//    try
+//    {
+//      closePaymentActivity();
+//      //SDKSession.getListener().sdkError(error);
+//    }catch (Exception e){
+//      Log.d("WebPaymentActivity"," Error while calling delegate method sdkError(error)");
+//      closePaymentActivity();
+//    }
   }
 
   private void obtainPaymentURLFromChargeOrAuthorize(Charge chargeOrAuthorize) {

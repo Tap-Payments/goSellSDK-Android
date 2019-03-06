@@ -471,8 +471,10 @@ public class CardCredentialsViewHolder
        updateCardSystemsRecyclerView(brand.getCardBrand(),binLookupResponse==null?null:binLookupResponse.getScheme());
 
         if (brand.getValidationState().equals(CardValidationState.invalid)) {
+            saveCardSwitch.setChecked(false);
             cardNumberField.setTextColor(itemView.getResources().getColor(R.color.red));
         } else {
+            saveCardSwitch.setChecked(true);
             cardNumberField.setTextColor(itemView.getResources().getColor(R.color.greyish_brown));
         }
         return brand;
