@@ -6,11 +6,13 @@ import android.support.annotation.RestrictTo;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import company.tap.gosellapi.internal.api.enums.ChargeStatus;
 import company.tap.gosellapi.internal.api.responses.BaseResponse;
 import company.tap.gosellapi.open.models.Customer;
+import company.tap.gosellapi.open.models.Destination;
 import company.tap.gosellapi.open.models.Receipt;
 import company.tap.gosellapi.open.models.Reference;
 
@@ -96,6 +98,10 @@ public class Charge implements BaseResponse{
     @SerializedName("statement_descriptor")
     @Expose
     @Nullable private String statementDescriptor;
+
+    @SerializedName("destinations")
+    @Expose
+    @Nullable private ArrayList<Destination> destinations;
 
     /**
      * Gets id.
@@ -267,5 +273,15 @@ public class Charge implements BaseResponse{
      */
     public String getStatementDescriptor() {
         return statementDescriptor;
+    }
+
+
+    /**
+     * Gets destinations
+     * @return
+     */
+    @Nullable
+    public ArrayList<Destination> getDestinations() {
+        return destinations;
     }
 }
