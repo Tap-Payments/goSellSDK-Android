@@ -5,12 +5,14 @@ import com.google.gson.annotations.SerializedName;
 
 import android.support.annotation.Nullable;
 
+import java.io.Serializable;
+
 import company.tap.gosellapi.internal.api.models.PhoneNumber;
 
 /**
  * The type Customer.
  */
-public final class Customer {
+public final class Customer implements Serializable {
 
   @SerializedName("id")
   @Expose

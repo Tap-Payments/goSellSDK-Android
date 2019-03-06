@@ -5,6 +5,8 @@ import android.support.annotation.Nullable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 import company.tap.gosellapi.internal.api.enums.AuthenticationRequirer;
 import company.tap.gosellapi.internal.api.enums.AuthenticationStatus;
 import company.tap.gosellapi.internal.api.enums.AuthenticationType;
@@ -12,7 +14,7 @@ import company.tap.gosellapi.internal.api.enums.AuthenticationType;
 /**
  * The type Authenticate.
  */
-public final class Authenticate {
+public final class Authenticate implements Serializable {
 
     @SerializedName("id")
     @Expose

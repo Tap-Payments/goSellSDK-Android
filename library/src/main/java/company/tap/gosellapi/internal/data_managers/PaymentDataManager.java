@@ -594,9 +594,7 @@ public final class PaymentDataManager {
 
     @Override
     public void didReceiveError(GoSellError error) {
-
       for (IPaymentProcessListener listener : getListeners()) {
-
         listener.didReceiveError(error);
       }
     }

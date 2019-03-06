@@ -5,10 +5,12 @@ import android.support.annotation.Nullable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * The type Reference.
  */
-public final class Reference {
+public final class Reference implements Serializable {
 
     @SerializedName("acquirer")
     @Expose

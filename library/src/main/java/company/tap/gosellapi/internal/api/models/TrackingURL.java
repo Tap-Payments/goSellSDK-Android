@@ -6,12 +6,14 @@ import android.support.annotation.Nullable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 import company.tap.gosellapi.internal.api.enums.URLStatus;
 
 /**
  * The type Tracking url.
  */
-public class TrackingURL {
+public class TrackingURL implements Serializable {
 
     /**
      * The Status.

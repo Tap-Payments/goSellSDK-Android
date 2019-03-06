@@ -3,6 +3,8 @@ package company.tap.gosellapi.open.controllers;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 
@@ -14,12 +16,15 @@ import company.tap.gosellapi.internal.activities.GoSellPaymentActivity;
 import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.facade.GoSellAPI;
+import company.tap.gosellapi.internal.api.models.Authorize;
+import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.requests.PaymentOptionsRequest;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 import company.tap.gosellapi.open.buttons.PayButtonView;
 import company.tap.gosellapi.open.constants.SettingsKeys;
 import company.tap.gosellapi.open.data_manager.PaymentDataSource;
+import company.tap.gosellapi.open.delegate.SessionDelegate;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.gosellapi.open.models.AuthorizeAction;
 import company.tap.gosellapi.open.models.Customer;
@@ -39,6 +44,8 @@ public class SDKSession implements View.OnClickListener {
   private PaymentDataSource paymentDataSource;
   private Activity activityListener;
   private int SDK_REQUEST_CODE;
+
+  private static SessionDelegate sessionDelegate;
 
   /**
    * Instantiates a new Sdk session.
@@ -322,7 +329,19 @@ public class SDKSession implements View.OnClickListener {
    * launch goSellSDK activity
    */
   private void startMainActivity() {
+    getListener().sessionIsStarting();
     Intent intent = new Intent(payButtonView.getContext(), GoSellPaymentActivity.class);
     activityListener.startActivityForResult(intent,SDK_REQUEST_CODE );
   }
+
+  public void addListener(SessionDelegate _sessionDelegate){
+    sessionDelegate = _sessionDelegate;
+  }
+
+  public static SessionDelegate getListener(){
+    return sessionDelegate;
+
+  }
+
+
 }

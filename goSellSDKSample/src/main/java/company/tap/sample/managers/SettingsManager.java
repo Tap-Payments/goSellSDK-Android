@@ -192,7 +192,7 @@ public class SettingsManager {
                             build();
         } else {
             System.out.println(" paymentResultDataManager.getCustomerRef(context) :"+paymentResultDataManager.getCustomerRef(context));
-            customer = new Customer.CustomerBuilder(paymentResultDataManager.getCustomerRef(context)).
+            customer = new Customer.CustomerBuilder(null).
                     firstName("Name").
                     middleName("MiddleName").
                     lastName("Surname").

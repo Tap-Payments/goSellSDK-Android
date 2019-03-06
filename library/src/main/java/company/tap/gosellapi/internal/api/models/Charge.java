@@ -6,6 +6,7 @@ import android.support.annotation.RestrictTo;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 import company.tap.gosellapi.internal.api.enums.ChargeStatus;
@@ -20,7 +21,7 @@ import company.tap.gosellapi.open.models.Reference;
  * Charge response
  */
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-public class Charge implements BaseResponse{
+public class Charge implements BaseResponse, Serializable {
     @SerializedName("id")
     @Expose
     private String id;
