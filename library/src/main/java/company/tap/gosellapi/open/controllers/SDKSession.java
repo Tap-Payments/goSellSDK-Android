@@ -16,13 +16,10 @@ import company.tap.gosellapi.internal.activities.GoSellPaymentActivity;
 import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.facade.GoSellAPI;
-import company.tap.gosellapi.internal.api.models.Authorize;
-import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.requests.PaymentOptionsRequest;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 import company.tap.gosellapi.open.buttons.PayButtonView;
-import company.tap.gosellapi.open.constants.SettingsKeys;
 import company.tap.gosellapi.open.data_manager.PaymentDataSource;
 import company.tap.gosellapi.open.delegate.SessionDelegate;
 import company.tap.gosellapi.open.enums.TransactionMode;
@@ -334,7 +331,7 @@ public class SDKSession implements View.OnClickListener {
     activityListener.startActivityForResult(intent,SDK_REQUEST_CODE );
   }
 
-  public void addListener(SessionDelegate _sessionDelegate){
+  public void addSessionDelegate(SessionDelegate _sessionDelegate){
     sessionDelegate = _sessionDelegate;
   }
 
