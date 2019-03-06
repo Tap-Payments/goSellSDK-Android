@@ -31,8 +31,6 @@ import company.tap.gosellapi.internal.data_managers.payment_options.view_models.
 import company.tap.gosellapi.internal.exceptions.TransactionModeException;
 import company.tap.gosellapi.internal.interfaces.IPaymentProcessListener;
 import company.tap.gosellapi.internal.utils.ActivityDataExchanger;
-import company.tap.gosellapi.open.controllers.SDKSession;
-import company.tap.gosellapi.open.delegate.PaymentProcessDelegate;
 
 
 /**
