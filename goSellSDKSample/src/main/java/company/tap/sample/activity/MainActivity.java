@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
     private void startSDKSession() {
 
-         sdkSession.addListener(this);
+         sdkSession.addSessionDelegate(this);
 
         TransactionMode trx_mode = settingsManager.getTransactionsMode();
 
