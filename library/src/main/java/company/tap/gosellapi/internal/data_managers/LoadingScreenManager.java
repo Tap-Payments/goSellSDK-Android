@@ -88,12 +88,13 @@ public class LoadingScreenManager {
     }
 
     private void removeLoadingView() {
-        System.out.println("removeLoadingView : "+loadingLayout );
-        if (loadingLayout == null) return;
+        Log.d("LoadingScreenManager","removeLoadingView : "+loadingLayout +" >> loadingView = "+loadingView );
+        if (loadingLayout == null ) return;
 
         final ViewGroup insertPoint = hostActivity.findViewById(android.R.id.content);
 
-        loadingView.setForceStop(true);
+       if(loadingView!=null ) loadingView.setForceStop(true);
+       else return;
 
         loadingLayout.animate()
                 .alpha(0.0f)
@@ -116,29 +117,21 @@ public class LoadingScreenManager {
     }
 
     private void createLoadingScreen() {
-
         LayoutInflater inflater = (LayoutInflater) hostActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (inflater == null) return;
-
         loadingLayout = inflater.inflate(loadingLayoutID, null);
         loadingLayout.setAlpha(0.0f);
-
         // Configure background
         ImageView loadingViewBackground = loadingLayout.findViewById(R.id.blurredBackground);
-
         ViewGroup insertPoint = hostActivity.findViewById(android.R.id.content);
-        System.out.println("insertPoint : "+insertPoint);
         Bitmap bitmap = createScreenshot(insertPoint);
-
         Blurry.with(hostActivity)
                 .radius(BLUR_RADIUS)
                 .color(Color.argb(220, 255, 255, 255))
                 .from(bitmap)
                 .into(loadingViewBackground);
-
         insertPoint.addView(loadingLayout, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         loadingLayout.bringToFront();
-
         // Configure appearance animation
         loadingLayout.animate()
                 .alpha(1.0f)
@@ -160,8 +153,8 @@ public class LoadingScreenManager {
 
         int w = view.getWidth();
         int h = view.getHeight();
-        System.out.println("w: "+w);
-        System.out.println("h: "+h);
+        Log.d("LoadingScreenManager","w: "+w);
+        Log.d("LoadingScreenManager","h: "+h);
 
         if(w<=0 )
             w=800;
@@ -178,5 +171,7 @@ public class LoadingScreenManager {
 
         return bitmap;
     }
+
+
 
 }

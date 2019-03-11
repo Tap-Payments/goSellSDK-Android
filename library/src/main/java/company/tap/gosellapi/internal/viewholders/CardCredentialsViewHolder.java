@@ -212,6 +212,7 @@ public class CardCredentialsViewHolder
             public void afterTextChanged(Editable s) {
              System.out.println("afterText changed ...");
              viewModel.cardDetailsFilled(validateCardFields(),viewModel);
+             viewModel.checkShakingStatus();
             }
         });
 
@@ -472,9 +473,11 @@ public class CardCredentialsViewHolder
 
         if (brand.getValidationState().equals(CardValidationState.invalid)) {
             saveCardSwitch.setChecked(false);
+            viewModel.saveCardSwitchClicked(false);
             cardNumberField.setTextColor(itemView.getResources().getColor(R.color.red));
         } else {
             saveCardSwitch.setChecked(true);
+            viewModel.saveCardSwitchClicked(true);
             cardNumberField.setTextColor(itemView.getResources().getColor(R.color.greyish_brown));
         }
         return brand;

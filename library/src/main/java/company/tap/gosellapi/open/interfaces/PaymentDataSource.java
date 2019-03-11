@@ -11,6 +11,7 @@ import java.util.HashMap;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.gosellapi.open.models.AuthorizeAction;
 import company.tap.gosellapi.open.models.Customer;
+import company.tap.gosellapi.open.models.Destination;
 import company.tap.gosellapi.open.models.PaymentItem;
 import company.tap.gosellapi.open.models.Receipt;
 import company.tap.gosellapi.open.models.Reference;
@@ -98,4 +99,11 @@ public interface PaymentDataSource {
      * Action to perform after authorization succeeds. Used only if transaction mode is AUTHORIZE_CAPTURE. @return the authorize action
      */
     @Nullable    AuthorizeAction         getAuthorizeAction();
+
+    /**
+     *  The Destination array contains list of Merchant desired destinations accounts to receive money from payment transactions
+     */
+
+    @Nullable
+    ArrayList<Destination>                getDestination();
 }

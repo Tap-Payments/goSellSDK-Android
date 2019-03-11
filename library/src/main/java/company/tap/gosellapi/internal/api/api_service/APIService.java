@@ -17,11 +17,13 @@ import company.tap.gosellapi.internal.api.models.Token;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
 import company.tap.gosellapi.internal.api.responses.AddressFormatsResponse;
 import company.tap.gosellapi.internal.api.responses.BINLookupResponse;
+import company.tap.gosellapi.internal.api.responses.DeleteCardResponse;
 import company.tap.gosellapi.internal.api.responses.SDKSettings;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import company.tap.gosellapi.internal.interfaces.CreateTokenRequest;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -205,7 +207,15 @@ public interface APIService {
     Call<Charge> updateCharge(@Path(API_Constants.CHARGE_ID) String chargeId);
 
 
-    // save card API's
+    /**
+     * Delete Saved Card
+     * @param customerId
+     * @param cardId
+     * @return
+     */
+   @DELETE(API_Constants.DELETE_CARD+"/{"+API_Constants.CUSTOMER_ID+"}/"+"{"+API_Constants.CARD_ID+"}")
+    Call<DeleteCardResponse> deleteCard(@Path(API_Constants.CUSTOMER_ID) String customerId,@Path(API_Constants.CARD_ID) String cardId);
+
 
 
 

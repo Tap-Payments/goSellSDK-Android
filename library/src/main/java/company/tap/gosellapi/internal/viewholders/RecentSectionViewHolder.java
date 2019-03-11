@@ -1,8 +1,10 @@
 package company.tap.gosellapi.internal.viewholders;
 
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -25,7 +27,9 @@ public class RecentSectionViewHolder
      * @param itemView the item view
      */
     RecentSectionViewHolder(View itemView) {
+
         super(itemView);
+
     }
 
     private RecyclerView recentPaymentsRecyclerView;
@@ -40,6 +44,8 @@ public class RecentSectionViewHolder
         recentPaymentsRecyclerView.setLayoutManager(linearLayoutManager);
         adapter = new RecentPaymentsRecyclerViewAdapter(data, this);
         recentPaymentsRecyclerView.setAdapter(adapter);
+        if(viewModel!=null)
+        viewModel.setRecentSectionViewHolder(this);
     }
 
     @Override
@@ -56,6 +62,12 @@ public class RecentSectionViewHolder
     }
 
     @Override
+    public void deleteCard(@NonNull String cardId) {
+      viewModel.deleteCard(cardId);
+    }
+
+
+    @Override
     public Parcelable saveState() {
         return linearLayoutManager.onSaveInstanceState();
     }
@@ -66,4 +78,19 @@ public class RecentSectionViewHolder
             linearLayoutManager.onRestoreInstanceState(state);
         }
     }
+
+
+    public void shakeAllCards(GroupViewHolder groupViewHolderListener) {
+        Log.d("RecentSectionViewHolder","shake all cards...");
+        viewModel.disablePayButton();
+        adapter.shakeAllCards(groupViewHolderListener);
+    }
+
+    public void stopShakingAllCards() {
+        if(adapter== null) return;
+        Log.d("RecentSectionViewHolder","stop shake all cards...");
+        adapter.stopShakingAllCards();
+    }
+
+
 }

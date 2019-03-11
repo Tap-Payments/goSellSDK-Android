@@ -1,10 +1,14 @@
 package company.tap.gosellapi.internal.data_managers.payment_options.view_models;
 
+
+import android.support.annotation.NonNull;
+
 import java.util.ArrayList;
 
 import company.tap.gosellapi.internal.Constants;
 import company.tap.gosellapi.internal.api.models.SavedCard;
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
+import company.tap.gosellapi.internal.viewholders.GroupViewHolder;
 import company.tap.gosellapi.internal.viewholders.PaymentOptionsBaseViewHolder;
 import company.tap.gosellapi.internal.viewholders.RecentSectionViewHolder;
 
@@ -14,6 +18,7 @@ import company.tap.gosellapi.internal.viewholders.RecentSectionViewHolder;
 public class RecentSectionViewModel extends PaymentOptionViewModel<ArrayList<SavedCard>, RecentSectionViewHolder, RecentSectionViewModel> {
 
   private int recentItemClickedPosition;
+  private RecentSectionViewHolder recentSectionViewHolder;
 
     /**
      * Instantiates a new Recent section view model.
@@ -23,7 +28,6 @@ public class RecentSectionViewModel extends PaymentOptionViewModel<ArrayList<Sav
      */
     public RecentSectionViewModel(PaymentOptionsDataManager parentDataManager,
                                 ArrayList<SavedCard> data) {
-
     super(parentDataManager, data, PaymentOptionsBaseViewHolder.ViewHolderType.SAVED_CARDS);
   }
 
@@ -41,5 +45,26 @@ public class RecentSectionViewModel extends PaymentOptionViewModel<ArrayList<Sav
   }
 
 
+  public void setRecentSectionViewHolder(RecentSectionViewHolder recentSectionViewHolder){
+      this.recentSectionViewHolder = recentSectionViewHolder;
+  }
 
+  public void shakeAllCards(GroupViewHolder groupViewHolderListener) {
+      if(this.recentSectionViewHolder!=null)
+   this.recentSectionViewHolder.shakeAllCards(groupViewHolderListener);
+  }
+
+  public void stopShakingAllCards() {
+      if(this.recentSectionViewHolder!=null)
+   this.recentSectionViewHolder.stopShakingAllCards();
+  }
+
+
+  public void deleteCard(@NonNull String cardId){
+        parentDataManager.deleteCard(cardId);
+  }
+
+  public void disablePayButton(){
+        parentDataManager.disablePayButton();
+  }
 }

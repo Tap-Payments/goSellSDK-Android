@@ -25,6 +25,7 @@ import company.tap.gosellapi.open.delegate.SessionDelegate;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.gosellapi.open.models.AuthorizeAction;
 import company.tap.gosellapi.open.models.Customer;
+import company.tap.gosellapi.open.models.Destination;
 import company.tap.gosellapi.open.models.PaymentItem;
 import company.tap.gosellapi.open.models.Receipt;
 import company.tap.gosellapi.open.models.Reference;
@@ -263,6 +264,13 @@ public class SDKSession implements View.OnClickListener {
     paymentDataSource.setAuthorizeAction(authorizeAction);
   }
 
+  /**
+   * set Destination
+   */
+
+  public void setDestination(ArrayList<Destination> destination){
+    paymentDataSource.setDestination(destination);
+  }
   /**
    * Handle pay button click event
    * @param v

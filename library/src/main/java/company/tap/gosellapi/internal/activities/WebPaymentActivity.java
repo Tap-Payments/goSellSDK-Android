@@ -25,6 +25,7 @@ import company.tap.gosellapi.internal.api.models.Authorize;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.api.models.SaveCard;
+import company.tap.gosellapi.internal.api.responses.DeleteCardResponse;
 import company.tap.gosellapi.internal.data_managers.LoadingScreenManager;
 import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.WebPaymentViewModel;
@@ -62,7 +63,7 @@ public class WebPaymentActivity extends BaseActionBarActivity implements IPaymen
     }
 
     viewModel = (viewModelObject instanceof WebPaymentViewModel) ? (WebPaymentViewModel) viewModelObject : null;
-    System.out.println(" WebPaymentActivity >>  viewModel :" + viewModel);
+    Log.d("WebPaymentActivity"," WebPaymentActivity >>  viewModel :" + viewModel);
     setContentView(R.layout.gosellapi_activity_web_payment);
 
     webView = findViewById(R.id.webPaymentWebView);
@@ -119,11 +120,11 @@ public class WebPaymentActivity extends BaseActionBarActivity implements IPaymen
 
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
-      System.out.println(" shouldOverrideUrlLoading : " + url);
+      Log.d("WebPaymentActivity"," shouldOverrideUrlLoading : " + url);
       PaymentDataManager.WebPaymentURLDecision decision = PaymentDataManager.getInstance().decisionForWebPaymentURL(url);
 
       boolean shouldOverride = !decision.shouldLoad();
-      System.out.println(" shouldOverrideUrlLoading : decision : " + shouldOverride);
+      Log.d("WebPaymentActivity"," shouldOverrideUrlLoading : decision : " + shouldOverride);
       if (shouldOverride) { // if decision is true and response has TAP_ID
         // call backend to get charge response >> based of charge object type [Authorize - Charge] call retrieveCharge / retrieveAuthorize
         PaymentDataManager.getInstance().retrieveChargeOrAuthorizeOrSaveCardAPI(getChargeOrAuthorize());
@@ -155,20 +156,13 @@ public class WebPaymentActivity extends BaseActionBarActivity implements IPaymen
   @Override
   public void didReceiveCharge(Charge charge) {
     if (charge != null) {
-      System.out.println(" web payment activity* * * " + charge.getStatus());
+      Log.d("WebPaymentActivity"," web payment activity* * * " + charge.getStatus());
       switch (charge.getStatus()) {
         case INITIATED:
           break;
         case CAPTURED:
         case AUTHORIZED:
           finishActivityWithResultCodeOK(charge);
-//          try
-//          {
-//            closePaymentActivity();
-//            SDKSession.getListener().paymentSucceed(charge);
-//          }catch (Exception e){
-//            Log.d("WebPaymentActivity"," Error while calling delegate method paymentSucceed(charge)");
-//          }
           break;
         case FAILED:
         case ABANDONED:
@@ -178,14 +172,6 @@ public class WebPaymentActivity extends BaseActionBarActivity implements IPaymen
         case UNKNOWN:
         case TIMEDOUT:
           finishActivityWithResultCodeOK(charge);
-//          try
-//          {
-//            closePaymentActivity();
-//            SDKSession.getListener().paymentFailed(charge);
-//          }catch (Exception e){
-//            Log.d("WebPaymentActivity"," Error while calling delegate method paymentFailed(charge)");
-//            closePaymentActivity();
-//          }
         break;
       }
     }
@@ -194,15 +180,15 @@ public class WebPaymentActivity extends BaseActionBarActivity implements IPaymen
 
   @Override
   public void didReceiveSaveCard(@NonNull SaveCard saveCard) {
-    System.out.println(" didReceiveSaveCard() not available in case of WebPayment ");
+    Log.d("WebPaymentActivity"," didReceiveSaveCard() not available in case of WebPayment ");
   }
 
   @Override
   public void didCardSavedBefore() {
-    System.out.println(" didCardSavedBefore() not available in case of WebPayment ");
+    Log.d("WebPaymentActivity"," didCardSavedBefore() not available in case of WebPayment ");
   }
 
-    /**
+  /**
      * Gets dismiss intent.
      *
      * @param notificationId the notification id
@@ -216,16 +202,6 @@ public class WebPaymentActivity extends BaseActionBarActivity implements IPaymen
     //PendingIntent dismissIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
     return intent;
   }
-
-
-//  private void closePaymentActivity(Charge charge) {
-////    setPaymentResult(charge);
-//    finishActivityWithResultCodeOK(charge);
-//  }
-//
-//  private void closePaymentActivityWithError(GoSellError error){
-//    finishActivityWithResultCancelled(error);
-//  }
 
   private void finishActivityWithResultCodeOK(Charge charge) {
     setResult(RESULT_OK,new Intent().putExtra("charge", charge));
@@ -248,21 +224,13 @@ public class WebPaymentActivity extends BaseActionBarActivity implements IPaymen
 
   @Override
   public void didReceiveError(GoSellError error) {
-    System.out.println(" web payment : didReceiveError");
+    Log.d("WebPaymentActivity"," web payment : didReceiveError");
     closeLoadingScreen();
     finishActivityWithResultCancelled(error);
-//    try
-//    {
-//      closePaymentActivity();
-//      //SDKSession.getListener().sdkError(error);
-//    }catch (Exception e){
-//      Log.d("WebPaymentActivity"," Error while calling delegate method sdkError(error)");
-//      closePaymentActivity();
-//    }
   }
 
   private void obtainPaymentURLFromChargeOrAuthorize(Charge chargeOrAuthorize) {
-    System.out.println(" WebPaymentActivity >> chargeOrAuthorize : " + chargeOrAuthorize.getStatus());
+    Log.d("WebPaymentActivity"," WebPaymentActivity >> chargeOrAuthorize : " + chargeOrAuthorize.getStatus());
 
     if (chargeOrAuthorize.getStatus() != ChargeStatus.INITIATED) {
       return;
@@ -270,14 +238,14 @@ public class WebPaymentActivity extends BaseActionBarActivity implements IPaymen
 
     Authenticate authentication = chargeOrAuthorize.getAuthenticate();
     if (authentication != null)
-      System.out.println(" WebPaymentActivity >> authentication : " + authentication.getStatus());
+      Log.d("WebPaymentActivity"," WebPaymentActivity >> authentication : " + authentication.getStatus());
     if (authentication != null && authentication.getStatus() == AuthenticationStatus.INITIATED) {
       return;
     }
 
     String url = chargeOrAuthorize.getTransaction().getUrl();
-    System.out.println("WebPaymentActivity >> Transaction().getUrl() :" + url);
-    System.out.println("WebPaymentActivity >> chargeOrAuthorize :" + chargeOrAuthorize.getId());
+    Log.d("WebPaymentActivity","WebPaymentActivity >> Transaction().getUrl() :" + url);
+    Log.d("WebPaymentActivity","WebPaymentActivity >> chargeOrAuthorize :" + chargeOrAuthorize.getId());
 
 
     if (url != null) {

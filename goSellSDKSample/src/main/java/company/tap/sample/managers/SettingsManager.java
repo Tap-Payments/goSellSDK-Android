@@ -17,10 +17,10 @@ import company.tap.gosellapi.internal.api.enums.AuthorizeActionType;
 import company.tap.gosellapi.internal.api.models.AmountModificator;
 import company.tap.gosellapi.internal.api.models.PhoneNumber;
 import company.tap.gosellapi.internal.api.models.Quantity;
-import company.tap.gosellapi.open.data_manager.PaymentResultDataManager;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.gosellapi.open.models.AuthorizeAction;
 import company.tap.gosellapi.open.models.Customer;
+import company.tap.gosellapi.open.models.Destination;
 import company.tap.gosellapi.open.models.PaymentItem;
 import company.tap.gosellapi.open.models.Receipt;
 import company.tap.gosellapi.open.models.Reference;
@@ -61,7 +61,7 @@ public class SettingsManager {
         if(customersList==null) customersList = new ArrayList<>();
 
 
-        customersList.add(new CustomerViewModel(name,middle,last,email,sdn,mobile));
+        customersList.add(new CustomerViewModel(null,name,middle,last,email,sdn,mobile));
 
 
         String data =  gson.toJson(customersList);
@@ -81,10 +81,11 @@ public class SettingsManager {
                 new TypeToken<List<CustomerViewModel>>(){}.getType());
 
         if(customersList!=null){
-
+           String customerRef =customersList.get(0).getRef();
             customersList.clear();
 
             customersList.add(new CustomerViewModel(
+                    customerRef,
                     newCustomer.getName(),
                     newCustomer.getMiddleName(),
                     newCustomer.getLastName(),
@@ -167,20 +168,19 @@ public class SettingsManager {
 
         Gson gson = new Gson();
         String response = pref.getString("customer", "");
-
+        System.out.println(" get customer: "+response);
         ArrayList<company.tap.gosellapi.open.viewmodel.CustomerViewModel> customersList = gson.fromJson(response,
                 new TypeToken<List<company.tap.gosellapi.open.viewmodel.CustomerViewModel>>() {
                 }.getType());
 
-        PaymentResultDataManager paymentResultDataManager = PaymentResultDataManager.getInstance();
         // check if customer id is in pref.
-        System.out.println("preparing data source with customer ref :" + paymentResultDataManager.getCustomerRef(context));
 
 
 
         if (customersList != null) {
+            System.out.println("preparing data source with customer ref :" + customersList.get(0).getRef());
             customer =
-                    new Customer.CustomerBuilder(paymentResultDataManager.getCustomerRef(context)).
+                    new Customer.CustomerBuilder(customersList.get(0).getRef()).
                             firstName(customersList.get(0).getName()).
                             middleName(customersList.get(0).getMiddleName()).
                             lastName(customersList.get(0).getLastName()).
@@ -191,7 +191,7 @@ public class SettingsManager {
                             metadata("meta").
                             build();
         } else {
-            System.out.println(" paymentResultDataManager.getCustomerRef(context) :"+paymentResultDataManager.getCustomerRef(context));
+            System.out.println(" paymentResultDataManager.getCustomerRef(context) null");
             customer = new Customer.CustomerBuilder(null).
                     firstName("Name").
                     middleName("MiddleName").
@@ -279,6 +279,19 @@ public class SettingsManager {
         return new AuthorizeAction(AuthorizeActionType.VOID, 10);
     }
 
+    public ArrayList<Destination> getDestination() {
+        ArrayList<Destination> destinations = new ArrayList<Destination>();
+        destinations.
+                add(new Destination(
+                        "1014",
+                        new BigDecimal(10),
+                        new TapCurrency("kwd"),
+                        "please deduct 10 kd for this account",
+                        ""
+
+                ));
+        return destinations;
+    }
 
     //////////////////////////////////////////////////  PayButton /////////////////////////////////
     public int getTapButtonEnabledBackgroundColor(String key){
@@ -329,16 +342,6 @@ public class SettingsManager {
         String height = pref.getString(key, "");
         return height;
     }
-
-
-
-
-
-
-
-
-
-
 
 
 

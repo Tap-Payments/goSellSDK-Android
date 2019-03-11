@@ -37,8 +37,8 @@
     <dimen name="icon_height_basic">40dp</dimen>
     <dimen name="icon_width_basic">40dp</dimen>
 
-    <dimen name="cancel_icon_width">16dp</dimen>
-    <dimen name="cancel_icon_height">16dp</dimen>
+    <dimen name="cancel_icon_width">10dp</dimen>
+    <dimen name="cancel_icon_height">10dp</dimen>
 
 
     <dimen name="toolbar_height_basic">56dp</dimen>
@@ -54,6 +54,9 @@
 
     <dimen name="item_recent_height_basic">100dp</dimen>
     <dimen name="item_recent_width_basic">100dp</dimen>
+
+    <dimen name="item_recent_container_width_basic">100dp</dimen>
+    <dimen name="item_recent_container_height_basic">110dp</dimen>
 
     <dimen name="separator_width_basic">1dp</dimen>
 

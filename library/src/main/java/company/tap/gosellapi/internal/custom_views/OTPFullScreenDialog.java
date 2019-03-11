@@ -1,8 +1,6 @@
 package company.tap.gosellapi.internal.custom_views;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
@@ -10,31 +8,23 @@ import android.support.v4.app.DialogFragment;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import company.tap.gosellapi.R;
-import company.tap.gosellapi.internal.activities.BaseActivity;
 import company.tap.gosellapi.internal.activities.GoSellPaymentActivity;
 import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 import company.tap.gosellapi.internal.utils.Utils;
 import company.tap.gosellapi.open.buttons.PayButtonView;
-import okhttp3.internal.Util;
 
 /**
  * The type Otp full screen dialog.
@@ -117,6 +107,7 @@ public class OTPFullScreenDialog extends DialogFragment {
       int height = ViewGroup.LayoutParams.MATCH_PARENT;// displayMatrix.heightPixels - 56;//
       dialog.getWindow().setLayout(width, height);
     }
+
   }
 
   @Override
@@ -182,58 +173,8 @@ public class OTPFullScreenDialog extends DialogFragment {
 
 
 
-//    setupToolbar(view);
   }
 
-//  private void setupToolbar(View view){
-//    // setup toolbar
-//    ImageView businessIcon = view.findViewById(R.id.businessIcon);
-//    String logoPath = PaymentDataManager.getInstance().getSDKSettings().getData().getMerchant()
-//        .getLogo();
-//    Glide.with(this).load(logoPath).apply(RequestOptions.circleCropTransform()).into(businessIcon);
-//
-//    String businessNameString = PaymentDataManager.getInstance().getSDKSettings().getData()
-//        .getMerchant().getName();
-//    TextView businessName = view.findViewById(R.id.businessName);
-//    businessName.setText(businessNameString);
-//
-//    // cancel icon
-//    ImageView cancel_payment = view.findViewById(R.id.cancel_payment);
-//    cancel_payment.setOnClickListener(new View.OnClickListener() {
-//      @Override
-//      public void onClick(View v) {
-//        showDismissConfirmationDialog();
-//      }
-//    });
-//  }
-//
-//  private void showDismissConfirmationDialog(){
-//    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(BaseActivity.getCurrent());
-//    dialogBuilder.setTitle(getString(R.string.otp_cancel_payment_title));
-//    dialogBuilder.setMessage(R.string.otp_cancel_payment_message);
-//    dialogBuilder.setCancelable(false);
-//
-//    dialogBuilder.setPositiveButton(getString(R.string.otp_confirm_dialog), new DialogInterface.OnClickListener() {
-//      @Override
-//      public void onClick(DialogInterface dialog, int which) {
-//        closeOtpDialogFragment();
-//      }
-//    });
-//
-//
-//      dialogBuilder.setNegativeButton(getString(R.string.otp_cancel_dialog), new DialogInterface.OnClickListener() {
-//        @Override
-//        public void onClick(DialogInterface dialog, int which) {
-//          dialog.dismiss();
-//        }
-//      });
-//
-//    dialogBuilder.show();
-//  }
-//
-//  private void closeOtpDialogFragment(){
-//    dismiss();
-//  }
 
   private void handleConfirmationCodeInputEditText(View view) {
 
@@ -318,6 +259,7 @@ public class OTPFullScreenDialog extends DialogFragment {
   private void confirmOTPCode() {
     PaymentDataManager.getInstance().confirmOTPCode(otpCode);
     GoSellPaymentActivity listener = (GoSellPaymentActivity) getActivity();
+    if(listener==null) return;
     listener.confirmOTP();
     dismiss();
   }
@@ -325,6 +267,7 @@ public class OTPFullScreenDialog extends DialogFragment {
   private void resendOTPCode() {
     PaymentDataManager.getInstance().resendOTPCode();
     GoSellPaymentActivity listener = (GoSellPaymentActivity) getActivity();
+    if(listener==null) return;
     listener.resendOTP();
     dismiss();
   }

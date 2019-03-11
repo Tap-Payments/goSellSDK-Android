@@ -480,6 +480,10 @@ public class CardCredentialsViewModel
         cardCredentialsViewHolder.setCardNumberColor(color);
     }
 
+    public void checkShakingStatus() {
+        parentDataManager.checkShakingStatus();
+    }
+
 
     //endregion
 

@@ -27,6 +27,8 @@
   <string name="textview_title_address_on_card">Address on Card</string>
   <string name="textview_title_country">Country</string>
   <string name="textview_title_recent">Recent</string>
+  <string name="textview_title_recent_edit">EDIT</string>
+  <string name="textview_title_recent_cancel">CANCEL</string>
   <string name="textview_title_others">Others</string>
   <string name="textview_title_resend_again">Resend OTP</string>
   <string name="textview_title_save_for_merchant">Save for %s Checkouts</string>
@@ -78,6 +80,15 @@
   <string name="key_sdk_appearance_mode">key_sdk_appearance_mode</string>
   <string name="save_card">Save Card</string>
     <string name="textview_disclaimer_save_card_header_title">Enter Card Details</string>
+
+
+
+  <string name="delete_saved_card_title">Delete Card</string>
+  <string name="delete_saved_card_button_Delete">Delete</string>
+  <string name="delete_saved_card_button_Cancel">Cancel</string>
+  <string name="delete_saved_card_msg">Are you sure you would like to delete card </string>
+
+
 
 
 

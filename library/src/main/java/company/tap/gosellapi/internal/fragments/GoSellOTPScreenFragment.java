@@ -21,8 +21,8 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import company.tap.gosellapi.R;
-import company.tap.gosellapi.internal.utils.Utils;
 import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
+import company.tap.gosellapi.internal.utils.Utils;
 
 /**
  * The type Go sell otp screen fragment.

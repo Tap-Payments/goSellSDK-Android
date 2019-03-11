@@ -1,11 +1,13 @@
 package company.tap.sample.viewmodels;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.io.Serializable;
 
 public class CustomerViewModel implements Serializable ,Comparable<CustomerViewModel>{
 
+    private String ref;
     private String name;
     private String middleName;
     private String lastName;
@@ -13,10 +15,11 @@ public class CustomerViewModel implements Serializable ,Comparable<CustomerViewM
     private String mobile;
     private String sdn;
 
-    public CustomerViewModel(@NonNull final String name,@NonNull final String middle,
+    public CustomerViewModel(@Nullable String ref,
+            @NonNull final String name,@NonNull final String middle,
                              @NonNull final String last,@NonNull final String email,
                              @NonNull String sdn, @NonNull String mobile) {
-        setSimpleText(name,middle,last,email,sdn,mobile);
+        setSimpleText(ref,name,middle,last,email,sdn,mobile);
     }
 
     @NonNull
@@ -44,14 +47,19 @@ public class CustomerViewModel implements Serializable ,Comparable<CustomerViewM
     }
 
 
+    public String getRef() {
+        return ref;
+    }
+
     @NonNull
     public String getMobile(){
         return mobile;
     }
 
-    public void setSimpleText(@NonNull final String name,@NonNull final String middle,
+    public void setSimpleText(@Nullable String ref ,@NonNull final String name,@NonNull final String middle,
                               @NonNull final String last,@NonNull final String email,
                               @NonNull String sdn, @NonNull String mobile) {
+        this.ref = ref;
         this.name = name;
         this.middleName = middle;
         this.lastName = last;

@@ -1,7 +1,12 @@
 package company.tap.gosellapi.internal.data_managers.payment_options;
 
+import android.support.annotation.NonNull;
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
+
 import company.tap.gosellapi.internal.Constants;
 import company.tap.gosellapi.internal.api.enums.ExtraFeesStatus;
 import company.tap.gosellapi.internal.api.enums.PaymentType;
@@ -26,6 +31,8 @@ import company.tap.gosellapi.internal.data_managers.payment_options.view_models_
 import company.tap.gosellapi.internal.utils.ActivityDataExchanger;
 import company.tap.gosellapi.internal.utils.CompoundFilter;
 import company.tap.gosellapi.internal.utils.Utils;
+import company.tap.gosellapi.internal.viewholders.GroupViewHolder;
+import company.tap.gosellapi.internal.viewholders.PaymentOptionsBaseViewHolder;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import io.card.payment.CreditCard;
 
@@ -73,7 +80,11 @@ public class PaymentOptionsDataManager {
     getModelsHandler().filterViewModels(amountedCurrency.getCurrency());
   }
 
-    /**
+  public void disablePayButton() {
+      listener.disablePayButton();
+  }
+
+  /**
      * The interface Payment options data listener.
      */
 //outer interface (for fragment, containing recyclerView)
@@ -171,6 +182,14 @@ public class PaymentOptionsDataManager {
          */
         void updatePayButtonWithExtraFees(PaymentOption paymentOption);
 
+
+      /**
+       * User clicks on delete card
+       * @param cardId to be deleted
+       */
+      void savedCardClickedForDeletion(String cardId);
+
+    void disablePayButton();
   }
 
   private PaymentOptionsDataListener listener;
@@ -329,6 +348,31 @@ public class PaymentOptionsDataManager {
     listener.updatePayButtonWithSavedCardExtraFees(recentItem,recentSectionViewModel);
   }
 
+  /**
+   * this method will be called if user clicks on edit saved card
+   * @param groupViewHolderListener
+   */
+  public void editItemClicked(GroupViewHolder groupViewHolderListener){
+      Log.d("PayOptionsDataManager","editItemClicked.......");
+    RecentSectionViewModel recentSectionViewModel = getModelsHandler().findSavedCardsModel();
+    if (recentSectionViewModel == null) return;
+
+    recentSectionViewModel.shakeAllCards(groupViewHolderListener);
+
+  }
+
+  /**
+   * this method will be called if user clicks on cancel saved card
+   */
+  public void cancelItemClicked(){
+    Log.d("PayOptionsDataManager","cancelItemClicked.......");
+    RecentSectionViewModel recentSectionViewModel = getModelsHandler().findSavedCardsModel();
+    if (recentSectionViewModel == null) return;
+
+    recentSectionViewModel.stopShakingAllCards();
+
+  }
+
     /**
      * Web payment system view holder clicked.
      *
@@ -478,7 +522,44 @@ public class PaymentOptionsDataManager {
     currencyViewModel.updateData();
   }
 
-    /**
+  /**
+   * Update saved Cards after deletion
+   * @param cardId
+   */
+  public void updateSavedCards(String cardId){
+
+    RecentSectionViewModel recentSectionViewModel =  getModelsHandler().findSavedCardsModel();
+
+   if(recentSectionViewModel == null)return;
+
+    if(recentSectionViewModel.getData()== null) return;
+
+    boolean isCardDeleted = false;
+
+    Log.d("PaymentOptionsDataMgr","updateSavedCards list before deleting:  = "+recentSectionViewModel.getData().size());
+    for(int i=0;i < recentSectionViewModel.getData().size();i++) {
+      if (recentSectionViewModel.getData().get(i).getId().equals(cardId)) {
+        recentSectionViewModel.getData().remove(i);
+        isCardDeleted=true;
+      }
+    }
+    Log.d("PaymentOptionsDataMgr","updateSavedCards list after deleting:  = "+recentSectionViewModel.getData().size());
+
+    if(recentSectionViewModel.getData().size()==0)
+      clearPaymentOptionsResponseCards();
+
+      if(isCardDeleted)  recentSectionViewModel.updateData();
+  }
+
+  private void clearPaymentOptionsResponseCards(){
+    Log.d("PaymentOptionsDataMgr","clearPaymentOptionsResponseCards .....");
+    getPaymentOptionsResponse().getCards().clear();
+    getModelsHandler().filterViewModels(getPaymentOptionsResponse().getCurrency());
+  }
+
+
+
+  /**
      * Card expiration date selected.
      *
      * @param month the month
@@ -513,8 +594,8 @@ public class PaymentOptionsDataManager {
 
     int expirationMonth = card.expiryMonth;
     int expirationYear = card.expiryYear;
-    System.out.println(" cardScanned >>> expirationMonth " + expirationMonth);
-    System.out.println(" cardScanned >>> expirationYear " + expirationYear);
+    Log.d("PaymentOptionsDataMgr"," cardScanned >>> expirationMonth " + expirationMonth);
+      Log.d("PaymentOptionsDataMgr"," cardScanned >>> expirationYear " + expirationYear);
     if (expirationMonth != 0 && expirationYear != 0) {
 
       cardCredentialsViewModel.setExpirationYear(String.valueOf(expirationYear));
@@ -545,7 +626,21 @@ public class PaymentOptionsDataManager {
     public void updatePayButtonWithExtraFees(PaymentOption paymentOption) {
          listener.updatePayButtonWithExtraFees(paymentOption);
   }
+  
+  
+  public void checkShakingStatus(){
+    Log.d("PayOptionsDataManager","checkShakingStatus .......");
+    RecentSectionViewModel recentSectionViewModel = getModelsHandler().findSavedCardsModel();
+    if (recentSectionViewModel == null) return;
 
+    recentSectionViewModel.stopShakingAllCards();
+  }
+
+
+  public void deleteCard(@NonNull String cardId){
+    setRecentPaymentFocusedCard(Constants.NO_FOCUS);
+      listener.savedCardClickedForDeletion(cardId);
+  }
     /**
      * Show address on card cell.
      *
@@ -640,7 +735,7 @@ public class PaymentOptionsDataManager {
       ArrayList<PaymentOption> paymentOptionsWorker = new ArrayList<>(getPaymentOptionsResponse().getPaymentOptions());
 
 
-      System.out.println("/////////////////////  get web/card payment options   ///////////////");
+      Log.d("PaymentOptionsDataMgr","/////////////////////  get web/card payment options   ///////////////");
       /**
        * Haitham Sheshtawy 20/12/2018
        * Java 8 way of filtering collection against old Utils filter method
