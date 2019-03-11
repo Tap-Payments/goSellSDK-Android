@@ -108,4 +108,20 @@ final class API_Constants {
      * The Payment types.
      */
     static final String PAYMENT_TYPES = "payment/types";
+
+    /**
+     * Delete Card API
+     */
+    static final String DELETE_CARD = "card";
+    /**
+     * Customer Id
+     */
+     static final String CUSTOMER_ID = "customer_id";
+
+    /**
+     * Card Id to be deleted
+     */
+    static final String CARD_ID="card_id";
+
+
 }

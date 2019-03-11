@@ -3,17 +3,20 @@ package company.tap.gosellapi.internal.data_managers;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
+import android.util.Log;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import company.tap.gosellapi.internal.activities.GoSellPaymentActivity;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.enums.PaymentType;
 import company.tap.gosellapi.internal.api.enums.Permission;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.api.models.SaveCard;
 import company.tap.gosellapi.internal.api.models.SavedCard;
+import company.tap.gosellapi.internal.api.responses.DeleteCardResponse;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.CardCredentialsViewModel;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.RecentSectionViewModel;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.WebPaymentViewModel;
@@ -23,6 +26,7 @@ import company.tap.gosellapi.internal.api.models.Authorize;
 import company.tap.gosellapi.open.models.AuthorizeAction;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.open.models.Customer;
+import company.tap.gosellapi.open.models.Destination;
 import company.tap.gosellapi.open.models.Receipt;
 import company.tap.gosellapi.open.models.Reference;
 import company.tap.gosellapi.internal.api.requests.PaymentOptionsRequest;
@@ -45,8 +49,13 @@ public final class PaymentDataManager {
   @Nullable private PaymentDataSource externalDataSource;
   @NonNull private IPaymentDataProvider dataProvider = new PaymentDataProvider();
   @NonNull private PaymentProcessListener processListener = new PaymentProcessListener();
+  @NonNull private CardDeleteListener cardDeletListener = new CardDeleteListener();
+
   @NonNull private PaymentProcessManager paymentProcessManager = new PaymentProcessManager(
-      getPaymentDataProvider(), getProcessListener());
+      getPaymentDataProvider(),
+          getProcessListener(),
+          getCardDeleteListener()
+  );
 
   private SDKSettings SDKSettings;
   private PaymentOptionsRequest paymentOptionsRequest;
@@ -95,7 +104,10 @@ public final class PaymentDataManager {
      * @param otpCode the otp code
      */
     public void confirmOTPCode(String otpCode) {
+      Log.d("PaymentDataManager"," otpCode : "+otpCode);
     if(getChargeOrAuthorize()!=null ) {
+
+      Log.d("PaymentDataManager","getChargeOrAuthorize() instanceof  Authorize :"+(getChargeOrAuthorize() instanceof  Authorize));
       if(getChargeOrAuthorize() instanceof  Authorize)
         getPaymentProcessManager().confirmAuthorizeOTPCode((Authorize) getChargeOrAuthorize(), otpCode);
 
@@ -169,7 +181,7 @@ public final class PaymentDataManager {
 
   /**
    * Here we will use inner class to create a singleton object of PaymentDataManager
-   * Inner class singleton approach introduced by Bill Pugh to overcome other singleton approaches :
+   * Inner class singleton approach introduced by Bill Pugh >>  singleton approaches :
    * - Eager initialization
    * - Static block initialization
    * - Lazy load initialization
@@ -386,6 +398,18 @@ public final class PaymentDataManager {
     getPaymentProcessManager().startSavedCardPaymentProcess(savedCard, recentSectionViewModel);
   }
 
+  /**
+   * Delete card
+   * @param customerID
+   * @param cardId
+   * @param listener
+   */
+  public void deleteCard(@NonNull String customerID,@NonNull String cardId,
+                         company.tap.gosellapi.internal.interfaces.ICardDeleteListener listener){
+      getCardDeleteListener().addListener(listener);
+      getPaymentProcessManager().deleteCard(customerID,cardId);
+  }
+
     /**
      * The type Web payment url decision.
      */
@@ -563,6 +587,13 @@ public final class PaymentDataManager {
 
       return authorizeAction;
     }
+
+      @Nullable
+      @Override
+      public ArrayList<Destination> getDestination(){
+          ArrayList<Destination> destinations = getExternalDataSource().getDestination();
+          return destinations;
+      }
   }
 
   private class PaymentProcessListener implements IPaymentProcessListener {
@@ -608,6 +639,9 @@ public final class PaymentDataManager {
       }
     }
 
+
+
+
     private void addListener(IPaymentProcessListener listener) {
 
       getListeners().add(listener);
@@ -631,6 +665,33 @@ public final class PaymentDataManager {
     }
   }
 
+
+  private class CardDeleteListener implements company.tap.gosellapi.internal.interfaces.ICardDeleteListener {
+
+    @NonNull private company.tap.gosellapi.internal.interfaces.ICardDeleteListener listener;
+
+    private void addListener(company.tap.gosellapi.internal.interfaces.ICardDeleteListener _listener) {
+
+     listener = _listener;
+    }
+
+    private company.tap.gosellapi.internal.interfaces.ICardDeleteListener getListeners() {
+
+      return listener;
+    }
+
+    @Override
+    public void didCardDeleted(DeleteCardResponse deleteCardResponse) {
+      Log.d("PaymentDataManager"," PaymentDataManager: listener.getClass()>  " + listener.getClass());
+       if(listener!=null && (listener instanceof GoSellPaymentActivity)) {
+            Log.d("PaymentDataManager"," PaymentDataManager: call CardDeleteListener to delete card  " + deleteCardResponse.getId());
+            listener.didCardDeleted(deleteCardResponse);
+        }
+      }
+
+  }
+
+
   @NonNull
   private IPaymentDataProvider getPaymentDataProvider() {
 
@@ -642,6 +703,12 @@ public final class PaymentDataManager {
 
     return processListener;
   }
+
+  @NonNull
+  private CardDeleteListener getCardDeleteListener(){
+      return cardDeletListener;
+  }
+
 
     /**
      * Gets payment process manager.

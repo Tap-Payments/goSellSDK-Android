@@ -1,6 +1,7 @@
 package company.tap.gosellapi.internal.data_managers.payment_options.view_models;
 
 import android.os.Parcelable;
+import android.util.Log;
 
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
@@ -110,7 +111,6 @@ public class PaymentOptionViewModel<T, K extends PaymentOptionsBaseViewHolder<T,
     }
 
     private void applyStateToHolder() {
-        System.out.println(" >>>> data.getClass() : " + data.getClass());
         holder.bind(data);
         holder.setFocused(parentDataManager.isPositionInFocus(position));
         holder.restoreState(savedState);

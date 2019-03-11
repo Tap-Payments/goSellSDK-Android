@@ -1,6 +1,7 @@
 package company.tap.gosellapi.open.viewmodel;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.io.Serializable;
 
@@ -9,6 +10,7 @@ import java.io.Serializable;
  */
 public class CustomerViewModel implements Serializable ,Comparable<CustomerViewModel>{
 
+    private String ref;
     private String name;
     private String middleName;
     private String lastName;
@@ -26,7 +28,8 @@ public class CustomerViewModel implements Serializable ,Comparable<CustomerViewM
      * @param sdn    the sdn
      * @param mobile the mobile
      */
-    public CustomerViewModel(@NonNull final String name,
+    public CustomerViewModel(@Nullable String ref,
+                             @NonNull final String name,
                              @NonNull final String middle,
                              @NonNull final String last,
                              @NonNull final String email,
@@ -117,6 +120,14 @@ public class CustomerViewModel implements Serializable ,Comparable<CustomerViewM
      */
     public String getSdn() {
         return sdn;
+    }
+
+    /**
+     * return customer ref.
+     * @return
+     */
+    public String getRef() {
+        return ref;
     }
 
     @Override

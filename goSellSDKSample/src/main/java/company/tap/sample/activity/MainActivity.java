@@ -2,12 +2,15 @@ package company.tap.sample.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +20,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.models.Authorize;
@@ -28,6 +37,7 @@ import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.sample.R;
 import company.tap.sample.constants.SettingsKeys;
 import company.tap.sample.managers.SettingsManager;
+import company.tap.sample.viewmodels.CustomerViewModel;
 
 
 public class MainActivity extends AppCompatActivity implements SessionDelegate {
@@ -43,12 +53,9 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         settingsManager = SettingsManager.getInstance();
         settingsManager.setPref(this);
 
-        if (sdkSession == null)
-            sdkSession = new SDKSession();
 
-        initButton();
-        setCardSectionAppearance();
-        startSDKSession();
+
+        configureSDKSession();
     }
 
     private void initButton() {
@@ -91,7 +98,11 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
     }
 
 
-    private void startSDKSession() {
+    private void configureSDKSession() {
+        if(sdkSession==null)sdkSession = new SDKSession();
+
+        initButton();
+        setCardSectionAppearance();
 
          sdkSession.addSessionDelegate(this);
 
@@ -135,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
         sdkSession.setAuthorizeAction(settingsManager.getAuthorizeAction());
 
+        sdkSession.setDestination(settingsManager.getDestination());
 
 //        // Persist Payment Data Source
 //        sdkSession.persistPaymentDataSource();
@@ -212,7 +224,43 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         System.out.println("Payment Succeeded : "+ charge.getStatus());
         System.out.println("Payment Succeeded : "+ charge.getDescription());
         System.out.println("Payment Succeeded : "+ charge.getResponse().getMessage());
+        saveCustomerRefInSession(charge);
+        configureSDKSession();
         showDialog(charge.getId(),charge.getResponse().getMessage(),company.tap.gosellapi.R.drawable.ic_checkmark_normal);
+    }
+
+    private void saveCustomerRefInSession(Charge charge) {
+        SharedPreferences preferences =  PreferenceManager.getDefaultSharedPreferences(this);
+
+        Gson gson = new Gson();
+
+        String response = preferences.getString("customer" , "");
+
+
+        ArrayList<CustomerViewModel> customersList = gson.fromJson(response,
+                new TypeToken<List<CustomerViewModel>>(){}.getType());
+
+        if(customersList!=null) {
+            customersList.clear();
+            customersList.add(new CustomerViewModel(
+                    charge.getCustomer().getIdentifier(),
+                            charge.getCustomer().getFirstName(),
+                            charge.getCustomer().getMiddleName(),
+                            charge.getCustomer().getLastName(),
+                            charge.getCustomer().getEmail(),
+                            charge.getCustomer().getPhone().getCountryCode(),
+                            charge.getCustomer().getPhone().getNumber()));
+
+            String data = gson.toJson(customersList);
+
+            writeCustomersToPreferences(data, preferences);
+        }
+    }
+
+    private void writeCustomersToPreferences(String data, SharedPreferences preferences){
+        SharedPreferences.Editor editor =  preferences.edit();
+        editor.putString("customer",data);
+        editor.commit();
     }
 
     @Override
@@ -230,6 +278,8 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         System.out.println("Authorize Succeeded : "+ authorize.getStatus());
         System.out.println("Authorize Succeeded : "+ authorize.getDescription());
         System.out.println("Authorize Succeeded : "+ authorize.getResponse().getMessage());
+        saveCustomerRefInSession(authorize);
+        configureSDKSession();
         showDialog(authorize.getId(),authorize.getResponse().getMessage(),company.tap.gosellapi.R.drawable.ic_checkmark_normal);
     }
 
@@ -249,6 +299,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         System.out.println("Card Saved Succeeded : "+ charge.getStatus());
         System.out.println("Card Saved Succeeded : "+ charge.getDescription());
         System.out.println("Card Saved Succeeded : "+ charge.getResponse().getMessage());
+        saveCustomerRefInSession(charge);
         showDialog(charge.getId(),charge.getStatus().toString(),company.tap.gosellapi.R.drawable.ic_checkmark_normal);
     }
 
@@ -285,6 +336,6 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
     @Override
     public void sessionCancelled() {
-
+        Log.d("MainActivity","Session Cancelled.........");
     }
 }

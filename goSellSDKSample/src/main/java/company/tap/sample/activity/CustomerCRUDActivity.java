@@ -106,7 +106,7 @@ public class CustomerCRUDActivity extends AppCompatActivity {
 
          }else if(operation.equalsIgnoreCase(OPERATION_EDIT)){
              SettingsManager.getInstance().editCustomer(customer,
-                     new CustomerViewModel(
+                     new CustomerViewModel(customer.getRef(),
                              name.getText().toString().trim(),
                              middleName.getText().toString().trim(),
                              lastName.getText().toString().trim(),

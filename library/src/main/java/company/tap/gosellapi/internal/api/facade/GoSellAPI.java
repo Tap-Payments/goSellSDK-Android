@@ -1,6 +1,7 @@
 package company.tap.gosellapi.internal.api.facade;
 
 import android.support.annotation.RestrictTo;
+import android.util.Log;
 
 import company.tap.gosellapi.internal.api.api_service.APIService;
 import company.tap.gosellapi.internal.api.api_service.RetrofitHelper;
@@ -20,6 +21,7 @@ import company.tap.gosellapi.internal.api.models.Token;
 import company.tap.gosellapi.internal.api.requests.CreateChargeRequest;
 import company.tap.gosellapi.internal.api.responses.AddressFormatsResponse;
 import company.tap.gosellapi.internal.api.responses.BINLookupResponse;
+import company.tap.gosellapi.internal.api.responses.DeleteCardResponse;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 import company.tap.gosellapi.internal.interfaces.CreateTokenRequest;
@@ -222,7 +224,7 @@ public final class GoSellAPI {
     public void getPaymentOptions(PaymentOptionsRequest paymentOptionsRequest, final APIRequestCallback<PaymentOptionsResponse> requestCallback) {
 
         // check paymentOptions Request
-        System.out.println( "### paymentOptionsRequest ### " + paymentOptionsRequest.getPaymentOptionRequestInfo());
+        Log.d("#paymentOptionsRequest" , paymentOptionsRequest.getPaymentOptionRequestInfo());
 
         PaymentDataManager.getInstance().setPaymentOptionsRequest(paymentOptionsRequest);
         requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.getPaymentOptions(paymentOptionsRequest), new APIRequestCallback<PaymentOptionsResponse>() {
@@ -238,5 +240,15 @@ public final class GoSellAPI {
                 requestCallback.onFailure(errorDetails);
             }
         }));
+    }
+
+    /**
+     *  Delete Card
+     * @param customerId
+     * @param cardId
+     */
+    public void deleteCard(String customerId, String cardId, final APIRequestCallback<DeleteCardResponse> requestCallback){
+        Log.d("Delete Card :", "Customer Id: "+ customerId + " && Card Id : "+cardId);
+        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.deleteCard(customerId,cardId),requestCallback));
     }
 }
