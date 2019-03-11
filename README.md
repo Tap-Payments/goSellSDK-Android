@@ -63,7 +63,7 @@ To use the SDK the following requirements must be met:
        git@github.com:Tap-Payments/goSellSDK-Android.git
     ```
 2. Add goSellSDK library to your project settings.gradle file as following
-    ```Android
+    ```java
         include ':library', ':YourAppName'
     ```
 3. Setup your project to include goSellSDK as a dependency Module.
@@ -77,7 +77,7 @@ To use the SDK the following requirements must be met:
 [JitPack](https://jitpack.io/) is a novel package repository for JVM and Android projects. It builds Git projects on demand and provides you with ready-to-use artifacts (jar, aar).
 
 To integrate goSellSDK into your project add it in your **root** `build.gradle` at the end of repositories:
-```android
+```java
 	allprojects {
 		repositories {
 			...
@@ -86,7 +86,7 @@ To integrate goSellSDK into your project add it in your **root** `build.gradle` 
 	}
 ```
 Step 2. Add the dependency
-```android
+```java
 	dependencies {
 	        compile 'com.github.Tap-Payments:goSellSDK-Android:1.0.2'
 	}
@@ -117,7 +117,7 @@ Don't forget to import the class at the beginning of the file:
 
 *Android*:
 
-```android
+```java
  import company.tap.gosellapi.GoSellSDK;
 ```
 <a name="setup_gosellsdk_class_properties_mode"></a>
@@ -166,7 +166,7 @@ Pay Button is restricted to the height of exactly **40 dp**. For better experien
 If you would like to include it do the following:
 
 1. include PayButton view into your layout xml
-```android
+```java
    <company.tap.gosellapi.open.buttons.PayButtonView
         android:id="@+id/payButtonId"
         android:layout_width="match_parent"
@@ -176,7 +176,7 @@ If you would like to include it do the following:
 
 <a name="pay_button_init"></a>
 2. get reference inside your activity
-```android
+```java
     payButtonView = findViewById(R.id.payButtonId);
  ```
 
@@ -185,28 +185,28 @@ If you would like to include it do the following:
  To customize pay button appearance you must instantiate an object of SDKSession and then use it to do the customization as following:
 
  1. Instantiate an instance of SDKSession
- ```android
+ ```java
       sdkSession = new SDKSession();
  ```
  2. set button view
- ```android
+ ```java
      sdkSession.setButtonView(payButtonView, this, SDK_REQUEST_CODE);
  ```
  3. setup button view background
      1. setup pay button using xml selector
-     ```android
+     ```java
          sdkSession.setPayButtonBackgroundSelector(YOUR_XML_SELECTOR);
      ```
      2. setup pay button using color list
-     ```android
+     ```java
          sdkSession.setupBackgroundWithColorList(ENABLED_COLOR_CODE,DISABLED_COLOR_CODE);
      ```
   4. setup pay button font type face
-  ```android
+  ```java
          sdkSession.setupPayButtonFontTypeFace(FONT_FACE);
   ```
   5. set pay button text color
-  ```android
+  ```java
          sdkSession.setupTextColor(ENABLED_TEXT_COLOR, DISABLED_TEXT_COLOR);
   ```
 <a name="api_sdkSession"></a>
@@ -433,7 +433,7 @@ The following table describes its structure and specifies which fields are requi
         }
 ```
    4. Set Customer
- ```android
+ ```java
       sdkSession.setCustomer(Customer);
  ```
 
@@ -510,7 +510,7 @@ The following table describes its structure and specifies which fields are requi
 ```
 
  5. Set Taxes
- ```android
+ ```java
       sdkSession.setTaxes(ArraList<Tax>);
  ```
   **Tax** model class:
@@ -531,7 +531,7 @@ The following table describes its structure and specifies which fields are requi
     }
 ```
   6. Set Shipping
- ```android
+ ```java
       sdkSession.setShipping(ArraList<Shipping>);
  ```
  **Tax** is a model class:
@@ -552,7 +552,7 @@ The following table describes its structure and specifies which fields are requi
     }
 ```
    7. Set Post URL
- ```android
+ ```java
       sdkSession.setPostURL(String);
  ```
  **Post URL**:
@@ -560,7 +560,7 @@ The following table describes its structure and specifies which fields are requi
    return  "https://tap.company";
 ```
  8. Set Payment Description
- ```android
+ ```java
       sdkSession.setPaymentDescription(String);
  ```
   **Description**:
@@ -568,7 +568,7 @@ The following table describes its structure and specifies which fields are requi
     return @"Awesome payment description will be here.";
 ```
  9. Set Payment Metadata
- ```android
+ ```java
       sdkSession.setPaymentMetadata(HashMap<String,String>);
  ```
  **Metadata** HashMap:
@@ -578,7 +578,7 @@ The following table describes its structure and specifies which fields are requi
         return paymentMetadata;
 ```
   10. Set Payment Reference
- ```android
+ ```java
       sdkSession.setPaymentReference(Reference);
  ```
   **Reference** model class:
@@ -611,7 +611,7 @@ The following table describes its structure and specifies which fields are requi
     }
 ```
    11. Set Payment Descriptor
- ```android
+ ```java
       sdkSession.setPaymentStatementDescriptor(String);
  ```
    **Descriptor** String:
@@ -619,7 +619,7 @@ The following table describes its structure and specifies which fields are requi
     return @"Payment statement descriptor will be here.";
 ```
    12. Set 3DSecure
- ```android
+ ```java
       sdkSession.isRequires3DSecure(boolean);
  ```
     **3D Secure** Boolean:
@@ -627,7 +627,7 @@ The following table describes its structure and specifies which fields are requi
     return true;
 ```
    13. Set Receipt Settings
- ```android
+ ```java
       sdkSession.setReceiptSettings(Receipt);
  ```
    **Receipt** model class:
@@ -648,7 +648,7 @@ The following table describes its structure and specifies which fields are requi
     }
 ```
     14. Set Authorize Action
- ```android
+ ```java
       sdkSession.setAuthorizeAction(AuthorizeAction);
  ```
     **AuthorizeAction** model class:
@@ -679,7 +679,7 @@ Notifies the receiver that payment has succeed.
 
 #### Declaration
 
-```Android
+```java
 - void paymentSucceed(@NonNull Charge charge);
 ```
 
