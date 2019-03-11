@@ -40,11 +40,3 @@ company.tap.gosellapi.open.exception
 company.tap.gosellapi.open.interfaces
 company.tap.gosellapi.open.models
 company.tap.gosellapi.open.viewmodel
-company.tap.sample
-company.tap.sample.activity
-company.tap.sample.adapters
-company.tap.sample.constants
-company.tap.sample.managers
-company.tap.sample.utils
-company.tap.sample.viewholders
-company.tap.sample.viewmodels
