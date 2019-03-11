@@ -29,9 +29,17 @@ A library that fully covers payment/authorization/card saving process inside you
     3. [SDKSession Data Source](#sdkSession_data_source)
         1. [Structure](#sdkSession_data_source_structure)
         2. [Samples](#sdkSession_data_source_samples)
-    4. [SDK Delegate](#sdk_delegate)
-        1. [Charge Result Enum](#charge_result)
-        2. [Get Payment result](#getPaymentResult)
+    4. [SDKSession Delegate](#sdk_delegate)
+        1. [Payment Success Callback](#payment_success_callback)
+    	2. [Payment Failure Callback](#payment_failure_callback)
+    	3. [Authorization Success Callback](#authorization_success_callback)
+    	4. [Authorization Failure Callback](#authorization_failure_callback)
+    	5. [Card Saving Success Callback](#card_saving_success_callback)
+    	6. [Card Saving Failure Callback](#card_saving_failure_callback)
+    	7. [Session Other Failure Callback](#session_error_callback)
+    	7. [Session Is Starting Callback](#session_is_starting_callback)
+    	8. [Session Has Started Callback](#session_has_started_callback)
+    	9. [Session Cancel Callback](#session_cancel_callback)
 5. [Documentation](#docs)
 
 
@@ -657,69 +665,167 @@ The following table describes its structure and specifies which fields are requi
     }
 ```
 
-<a name="PaymentProcessDelegate"></a>
-## Payment Process Delegate
+<a name="sdk_delegate"></a>
+## SDKSession Delegate
 
-**PaymentProcessDelegate** is a class which you may use to get payment/authorization/card saving status updates and update your user interface accordingly when payment window closes.
+**SessionDelegate** is an interface which you may want to implement to receive payment/authorization/card saving status updates and update your user interface accordingly when payment window closes.
 
-<a name="charge_result"></a>
-## Charge Result
-```java
-    @SerializedName("INITIATED")    INITIATED,
-    @SerializedName("IN_PROGRESS")  IN_PROGRESS,
-    @SerializedName("ABANDONED")    ABANDONED,
-    @SerializedName("CANCELLED")    CANCELLED,
-    @SerializedName("FAILED")       FAILED,
-    @SerializedName("DECLINED")     DECLINED,
-    @SerializedName("RESTRICTED")   RESTRICTED,
-    @SerializedName("CAPTURED")     CAPTURED,
-    @SerializedName("VOID")         VOID,
-    @SerializedName("UNKNOWN")      UNKNOWN,
-    @SerializedName("AUTHORIZED")   AUTHORIZED,
-    @SerializedName("TIMEDOUT")     TIMEDOUT,
+Below are listed down all available callbacks:
 
-    // save card status result
-    @SerializedName("VALID")        VALID,
-    @SerializedName("INVALID")      INVALID,
+<a name="payment_success_callback"></a>
+### Payment Success Callback
+
+Notifies the receiver that payment has succeed.
+
+#### Declaration
+
+```Android
+- void paymentSucceed(@NonNull Charge charge);
 ```
 
-Below are listed down all available methods:
+#### Arguments
 
-<a name="getPaymentResult"></a>
-### Get Payment Result
+**charge**: Successful charge object.
 
-Retreive the payment result.
+<a name="payment_failure_callback"></a>
+### Payment Failure Callback
+
+Notifies the receiver that payment has failed.
+
+#### Declaration
+
+*Android:*
+
 ```java
- Charge chargeOrAuthorizeResult = PaymentProcessDelegate.getInstance().getPaymentResult();
-                if (chargeOrAuthorizeResult != null) {
-                    switch (chargeOrAuthorizeResult.getStatus()) {
-                        case CAPTURED:
-			    // write you code
-			    break;
-                        case AUTHORIZED:
-			// write you code
-			    break;
-                        case VALID:
-                            // write you code
-			    break;
-                        case FAILED:
-                            // write you code
-			    break;
-                        case INVALID:
-                           // write you code
-			    break;
-                        case DECLINED:
-                           // write you code
-			    break;
-                        case UNKNOWN:
-                           // write you code
-			    break;
-                        case TIMEDOUT:
-                           // write you code
-			    break;
-                    }
+- void paymentFailed(@Nullable Charge charge);
+```
 
-                }
+#### Arguments
+
+**charge**: Charge object that has failed (if reached the stage of charging).
+
+<a name="authorization_success_callback"></a>
+### Authorization Success Callback
+
+Notifies the receiver that authorization has succeed.
+
+#### Declaration
+
+*Android:*
+
+```java
+- void authorizationSucceed(@NonNull Authorize authorize);
+```
+
+#### Arguments
+
+**authorize**: Successful authorize object.
+
+<a name="authorization_failure_callback"></a>
+### Authorization Failure Callback
+
+Notifies the receiver that authorization has failed.
+
+#### Declaration
+
+*Android*
+
+```java
+- void authorizationFailed(Authorize authorize);
+```
+
+#### Arguments
+
+**authorize**: Authorize object that has failed (if reached the stage of authorization).
+
+<a name="card_saving_success_callback"></a>
+### Card Saving Success Callback
+
+Notifies the receiver that the customer has successfully saved the card.
+
+#### Declaration
+
+*Android*
+
+```java
+- void cardSaved(@NonNull Charge charge);
+```
+
+#### Arguments
+
+**Charge**: Charge object with the details.
+
+<a name="card_saving_failure_callback"></a>
+### Card Saving Failure Callback
+
+Notifies the receiver that the customer failed to save the card.
+
+#### Declaration
+
+*Android:
+
+```java
+- void cardSavingFailed(@NonNull Charge charge);
+```
+
+#### Arguments
+
+**Charge**: Charge object with the details (if reached the stage of card saving).
+
+<a name="session_error_callback"></a>
+### Session Other Failure Callback
+
+Notifies the receiver if any other error occurred.
+
+#### Declaration
+
+*Android:
+
+```java
+- void sdkError(@Nullable GoSellError goSellError);
+```
+
+#### Arguments
+
+**GoSellError**: GoSellError object with details of error.
+
+<a name="session_is_starting_callback"></a>
+### Session Is Starting Callback
+
+Notifies the receiver that session is about to start, but hasn't yet shown the SDK UI. You might want to use this method if you are not using `PayButton` in your application and want to show a loader before SDK UI appears on the screen.
+
+#### Declaration
+
+*Android:*
+
+```java
+- void sessionIsStarting();
+```
+
+<a name="session_has_started_callback"></a>
+### Session Has Started Callback
+
+Notifies the receiver that session has successfully started and shown the SDK UI on the screen. You might want to use this method if you are not using `PayButton` in your application and want to hide a loader after SDK UI has appeared on the screen.
+
+#### Declaration
+
+*Android:*
+
+```java
+-  void sessionHasStarted();
+```
+
+<a name="session_cancel_callback"></a>
+### Session Cancel Callback
+
+Notifies the receiver that payment/authorization was cancelled by user.
+
+#### Declaration
+
+*Android:*
+
+```java
+- void sessionCancelled();
 ```
 
 -----
