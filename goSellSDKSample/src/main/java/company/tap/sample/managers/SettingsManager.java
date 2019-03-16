@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -17,6 +18,8 @@ import company.tap.gosellapi.internal.api.enums.AuthorizeActionType;
 import company.tap.gosellapi.internal.api.models.AmountModificator;
 import company.tap.gosellapi.internal.api.models.PhoneNumber;
 import company.tap.gosellapi.internal.api.models.Quantity;
+import company.tap.gosellapi.open.enums.AppearanceMode;
+import company.tap.gosellapi.open.enums.OperationMode;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.gosellapi.open.models.AuthorizeAction;
 import company.tap.gosellapi.open.models.Customer;
@@ -27,6 +30,8 @@ import company.tap.gosellapi.open.models.Reference;
 import company.tap.gosellapi.open.models.Shipping;
 import company.tap.gosellapi.open.models.TapCurrency;
 import company.tap.gosellapi.open.models.Tax;
+import company.tap.sample.R;
+import company.tap.sample.constants.SettingsKeys;
 import company.tap.sample.viewmodels.CustomerViewModel;
 
 import static company.tap.gosellapi.internal.api.enums.AmountModificatorType.FIXED;
@@ -41,7 +46,6 @@ public class SettingsManager {
         context = ctx;
         if(pref==null) pref = PreferenceManager.getDefaultSharedPreferences(ctx);
     }
-
 
     public static SettingsManager getInstance(){
         return SingleInstanceAdmin.instance;
@@ -125,42 +129,7 @@ public class SettingsManager {
         return (customersList!=null)?customersList:new ArrayList<>();
     }
 
-
-
     //////////////////////////////////////   Get Payment Settings ////////////////////////////////
-    public TapCurrency getTransactionCurrency(){
-        String trx_curr = pref.getString(context.getString(company.tap.gosellapi.R.string.key_sdk_transaction_currency), "");
-        TapCurrency currency;
-        System.out.println("trx_curr :"+trx_curr.trim());
-        if(trx_curr!=null  && !"".equalsIgnoreCase(trx_curr.trim()) && !"0".equalsIgnoreCase(trx_curr.trim())  )
-            currency = new TapCurrency(trx_curr);
-        else
-            currency = new TapCurrency("kwd");
-        return currency;
-    }
-
-
-
-
-
-
-    public TransactionMode getTransactionsMode(){
-
-        TransactionMode transactionMode = null;
-
-        String trx_mode = pref.getString(context.getString(company.tap.gosellapi.R.string.key_sdk_transaction_mode), "");
-
-        if ("PURCHASE".equalsIgnoreCase(trx_mode))
-            transactionMode = TransactionMode.PURCHASE;
-
-        else if ("AUTHORIZE_CAPTURE".equalsIgnoreCase(trx_mode))
-            transactionMode = TransactionMode.AUTHORIZE_CAPTURE;
-
-        else if ("SAVE_CARD".equalsIgnoreCase(trx_mode))
-            transactionMode = TransactionMode.SAVE_CARD;
-
-        return transactionMode;
-    }
 
     public Customer getCustomer(){
 
@@ -266,11 +235,6 @@ public class SettingsManager {
         return "Test payment statement descriptor.";
     }
 
-    public boolean is3DSecure(){
-        return true;
-    }
-
-
     public Receipt getReceipt(){
         return new Receipt(true, true);
     }
@@ -293,10 +257,126 @@ public class SettingsManager {
         return destinations;
     }
 
+
+    ////////////////////////////////////////////////// Specific Settings ////////////////////////////
+
+    /**
+     * Session Data Source
+     */
+
+    public OperationMode getSDKOperationMode(String key){
+        String op_mode = pref.getString(key,OperationMode.SAND_BOX.name());
+
+        if(op_mode.equals(OperationMode.SAND_BOX.name())) return OperationMode.SAND_BOX;
+
+        return OperationMode.PRODUCTION;
+    }
+
+    /**
+     * get Transaction mode
+     * @param key
+     * @return
+     */
+    public TransactionMode getTransactionsMode(String key){
+
+        String trx_mode = pref.getString(key, TransactionMode.PURCHASE.name());
+
+        if (trx_mode.equalsIgnoreCase(TransactionMode.PURCHASE.name()))
+            return TransactionMode.PURCHASE;
+
+        if (trx_mode.equalsIgnoreCase(TransactionMode.AUTHORIZE_CAPTURE.name()))
+            return TransactionMode.AUTHORIZE_CAPTURE;
+
+        return TransactionMode.SAVE_CARD;
+
+    }
+
+
+    /**
+     * get transaction currency
+     * @param key
+     * @return
+     */
+
+    public TapCurrency getTransactionCurrency(String key){
+
+        String trx_curr = pref.getString(key, "kwd");
+
+        Log.d("Settings Manager","trx_curr :"+trx_curr.trim());
+
+        if(trx_curr!=null  && !"".equalsIgnoreCase(trx_curr.trim()))
+            return new TapCurrency(trx_curr);
+        else
+           return new TapCurrency("kwd");
+    }
+
+    /**
+     * Get Appearance Mode [FULLSCREEN_MODE - WINDOWED_MODE]
+     * @param key
+     * @return
+     */
+    public AppearanceMode getAppearanceMode(String key)
+    {
+        String mode =  pref.getString(key,AppearanceMode.FULLSCREEN_MODE.name());
+        if(mode.equals(AppearanceMode.WINDOWED_MODE.name())) return AppearanceMode.WINDOWED_MODE;
+
+        return AppearanceMode.FULLSCREEN_MODE;
+    }
+
+    //////////////////////////////////////////////////  General ////////////////////////////////
+
+
+    /**
+     * Get Font name saved in session or return default
+     * @param key
+     * @param defaultFont
+     * @return
+     */
+    public String getFont(String key,String defaultFont){
+        System.out.println("pref: "+ pref.getString(key,defaultFont));
+        return pref.getString(key,defaultFont);
+    }
+
+    /**
+     * Get Color saved in session or return default
+     * @param key
+     * @param defaultColor
+     * @return
+     */
+    public int getColor(String key,int defaultColor){
+        String color = pref.getString(key, "");
+       return extractColorCode(color,defaultColor);
+    }
+
+
+    /**
+     *
+     * @param key
+     * @return
+     */
+    public boolean getBoolean(String key,boolean defaultValue){
+        return pref.getBoolean(key,defaultValue);
+    }
+
+    /**
+     *
+     * @param key
+     * @param defaultValue
+     * @return
+     */
+    public String getString(String key,String defaultValue ){
+        return pref.getString(key,defaultValue);
+    }
+
+    public int getInt(String key,int defaultValue ){
+       return pref.getInt(key,defaultValue) ;
+    }
+
+
     //////////////////////////////////////////////////  PayButton /////////////////////////////////
     public int getTapButtonEnabledBackgroundColor(String key){
         String color = pref.getString(key, "");
-        return extractEnabledBackgroundColorCode(color);
+        return extractEnabledBackgroundColorCode(color,company.tap.gosellapi.R.color.vibrant_green_pressed);
     }
 
 
@@ -305,8 +385,8 @@ public class SettingsManager {
         return extractDisabledBackgroundColorCode(color);
     }
 
-    private int extractEnabledBackgroundColorCode(String color) {
-        if(color.trim().equalsIgnoreCase("")) return company.tap.gosellapi.R.color.vibrant_green_pressed;
+    private int extractEnabledBackgroundColorCode(String color,int defaultColor) {
+        if(color.trim().equalsIgnoreCase("")) return defaultColor;
         return Color.parseColor(color.split("_")[1]);
     }
 
@@ -320,31 +400,24 @@ public class SettingsManager {
         return font;
     }
 
-    public int getTapButtonDisabledTitleColor(String key){
+    public int getTapButtonDisabledTitleColor(String key,int defaultColor){
         String color = pref.getString(key, "");
-        return  extractTitleColorCode(color);
+        return  extractColorCode(color,defaultColor);
     }
 
+////////////////////////////////////////////  UTILS  //////////////////////////////////////////////
 
-
-    public int getTapButtonEnabledTitleColor(String key){
+    public int getTapButtonEnabledTitleColor(String key,int defaultColor){
         String color = pref.getString(key, "");
-        return extractTitleColorCode(color);
+        return extractColorCode(color,defaultColor);
     }
 
-    private int extractTitleColorCode(String color) {
-        if(color.trim().equalsIgnoreCase("")) return company.tap.gosellapi.R.color.white;
+    private int extractColorCode(String color,int defaultColor) {
+        if(color.trim().equalsIgnoreCase("")) return defaultColor;
         return Color.parseColor(color.split("_")[1]);
     }
 
-
-    public String getTapButtonHeight(String key){
-        String height = pref.getString(key, "");
-        return height;
-    }
-
-
-
+///////////////////////////////////////////////////////////////////////////////////////////////////
 
 
     private static class SingleInstanceAdmin{

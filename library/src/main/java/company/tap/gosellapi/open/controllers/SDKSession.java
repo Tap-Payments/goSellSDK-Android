@@ -3,8 +3,6 @@ package company.tap.gosellapi.open.controllers;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 
@@ -69,53 +67,10 @@ public class SDKSession implements View.OnClickListener {
     this.activityListener = activity;
   }
 
-  /**
-   * Set pay button background selector.
-   *
-   * @param selector the selector
-   */
-  public void setPayButtonBackgroundSelector(int selector){
-    payButtonView.setBackgroundSelector(selector);
+  public void setPayButtonLoaderVisible() {
+    payButtonView.getLoadingView().setVisibility(ThemeObject.getInstance().isPayButtLoaderVisible()?View.VISIBLE:View.INVISIBLE);
   }
 
-  /**
-   * Setup background with color list.
-   *
-   * @param enabledBackgroundColor  the enabled background color
-   * @param disabledBackgroundColor the disabled background color
-   */
-  public void setupBackgroundWithColorList(int enabledBackgroundColor,int disabledBackgroundColor){
-    payButtonView.setupBackgroundWithColorList(enabledBackgroundColor,disabledBackgroundColor);
-  }
-
-  /**
-   * Setup pay button font type face.
-   *
-   * @param typeface the typeface
-   */
-  public void setupPayButtonFontTypeFace(Typeface typeface){
-    payButtonView.setupFontTypeFace(typeface);
-  }
-
-  /**
-   * Setup text color.
-   *
-   * @param enabledTextColor  the enabled text color
-   * @param disabledTextColor the disabled text color
-   */
-  public void setupTextColor(int enabledTextColor,int disabledTextColor){
-    payButtonView.setupTextColor(enabledTextColor,disabledTextColor);
-  }
-
-
-  /**
-   * Set pay button title.
-   *
-   * @param title the title
-   */
-  public void setPayButtonTitle(String title){
-    payButtonView.getPayButton().setText(title);
-  }
 
   /**
    * Instantiate payment data source.
@@ -123,10 +78,6 @@ public class SDKSession implements View.OnClickListener {
   public void instantiatePaymentDataSource() {
 
     this.paymentDataSource  = company.tap.gosellapi.open.data_manager.PaymentDataSource.getInstance();
-
-    SettingsManager settingsManager = SettingsManager.getInstance();
-
-    settingsManager.setPref(activityListener);
 
   }
 
@@ -319,13 +270,23 @@ public class SDKSession implements View.OnClickListener {
 
           @Override
           public void onSuccess(int responseCode, PaymentOptionsResponse serializedResponse) {
+            if(ThemeObject.getInstance().isPayButtLoaderVisible())
             payButtonView.getLoadingView()
                 .setForceStop(true, () -> startMainActivity());
+            else
+              startMainActivity();
           }
 
           @Override
           public void onFailure(GoSellError errorDetails) {
-            payButtonView.getLoadingView().setForceStop(true);
+            if(ThemeObject.getInstance().isPayButtLoaderVisible()) {
+              payButtonView.getLoadingView().setForceStop(true);
+              sessionDelegate.sdkError(errorDetails);
+            }
+            else{
+              sessionDelegate.sdkError(errorDetails);
+            }
+
           }
         });
   }
@@ -347,6 +308,7 @@ public class SDKSession implements View.OnClickListener {
     return sessionDelegate;
 
   }
+
 
 
 }

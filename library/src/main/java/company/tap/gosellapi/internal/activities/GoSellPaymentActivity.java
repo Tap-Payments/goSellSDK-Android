@@ -1,11 +1,9 @@
 package company.tap.gosellapi.internal.activities;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -30,7 +28,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import company.tap.gosellapi.R;
-import company.tap.gosellapi.internal.Constants;
 import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.enums.AuthenticationStatus;
@@ -61,6 +58,8 @@ import company.tap.gosellapi.internal.utils.ActivityDataExchanger;
 import company.tap.gosellapi.internal.utils.Utils;
 import company.tap.gosellapi.open.buttons.PayButtonView;
 import company.tap.gosellapi.open.controllers.SDKSession;
+import company.tap.gosellapi.open.controllers.ThemeObject;
+import company.tap.gosellapi.open.enums.AppearanceMode;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
@@ -87,35 +86,24 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     private SavedCard savedCard;
     private WebPaymentViewModel webPaymentViewModel;
 
-    private String WINDOW_MODE = "";
+    private AppearanceMode apperanceMode ;
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-//        if (WINDOW_MODE.equalsIgnoreCase(Constants.WINDOWED)) {
-//            //setTheme(R.style.GoSellSDKAppTheme_Translucent);
-//        } else {
-//            //setTheme(R.style.GoSellSDKAppTheme_Full);
-//        }
-//        //setTheme(R.style.GoSellSDKAppTheme_Full);
-
         super.onCreate(savedInstanceState);
 
         overridePendingTransition(R.anim.slide_in_top, android.R.anim.fade_out);
 
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        apperanceMode = ThemeObject.getInstance().getAppearanceMode();
 
-        WINDOW_MODE = pref.getString(getString(R.string.key_sdk_appearance_mode), "");
-
-        if (WINDOW_MODE.equalsIgnoreCase(Constants.WINDOWED)) {
+        if (apperanceMode == AppearanceMode.WINDOWED_MODE) {
             setContentView(R.layout.gosellapi_activity_main_windowed);
         } else {
             setContentView(R.layout.gosellapi_activity_main);
         }
-
-
 
         fragmentManager = getSupportFragmentManager();
         /**
@@ -160,6 +148,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
         payButton = findViewById(R.id.payButtonId);
         payButton.setEnabled(false);
+        payButton.getPayButton().setTextColor(ThemeObject.getInstance().getPayButtonDisabledTitleColor());
 
         payButton.setOnClickListener(v -> {
             Utils.hideKeyboard(GoSellPaymentActivity.this);
@@ -175,6 +164,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
 
     private void setupHeader() {
+        android.support.v7.widget.Toolbar  toolbar = findViewById(R.id.toolbar);
         ImageView cancel_payment_icon = findViewById(R.id.cancel_payment_icon);
 
         RelativeLayout cancel_payment_ll = findViewById(R.id.cancel_payment);
@@ -207,9 +197,19 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
             header_title = PaymentDataManager.getInstance().getSDKSettings().getData().getMerchant().getName();
         }
         businessName.setText(header_title);
+
+        businessName.setTypeface(ThemeObject.getInstance().getHeaderFont());
+        businessName.setTextColor(ThemeObject.getInstance().getHeaderTextColor());
+        businessName.setTextSize(ThemeObject.getInstance().getHeaderTextSize());
+        toolbar.setBackgroundColor(ThemeObject.getInstance().getHeaderBackgroundColor());
     }
 
     private void setupPayButton() {
+
+        payButton.getPayButton().setTextSize(ThemeObject.getInstance().getPayButtonTextSize());
+        payButton.getSecurityIconView().setVisibility(ThemeObject.getInstance().isPayButtSecurityIconVisible()?View.VISIBLE:View.INVISIBLE);
+        payButton.getLoadingView().setVisibility(ThemeObject.getInstance().isPayButtLoaderVisible()?View.VISIBLE:View.INVISIBLE);
+
         if (isTransactionModeSaveCard()) {
             setupSaveCardMode();
         } else {
@@ -218,7 +218,10 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     }
 
     private void setupChargeOrAuthorizeMode() {
-        payButton.setBackgroundSelector(R.drawable.btn_pay_selector);
+        payButton.setBackgroundSelector(ThemeObject.getInstance().getPayButtonResourceId());
+        payButton.getPayButton().setTypeface(ThemeObject.getInstance().getPayButtonFont());
+        payButton.getPayButton().setTextColor(ThemeObject.getInstance().getPayButtonDisabledTitleColor());
+
         payButton.getPayButton().setText(String
                 .format("%s %s%s", getResources().getString(R.string.pay),
                         dataSource.getSelectedCurrency().getSymbol(),
@@ -226,11 +229,11 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     }
 
     private void setupSaveCardMode() {
-        // stop it for now it will be updated as per merchant
-//    payButton.setBackgroundSelector(R.drawable.btn_save_selector);
-        payButton.setBackgroundSelector(R.drawable.btn_pay_selector);
+        payButton.setBackgroundSelector(ThemeObject.getInstance().getPayButtonResourceId());
+        payButton.getPayButton().setTypeface(ThemeObject.getInstance().getPayButtonFont());
+        payButton.getPayButton().setTextColor(ThemeObject.getInstance().getPayButtonDisabledTitleColor());
+
         payButton.getPayButton().setText(getResources().getString(R.string.save_card));
-//    payButton.getLoadingView().setVisibility(View.INVISIBLE);
         payButton.getSecurityIconView().setVisibility(View.INVISIBLE);
     }
 
@@ -331,6 +334,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         if(PaymentDataManager.getInstance().getExternalDataSource().getCustomer()==null)
             return;
         payButton.setEnabled(false);
+        payButton.getPayButton().setTextColor(ThemeObject.getInstance().getPayButtonDisabledTitleColor());
         LoadingScreenManager.getInstance().showLoadingScreen(this);
          PaymentDataManager.getInstance().deleteCard(
                  PaymentDataManager.getInstance().getExternalDataSource().getCustomer().getIdentifier(),
@@ -341,6 +345,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     @Override
     public void disablePayButton() {
       payButton.setEnabled(false);
+      payButton.getPayButton().setTextColor(ThemeObject.getInstance().getPayButtonDisabledTitleColor());
     }
 
 
@@ -366,6 +371,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
         if (recentItem != null) {
             payButton.setEnabled(true);
+            payButton.getPayButton().setTextColor(ThemeObject.getInstance().getPayButtonEnabledTitleColor());
             PaymentOption paymentOption = PaymentDataManager.getInstance()
                     .findSavedCardPaymentOption(recentItem);
 
@@ -406,6 +412,11 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         if (!isFilled && payButton.getLoadingView() != null && payButton.getLoadingView().isShown()) {
             payButton.getLoadingView().setForceStop(true);
         }
+
+        if(isFilled)
+            payButton.getPayButton().setTextColor(ThemeObject.getInstance().getPayButtonEnabledTitleColor());
+        else
+            payButton.getPayButton().setTextColor(ThemeObject.getInstance().getPayButtonDisabledTitleColor());
 
         payButton.setEnabled(isFilled);
     }

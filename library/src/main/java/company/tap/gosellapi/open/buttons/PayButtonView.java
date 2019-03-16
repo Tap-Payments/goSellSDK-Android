@@ -3,15 +3,10 @@ package company.tap.gosellapi.open.buttons;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
@@ -26,8 +21,7 @@ import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.interfaces.IPaymentProcessListener;
 import company.tap.gosellapi.internal.utils.Utils;
-import company.tap.gosellapi.open.constants.SettingsKeys;
-import company.tap.gosellapi.open.controllers.SettingsManager;
+import company.tap.gosellapi.open.controllers.ThemeObject;
 import gotap.com.tapglkitandroid.gl.Views.TapLoadingView;
 
 /**
@@ -75,7 +69,7 @@ public final class PayButtonView extends FrameLayout  {
 
     private Context context;
 
-    private SettingsManager settingsManager;
+    private ThemeObject themeObject;
 
     /**
      * instantiate PayButtonView
@@ -118,8 +112,8 @@ public final class PayButtonView extends FrameLayout  {
      * @param attrs
      */
     private void init(Context context, AttributeSet attrs) {
-        settingsManager = SettingsManager.getInstance();
-        settingsManager.setPref(context);
+        themeObject = ThemeObject.getInstance();
+       // themeObject.setPref(context);
 
         loadingView = new TapLoadingView(context, attrs);
         payButton = new AppCompatTextView(context, attrs);
