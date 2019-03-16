@@ -18,12 +18,12 @@
 
     <string-array name="pref_array_sdk_language_entries">
         <item>@string/english</item>
-        <!--<item>@string/arabic</item>-->
+        <item>@string/arabic</item>
     </string-array>
 
     <string-array name="pref_array_sdk_language_values">
         <item>en</item>
-        <!--<item>ar</item>-->
+        <item>ar</item>
     </string-array>
 
 
@@ -42,13 +42,11 @@
     <string-array name="pref_array_sdk_appearance_mode_entries">
         <item>@string/FullScreen</item>
         <item>@string/WindowMode</item>
-        <item>@string/Default</item>
     </string-array>
 
     <string-array name="pref_array_sdk_appearance_mode_values">
-        <item>fullscreen</item>
-        <item>window</item>
-        <item>default</item>
+        <item>FULLSCREEN_MODE</item>
+        <item>WINDOWED_MODE</item>
     </string-array>
 
     <string-array name="pref_array_sdk_transactions_mode_entries">

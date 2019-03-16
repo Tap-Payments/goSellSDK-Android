@@ -3,6 +3,7 @@ package company.tap.sample.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -32,6 +33,7 @@ import company.tap.gosellapi.internal.api.models.Authorize;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.open.buttons.PayButtonView;
 import company.tap.gosellapi.open.controllers.SDKSession;
+import company.tap.gosellapi.open.controllers.ThemeObject;
 import company.tap.gosellapi.open.delegate.SessionDelegate;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.sample.R;
@@ -53,74 +55,86 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         settingsManager = SettingsManager.getInstance();
         settingsManager.setPref(this);
 
-
+        configureSDKThemeObject();
 
         configureSDKSession();
     }
 
-    private void initButton() {
-        payButtonView = findViewById(R.id.payButtonId);
-        sdkSession.setButtonView(payButtonView, this, SDK_REQUEST_CODE);
-        /***
-         *  setPayButtonBackgroundSelector
-          */
-         //sdkSession.setPayButtonBackgroundSelector(ContextCompat.getDrawable(this, company.tap.gosellapi.R.drawable.btn_pay_selector);
-        /***
-         * setupBackgroundWithColorList
-         */
-//        sdkSession.setupBackgroundWithColorList(settingsManager.getTapButtonEnabledBackgroundColor(SettingsKeys.TAP_BUTTON_ENABLED_BACKGROUND_COLOR_KEY),
-//                settingsManager.getTapButtonDisabledBackgroundColor(SettingsKeys.TAP_BUTTON_DISABLED_BACKGROUND_COLOR_KEY)
-//                );
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(settingsManager==null)
+        {
+            settingsManager = SettingsManager.getInstance();
+            settingsManager.setPref(this);
+        }
 
-        /***
-         * setupFontTypeFace
-         */
-//        String tapButtonFontFace =   settingsManager.getTapButtonFont(SettingsKeys.TAP_BUTTON_FONT_KEY);
-//        Typeface font = null;
-//        if(tapButtonFontFace!=null && !tapButtonFontFace.trim().equalsIgnoreCase("")){
-//            font = Typeface.createFromAsset(getAssets(), tapButtonFontFace);
-//        sdkSession.setupPayButtonFontTypeFace(font);
+        configureSDKThemeObject();
 
-        /***
-         * settextcolor
-         */
-        sdkSession.setupTextColor(
-                settingsManager.getTapButtonEnabledTitleColor(SettingsKeys.TAP_BUTTON_ENABLED_TITLE_COLOR_KEY),
-                settingsManager.getTapButtonDisabledTitleColor(SettingsKeys.TAP_BUTTON_DISABLED_TITLE_COLOR_KEY)
-        );
-
+        configureSDKSession();
 
 
     }
 
-    private void setCardSectionAppearance(){
+    /**
+     * Configure SDK Theme
+     */
+    private void configureSDKThemeObject() {
+
+        ThemeObject.getInstance()
+        .setSdkLanguage(settingsManager.getString(SettingsKeys.TAP_SDK_LANGUAGE_KEY,"EN"))
+        .setAppearanceMode(settingsManager.getAppearanceMode(SettingsKeys.TAP_APPEARANCE_MODE))
+
+        .setHeaderFont(getTypeface(SettingsKeys.TAP_APPEARANCE_HEADER_FONT))
+        .setHeaderTextColor(settingsManager.getColor(SettingsKeys.TAP_APPEARANCE_HEADER_TEXT_COLOR,R.color.black))
+        .setHeaderTextSize(26)
+        .setHeaderBackgroundColor(settingsManager.getColor(SettingsKeys.TAP_APPEARANCE_HEADER_BACKGROUND_COLOR,R.color.french_gray_new))
+
+
+
+        .setCardInputFont(getTypeface(SettingsKeys.TAP_CARD_INPUT_FONT))
+        .setCardInputTextColor(settingsManager.getColor(SettingsKeys.TAP_CARD_INPUT_TEXT_COLOR,R.color.black))
+        .setCardInputInvalidTextColor(settingsManager.getColor(SettingsKeys.TAP_CARD_INPUT_INVALID_TEXT_COLOR,R.color.red))
+        .setCardInputPlaceholderTextColor(settingsManager.getColor(SettingsKeys.TAP_CARD_INPUT_PLACEHOLDER_TEXT_COLOR,R.color.black))
+
+
+        .setSaveCardSwitchOffThumbTint(settingsManager.getColor(SettingsKeys.TAP_CARD_INPUT_SWITCH_OFF_THUMB_TINT_COLOR,R.color.gray))
+        .setSaveCardSwitchOnThumbTint(settingsManager.getColor(SettingsKeys.TAP_CARD_INPUT_SWITCH_ON_THUMB_TINT_COLOR,R.color.white))
+        .setSaveCardSwitchOffTrackTint(settingsManager.getColor(SettingsKeys.TAP_CARD_INPUT_SWITCH_OFF_TRACK_TINT_COLOR,R.color.gray))
+        .setSaveCardSwitchOnTrackTint(settingsManager.getColor(SettingsKeys.TAP_CARD_INPUT_SWITCH_ON_TRACK_TINT_COLOR,R.color.white))
+
+        .setScanIconDrawable(getResources().getDrawable(R.drawable.btn_card_scanner_normal))
+
+        .setPayButtonResourceId(R.drawable.btn_pay_merchant_selector)
+        .setPayButtonFont(getTypeface(SettingsKeys.TAP_BUTTON_FONT_KEY))
+
+        .setPayButtonDisabledTitleColor(settingsManager.getColor(SettingsKeys.TAP_BUTTON_DISABLED_TITLE_COLOR_KEY,R.color.black))
+        .setPayButtonEnabledTitleColor(settingsManager.getColor(SettingsKeys.TAP_BUTTON_ENABLED_TITLE_COLOR_KEY,R.color.White))
+
+        .setPayButtonTextSize(17)
+        .setPayButtonLoaderVisible(settingsManager.getBoolean(SettingsKeys.TAP_BUTTON_LOADER_VISIBLE,true))
+        .setPayButtonSecurityIconVisible(settingsManager.getBoolean(SettingsKeys.TAP_BUTTON_SECURITY_VISIBLE,true))
+        ;
 
     }
 
 
+    /**
+     * Configure SDK Session
+     */
     private void configureSDKSession() {
+
         if(sdkSession==null)sdkSession = new SDKSession();
 
-        initButton();
-        setCardSectionAppearance();
-
          sdkSession.addSessionDelegate(this);
-
-        TransactionMode trx_mode = settingsManager.getTransactionsMode();
-
-        if (TransactionMode.SAVE_CARD == trx_mode) {
-           sdkSession.setPayButtonTitle(getString(company.tap.gosellapi.R.string.save_card));
-        } else {
-            sdkSession.setPayButtonTitle(getString(company.tap.gosellapi.R.string.pay));
-        }
 
         // initiate PaymentDataSource
         sdkSession.instantiatePaymentDataSource();
 
         // setup Payment Data Source
-        sdkSession.setTransactionCurrency(settingsManager.getTransactionCurrency());
+        sdkSession.setTransactionCurrency(settingsManager.getTransactionCurrency(SettingsKeys.TAP_TRANSACTION_CURRENCY));
 
-        sdkSession.setTransactionMode(settingsManager.getTransactionsMode());
+        sdkSession.setTransactionMode(settingsManager.getTransactionsMode(SettingsKeys.TAP_TRANSACTION_MODE));
 
         sdkSession.setCustomer(settingsManager.getCustomer());
 
@@ -140,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
         sdkSession.setPaymentStatementDescriptor(settingsManager.getPaymentStatementDescriptor());
 
-        sdkSession.isRequires3DSecure(settingsManager.is3DSecure());
+        sdkSession.isRequires3DSecure(settingsManager.getBoolean(SettingsKeys.TAP_3DSECURE_MODE,false));
 
         sdkSession.setReceiptSettings(settingsManager.getReceipt());
 
@@ -148,18 +162,49 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
         sdkSession.setDestination(settingsManager.getDestination());
 
-//        // Persist Payment Data Source
-//        sdkSession.persistPaymentDataSource();
+        // start with pay button
+        initPayButton();
 
         //start without PayButton
         //sdkSession.start();
+    }
+
+    /**
+     * Include pay button in merchant page
+     */
+    private void initPayButton() {
+
+        payButtonView = findViewById(R.id.payButtonId);
+
+        payButtonView.setupFontTypeFace(ThemeObject.getInstance().getPayButtonFont());
+
+        payButtonView.setupTextColor(ThemeObject.getInstance().getPayButtonEnabledTitleColor(),
+                ThemeObject.getInstance().getPayButtonDisabledTitleColor());
+
+        payButtonView.getPayButton().setTextSize(ThemeObject.getInstance().getPayButtonTextSize());
+
+        payButtonView.getSecurityIconView().setVisibility(ThemeObject.getInstance().isPayButtSecurityIconVisible()?View.VISIBLE:View.INVISIBLE);
+
+        payButtonView.setBackgroundSelector(ThemeObject.getInstance().getPayButtonResourceId());
+
+        TransactionMode trx_mode = settingsManager.getTransactionsMode(SettingsKeys.TAP_TRANSACTION_MODE);
+
+        if (TransactionMode.SAVE_CARD == trx_mode) {
+            payButtonView.getPayButton().setText(getString(company.tap.gosellapi.R.string.save_card));
+        } else {
+            payButtonView.getPayButton().setText(getString(company.tap.gosellapi.R.string.pay));
+        }
+
+        sdkSession.setButtonView(payButtonView, this, SDK_REQUEST_CODE);
+
+        sdkSession.setPayButtonLoaderVisible();
 
     }
 
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-
+    private Typeface getTypeface(String tapButtonFontKey) {
+        System.out.println(" font: "+tapButtonFontKey);
+        return Typeface.createFromAsset(getAssets(),
+                settingsManager.getFont(tapButtonFontKey, "fonts/roboto_light.ttf"));
     }
 
     public void openSettings(View view) {
@@ -271,8 +316,6 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         showDialog(charge.getId(),charge.getResponse().getMessage(),company.tap.gosellapi.R.drawable.icon_failed);
     }
 
-
-
     @Override
     public void authorizationSucceed(@NonNull Authorize authorize) {
         System.out.println("Authorize Succeeded : "+ authorize.getStatus());
@@ -290,8 +333,6 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         System.out.println("Authorize Failed : "+ authorize.getResponse().getMessage());
         showDialog(authorize.getId(),authorize.getResponse().getMessage(),company.tap.gosellapi.R.drawable.icon_failed);
     }
-
-
 
 
     @Override

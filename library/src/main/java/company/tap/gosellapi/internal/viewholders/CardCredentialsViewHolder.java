@@ -1,8 +1,14 @@
 package company.tap.gosellapi.internal.viewholders;
 
 import android.app.Activity;
+import android.content.res.ColorStateList;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.StateListDrawable;
+import android.os.Build;
 import android.os.Parcelable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TextInputLayout;
@@ -23,6 +29,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import company.tap.gosellapi.R;
@@ -37,6 +46,7 @@ import company.tap.gosellapi.internal.data_managers.payment_options.view_models.
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models_data.CardCredentialsViewModelData;
 import company.tap.gosellapi.internal.utils.ActivityDataExchanger;
 import company.tap.gosellapi.internal.utils.CardType;
+import company.tap.gosellapi.open.controllers.ThemeObject;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.tapcardvalidator_android.CardBrand;
 import company.tap.tapcardvalidator_android.CardValidationState;
@@ -101,16 +111,29 @@ public class CardCredentialsViewHolder
 
     private final static int BIN_NUMBER_LENGTH = 6;
     private final static int NAME_ON_CARD_MAX_LENGTH = 26;
+
+    private TextInputLayout cardNumberFieldTextInputLayout;
     private EditText cardNumberField;
+
     private ImageButton cardScannerButton;
+
+    private TextInputLayout expirationDateFieldTextInputLayout;
     private ExpirationDateEditText expirationDateField;
+
+    private TextInputLayout cvvFieldTextInputLayout;
     private CvvEditText cvvField;
+
+    private TextInputLayout nameOnCardFieldTextInputLayout;
     private EditText nameOnCardField;
+
+
     private TextInputLayout addressOnCardLayout;
     private EditText addressOnCardField;
+
     private ConstraintLayout saveCardLayout;
     private TextView saveCardDescriptionTextView;
     private Switch saveCardSwitch;
+
     private RecyclerView cardSystemsRecyclerView;
     private LinearLayoutManager linearLayoutManager;
     private CardCredentialsViewModel viewModel;
@@ -125,6 +148,14 @@ public class CardCredentialsViewHolder
     CardCredentialsViewHolder(View view) {
 
         super(view);
+
+
+
+        cardNumberFieldTextInputLayout=itemView.findViewById(R.id.cardNumberFieldTextInputLayout);
+        cvvFieldTextInputLayout=itemView.findViewById(R.id.cvvFieldContainer);
+        expirationDateFieldTextInputLayout=itemView.findViewById(R.id.expirationDateContainer);
+        nameOnCardFieldTextInputLayout=itemView.findViewById(R.id.cardholderNameContainer);
+
         cardCredentialsTextWatcher = new CardCredentialsTextWatcher();
 
         viewModel = ActivityDataExchanger.getInstance().getCardCredentialsViewModel();
@@ -230,8 +261,6 @@ public class CardCredentialsViewHolder
         cvvField = itemView.findViewById(R.id.cvvField);
 
 /////////////////////////////////////////////////// NAME ON CARD START ///////////////////////////////////////////////////////
-        nameOnCardField = itemView.findViewById(R.id.cardholderNameField);
-
         // Name on card
         nameOnCardField = itemView.findViewById(R.id.cardholderNameField);
 
@@ -299,11 +328,98 @@ public class CardCredentialsViewHolder
         initCardSystemsRecyclerView(getPaymentOption());
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+        setupCardTheme();
 }
 
 
+        private void setupCardTheme(){
 
-  private ArrayList<PaymentOption> getPaymentOption() {
+            cardNumberField.setTypeface(ThemeObject.getInstance().getCardInputFontTypeFace());
+            expirationDateField.setTypeface(ThemeObject.getInstance().getCardInputFontTypeFace());
+            cvvField.setTypeface(ThemeObject.getInstance().getCardInputFontTypeFace());
+            nameOnCardField.setTypeface(ThemeObject.getInstance().getCardInputFontTypeFace());
+            saveCardDescriptionTextView.setTypeface(ThemeObject.getInstance().getCardInputFontTypeFace());
+
+            cardNumberField.setTextColor(ThemeObject.getInstance().getCardInputTextColor());
+            expirationDateField.setTextColor(ThemeObject.getInstance().getCardInputTextColor());
+            cvvField.setTextColor(ThemeObject.getInstance().getCardInputTextColor());
+            nameOnCardField.setTextColor(ThemeObject.getInstance().getCardInputTextColor());
+            saveCardDescriptionTextView.setTextColor(ThemeObject.getInstance().getCardInputTextColor());
+
+             setHintTextColor(cardNumberFieldTextInputLayout,ThemeObject.getInstance().getCardInputPlaceholderTextColor());
+             setHintTextColor(cvvFieldTextInputLayout,ThemeObject.getInstance().getCardInputPlaceholderTextColor());
+             setHintTextColor(expirationDateFieldTextInputLayout,ThemeObject.getInstance().getCardInputPlaceholderTextColor());
+             setHintTextColor(nameOnCardFieldTextInputLayout,ThemeObject.getInstance().getCardInputPlaceholderTextColor());
+
+            configureSaveCardSwitch();
+
+            cardScannerButton.setImageDrawable(ThemeObject.getInstance().getScanIconDrawable());
+
+        }
+
+        private void configureSaveCardSwitch(){
+            ColorStateList thumbStates = new ColorStateList(
+                    new int[][]{
+                            new int[]{-android.R.attr.state_checked},
+                            new int[]{android.R.attr.state_checked},
+                            new int[]{}
+                    },
+                    new int[]{
+                            ThemeObject.getInstance().getSaveCardSwitchOffThumbTint(),
+                            ThemeObject.getInstance().getSaveCardSwitchOnThumbTint(),
+                            Color.GRAY
+                    }
+            );
+
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                saveCardSwitch.setThumbTintList(thumbStates);
+            }
+
+            if (Build.VERSION.SDK_INT >= 24) {
+                ColorStateList trackStates = new ColorStateList(
+                        new int[][]{
+                                new int[]{-android.R.attr.state_checked},
+                                new int[]{android.R.attr.state_checked},
+                                new int[]{}
+                        },
+                        new int[]{
+                                ThemeObject.getInstance().getSaveCardSwitchOffTrackTint(),
+                                ThemeObject.getInstance().getSaveCardSwitchOnTrackTint(),
+                                Color.LTGRAY,
+                        }
+                );
+                saveCardSwitch.setTrackTintList(trackStates);
+                saveCardSwitch.setTrackTintMode(PorterDuff.Mode.OVERLAY);
+            }
+        }
+
+    private void setHintTextColor(TextInputLayout textInputLayout,int color) {
+        if(textInputLayout==null)return;
+        try {
+            Field field = textInputLayout.getClass().getDeclaredField("defaultHintTextColor");
+            field.setAccessible(true);
+            int[][] states = new int[][]{
+                    new int[]{}
+            };
+            int[] colors = new int[]{
+                    color
+            };
+            ColorStateList myList = new ColorStateList(states, colors);
+            field.set(textInputLayout, myList);
+
+            Method method = textInputLayout.getClass().getDeclaredMethod("updateLabelState", boolean.class);
+            method.setAccessible(true);
+            method.invoke(textInputLayout, true);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private ArrayList<PaymentOption> getPaymentOption() {
         return PaymentDataManager.getInstance().getPaymentOptionsDataManager().getPaymentOptionsResponse().getPaymentOptions();
     }
 
@@ -343,32 +459,6 @@ public class CardCredentialsViewHolder
         expirationDateField.addTextChangedListener(cardCredentialsTextWatcher);
         cvvField.addTextChangedListener(cardCredentialsTextWatcher);
 
-
-
-//
-//        addressOnCardLayout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                viewModel.addressOnCardClicked();
-//            }
-//        });
-//
-
-//
-//        if (viewModel.isShowAddressOnCardCell()) {
-//            addressOnCardLayout.setVisibility(View.VISIBLE);
-//        } else {
-//            addressOnCardLayout.setVisibility(View.GONE);
-//        }
-////        if (!viewModel.getCVVnumber().isEmpty()) {
-////            CVVField.setText(viewModel.getCVVnumber());
-////        }
-//
-//        RelativeLayout saveCardSwitchContainer = itemView.findViewById(R.id.saveCardSwitchContainer);
-//        saveCardSwitchContainer.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-//        viewModel.setCardSwitchHeight(saveCardSwitchContainer.getMeasuredHeight());
-//
-//        initCardSystemsRecyclerView(data.getPaymentOptions());
     }
 
     /**
@@ -474,11 +564,11 @@ public class CardCredentialsViewHolder
         if (brand.getValidationState().equals(CardValidationState.invalid)) {
             saveCardSwitch.setChecked(false);
             viewModel.saveCardSwitchClicked(false);
-            cardNumberField.setTextColor(itemView.getResources().getColor(R.color.red));
+            cardNumberField.setTextColor(ThemeObject.getInstance().getCardInputInvalidTextColor());
         } else {
             saveCardSwitch.setChecked(true);
             viewModel.saveCardSwitchClicked(true);
-            cardNumberField.setTextColor(itemView.getResources().getColor(R.color.greyish_brown));
+            cardNumberField.setTextColor(ThemeObject.getInstance().getCardInputTextColor());
         }
         return brand;
     }

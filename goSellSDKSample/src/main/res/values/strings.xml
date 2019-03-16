@@ -9,7 +9,7 @@
     <string name="arabic">العربية</string>
 
 
-    <string name="title_sdkMode">SDK Mode</string>
+    <string name="title_sdkMode">Operation Mode</string>
     <string name="key_sdkMode">key_sdkMode</string>
     <string name="summary_sdk_mode">Select SDK mode</string>
     <string name="Sandbox">Sandbox</string>
@@ -120,6 +120,11 @@
     <string name="appearance_header_preference_font_key">appearance_header_preference_font_key</string>
     <string name="appearance_header_preference_color_key">appearance_header_preference_color_key</string>
 
+    <string name="appearance_header_preference_text_size_key">appearance_header_preference_text_size_key</string>
+
+
+    <string name="appearance_background_preference_color_key">appearance_background_preference_color_key</string>
+
 
 
 
@@ -128,11 +133,15 @@
     <string name="card_input_font_face">Font</string>
     <string name="default_text_color">Black-#000000</string>
 
+    <!--      Appearance: Background      -->
+    <string name="appearance_background">Appearance Background</string>
+
     <!--      Appearance: Header      -->
     <string name="appearance_header">Appearance Header</string>
 
     <string name="appearance_header_preference_font_title">Font</string>
     <string name="appearance_header_preference_color_title">Text Color</string>
+    <string name="appearance_background_preference_color_title">Color</string>
 
     <string name="appearance_header_preference_background_color_title">Background Color</string>
     <string name="appearance_header_preference_background_color_key">appearance_header_preference_background_color_key</string>
@@ -163,7 +172,27 @@
     <string name="appearance_card_input_fields_description_color_title">Description Color</string>
 
 
+    <string name="appearance_card_input_fields_switch_off_thumb_tint_color_key">appearance_card_input_fields_switch_off_thumb_tint_color_key</string>
+    <string name="appearance_card_input_fields_switch_off_thumb_tint_color_title">Save Card Switch Off Thumb Tint </string>
 
+    <string name="appearance_card_input_fields_switch_on_thumb_tint_color_key">appearance_card_input_fields_switch_on_thumb_tint_color_key</string>
+    <string name="appearance_card_input_fields_switch_on_thumb_tint_color_title">Save Card Switch On Thumb Tint </string>
+
+
+    <string name="appearance_card_input_fields_switch_off_track_tint_color_key">appearance_card_input_fields_switch_off_track_tint_color_key</string>
+    <string name="appearance_card_input_fields_switch_off_track_tint_color_title">Save Card Switch Off Track Tint </string>
+
+    <string name="appearance_card_input_fields_switch_on_track_tint_color_key">appearance_card_input_fields_switch_on_track_tint_color_key</string>
+    <string name="appearance_card_input_fields_switch_on_track_tint_color_title">Save Card Switch On Track Tint </string>
+
+
+
+    <string name="appearance_card_input_fields_scan_icon_frame_tint_color_key">appearance_card_input_fields_scan_icon_frame_tint_color_key</string>
+    <string name="appearance_card_input_fields_scan_icon_frame_tint_color_title">Scan Icon Frame Tint </string>
+
+
+    <string name="appearance_card_input_fields_scan_icon_tint_color_key">appearance_card_input_fields_scan_icon_tint_color_key</string>
+    <string name="appearance_card_input_fields_scan_icon_tint_color_title">scan Icon Tint</string>
     <!--        appearance_tap_button                         -->
     <string name="appearance_tap_button">Appearance Tap Button</string>
 
@@ -183,5 +212,21 @@
     <string name="appearance_tap_button_enabled_titled_color_title">Enabled Title Color</string>
 
     <string name="appearance_tap_button_height_key">appearance_tap_button_height_key</string>
-    <string name="appearance_tap_button_height_title">Tap Button Height</string>
+    <string name="appearance_tap_button_height_title">Pay Button Height</string>
+
+    <string name="tap_button_text_size_key">tap_button_text_size_key</string>
+    <string name="appearance_tap_button_preference_text_size_title">Text Size</string>
+
+    <string name="appearance_header_preference_text_size_title">Text Size</string>
+
+
+    <string name="appearance_tap_button_corner_radius_key">appearance_tap_button_corner_radius_key</string>
+    <string name="appearance_tap_button_corner_title">Corner Radius</string>
+
+    <string name="appearance_tap_button_loader_visible_key">appearance_tap_button_loader_visible_key</string>
+    <string name="appearance_tap_button_loader_visible_title">Loader Visible</string>
+
+    <string name="appearance_tap_button_security_icon_visible_key">appearance_tap_button_security_icon_visible_key</string>
+    <string name="appearance_tap_button_security_icon_visible_title">Security Icon Visible</string>
+
 </resources>

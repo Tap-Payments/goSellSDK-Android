@@ -68,6 +68,7 @@
 
 
     <android.support.design.widget.TextInputLayout
+        android:id="@+id/cardNumberFieldTextInputLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_goneMarginEnd="20dp"

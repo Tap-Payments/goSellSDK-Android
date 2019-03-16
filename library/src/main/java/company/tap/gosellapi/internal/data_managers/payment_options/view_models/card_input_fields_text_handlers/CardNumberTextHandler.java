@@ -7,6 +7,7 @@ import android.widget.EditText;
 
 import company.tap.gosellapi.internal.api.enums.CardScheme;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.CardCredentialsViewModel;
+import company.tap.gosellapi.open.controllers.ThemeObject;
 import company.tap.tapcardvalidator_android.CardBrand;
 import company.tap.tapcardvalidator_android.CardValidationState;
 import company.tap.tapcardvalidator_android.CardValidator;
@@ -161,7 +162,7 @@ public class CardNumberTextHandler extends TextHandler {
       if(cardBrand.getValidationState()== CardValidationState.invalid){
         ((CardCredentialsViewModel) dataListener).setCardNumberColor(Color.RED);
       }else {
-        ((CardCredentialsViewModel) dataListener).setCardNumberColor(Color.BLACK);
+        ((CardCredentialsViewModel) dataListener).setCardNumberColor(ThemeObject.getInstance().getCardInputTextColor());
       }
     }
   }
