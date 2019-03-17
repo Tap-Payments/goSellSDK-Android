@@ -39,6 +39,7 @@ import company.tap.gosellapi.internal.api.models.ExtraFee;
 import company.tap.gosellapi.internal.api.models.Order;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.open.models.Destination;
+import company.tap.gosellapi.open.models.Destinations;
 import company.tap.gosellapi.open.models.Receipt;
 import company.tap.gosellapi.open.models.Reference;
 import company.tap.gosellapi.internal.api.models.SourceRequest;
@@ -550,7 +551,7 @@ final class PaymentProcessManager {
         .getRequires3DSecure();// this.dataSource.getRequires3DSecure() || this.chargeRequires3DSecure();
     Receipt receipt = provider.getReceiptSettings();
 
-    ArrayList<Destination> destinations = provider.getDestination();
+    Destinations destinations = provider.getDestination();
 
     TransactionMode transactionMode = provider.getTransactionMode();
     Log.d("PaymentProcessManager","transactionMode : " + transactionMode);

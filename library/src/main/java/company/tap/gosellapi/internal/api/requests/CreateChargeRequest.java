@@ -14,6 +14,7 @@ import java.util.HashMap;
 import company.tap.gosellapi.open.models.Customer;
 import company.tap.gosellapi.internal.api.models.Order;
 import company.tap.gosellapi.open.models.Destination;
+import company.tap.gosellapi.open.models.Destinations;
 import company.tap.gosellapi.open.models.Receipt;
 import company.tap.gosellapi.open.models.Reference;
 import company.tap.gosellapi.internal.api.models.SourceRequest;
@@ -87,7 +88,7 @@ public class CreateChargeRequest {
 
     @SerializedName("destinations")
     @Expose
-    @Nullable private ArrayList<Destination> destinations;
+    @Nullable private Destinations destinations;
 
     /**
      * Instantiates a new Create charge request.
@@ -124,7 +125,7 @@ public class CreateChargeRequest {
                                @Nullable    String                  statementDescriptor,
                                @Nullable    boolean                 threeDSecure,
                                @Nullable    Receipt                 receipt,
-                               @Nullable ArrayList<Destination> destinations) {
+                               @Nullable    Destinations destinations) {
 
         this.amount                 = amount;
         this.currency               = currency;

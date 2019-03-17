@@ -16,6 +16,7 @@ import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.gosellapi.open.models.AuthorizeAction;
 import company.tap.gosellapi.open.models.Customer;
 import company.tap.gosellapi.open.models.Destination;
+import company.tap.gosellapi.open.models.Destinations;
 import company.tap.gosellapi.open.models.PaymentItem;
 import company.tap.gosellapi.open.models.Receipt;
 import company.tap.gosellapi.open.models.Reference;
@@ -60,7 +61,7 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
     private @Nullable
     AuthorizeAction authorizeAction;
     private @Nullable
-    ArrayList<Destination> destination;
+    Destinations destination;
 
     private @NonNull
     Context context;
@@ -235,7 +236,7 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
      * set Destination
      * @return
      */
-    public void setDestination(ArrayList<Destination> destination){
+    public void setDestination(Destinations destination){
         this.destination = destination;
     }
 
@@ -332,7 +333,7 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
 
     @Override
     public @Nullable
-    ArrayList<Destination> getDestination(){
+    Destinations getDestination(){
         return  destination;
     }
 

@@ -14,6 +14,7 @@ import company.tap.gosellapi.open.models.AuthorizeAction;
 import company.tap.gosellapi.open.models.Customer;
 import company.tap.gosellapi.internal.api.models.Order;
 import company.tap.gosellapi.open.models.Destination;
+import company.tap.gosellapi.open.models.Destinations;
 import company.tap.gosellapi.open.models.Receipt;
 import company.tap.gosellapi.open.models.Reference;
 import company.tap.gosellapi.internal.api.models.SourceRequest;
@@ -47,6 +48,7 @@ public final class CreateAuthorizeRequest extends CreateChargeRequest {
      * @param threeDSecure        the three d secure
      * @param receipt             the receipt
      * @param authorizeAction     the authorize action
+     * @param destinations        the destinations object
      */
     public CreateAuthorizeRequest(@NonNull  BigDecimal              amount,
                                   @NonNull  String                  currency,
@@ -64,7 +66,7 @@ public final class CreateAuthorizeRequest extends CreateChargeRequest {
                                   @Nullable boolean                 threeDSecure,
                                   @Nullable Receipt                 receipt,
                                   @NonNull  AuthorizeAction         authorizeAction,
-                                  @Nullable ArrayList<Destination> destinations) {
+                                  @Nullable Destinations destinations) {
 
         super(amount, currency, customer, fee, order, redirect, post, source, description, metadata, reference, saveCard, statementDescriptor, threeDSecure, receipt,destinations);
 

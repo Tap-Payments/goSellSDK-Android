@@ -1,14 +1,25 @@
 package company.tap.gosellapi.open.controllers;
 
+import android.content.Context;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 
+import company.tap.gosellapi.R;
 import company.tap.gosellapi.open.enums.AppearanceMode;
 
 /**
  * The type Settings manager.
  */
 public class ThemeObject {
+
+        private final int  WHITE_COLOR   = -1;
+        private final int  PAY_BTN_SIZE  = 14;
+        private final int  DARK_GRAY_COLOR    = -8355712;
+        private final int  LIGHT_GRAY_COLOR    = -2894893;
+        private final int  GREEN_COLOR   = -8388864;
+        private final int  VIBRANT_GREEN_COLOR   = -13447886;
+        private final int  RED_COLOR   = -65536;
+        private final int  BLACK_COLOR   = -16777216;
 
         private String sdkLanguage="en";
 
@@ -51,6 +62,8 @@ public class ThemeObject {
          *  Tap Button
          */
         private int                     payButtonResourceId;
+        private boolean                 payButtonResourceIdFlag;
+
         private int                     payButtonDisabledBackgroundColor;
         private int                     payButtonEnabledBackgroundColor;
         private Typeface                payButtonFont;
@@ -58,8 +71,8 @@ public class ThemeObject {
         private int                     payButtonEnabledTitleColor;
 //        private int                     payButtonHeight;
         private int                     payButtonCornerRadius;
-        private boolean                 payButtSecurityIconVisible;
-        private boolean                 payButtLoaderVisible;
+        private boolean                 payButtSecurityIconVisible=true;
+        private boolean                 payButtLoaderVisible=true;
         private int                     payButtonTextSize;
 
 
@@ -219,24 +232,6 @@ public class ThemeObject {
                 return this;
         }
 
-//        /**
-//         * Scan icon frame tint color
-//         * @param scanIconFrameTint
-//         */
-//        public ThemeObject setScanIconFrameTint(int scanIconFrameTint) {
-//                this.scanIconFrameTint = scanIconFrameTint;
-//                return this;
-//        }
-//
-//        /**
-//         * Scan icon tint color
-//         * @param scanIconTint
-//         */
-//        public ThemeObject setScanIconTint(int scanIconTint) {
-//                this.scanIconTint = scanIconTint;
-//                return this;
-//        }
-
         public ThemeObject setScanIconDrawable(Drawable scanIconDrawable){
                 this.scanIconDrawable = scanIconDrawable;
                 return  this;
@@ -248,6 +243,7 @@ public class ThemeObject {
          */
         public ThemeObject setPayButtonResourceId(int payButtonResourceId) {
                 this.payButtonResourceId = payButtonResourceId;
+                this.payButtonResourceIdFlag = true;
                 return  this;
         }
 
@@ -350,12 +346,6 @@ public class ThemeObject {
         }
 
 
-        /**
-         * @return Translucent color
-         */
-        public int getTranslucentColor() {
-                return this.translucentColor;
-        }
 
         /**
          * @return  header font typeface
@@ -397,84 +387,75 @@ public class ThemeObject {
          * @return card input text color
          */
         public int getCardInputTextColor() {
+                if(cardInputTextColor!=0)
                 return this.cardInputTextColor;
+                return BLACK_COLOR;
         }
 
         /**
          * @return card input invalidate text color
          */
         public int getCardInputInvalidTextColor() {
+                if(cardInputInvalidTextColor!=0)
                 return this.cardInputInvalidTextColor;
+                return RED_COLOR;
         }
 
         /**
          * @return card input place holder text color
          */
         public int getCardInputPlaceholderTextColor() {
+                if(cardInputPlaceholderTextColor!=0)
                 return this.cardInputPlaceholderTextColor;
+                return LIGHT_GRAY_COLOR;
         }
 
-        /**
-         * @return card input description font
-         */
-        public Typeface getCardInputDescriptionFont() {
-                return this.cardInputDescriptionFont;
-        }
-
-        /**
-         * @return card input description color
-         */
-        public int getCardInputDescriptionColor() {
-                return this.cardInputDescriptionColor;
-        }
 
         /**
          * @return save card switch off tint
          */
         public int getSaveCardSwitchOffThumbTint() {
+            if(saveCardSwitchOffThumbTint!=0)
                 return this.saveCardSwitchOffThumbTint;
+            return  LIGHT_GRAY_COLOR;
         }
 
         /**
          * @return save card switch on tint
          */
         public int getSaveCardSwitchOnThumbTint() {
-                return this.saveCardSwitchOnThumbTint;
+                if(saveCardSwitchOnThumbTint!=0)
+                        return this.saveCardSwitchOnThumbTint;
+                return  VIBRANT_GREEN_COLOR;
         }
 
         /**
          * @return save card switch off track tint
          */
         public int getSaveCardSwitchOffTrackTint() {
+                if(saveCardSwitchOffTrackTint!=0)
                 return this.saveCardSwitchOffTrackTint;
+                return  LIGHT_GRAY_COLOR;
         }
 
         /**
          * @return save card switch on track tint
          */
         public int getSaveCardSwitchOnTrackTint() {
+                if(saveCardSwitchOnTrackTint!=0)
                 return this.saveCardSwitchOnTrackTint;
+                return VIBRANT_GREEN_COLOR;
         }
 
-//        /**
-//         * @return scan icon frame tint
-//         */
-//        public int getScanIconFrameTint() {
-//                return this.scanIconFrameTint;
-//        }
-//
-//        /***
-//         * @return scan icon tint
-//         */
-//        public int getScanIconTint() {
-//                return this.scanIconTint;
-//        }
 
         /**
          * @return Scan icon drawable
          */
-        public Drawable getScanIconDrawable() {
+        public Drawable getScanIconDrawable(Context context) {
+                if(scanIconDrawable!=null)
                 return this.scanIconDrawable;
+
+                return  context.getResources().getDrawable(R.drawable.btn_card_scanner_normal);
         }
 
 
@@ -491,7 +472,10 @@ public class ThemeObject {
          * @return
          */
         public int getPayButtonResourceId() {
+                if(this.payButtonResourceIdFlag)
                 return this.payButtonResourceId;
+
+                return R.drawable.btn_pay_selector;
         }
 
         /**
@@ -519,14 +503,23 @@ public class ThemeObject {
          * @return pay button disabled title text color
          */
         public int getPayButtonDisabledTitleColor() {
-                return this.payButtonDisabledTitleColor;
+                if(this.payButtonDisabledTitleColor!=0)
+                {
+                        return this.payButtonDisabledTitleColor;
+                }
+                return WHITE_COLOR; // white color
         }
 
         /**
          * @return pay button enabled title color
          */
         public int getPayButtonEnabledTitleColor() {
-                return this.payButtonEnabledTitleColor;
+
+                if(this.payButtonEnabledTitleColor!=0)
+                {
+                        return this.payButtonEnabledTitleColor;
+                }
+                return WHITE_COLOR; // white color
         }
 
         /**
@@ -556,7 +549,10 @@ public class ThemeObject {
          * @return Text size
          */
         public int getPayButtonTextSize() {
+                if(payButtonTextSize!=0)
                 return this.payButtonTextSize;
+
+                return PAY_BTN_SIZE;
         }
 
 

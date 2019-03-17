@@ -27,6 +27,7 @@ import company.tap.gosellapi.open.models.AuthorizeAction;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.open.models.Customer;
 import company.tap.gosellapi.open.models.Destination;
+import company.tap.gosellapi.open.models.Destinations;
 import company.tap.gosellapi.open.models.Receipt;
 import company.tap.gosellapi.open.models.Reference;
 import company.tap.gosellapi.internal.api.requests.PaymentOptionsRequest;
@@ -590,8 +591,8 @@ public final class PaymentDataManager {
 
       @Nullable
       @Override
-      public ArrayList<Destination> getDestination(){
-          ArrayList<Destination> destinations = getExternalDataSource().getDestination();
+      public Destinations getDestination(){
+          Destinations destinations = getExternalDataSource().getDestination();
           return destinations;
       }
   }

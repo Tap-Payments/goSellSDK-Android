@@ -320,7 +320,6 @@ public class CardCredentialsViewHolder
         if(PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode() == TransactionMode.SAVE_CARD){
             saveCardSwitch.setVisibility(View.GONE);
             saveCardDescriptionTextView.setText(itemView.getResources().getString(R.string.textview_disclaimer_save_card_info));
-//            saveCardDescriptionTextView.setTextSize(12);
             TextViewCompat.setTextAppearance(saveCardDescriptionTextView,R.style.SecurityText);
         }
 
@@ -335,12 +334,13 @@ public class CardCredentialsViewHolder
 
         private void setupCardTheme(){
 
+        if(ThemeObject.getInstance().getCardInputFontTypeFace()!=null) {
             cardNumberField.setTypeface(ThemeObject.getInstance().getCardInputFontTypeFace());
             expirationDateField.setTypeface(ThemeObject.getInstance().getCardInputFontTypeFace());
             cvvField.setTypeface(ThemeObject.getInstance().getCardInputFontTypeFace());
             nameOnCardField.setTypeface(ThemeObject.getInstance().getCardInputFontTypeFace());
             saveCardDescriptionTextView.setTypeface(ThemeObject.getInstance().getCardInputFontTypeFace());
-
+        }
             cardNumberField.setTextColor(ThemeObject.getInstance().getCardInputTextColor());
             expirationDateField.setTextColor(ThemeObject.getInstance().getCardInputTextColor());
             cvvField.setTextColor(ThemeObject.getInstance().getCardInputTextColor());
@@ -354,7 +354,8 @@ public class CardCredentialsViewHolder
 
             configureSaveCardSwitch();
 
-            cardScannerButton.setImageDrawable(ThemeObject.getInstance().getScanIconDrawable());
+            if(itemView!=null && itemView.getContext()!=null)
+            cardScannerButton.setImageDrawable(ThemeObject.getInstance().getScanIconDrawable(itemView.getContext()));
 
         }
 
