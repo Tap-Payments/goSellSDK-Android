@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
     <corners
-        android:radius="@dimen/save_btn_corners_radius"/>
+        android:radius="@dimen/pay_btn_corners_radius"/>
     <solid
-        android:color="@color/red"/>
+        android:color="@color/vibrant_green_pressed"/>
 </shape>

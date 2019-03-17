@@ -24,6 +24,7 @@ import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.gosellapi.open.models.AuthorizeAction;
 import company.tap.gosellapi.open.models.Customer;
 import company.tap.gosellapi.open.models.Destination;
+import company.tap.gosellapi.open.models.Destinations;
 import company.tap.gosellapi.open.models.PaymentItem;
 import company.tap.gosellapi.open.models.Receipt;
 import company.tap.gosellapi.open.models.Reference;
@@ -193,6 +194,7 @@ public class SDKSession implements View.OnClickListener {
    * @param is3DSecure the is 3 d secure
    */
   public void isRequires3DSecure(boolean is3DSecure){
+    System.out.println("isRequires3DSecure >>> "+is3DSecure);
     paymentDataSource.isRequires3DSecure(is3DSecure);
   }
 
@@ -219,7 +221,7 @@ public class SDKSession implements View.OnClickListener {
    * set Destination
    */
 
-  public void setDestination(ArrayList<Destination> destination){
+  public void setDestination(Destinations destination){
     paymentDataSource.setDestination(destination);
   }
   /**
@@ -270,11 +272,16 @@ public class SDKSession implements View.OnClickListener {
 
           @Override
           public void onSuccess(int responseCode, PaymentOptionsResponse serializedResponse) {
-            if(ThemeObject.getInstance().isPayButtLoaderVisible())
-            payButtonView.getLoadingView()
-                .setForceStop(true, () -> startMainActivity());
-            else
+            if(payButtonView!=null){
+              if(ThemeObject.getInstance().isPayButtLoaderVisible())
+                payButtonView.getLoadingView()
+                        .setForceStop(true, () -> startMainActivity());
+              else
+                startMainActivity();
+            }else {
               startMainActivity();
+            }
+
           }
 
           @Override
@@ -295,6 +302,8 @@ public class SDKSession implements View.OnClickListener {
    * launch goSellSDK activity
    */
   private void startMainActivity() {
+    if(payButtonView!=null )
+      payButtonView.getLoadingView().setForceStop(true);
     getListener().sessionIsStarting();
     Intent intent = new Intent(payButtonView.getContext(), GoSellPaymentActivity.class);
     activityListener.startActivityForResult(intent,SDK_REQUEST_CODE );

@@ -86,34 +86,35 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         .setAppearanceMode(settingsManager.getAppearanceMode(SettingsKeys.TAP_APPEARANCE_MODE))
 
         .setHeaderFont(getTypeface(SettingsKeys.TAP_APPEARANCE_HEADER_FONT))
-        .setHeaderTextColor(settingsManager.getColor(SettingsKeys.TAP_APPEARANCE_HEADER_TEXT_COLOR,R.color.black))
-        .setHeaderTextSize(26)
-        .setHeaderBackgroundColor(settingsManager.getColor(SettingsKeys.TAP_APPEARANCE_HEADER_BACKGROUND_COLOR,R.color.french_gray_new))
+        .setHeaderTextColor(settingsManager.getColor(SettingsKeys.TAP_APPEARANCE_HEADER_TEXT_COLOR,getResources().getColor(R.color.black)))
+//        .setHeaderTextColor(R.color.black1)
+        .setHeaderTextSize(17)
+        .setHeaderBackgroundColor(settingsManager.getColor(SettingsKeys.TAP_APPEARANCE_HEADER_BACKGROUND_COLOR,getResources().getColor(R.color.french_gray_new)))
 
 
 
-        .setCardInputFont(getTypeface(SettingsKeys.TAP_CARD_INPUT_FONT))
-        .setCardInputTextColor(settingsManager.getColor(SettingsKeys.TAP_CARD_INPUT_TEXT_COLOR,R.color.black))
-        .setCardInputInvalidTextColor(settingsManager.getColor(SettingsKeys.TAP_CARD_INPUT_INVALID_TEXT_COLOR,R.color.red))
-        .setCardInputPlaceholderTextColor(settingsManager.getColor(SettingsKeys.TAP_CARD_INPUT_PLACEHOLDER_TEXT_COLOR,R.color.black))
+//        .setCardInputFont(getTypeface(SettingsKeys.TAP_CARD_INPUT_FONT))
+        .setCardInputTextColor(settingsManager.getColor(SettingsKeys.TAP_CARD_INPUT_TEXT_COLOR,getResources().getColor(R.color.black)))
+        .setCardInputInvalidTextColor(settingsManager.getColor(SettingsKeys.TAP_CARD_INPUT_INVALID_TEXT_COLOR,getResources().getColor(R.color.red)))
+        .setCardInputPlaceholderTextColor(settingsManager.getColor(SettingsKeys.TAP_CARD_INPUT_PLACEHOLDER_TEXT_COLOR,getResources().getColor(R.color.black)))
 
 
-        .setSaveCardSwitchOffThumbTint(settingsManager.getColor(SettingsKeys.TAP_CARD_INPUT_SWITCH_OFF_THUMB_TINT_COLOR,R.color.gray))
-        .setSaveCardSwitchOnThumbTint(settingsManager.getColor(SettingsKeys.TAP_CARD_INPUT_SWITCH_ON_THUMB_TINT_COLOR,R.color.white))
-        .setSaveCardSwitchOffTrackTint(settingsManager.getColor(SettingsKeys.TAP_CARD_INPUT_SWITCH_OFF_TRACK_TINT_COLOR,R.color.gray))
-        .setSaveCardSwitchOnTrackTint(settingsManager.getColor(SettingsKeys.TAP_CARD_INPUT_SWITCH_ON_TRACK_TINT_COLOR,R.color.white))
+        .setSaveCardSwitchOffThumbTint(settingsManager.getColor(SettingsKeys.TAP_CARD_INPUT_SWITCH_OFF_THUMB_TINT_COLOR,getResources().getColor(R.color.gray)))
+        .setSaveCardSwitchOnThumbTint(settingsManager.getColor(SettingsKeys.TAP_CARD_INPUT_SWITCH_ON_THUMB_TINT_COLOR,getResources().getColor(R.color.vibrant_green)))
+        .setSaveCardSwitchOffTrackTint(settingsManager.getColor(SettingsKeys.TAP_CARD_INPUT_SWITCH_OFF_TRACK_TINT_COLOR,getResources().getColor(R.color.gray)))
+        .setSaveCardSwitchOnTrackTint(settingsManager.getColor(SettingsKeys.TAP_CARD_INPUT_SWITCH_ON_TRACK_TINT_COLOR,getResources().getColor(R.color.white)))
 
         .setScanIconDrawable(getResources().getDrawable(R.drawable.btn_card_scanner_normal))
 
-        .setPayButtonResourceId(R.drawable.btn_pay_merchant_selector)
-        .setPayButtonFont(getTypeface(SettingsKeys.TAP_BUTTON_FONT_KEY))
+//        .setPayButtonResourceId(R.drawable.btn_pay_selector)  //btn_pay_merchant_selector
+//        .setPayButtonFont(getTypeface(SettingsKeys.TAP_BUTTON_FONT_KEY))
 
-        .setPayButtonDisabledTitleColor(settingsManager.getColor(SettingsKeys.TAP_BUTTON_DISABLED_TITLE_COLOR_KEY,R.color.black))
-        .setPayButtonEnabledTitleColor(settingsManager.getColor(SettingsKeys.TAP_BUTTON_ENABLED_TITLE_COLOR_KEY,R.color.White))
+        .setPayButtonDisabledTitleColor(settingsManager.getColor(SettingsKeys.TAP_BUTTON_DISABLED_TITLE_COLOR_KEY,getResources().getColor(R.color.black)))
+        .setPayButtonEnabledTitleColor(settingsManager.getColor(SettingsKeys.TAP_BUTTON_ENABLED_TITLE_COLOR_KEY,getResources().getColor(R.color.White)))
 
-        .setPayButtonTextSize(17)
-        .setPayButtonLoaderVisible(settingsManager.getBoolean(SettingsKeys.TAP_BUTTON_LOADER_VISIBLE,true))
-        .setPayButtonSecurityIconVisible(settingsManager.getBoolean(SettingsKeys.TAP_BUTTON_SECURITY_VISIBLE,true))
+//        .setPayButtonTextSize(17)
+//        .setPayButtonLoaderVisible(settingsManager.getBoolean(SettingsKeys.TAP_BUTTON_LOADER_VISIBLE,true))
+//        .setPayButtonSecurityIconVisible(settingsManager.getBoolean(SettingsKeys.TAP_BUTTON_SECURITY_VISIBLE,true))
         ;
 
     }
@@ -176,16 +177,16 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
         payButtonView = findViewById(R.id.payButtonId);
 
-        payButtonView.setupFontTypeFace(ThemeObject.getInstance().getPayButtonFont());
+//        payButtonView.setupFontTypeFace(ThemeObject.getInstance().getPayButtonFont());
 
         payButtonView.setupTextColor(ThemeObject.getInstance().getPayButtonEnabledTitleColor(),
                 ThemeObject.getInstance().getPayButtonDisabledTitleColor());
+//
+//        payButtonView.getPayButton().setTextSize(ThemeObject.getInstance().getPayButtonTextSize());
+//
+//        payButtonView.getSecurityIconView().setVisibility(ThemeObject.getInstance().isPayButtSecurityIconVisible()?View.VISIBLE:View.INVISIBLE);
 
-        payButtonView.getPayButton().setTextSize(ThemeObject.getInstance().getPayButtonTextSize());
-
-        payButtonView.getSecurityIconView().setVisibility(ThemeObject.getInstance().isPayButtSecurityIconVisible()?View.VISIBLE:View.INVISIBLE);
-
-        payButtonView.setBackgroundSelector(ThemeObject.getInstance().getPayButtonResourceId());
+        //payButtonView.setBackgroundSelector(ThemeObject.getInstance().getPayButtonResourceId());
 
         TransactionMode trx_mode = settingsManager.getTransactionsMode(SettingsKeys.TAP_TRANSACTION_MODE);
 
@@ -197,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
         sdkSession.setButtonView(payButtonView, this, SDK_REQUEST_CODE);
 
-        sdkSession.setPayButtonLoaderVisible();
+//        sdkSession.setPayButtonLoaderVisible();
 
     }
 
@@ -269,6 +270,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         System.out.println("Payment Succeeded : "+ charge.getStatus());
         System.out.println("Payment Succeeded : "+ charge.getDescription());
         System.out.println("Payment Succeeded : "+ charge.getResponse().getMessage());
+//        System.out.println("Payment Succeeded : "+ charge.getDestinations().getDestination().size());
         saveCustomerRefInSession(charge);
         configureSDKSession();
         showDialog(charge.getId(),charge.getResponse().getMessage(),company.tap.gosellapi.R.drawable.ic_checkmark_normal);

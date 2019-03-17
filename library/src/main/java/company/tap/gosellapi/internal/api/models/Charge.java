@@ -14,6 +14,7 @@ import company.tap.gosellapi.internal.api.enums.ChargeStatus;
 import company.tap.gosellapi.internal.api.responses.BaseResponse;
 import company.tap.gosellapi.open.models.Customer;
 import company.tap.gosellapi.open.models.Destination;
+import company.tap.gosellapi.open.models.Destinations;
 import company.tap.gosellapi.open.models.Receipt;
 import company.tap.gosellapi.open.models.Reference;
 
@@ -100,9 +101,9 @@ public class Charge implements BaseResponse, Serializable {
     @Expose
     @Nullable private String statementDescriptor;
 
-//    @SerializedName("destinations")
-//    @Expose
-//    @Nullable private ArrayList<Destination> destinations;
+    @SerializedName("destinations")
+    @Expose
+    @Nullable private Destinations destinations;
 
     /**
      * Gets id.
@@ -276,12 +277,12 @@ public class Charge implements BaseResponse, Serializable {
         return statementDescriptor;
     }
 
-//    /**
-//     * Gets destinations
-//     * @return
-//     */
-//    @Nullable
-//    public ArrayList<Destination> getDestinations() {
-//        return destinations;
-//    }
+    /**
+     * Gets destinations
+     * @return
+     */
+    @Nullable
+    public Destinations getDestinations() {
+        return destinations;
+    }
 }

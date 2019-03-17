@@ -24,6 +24,7 @@ import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.gosellapi.open.models.AuthorizeAction;
 import company.tap.gosellapi.open.models.Customer;
 import company.tap.gosellapi.open.models.Destination;
+import company.tap.gosellapi.open.models.Destinations;
 import company.tap.gosellapi.open.models.PaymentItem;
 import company.tap.gosellapi.open.models.Receipt;
 import company.tap.gosellapi.open.models.Reference;
@@ -243,18 +244,22 @@ public class SettingsManager {
         return new AuthorizeAction(AuthorizeActionType.VOID, 10);
     }
 
-    public ArrayList<Destination> getDestination() {
+    public Destinations getDestination() {
         ArrayList<Destination> destinations = new ArrayList<Destination>();
         destinations.
                 add(new Destination(
-                        "1014",
-                        new BigDecimal(10),
-                        new TapCurrency("kwd"),
-                        "please deduct 10 kd for this account",
-                        ""
-
+                        "1014", /// destination unique identifier
+                        new BigDecimal(10), // Amount to be transferred to the destination account
+                        new TapCurrency("kwd"), //currency code (three digit ISO format)
+                        "please deduct 10 kd for this account", //Description about the transfer
+                        "" //Merchant reference number to the destination
                 ));
-        return destinations;
+
+        return new Destinations(
+                new BigDecimal(10),  // total amount, transferred to the destination account
+                new TapCurrency("kwd"),  // transfer currency code
+                1,  //number of destinations trabsfer involved
+                destinations); //List of destinations object
     }
 
 
