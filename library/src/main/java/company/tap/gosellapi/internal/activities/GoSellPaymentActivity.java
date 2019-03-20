@@ -41,6 +41,7 @@ import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.api.models.SaveCard;
 import company.tap.gosellapi.internal.api.models.SavedCard;
+import company.tap.gosellapi.internal.api.models.Token;
 import company.tap.gosellapi.internal.api.responses.BINLookupResponse;
 import company.tap.gosellapi.internal.api.responses.DeleteCardResponse;
 import company.tap.gosellapi.internal.custom_views.DatePicker;
@@ -179,18 +180,36 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         TextView businessName = findViewById(R.id.businessName);
         String header_title = "";
 
-        if (isTransactionModeSaveCard()) {
+        if (isTransactionModeSaveCard() || isTransactionModeTokenizeCard()) {
             header_title = getString(R.string.textview_disclaimer_save_card_header_title);
             LinearLayout pll = findViewById(R.id.businessIconNameContainer);
             pll.removeView(businessIcon);
             pll.removeView(businessName);
             LinearLayout.LayoutParams ll = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             ll.leftMargin = 0;
-            ll.bottomMargin = 16;
-            ll.topMargin = 14;
+            ll.bottomMargin = 5;
+            ll.topMargin = 18;
             ll.gravity = Gravity.CENTER_VERTICAL;
             businessName.setLayoutParams(ll);
             pll.addView(businessName);
+
+            cancel_payment_ll.removeView(cancel_payment_icon);
+            TextView cancelTv = new TextView(this);
+            cancelTv.setTextSize(15);
+
+            if(ThemeObject.getInstance().getHeaderFont()!=null)
+                cancelTv.setTypeface(ThemeObject.getInstance().getHeaderFont());
+
+            cancelTv.setText(getResources().getString(R.string.cancel));
+            RelativeLayout.LayoutParams ll2 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            ll2.leftMargin = 0;
+            ll2.bottomMargin = 5;
+            ll2.topMargin = 50;
+//            ll2.rightMargin = 15;
+            ll.gravity = Gravity.CENTER_VERTICAL;
+            cancelTv.setLayoutParams(ll2);
+            cancel_payment_ll.addView(cancelTv);
+
         } else {
             String logoPath = PaymentDataManager.getInstance().getSDKSettings().getData().getMerchant().getLogo();
             Glide.with(this).load(logoPath).apply(RequestOptions.circleCropTransform()).into(businessIcon);
@@ -250,6 +269,10 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
     private boolean isTransactionModeSaveCard() {
         return PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode() == TransactionMode.SAVE_CARD;
+    }
+
+    private boolean isTransactionModeTokenizeCard() {
+        return PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode() == TransactionMode.TOKENIZE_CARD;
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -314,6 +337,10 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     }
 
     private void startCardPaymentProcess(CardCredentialsViewModel paymentOptionViewModel) {
+        if(PaymentDataManager.getInstance().getExternalDataSource().getTransactionMode()==TransactionMode.TOKENIZE_CARD)
+            initCardTokenization();
+
+        else
         PaymentDataManager.getInstance().checkCardPaymentExtraFees(paymentOptionViewModel, this);
     }
 
@@ -328,6 +355,11 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         payButton.getLoadingView().start();
         PaymentDataManager.getInstance().initiatePayment(cardCredentialsViewModel, this);
 
+    }
+
+    private void initCardTokenization(){
+        payButton.getLoadingView().start();
+        PaymentDataManager.getInstance().initCardTokenizationPayment(cardCredentialsViewModel,this);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -784,6 +816,11 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
     }
 
+    @Override
+    public void fireCardTokenizationProcessCompleted(Token token) {
+        closePaymentActivity();
+        SDKSession.getListener().cardTokenizedSuccessfully(token);
+    }
 
 
     private void obtainPaymentURLFromChargeOrAuthorizeOrSaveCard(Charge chargeOrAuthorizeOrSaveCard) {

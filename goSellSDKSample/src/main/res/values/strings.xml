@@ -30,6 +30,7 @@
     <string name="Payment">Payment</string>
     <string name="Authorize">Authorize only</string>
     <string name="SaveCards">Save Cards</string>
+    <string name="TokenizeCards">Tokenize Cards</string>
 
 
     <string name="title_sdk_transaction_currency">Transaction currency</string>

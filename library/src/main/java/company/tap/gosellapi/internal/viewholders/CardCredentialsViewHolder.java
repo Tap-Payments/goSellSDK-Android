@@ -317,10 +317,18 @@ public class CardCredentialsViewHolder
         saveCardDescriptionTextView = itemView.findViewById(R.id.saveCardDescriptionTextView);
         saveCardSwitch = itemView.findViewById(R.id.saveCardSwitch);
 
-        if(PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode() == TransactionMode.SAVE_CARD){
+        if (PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode() == TransactionMode.SAVE_CARD){
             saveCardSwitch.setVisibility(View.GONE);
             saveCardDescriptionTextView.setText(itemView.getResources().getString(R.string.textview_disclaimer_save_card_info));
             TextViewCompat.setTextAppearance(saveCardDescriptionTextView,R.style.SecurityText);
+        }
+
+        if(PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode() == TransactionMode.TOKENIZE_CARD)
+        {
+//            saveCardLayout.setVisibility(View.INVISIBLE);
+            saveCardSwitch.setVisibility(View.GONE);
+            saveCardDescriptionTextView.setText("");
+
         }
 
 /////////////////////////////////////////////////// SETUP CARD PAYMENT OPTIONS START ///////////////////////////////////////////////////////

@@ -51,6 +51,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/margin_basic_16dp"
             android:id="@+id/cancel_payment"
 
 

@@ -38,7 +38,6 @@ import company.tap.gosellapi.open.models.Customer;
 import company.tap.gosellapi.internal.api.models.ExtraFee;
 import company.tap.gosellapi.internal.api.models.Order;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
-import company.tap.gosellapi.open.models.Destination;
 import company.tap.gosellapi.open.models.Destinations;
 import company.tap.gosellapi.open.models.Receipt;
 import company.tap.gosellapi.open.models.Reference;
@@ -252,6 +251,13 @@ final class PaymentProcessManager {
     forceStartPaymentProcess(paymentOptionModel);
   }
 
+  /**
+   * start card tokenization payment process
+   * @param paymentOptionModel
+   */
+  void startCardTokenization(@NonNull final PaymentOptionViewModel paymentOptionModel) {
+    forceStartCardTokenizationProcess(paymentOptionModel);
+  }
     /**
      * Start saved card payment process.
      *
@@ -368,6 +374,13 @@ final class PaymentProcessManager {
     }
   }
 
+
+  private void forceStartCardTokenizationProcess(@NonNull PaymentOptionViewModel paymentOptionModel) {
+    setCurrentPaymentViewModel(paymentOptionModel);
+    startCardTokenizationPaymentProcessWithCardPaymentModel((CardCredentialsViewModel) paymentOptionModel);
+  }
+
+
   private void startPaymentProcessWithWebPaymentModel(
       @NonNull WebPaymentViewModel paymentOptionModel) {
 
@@ -388,10 +401,27 @@ final class PaymentProcessManager {
     if (card == null) {
       return;
     }
+
     startPaymentProcessWithCard(card,
         paymentOptionModel.getSelectedCardPaymentOption(),
         paymentOptionModel.shouldSaveCard());
   }
+
+
+  private void startCardTokenizationPaymentProcessWithCardPaymentModel(
+          @NonNull CardCredentialsViewModel paymentOptionModel) {
+
+    @Nullable CreateTokenCard card = paymentOptionModel.getCard();
+    if (card == null) {
+      return ;
+    }
+
+    startCardTokenizationPaymentProcessWithCard(card,
+            paymentOptionModel.getSelectedCardPaymentOption(),
+           false);
+
+  }
+
 
   private void startPaymentProcessWithCard(@NonNull CreateTokenCard card,
                                            PaymentOption paymentOption, boolean saveCard) {
@@ -412,18 +442,18 @@ final class PaymentProcessManager {
 
         Log.d("PaymentProcessManager","startPaymentProcessWithCard >> serializedResponse: " + responseCode);
         Log.d("PaymentProcessManager","startPaymentProcessWithCard >> transaction mode: " +
-          PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode());
+                PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode());
 
         if(PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode() == TransactionMode.SAVE_CARD
                 || saveCard) {
-            if(isCardSavedBefore(serializedResponse.getCard().getFingerprint())){
-                fireCardSavedBeforeDialog();
-                return;
-            }
+          if(isCardSavedBefore(serializedResponse.getCard().getFingerprint())){
+            fireCardSavedBeforeDialog();
+            return;
+          }
         }
-            SourceRequest source = new SourceRequest(serializedResponse);
-            callChargeOrAuthorizeOrSaveCardAPI(source, paymentOption, serializedResponse.getCard().getFirstSix(),
-                    saveCard);
+        SourceRequest source = new SourceRequest(serializedResponse);
+        callChargeOrAuthorizeOrSaveCardAPI(source, paymentOption, serializedResponse.getCard().getFirstSix(),
+                saveCard);
       }
 
       @Override
@@ -434,6 +464,46 @@ final class PaymentProcessManager {
     });
   }
 
+
+  private void startCardTokenizationPaymentProcessWithCard(@NonNull CreateTokenCard card,
+                                           PaymentOption paymentOption, boolean saveCard) {
+
+    CreateTokenWithCardDataRequest request = new CreateTokenWithCardDataRequest(card);
+
+    callCardTokenizationTokenAPI(request, paymentOption, saveCard);
+  }
+
+
+  private void callCardTokenizationTokenAPI(@NonNull CreateTokenWithCardDataRequest request,
+                            @NonNull final PaymentOption paymentOption,
+                            @Nullable final boolean saveCard) {
+
+    GoSellAPI.getInstance().createTokenWithEncryptedCard(request, new APIRequestCallback<Token>() {
+
+      @Override
+      public void onSuccess(int responseCode, Token serializedResponse) {
+
+        Log.d("PaymentProcessManager","callCardTokenizationTokenAPI >> responseCode: " + responseCode);
+        Log.d("PaymentProcessManager","callCardTokenizationTokenAPI >> serializedResponse: " + serializedResponse);
+        Log.d("PaymentProcessManager","callCardTokenizationTokenAPI >> transaction mode: " +
+          PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode());
+
+        fireCardTokenizationProcessCompleted(serializedResponse);
+
+      }
+
+      @Override
+      public void onFailure(GoSellError errorDetails) {
+        Log.d("PaymentProcessManager","GoSellAPI.callCardTokenizationTokenAPI : " + errorDetails.getErrorBody());
+        closePaymentWithError(errorDetails);
+      }
+    });
+  }
+
+  private void fireCardTokenizationProcessCompleted(Token token){
+
+        PaymentDataManager.getInstance().fireCardTokenizationProcessCompleted(token);
+  }
 
   private void fireCardSavedBeforeDialog(){
       String title = "Save Card";

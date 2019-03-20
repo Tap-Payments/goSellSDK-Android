@@ -31,10 +31,12 @@ import java.util.List;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.models.Authorize;
 import company.tap.gosellapi.internal.api.models.Charge;
+import company.tap.gosellapi.internal.api.models.Token;
 import company.tap.gosellapi.open.buttons.PayButtonView;
 import company.tap.gosellapi.open.controllers.SDKSession;
 import company.tap.gosellapi.open.controllers.ThemeObject;
 import company.tap.gosellapi.open.delegate.SessionDelegate;
+import company.tap.gosellapi.open.enums.AppearanceMode;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.sample.R;
 import company.tap.sample.constants.SettingsKeys;
@@ -83,7 +85,8 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
         ThemeObject.getInstance()
         .setSdkLanguage(settingsManager.getString(SettingsKeys.TAP_SDK_LANGUAGE_KEY,"EN"))
-        .setAppearanceMode(settingsManager.getAppearanceMode(SettingsKeys.TAP_APPEARANCE_MODE))
+//        .setAppearanceMode(settingsManager.getAppearanceMode(SettingsKeys.TAP_APPEARANCE_MODE))
+        .setAppearanceMode(AppearanceMode.WINDOWED_MODE)
 
         .setHeaderFont(getTypeface(SettingsKeys.TAP_APPEARANCE_HEADER_FONT))
         .setHeaderTextColor(settingsManager.getColor(SettingsKeys.TAP_APPEARANCE_HEADER_TEXT_COLOR,getResources().getColor(R.color.black)))
@@ -135,7 +138,11 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         // setup Payment Data Source
         sdkSession.setTransactionCurrency(settingsManager.getTransactionCurrency(SettingsKeys.TAP_TRANSACTION_CURRENCY));
 
+        System.out.println("settingsManager.getTransactionsMode(SettingsKeys.TAP_TRANSACTION_MODE) >> " +
+                settingsManager.getTransactionsMode(SettingsKeys.TAP_TRANSACTION_MODE));
+
         sdkSession.setTransactionMode(settingsManager.getTransactionsMode(SettingsKeys.TAP_TRANSACTION_MODE));
+//        sdkSession.setTransactionMode(TransactionMode.TOKENIZE_CARD);
 
         sdkSession.setCustomer(settingsManager.getCustomer());
 
@@ -352,6 +359,12 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         System.out.println("Card Saved Failed : "+ charge.getDescription());
         System.out.println("Card Saved Failed : "+ charge.getResponse().getMessage());
         showDialog(charge.getId(),charge.getStatus().toString(),company.tap.gosellapi.R.drawable.icon_failed);
+    }
+
+    @Override
+    public void cardTokenizedSuccessfully(@NonNull Token token) {
+        System.out.println("Card Tokenized Succeeded : "+ token.getId());
+        showDialog(token.getId(),"",company.tap.gosellapi.R.drawable.ic_checkmark_normal);
     }
 
 

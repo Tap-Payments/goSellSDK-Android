@@ -809,14 +809,25 @@ public class PaymentOptionsDataManager {
       ArrayList<SavedCard> savedCardsWorker = new ArrayList<>(getPaymentOptionsResponse().getCards());
       ArrayList<PaymentOptionViewModel> viewModelResult = new ArrayList<>();
 
-      if(PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode() != TransactionMode.SAVE_CARD)
+        ArrayList<SavedCard> savedCards=null;
+
+        Log.d("filterViewModels","PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode():"+
+                PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode());
+      if(
+              PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode() != TransactionMode.SAVE_CARD
+      &&
+              PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode() != TransactionMode.TOKENIZE_CARD
+      )
       {
         CurrencyViewModel model = findCurrencyModel();
         viewModelResult.add(model);
+
+        savedCards = filterByCurrenciesAndSortList(savedCardsWorker, currency);
       }
 
+      if(savedCards==null )savedCards= new ArrayList<>();
 
-      ArrayList<SavedCard> savedCards = filterByCurrenciesAndSortList(savedCardsWorker, currency);
+
 
       ArrayList<PaymentOption> webPaymentOptions = filteredByPaymentTypeAndCurrencyAndSortedList(
           paymentOptionsWorker, PaymentType.WEB, currency);
@@ -849,7 +860,7 @@ public class PaymentOptionsDataManager {
         viewModelResult.add(recentGroupModel);
       }
 
-      if (hasWebPaymentOptions) {
+      if (hasWebPaymentOptions &&  PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode() != TransactionMode.TOKENIZE_CARD) {
 
         if (!hasSavedCards) {
 

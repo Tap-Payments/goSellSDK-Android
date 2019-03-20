@@ -292,6 +292,9 @@ public class SettingsManager {
         if (trx_mode.equalsIgnoreCase(TransactionMode.AUTHORIZE_CAPTURE.name()))
             return TransactionMode.AUTHORIZE_CAPTURE;
 
+        if(trx_mode.equalsIgnoreCase(TransactionMode.TOKENIZE_CARD.name()))
+            return TransactionMode.TOKENIZE_CARD;
+
         return TransactionMode.SAVE_CARD;
 
     }
