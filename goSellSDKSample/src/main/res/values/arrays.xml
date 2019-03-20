@@ -53,12 +53,14 @@
         <item>@string/Payment</item>
         <item>@string/Authorize</item>
         <item>@string/SaveCards</item>
+        <item>@string/TokenizeCards</item>
     </string-array>
 
     <string-array name="pref_array_sdk_transaction_mode_values">
         <item>PURCHASE</item>
         <item>AUTHORIZE_CAPTURE</item>
         <item>SAVE_CARD</item>
+        <item>TOKENIZE_CARD</item>
     </string-array>
 
 

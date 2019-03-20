@@ -10,15 +10,19 @@ public enum TransactionMode {
     /**
      * Purchase transaction mode.
      */
-    @SerializedName("PURCHASE")             PURCHASE,
+    @SerializedName("PURCHASE")                     PURCHASE,
     /**
      * Authorize capture transaction mode.
      */
-    @SerializedName("AUTHORIZE_CAPTURE")    AUTHORIZE_CAPTURE,
+    @SerializedName("AUTHORIZE_CAPTURE")            AUTHORIZE_CAPTURE,
     /**
      * Save card transaction mode.
      */
-    @SerializedName("SAVE_CARD")            SAVE_CARD
+    @SerializedName("SAVE_CARD")                    SAVE_CARD,
+    /**
+     * Tokenize card mode.
+     */
+    @SerializedName("TOKENIZE_CARD")                TOKENIZE_CARD,
 
 
 }

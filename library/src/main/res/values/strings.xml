@@ -9,6 +9,7 @@
   <string name="otp_cancel_payment_message">Would you like to cancel payment</string>
   <string name="otp_confirm_dialog">Confirm</string>
   <string name="otp_cancel_dialog">No</string>
+  <string name="cancel">Cancel</string>
 
   <string name="edittext_hint_card_number">Card number</string>
   <string name="edittext_hint_expiration_date">MM/YY</string>

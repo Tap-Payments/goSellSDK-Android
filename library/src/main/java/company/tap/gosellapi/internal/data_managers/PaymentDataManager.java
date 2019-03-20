@@ -16,6 +16,7 @@ import company.tap.gosellapi.internal.api.enums.Permission;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.api.models.SaveCard;
 import company.tap.gosellapi.internal.api.models.SavedCard;
+import company.tap.gosellapi.internal.api.models.Token;
 import company.tap.gosellapi.internal.api.responses.DeleteCardResponse;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.CardCredentialsViewModel;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.RecentSectionViewModel;
@@ -176,6 +177,14 @@ public final class PaymentDataManager {
      */
     public void fireCardSavedBeforeListener() {
     getProcessListener().didCardSavedBefore();
+  }
+
+  /**
+   * Fire Card Tokenization process completed with token
+   */
+
+  public void fireCardTokenizationProcessCompleted(Token token){
+    getProcessListener().fireCardTokenizationProcessCompleted(token);
   }
 
   /////////////////////////////////////////    ########### Start of Singleton section ##################
@@ -385,6 +394,13 @@ public final class PaymentDataManager {
     getPaymentProcessManager().startPaymentProcess(model);
   }
 
+  /**
+   * Init card tokenization
+   */
+  public void initCardTokenizationPayment(PaymentOptionViewModel model, IPaymentProcessListener listener){
+      getProcessListener().addListener(listener);
+      getPaymentProcessManager().startCardTokenization(model);
+  }
     /**
      * Initiate saved card payment.
      *
@@ -640,7 +656,13 @@ public final class PaymentDataManager {
       }
     }
 
+    @Override
+    public void fireCardTokenizationProcessCompleted(Token token) {
+      for (IPaymentProcessListener listener : getListeners()) {
 
+        listener.fireCardTokenizationProcessCompleted(token);
+      }
+    }
 
 
     private void addListener(IPaymentProcessListener listener) {

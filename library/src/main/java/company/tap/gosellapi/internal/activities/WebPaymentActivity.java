@@ -25,6 +25,7 @@ import company.tap.gosellapi.internal.api.models.Authorize;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.api.models.SaveCard;
+import company.tap.gosellapi.internal.api.models.Token;
 import company.tap.gosellapi.internal.api.responses.DeleteCardResponse;
 import company.tap.gosellapi.internal.data_managers.LoadingScreenManager;
 import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
@@ -186,6 +187,11 @@ public class WebPaymentActivity extends BaseActionBarActivity implements IPaymen
   @Override
   public void didCardSavedBefore() {
     Log.d("WebPaymentActivity"," didCardSavedBefore() not available in case of WebPayment ");
+  }
+
+  @Override
+  public void fireCardTokenizationProcessCompleted(Token token) {
+    Log.d("WebPaymentActivity"," fireCardTokenizationProcessCompleted() not available in case of WebPayment ");
   }
 
   /**

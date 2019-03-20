@@ -4,6 +4,7 @@ import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.models.Authorize;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.models.SaveCard;
+import company.tap.gosellapi.internal.api.models.Token;
 
 /**
  * The interface Payment process listener.
@@ -41,4 +42,12 @@ public interface IPaymentProcessListener {
      * Did card saved before.
      */
     void didCardSavedBefore();
+
+    /**
+     * Card Tokenization process completed
+     * @param token
+     */
+    void fireCardTokenizationProcessCompleted(Token token);
+
+
 }
