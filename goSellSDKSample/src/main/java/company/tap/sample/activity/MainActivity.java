@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
 
 
-//        .setCardInputFont(getTypeface(SettingsKeys.TAP_CARD_INPUT_FONT))
+        .setCardInputFont(getTypeface(SettingsKeys.TAP_CARD_INPUT_FONT))
         .setCardInputTextColor(settingsManager.getColor(SettingsKeys.TAP_CARD_INPUT_TEXT_COLOR,getResources().getColor(R.color.black)))
         .setCardInputInvalidTextColor(settingsManager.getColor(SettingsKeys.TAP_CARD_INPUT_INVALID_TEXT_COLOR,getResources().getColor(R.color.red)))
         .setCardInputPlaceholderTextColor(settingsManager.getColor(SettingsKeys.TAP_CARD_INPUT_PLACEHOLDER_TEXT_COLOR,getResources().getColor(R.color.black)))

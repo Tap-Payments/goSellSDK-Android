@@ -3,12 +3,13 @@ package company.tap.gosellapi.open.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
  * The Destination array contains list of Merchant desired destinations accounts to receive money from payment transactions
  */
-public class Destination {
+public class Destination implements Serializable {
 
     @SerializedName("id")
     @Expose
