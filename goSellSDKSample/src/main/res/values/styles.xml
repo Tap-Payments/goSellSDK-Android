@@ -1,0 +1,25 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/french_gray</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+
+    <style name="tap" parent="Theme.AppCompat.Light">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:textColorHint">@color/gray</item>
+        <item name="android:statusBarColor" tools:ignore="NewApi">@color/french_gray</item>
+        <item name="actionBarStyle">@style/ThemeActionBar</item>
+    </style>
+
+
+    <style name="ThemeActionBar">
+        <item name="android:background">@color/french_gray_new</item>
+    </style>
+
+</resources>

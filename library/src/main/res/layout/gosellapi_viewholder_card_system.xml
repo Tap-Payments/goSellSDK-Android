@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+           android:id="@+id/cardSystemIcon"
+           android:layout_width="@dimen/icon_height_basic"
+           android:layout_height="@dimen/icon_height_basic"
+           android:layout_marginStart="@dimen/margin_basic_16dp"
+           android:layout_marginTop="6dp"
+           android:layout_marginBottom="6dp"
+           android:layout_marginLeft="@dimen/margin_basic_16dp"
+    />

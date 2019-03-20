@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.TextInputLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tilTextInput"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/margin_basic_8dp"
+    android:paddingBottom="@dimen/margin_basic_8dp"
+    android:paddingStart="@dimen/margin_basic_25dp"
+    android:paddingEnd="@dimen/margin_basic_25dp"
+    android:background="@color/white"
+    app:hintTextAppearance="@style/TextInputLayout.Hint">
+
+    <EditText
+        android:id="@+id/etTextInput"
+        style="@style/EditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:cursorVisible="false"
+        android:inputType="text"
+        android:imeOptions="actionNext"
+        android:maxLines="1"
+        app:backgroundTint="@color/mercury" />
+
+</android.support.design.widget.TextInputLayout>

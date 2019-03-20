@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/basicLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#C0000000"
+    >
+
+    <ImageView
+        android:id="@+id/blurredBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/french_gray_new"
+        android:layout_alignParentBottom="true"
+
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+
+            >
+
+            <include layout="@layout/gosellapi_toolbar_main_windowed" />
+
+            <FrameLayout
+                android:id="@+id/paymentActivityFragmentContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/toolbar"
+                android:layout_weight="1" />
+
+            <company.tap.gosellapi.open.buttons.PayButtonView
+                android:id="@+id/payButtonId"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/paymentActivityFragmentContainer" />
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+
+</RelativeLayout>

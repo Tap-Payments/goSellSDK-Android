@@ -1,21 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="company.tap.gosellapi"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="company.tap.gosellapi">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.INTERNET"/>
+  <uses-permission android:name="android.permission.CAMERA"/>
+  <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+  <uses-permission android:name="android.permission.VIBRATE"/>
+  <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+  <uses-permission android:name="android.permission.READ_SMS"/>
 
-    <!--<application-->
-        <!--android:allowBackup="true"-->
-        <!--android:label="@string/app_name"-->
-        <!--android:supportsRtl="true"-->
-        <!--android:theme="@style/AppTheme">-->
-        <!--<activity android:name="company.tap.gosellapi.TestActivity">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN"/>-->
+  <application>
+    <activity
+        android:name=".internal.activities.GoSellPaymentActivity"
+        android:windowSoftInputMode="adjustResize"
+        android:theme="@style/TransparentCompat"
+        />
+    <activity
+        android:name=".internal.activities.GoSellCardAddressActivity"
+        android:theme="@style/GoSellSDKAppTheme"/>
+    <activity
+        android:name=".internal.activities.CurrenciesActivity"
+        android:theme="@style/GoSellSDKAppTheme"/>
+    <activity
+        android:name=".internal.activities.BaseActionBarActivity"
+        android:theme="@style/GoSellSDKAppTheme"/>
+    <activity
+        android:name=".internal.activities.WebPaymentActivity"
+        android:theme="@style/GoSellSDKAppTheme"/>
+    <activity
+        android:name=".internal.activities.CountriesActivity"
+        android:theme="@style/GoSellSDKAppTheme"/>
 
-                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-            <!--</intent-filter>-->
-        <!--</activity>-->
-    <!--</application>-->
+
+    <receiver android:name=".internal.receivers.SMSReceiver">
+      <intent-filter>
+        <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
+      </intent-filter>
+    </receiver>
+
+
+  </application>
 
 </manifest>

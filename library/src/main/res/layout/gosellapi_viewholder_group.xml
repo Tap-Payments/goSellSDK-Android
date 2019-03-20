@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="28dp"
+    android:orientation="horizontal">
+
+
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="7dp"
+
+        android:layout_weight="1"
+        android:text="@string/textview_title_recent"
+        android:textColor="@color/dark_gray"
+        android:textSize="@dimen/font_size_14sp" />
+
+
+    <RelativeLayout
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="@dimen/margin_basic_16dp"
+        android:layout_marginRight="@dimen/margin_basic_16dp"
+        android:layout_weight="1"
+        android:gravity="right">
+
+        <TextView
+            android:id="@+id/editTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/textview_title_recent_edit"
+            android:textColor="@color/dark_gray"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:textSize="@dimen/font_size_14sp" />
+
+        <TextView
+            android:id="@+id/cancelTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/textview_title_recent_cancel"
+            android:textColor="@color/dark_gray"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:textSize="@dimen/font_size_14sp"
+            android:visibility="invisible" />
+    </RelativeLayout>
+
+
+</LinearLayout>

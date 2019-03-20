@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/alabaster">
+
+    <ImageView
+        android:id="@+id/statusIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="@dimen/margin_basic_23dp"
+        android:src="@drawable/ic_checkmark_normal" />
+
+    <TextView
+        android:id="@+id/statusTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="@dimen/margin_basic_16dp"
+        android:layout_marginTop="@dimen/margin_basic_16dp"
+        android:layout_toEndOf="@id/statusIcon"
+        android:layout_toRightOf="@id/statusIcon"
+        android:layout_toStartOf="@id/closeButton"
+        android:layout_toLeftOf="@id/closeButton"
+        style="@style/TextView.Title.Header"/>
+
+    <android.support.v7.widget.AppCompatImageButton
+        android:id="@+id/closeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="@dimen/margin_basic_19dp"
+        android:background="@drawable/btn_close_normal" />
+
+</RelativeLayout>
