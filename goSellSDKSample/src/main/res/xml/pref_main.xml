@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tapfontlistpreference="http://schemas.android.com/apk/res-auto"
+    xmlns:tapcolorlistpreference="http://schemas.android.com/apk/res-auto"
+    xmlns:tapdimensionpreference="http://schemas.android.com/apk/res-auto"
+    >
+
+    <PreferenceCategory android:title="General">
+
+        <ListPreference
+            android:defaultValue="0"
+            android:dialogTitle="@string/sdkLanguage"
+            android:entries="@array/pref_array_sdk_language_entries"
+            android:entryValues="@array/pref_array_sdk_language_values"
+            android:key="@string/key_sdkLanguage"
+            android:summary="@string/summary_sdk_language"
+            android:title="@string/sdkLanguage" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/session_data_source">
+        <ListPreference
+            android:defaultValue="0"
+            android:dialogTitle="@string/title_sdkMode"
+            android:entries="@array/pref_array_sdk_mode_entries"
+            android:entryValues="@array/pref_array_sdk_mode_values"
+            android:key="@string/key_sdkMode"
+            android:summary="@string/summary_sdk_mode"
+            android:title="@string/title_sdkMode" />
+
+
+        <ListPreference
+            android:defaultValue="0"
+            android:dialogTitle="@string/title_sdk_transaction_mode"
+            android:entries="@array/pref_array_sdk_transactions_mode_entries"
+            android:entryValues="@array/pref_array_sdk_transaction_mode_values"
+            android:key="@string/key_sdk_transaction_mode"
+            android:summary="@string/summary_sdk_transaction_mode"
+            android:title="@string/title_sdk_transaction_mode" />
+
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="@string/threeDSecureKey"
+            android:title="@string/threeDSecureTitle" />
+
+        <!--<CheckBoxPreference-->
+            <!--android:defaultValue="true"-->
+            <!--android:key="@string/SaveCardMultipleKey"-->
+            <!--android:title="@string/SaveCardMultipleTitle" />-->
+
+        <ListPreference
+            android:defaultValue="kwd"
+            android:dialogTitle="@string/title_sdk_transaction_currency"
+            android:entries="@array/pref_array_sdk_transactions_currency_entries"
+            android:entryValues="@array/pref_array_sdk_transaction_currency_values"
+            android:key="@string/key_sdk_transaction_currency"
+            android:summary="@string/summary_sdk_transaction_currency"
+            android:title="@string/title_sdk_transaction_currency" />
+
+
+        <Preference android:title="@string/select_customer">
+            <intent
+                android:action="SETTING_START_CUSTOMER_ACTIVITY"
+                android:targetClass="company.tap.sample.activity.CustomerActivity"
+                android:targetPackage="company.tap.sample" />
+        </Preference>
+
+
+        <!--<Preference android:title="@string/select_shipping">-->
+            <!--<intent-->
+                <!--android:action="SETTING_START_SHIPPING_ACTIVITY"-->
+                <!--android:targetClass="company.tap.sample.activity.ShippingActivity"-->
+                <!--android:targetPackage="company.tap.sample" />-->
+        <!--</Preference>-->
+
+        <!--<Preference android:title="@string/select_taxes">-->
+            <!--<intent-->
+                <!--android:action="SETTING_START_TAXES_ACTIVITY"-->
+                <!--android:targetClass="company.tap.sample.activity.TaxesActivity"-->
+                <!--android:targetPackage="company.tap.sample" />-->
+        <!--</Preference>-->
+
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/appearance">
+
+        <ListPreference
+            android:defaultValue="0"
+            android:dialogTitle="@string/title_sdk_appearance_mode"
+            android:entries="@array/pref_array_sdk_appearance_mode_entries"
+            android:entryValues="@array/pref_array_sdk_appearance_mode_values"
+            android:key="@string/key_sdk_appearance_mode"
+            android:summary="@string/summary_sdk_appearance_mode"
+            android:title="@string/title_sdk_appearance_mode" />
+
+        <!--<CheckBoxPreference-->
+            <!--android:defaultValue="true"-->
+            <!--android:key="@string/status_popup_key"-->
+            <!--android:title="@string/status_popup"-->
+            <!--/>-->
+
+    </PreferenceCategory>
+
+    <!--<PreferenceCategory android:title="@string/appearance_background">-->
+
+        <!--&lt;!&ndash;<com.tap.tapcolorskit.ColorPreferences&ndash;&gt;-->
+            <!--&lt;!&ndash;android:defaultValue="@string/default_text_color"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:key="@string/appearance_background_preference_color_key"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:title="@string/appearance_background_preference_color_title"&ndash;&gt;-->
+            <!--&lt;!&ndash;tapcolorlistpreference:tap_fontPreviewString="@string/font_preview_string"&ndash;&gt;-->
+            <!--&lt;!&ndash;/>&ndash;&gt;-->
+
+    <!--</PreferenceCategory>-->
+
+
+    <PreferenceCategory android:title="@string/appearance_header">
+
+        <com.tap.tapfontskit.FontPreferences
+            android:defaultValue="@string/font_face_default_value"
+            android:key="@string/appearance_header_preference_font_key"
+            android:title="@string/appearance_header_preference_font_title"
+            tapfontlistpreference:tap_fontPreviewString="@string/font_preview_string"
+            tapfontlistpreference:tap_fontDirectory="@string/font_face_font_directory"
+            />
+
+        <com.tap.tapcolorskit.ColorPreferences
+            android:defaultValue="@string/default_text_color"
+            android:key="@string/appearance_header_preference_color_key"
+            android:title="@string/appearance_header_preference_color_title"
+            tapcolorlistpreference:tap_fontPreviewString="@string/font_preview_string"
+            />
+
+
+        <!--<com.tap.tapdimensionskit.TapDimensionsPreference-->
+            <!--android:defaultValue="17"-->
+            <!--android:key="header_text_size_key"-->
+            <!--tapdimensionpreference:title="Text Size"-->
+            <!--tapdimensionpreference:counterMinVal="12"-->
+            <!--tapdimensionpreference:counterMaxVal="50"-->
+            <!--tapdimensionpreference:counterStepVal="1"-->
+            <!--/>-->
+
+
+
+        <com.tap.tapcolorskit.ColorPreferences
+            android:defaultValue="@string/default_text_color"
+            android:key="@string/appearance_header_preference_background_color_key"
+            android:title="@string/appearance_header_preference_background_color_title"
+            tapcolorlistpreference:tap_fontPreviewString="@string/font_preview_string"
+            />
+
+        <!--<com.tap.tapfontskit.FontPreferences-->
+            <!--android:defaultValue="@string/font_face_default_value"-->
+            <!--android:key="@string/appearance_header_preference_cancel_button_font_key"-->
+            <!--android:title="@string/appearance_header_preference_cancel_button_font_title"-->
+            <!--tapfontlistpreference:tap_fontPreviewString="@string/font_preview_string"-->
+            <!--tapfontlistpreference:tap_fontDirectory="@string/font_face_font_directory"-->
+
+            <!--/>-->
+
+
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/appearance_card_input_fields">
+
+        <com.tap.tapfontskit.FontPreferences
+            android:defaultValue="@string/font_face_default_value"
+            android:key="@string/appearance_card_input_fields_font_key"
+            android:title="@string/appearance_card_input_fields_font_title"
+            tapfontlistpreference:tap_fontPreviewString="@string/font_preview_string"
+            tapfontlistpreference:tap_fontDirectory="@string/font_face_font_directory"
+            />
+
+
+        <com.tap.tapcolorskit.ColorPreferences
+            android:defaultValue="@string/default_text_color"
+            android:key="@string/appearance_card_input_fields_text_color_key"
+            android:title="@string/appearance_card_input_fields_text_color_title"
+            tapcolorlistpreference:tap_fontPreviewString="@string/font_preview_string"
+            />
+
+        <com.tap.tapcolorskit.ColorPreferences
+            android:defaultValue="@string/default_text_color"
+            android:key="@string/appearance_card_input_fields_invalid_text_color_key"
+            android:title="@string/appearance_card_input_fields_invalid_text_color_title"
+            tapcolorlistpreference:tap_fontPreviewString="@string/font_preview_string"
+            />
+
+
+        <com.tap.tapcolorskit.ColorPreferences
+            android:defaultValue="@string/default_text_color"
+            android:key="@string/appearance_card_input_fields_placeholder_text_color_key"
+            android:title="@string/appearance_card_input_fields_placeholder_text_color_title"
+            tapcolorlistpreference:tap_fontPreviewString="@string/font_preview_string"
+            />
+
+        <!--<com.tap.tapfontskit.FontPreferences-->
+            <!--android:defaultValue="@string/font_face_default_value"-->
+            <!--android:key="@string/appearance_card_input_fields_description_font_key"-->
+            <!--android:title="@string/appearance_card_input_fields_description_font_title"-->
+            <!--tapfontlistpreference:tap_fontPreviewString="@string/font_preview_string"-->
+            <!--tapfontlistpreference:tap_fontDirectory="@string/font_face_font_directory"-->
+            <!--/>-->
+
+        <!--<com.tap.tapcolorskit.ColorPreferences-->
+            <!--android:defaultValue="@string/default_text_color"-->
+            <!--android:key="@string/appearance_card_input_fields_description_color_key"-->
+            <!--android:title="@string/appearance_card_input_fields_description_color_title"-->
+            <!--tapcolorlistpreference:tap_fontPreviewString="@string/font_preview_string"-->
+            <!--/>-->
+
+        <com.tap.tapcolorskit.ColorPreferences
+        android:defaultValue="@string/default_text_color"
+        android:key="@string/appearance_card_input_fields_switch_off_thumb_tint_color_key"
+        android:title="@string/appearance_card_input_fields_switch_off_thumb_tint_color_title"
+        tapcolorlistpreference:tap_fontPreviewString="@string/font_preview_string"
+        />
+
+
+        <com.tap.tapcolorskit.ColorPreferences
+            android:defaultValue="@string/default_text_color"
+            android:key="@string/appearance_card_input_fields_switch_on_thumb_tint_color_key"
+            android:title="@string/appearance_card_input_fields_switch_on_thumb_tint_color_title"
+            tapcolorlistpreference:tap_fontPreviewString="@string/font_preview_string"
+            />
+
+        <com.tap.tapcolorskit.ColorPreferences
+            android:defaultValue="@string/default_text_color"
+            android:key="@string/appearance_card_input_fields_switch_off_track_tint_color_key"
+            android:title="@string/appearance_card_input_fields_switch_off_track_tint_color_title"
+            tapcolorlistpreference:tap_fontPreviewString="@string/font_preview_string"
+            />
+
+
+        <com.tap.tapcolorskit.ColorPreferences
+            android:defaultValue="@string/default_text_color"
+            android:key="@string/appearance_card_input_fields_switch_on_track_tint_color_key"
+            android:title="@string/appearance_card_input_fields_switch_on_track_tint_color_title"
+            tapcolorlistpreference:tap_fontPreviewString="@string/font_preview_string"
+            />
+
+
+
+        <!--<com.tap.tapcolorskit.ColorPreferences-->
+            <!--android:defaultValue="@string/default_text_color"-->
+            <!--android:key="@string/appearance_card_input_fields_scan_icon_frame_tint_color_key"-->
+            <!--android:title="@string/appearance_card_input_fields_scan_icon_frame_tint_color_title"-->
+            <!--tapcolorlistpreference:tap_fontPreviewString="@string/font_preview_string"-->
+            <!--/>-->
+
+        <!--<com.tap.tapcolorskit.ColorPreferences-->
+            <!--android:defaultValue="@string/default_text_color"-->
+            <!--android:key="@string/appearance_card_input_fields_scan_icon_tint_color_key"-->
+            <!--android:title="@string/appearance_card_input_fields_scan_icon_tint_color_title"-->
+            <!--tapcolorlistpreference:tap_fontPreviewString="@string/font_preview_string"-->
+            <!--/>-->
+
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/appearance_tap_button">
+
+        <!--<com.tap.tapcolorskit.ColorPreferences-->
+            <!--android:defaultValue="@string/default_text_color"-->
+            <!--android:key="@string/appearance_tap_button_disabled_background_color_key"-->
+            <!--android:title="@string/appearance_tap_button_disabled_background_color_title"-->
+            <!--tapcolorlistpreference:tap_fontPreviewString="@string/font_preview_string"-->
+            <!--/>-->
+
+        <!--<com.tap.tapcolorskit.ColorPreferences-->
+            <!--android:defaultValue="@string/default_text_color"-->
+            <!--android:key="@string/appearance_tap_button_enabled_background_color_key"-->
+            <!--android:title="@string/appearance_tap_button_enabled_background_color_title"-->
+            <!--tapcolorlistpreference:tap_fontPreviewString="@string/font_preview_string"-->
+            <!--/>-->
+
+        <com.tap.tapfontskit.FontPreferences
+            android:defaultValue="@string/font_face_default_value"
+            android:key="@string/appearance_tap_button_font_key"
+            android:title="@string/appearance_tap_button_font_title"
+            tapfontlistpreference:tap_fontPreviewString="@string/font_preview_string"
+            tapfontlistpreference:tap_fontDirectory="@string/font_face_font_directory"
+            />
+
+        <com.tap.tapcolorskit.ColorPreferences
+            android:defaultValue="@string/default_text_color"
+            android:key="@string/appearance_tap_button_disabled_titled_color_key"
+            android:title="@string/appearance_tap_button_disabled_titled_color_title"
+            tapcolorlistpreference:tap_fontPreviewString="@string/font_preview_string"
+            />
+
+        <com.tap.tapcolorskit.ColorPreferences
+            android:defaultValue="@string/default_text_color"
+            android:key="@string/appearance_tap_button_enabled_titled_color_key"
+            android:title="@string/appearance_tap_button_enabled_titled_color_title"
+            tapcolorlistpreference:tap_fontPreviewString="@string/font_preview_string"
+            />
+
+
+
+
+        <!--<com.tap.tapdimensionskit.TapDimensionsPreference-->
+                <!--android:defaultValue="17"-->
+                <!--android:key="tap_button_text_size_key"-->
+                <!--tapdimensionpreference:title="Pay Button Text Size"-->
+                <!--tapdimensionpreference:counterMinVal="10"-->
+                <!--tapdimensionpreference:counterMaxVal="30"-->
+                <!--tapdimensionpreference:counterStepVal="1"-->
+            <!--/>-->
+
+        <!--<com.tap.tapdimensionskit.TapDimensionsPreference-->
+            <!--android:defaultValue="22"-->
+            <!--android:key="@string/appearance_tap_button_height_key"-->
+            <!--tapdimensionpreference:title="@string/appearance_tap_button_height_title"-->
+            <!--tapdimensionpreference:counterMinVal="0"-->
+            <!--tapdimensionpreference:counterMaxVal="50"-->
+            <!--tapdimensionpreference:counterStepVal="1"-->
+            <!--/>-->
+
+
+
+        <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="@string/appearance_tap_button_loader_visible_key"
+        android:title="@string/appearance_tap_button_loader_visible_title"
+        />
+
+        <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="@string/appearance_tap_button_security_icon_visible_key"
+        android:title="@string/appearance_tap_button_security_icon_visible_title"
+        />
+
+
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

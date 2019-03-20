@@ -1,8 +1,280 @@
-<resources>
-
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="GoSellSDKAppTheme" parent="Theme.AppCompat.Light">
+        <item name="actionBarStyle">@style/GoSellSDKActionBar</item>
+    </style>
+    <style name="GoSellSDKAppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor" tools:ignore="NewApi">@color/french_gray</item>
     </style>
 
+    <style name="GoSellSDKAppTheme.Translucent">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+
+
+    <style name="TransparentCompat" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+    </style>
+
+
+    <style name="GoSellSDKActionBar">
+        <item name="android:background">@color/french_gray_new</item>
+    </style>
+
+
+
+    <style name="GoSellSDKAppTheme_Full" parent="GoSellSDKAppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor" tools:ignore="NewApi">@color/french_gray</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+
+
+
+    <style name="TextView"></style>
+
+    <style name="header_text">
+        <item name="android:textColor">@color/greyish_brown</item>
+        <item name="android:textSize">@dimen/font_size_20sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/roboto_regular</item>
+        <item name="android:lineSpacingExtra">@dimen/title_lineSpacingExtra_0</item>
+
+    </style>
+
+    <style name="secondary_text">
+        <item name="android:textColor">@color/greyish_brown</item>
+        <item name="android:textSize">@dimen/font_size_13sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/roboto_light</item>
+        <item name="android:lineSpacingExtra">@dimen/title_lineSpacingExtra_11</item>
+
+    </style>
+
+
+
+    <style name="TextView.Title.Header">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/font_size_20sp</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="TextView.Title">
+        <item name="android:textColor">@color/bt_black_87</item>
+        <item name="android:textSize">@dimen/font_size_17sp</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif</item>
+        <item name="android:lineSpacingExtra">@dimen/title_lineSpacingExtra</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="TextView.Title.Thin">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/font_size_16sp</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif-thin</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="TextView.Title.Tiny">
+        <item name="android:textColor">@color/greyish_brown</item>
+        <item name="android:textSize">@dimen/font_size_14sp</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="TextView.Title.Small">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/font_size_16sp</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="TextView.Title.SectionHeader">
+        <item name="android:textColor">@color/dark_gray</item>
+        <item name="android:textSize">@dimen/font_size_16sp</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="TextView.Disclaimer"></style>
+
+    <style name="TextView.Disclaimer.Small">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/font_size_13sp</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="TextView.Disclaimer.Thin">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/font_size_13sp</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif-light</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="TextView.Hyperlink">
+        <item name="android:textColor">@color/azure_radiance</item>
+        <item name="android:textSize">@dimen/font_size_16sp</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+    <style name="bt_base_textview">
+        <item name="android:textSize">@dimen/bt_input_text_size</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif-light</item>
+    </style>
+
+
+    <style name="bt_card_form_field" parent="bt_base_textview">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginStart">@dimen/edit_text_default_padding</item>
+        <item name="android:layout_marginLeft">@dimen/edit_text_default_padding</item>
+        <item name="android:textColorHint">@color/bt_light_gray</item>
+        <item name="android:textCursorDrawable" tools:ignore="NewApi">@null</item>
+    </style>
+    <style name="EditText">
+        <item name="android:textCursorDrawable">@null</item>
+        <item name="android:textColor">@color/greyish_brown</item>
+        <item name="android:textSize">@dimen/font_size_16sp</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif-light</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="EditText.Password"></style>
+
+    <!--Floating label text style-->
+    <style name="TextInputLayout.Hint" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textColor">@color/silver_light</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif</item>
+        <item name="android:textSize">@dimen/font_size_11sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="SwitchPrimary" >
+        <item name="colorControlActivated">@color/vibrant_green</item>
+    </style>
+
+    <style name="SwitchSecondary" >
+        <item name="colorControlActivated">@color/azure_radiance</item>
+    </style>
+    <!-- popup window animation-->
+    <style name="popup_window_animation_phone">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+    </style>
+
+    <style name="bt_expiration_date_dialog_sheet" parent="@android:style/Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowAnimationStyle">@style/bt_expiration_date_dialog_sheet_animation</item>
+    </style>
+
+    <style name="bt_expiration_date_dialog_light" parent="bt_expiration_date_dialog_sheet">
+        <item name="bt_expiration_date_sheet_background">@color/bt_expiration_date_sheet_background_light</item>
+        <item name="bt_expiration_date_dialog_label">@color/bt_black_54</item>
+        <item name="bt_expiration_date_dialog_divider">@color/bt_black_12</item>
+        <item name="bt_expiration_date_scrollbar_thumb_vertical">@color/bt_black_54</item>
+        <item name="bt_expiration_date_scrollbar_track_vertical">@color/bt_black_12</item>
+    </style>
+
+    <style name="bt_expiration_date_dialog_dark" parent="bt_expiration_date_dialog_sheet">
+        <item name="bt_expiration_date_sheet_background">@color/white</item>
+        <item name="bt_expiration_date_dialog_label">@color/black</item>
+        <item name="bt_expiration_date_dialog_divider">@color/french_gray</item>
+        <item name="bt_expiration_date_scrollbar_thumb_vertical">@color/black</item>
+        <item name="bt_expiration_date_scrollbar_track_vertical">@color/black</item>
+    </style>
+
+    <style name="bt_expiration_date_dialog_sheet_animation">
+        <item name="android:windowEnterAnimation">@anim/bt_expiration_date_dialog_open</item>
+        <item name="android:windowExitAnimation">@anim/bt_expiration_date_dialog_close</item>
+    </style>
+
+    <style name="bt_expiration_date_dialog_label">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:paddingTop">@dimen/bt_expiration_date_sheet_label_padding_top</item>
+        <item name="android:paddingBottom">@dimen/bt_expiration_date_sheet_label_padding_bottom</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">?attr/bt_expiration_date_dialog_label</item>
+    </style>
+
+    <style name="bt_expiration_date_dialog_grid_view">
+        <item name="android:layout_marginLeft">@dimen/bt_expiration_date_sheet_left_right_margin</item>
+        <item name="android:layout_marginStart" tools:targetApi="jelly_bean_mr1">@dimen/bt_expiration_date_sheet_left_right_margin</item>
+        <item name="android:layout_marginRight">@dimen/bt_expiration_date_sheet_left_right_margin</item>
+        <item name="android:layout_marginEnd" tools:targetApi="jelly_bean_mr1">@dimen/bt_expiration_date_sheet_left_right_margin</item>
+        <item name="android:layout_marginBottom">@dimen/bt_expiration_date_sheet_top_bottom_margin</item>
+        <item name="android:listSelector">@android:color/transparent</item>
+        <item name="android:choiceMode">singleChoice</item>
+        <item name="android:numColumns">auto_fit</item>
+        <item name="android:columnWidth">72dp</item>
+    </style>
+
+    <style name="bt_expiration_date_dialog_year_grid_view" parent="bt_expiration_date_dialog_grid_view">
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:paddingEnd" tools:targetApi="jelly_bean_mr1">8dp</item>
+        <item name="android:paddingStart" tools:targetApi="jelly_bean_mr1">0dp</item>
+        <item name="android:scrollbarSize">3dp</item>
+        <item name="android:scrollbarStyle">outsideOverlay</item>
+        <item name="android:fadeScrollbars">false</item>
+        <item name="android:scrollbarAlwaysDrawVerticalTrack">true</item>
+    </style>
+
+    <style name="Theme.Transparent" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="colorPrimaryDark">@android:color/transparent</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+
+    <style name="SecurityText">
+        <item name="android:textColor">@color/security_text_color</item>
+        <item name="android:textSize">@dimen/font_size_13sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/avenir_next_regular</item>
+        <item name="android:lineSpacingExtra">@dimen/title_lineSpacingExtra_0</item>
+    </style>
+
+
+    <style name="FullScreenDialogStyle" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+
+        <!-- Set this to true if you want Full Screen without status bar -->
+        <item name="android:windowFullscreen">false</item>
+
+        <item name="android:windowIsFloating">false</item>
+
+        <!-- This is important! Don't forget to set window background -->
+
+        <!-- Additionally if you want animations when dialog opening -->
+        <item name="android:windowEnterAnimation">@anim/slide_in_left</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_left</item>
+    </style>
+
+    <style name="Animation">
+        <item name="android:windowEnterAnimation">@anim/popup_show</item>
+    </style>
 </resources>

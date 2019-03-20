@@ -1,3 +1,0 @@
-<component name="DependencyValidationManager">
-  <scope name="GoSellSDK" pattern="src[library]:company.tap.gosellapi.api.model.BIN&amp;&amp;!src[library]:*..*&amp;&amp;!lib:*..*&amp;&amp;!src:*..*&amp;&amp;!test:*..*||src[library]:company.tap.gosellapi.api.model..*||src[library]:company.tap.gosellapi.api.requests..*||src[library]:company.tap.gosellapi.api.responses..*||src[library]:company.tap.gosellapi.api.facade.GoSellError||src[library]:company.tap.gosellapi.api.facade.GoSellAPI||src[library]:company.tap.gosellapi.api.facade.APIRequestCallback" />
-</component>
