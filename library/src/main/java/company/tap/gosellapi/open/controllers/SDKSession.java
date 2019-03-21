@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.util.Log;
 import android.view.View;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -89,6 +90,13 @@ public class SDKSession implements View.OnClickListener {
     PaymentDataManager.getInstance().setExternalDataSource(paymentDataSource);
   }
 
+  /**
+   * set amount
+   */
+  public void setAmount(BigDecimal amount){
+    System.out.println("amount ... "+amount);
+    paymentDataSource.setAmount(amount);
+  }
 
   /**
    * set transaction currency
@@ -254,6 +262,7 @@ public class SDKSession implements View.OnClickListener {
    * call payment methods API
    */
   private void getPaymentOptions() {
+    System.out.println("getPaymentOptions........"+this.paymentDataSource.getAmount());
     persistPaymentDataSource();
     if(payButtonView!=null)
     payButtonView.getLoadingView().start();
@@ -271,6 +280,8 @@ public class SDKSession implements View.OnClickListener {
         this.paymentDataSource.getCustomer().getIdentifier()
     );
 
+
+    System.out.println("request >>> "+request.getPaymentOptionRequestInfo());
     GoSellAPI.getInstance().getPaymentOptions(request,
         new APIRequestCallback<PaymentOptionsResponse>() {
 

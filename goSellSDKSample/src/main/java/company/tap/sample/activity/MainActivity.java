@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +39,7 @@ import company.tap.gosellapi.open.controllers.ThemeObject;
 import company.tap.gosellapi.open.delegate.SessionDelegate;
 import company.tap.gosellapi.open.enums.AppearanceMode;
 import company.tap.gosellapi.open.enums.TransactionMode;
+import company.tap.gosellapi.open.models.TapCurrency;
 import company.tap.sample.R;
 import company.tap.sample.constants.SettingsKeys;
 import company.tap.sample.managers.SettingsManager;
@@ -132,21 +134,22 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         sdkSession.instantiatePaymentDataSource();
 
         // setup Payment Data Source
-        sdkSession.setTransactionCurrency(settingsManager.getTransactionCurrency(SettingsKeys.TAP_TRANSACTION_CURRENCY));
+        sdkSession.setTransactionCurrency(new TapCurrency("KWD"));
 
-        System.out.println("settingsManager.getTransactionsMode(SettingsKeys.TAP_TRANSACTION_MODE) >> " +
-                settingsManager.getTransactionsMode(SettingsKeys.TAP_TRANSACTION_MODE));
+
 
         sdkSession.setTransactionMode(settingsManager.getTransactionsMode(SettingsKeys.TAP_TRANSACTION_MODE));
 //        sdkSession.setTransactionMode(TransactionMode.TOKENIZE_CARD);
 
         sdkSession.setCustomer(settingsManager.getCustomer());
 
-        sdkSession.setPaymentItems(settingsManager.getPaymentItems());
+        sdkSession.setAmount(new BigDecimal(40));
 
-        sdkSession.setTaxes(settingsManager.getTaxes());
+        sdkSession.setPaymentItems(new ArrayList<>());
 
-        sdkSession.setShipping(settingsManager.getShippingList());
+        sdkSession.setTaxes(new ArrayList<>());
+
+        sdkSession.setShipping(new ArrayList<>());
 
         sdkSession.setPostURL(settingsManager.getPostURL());
 
