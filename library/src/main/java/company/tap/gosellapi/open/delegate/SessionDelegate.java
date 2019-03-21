@@ -20,7 +20,7 @@ public interface SessionDelegate {
         void cardSaved(@NonNull Charge charge);
         void cardSavingFailed(@NonNull Charge charge);
 
-        void cardTokenizedSuccessfully(@NonNull Token token);
+        void cardTokenizedSuccessfully(@NonNull String token);
 
         void sdkError(@Nullable GoSellError goSellError);
 
