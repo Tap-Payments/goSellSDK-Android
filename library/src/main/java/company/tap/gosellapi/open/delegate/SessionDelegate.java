@@ -27,4 +27,5 @@ public interface SessionDelegate {
         void sessionIsStarting();
         void sessionHasStarted();
         void sessionCancelled();
+        void sessionFailedToStart();
 }

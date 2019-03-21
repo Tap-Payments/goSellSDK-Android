@@ -1,6 +1,7 @@
 <resources>
   <string name="app_name">GoSellAPI</string>
   <string name="pay">Pay</string>
+  <string name="tokenize">Pay</string>
 
   <string name="actionbar_title_address_on_card">Address on card</string>
 

@@ -12,14 +12,6 @@ import company.tap.gosellapi.open.enums.AppearanceMode;
  */
 public class ThemeObject {
 
-        private final int  WHITE_COLOR   = -1;
-        private final int  PAY_BTN_SIZE  = 14;
-        private final int  DARK_GRAY_COLOR    = -8355712;
-        private final int  LIGHT_GRAY_COLOR    = -2894893;
-        private final int  GREEN_COLOR   = -8388864;
-        private final int  VIBRANT_GREEN_COLOR   = -13447886;
-        private final int  RED_COLOR   = -65536;
-        private final int  BLACK_COLOR   = -16777216;
 
         private String sdkLanguage="en";
 
@@ -387,27 +379,21 @@ public class ThemeObject {
          * @return card input text color
          */
         public int getCardInputTextColor() {
-                if(cardInputTextColor!=0)
                 return this.cardInputTextColor;
-                return BLACK_COLOR;
         }
 
         /**
          * @return card input invalidate text color
          */
         public int getCardInputInvalidTextColor() {
-                if(cardInputInvalidTextColor!=0)
                 return this.cardInputInvalidTextColor;
-                return RED_COLOR;
         }
 
         /**
          * @return card input place holder text color
          */
         public int getCardInputPlaceholderTextColor() {
-                if(cardInputPlaceholderTextColor!=0)
                 return this.cardInputPlaceholderTextColor;
-                return LIGHT_GRAY_COLOR;
         }
 
 
@@ -415,36 +401,28 @@ public class ThemeObject {
          * @return save card switch off tint
          */
         public int getSaveCardSwitchOffThumbTint() {
-            if(saveCardSwitchOffThumbTint!=0)
                 return this.saveCardSwitchOffThumbTint;
-            return  LIGHT_GRAY_COLOR;
         }
 
         /**
          * @return save card switch on tint
          */
         public int getSaveCardSwitchOnThumbTint() {
-                if(saveCardSwitchOnThumbTint!=0)
                         return this.saveCardSwitchOnThumbTint;
-                return  VIBRANT_GREEN_COLOR;
         }
 
         /**
          * @return save card switch off track tint
          */
         public int getSaveCardSwitchOffTrackTint() {
-                if(saveCardSwitchOffTrackTint!=0)
                 return this.saveCardSwitchOffTrackTint;
-                return  LIGHT_GRAY_COLOR;
         }
 
         /**
          * @return save card switch on track tint
          */
         public int getSaveCardSwitchOnTrackTint() {
-                if(saveCardSwitchOnTrackTint!=0)
                 return this.saveCardSwitchOnTrackTint;
-                return VIBRANT_GREEN_COLOR;
         }
 
 
@@ -503,11 +481,9 @@ public class ThemeObject {
          * @return pay button disabled title text color
          */
         public int getPayButtonDisabledTitleColor() {
-                if(this.payButtonDisabledTitleColor!=0)
-                {
+
                         return this.payButtonDisabledTitleColor;
-                }
-                return WHITE_COLOR; // white color
+
         }
 
         /**
@@ -515,11 +491,9 @@ public class ThemeObject {
          */
         public int getPayButtonEnabledTitleColor() {
 
-                if(this.payButtonEnabledTitleColor!=0)
-                {
+
                         return this.payButtonEnabledTitleColor;
-                }
-                return WHITE_COLOR; // white color
+
         }
 
         /**
@@ -552,7 +526,7 @@ public class ThemeObject {
                 if(payButtonTextSize!=0)
                 return this.payButtonTextSize;
 
-                return PAY_BTN_SIZE;
+                return 14;
         }
 
 
