@@ -80,12 +80,12 @@ class RequestManager {
 
     private void runDelayedRequests() {
         for (DelayedRequest delayedRequest : delayedRequests) {
-            Log.d("","delayedRequest.toString() : " + delayedRequest.getRequest().request());
+            System.out.println("delayedRequest.toString() : " + delayedRequest.getRequest().request());
           try {
             final Buffer buffer = new Buffer();
             if(delayedRequest.getRequest().request().body()!=null ) {
               delayedRequest.getRequest().request().body().writeTo(buffer);
-                Log.d("","delayedRequest.toString() :" + buffer.readUtf8().toString());
+                System.out.println("delayedRequest.toString() :" + buffer.readUtf8().toString());
             }
           }catch (IOException s){
             System.out.println("ex : " + s.getLocalizedMessage());
