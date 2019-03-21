@@ -109,7 +109,7 @@ public final class PaymentOptionsRequest {
         return
             "trx_mode : " + this.transactionMode + " /n " +
             "shipping : " + this.shipping + " /n " +
-            "taxes : " + this.taxes.size() + " /n " +
+            "taxes : " + this.taxes + " /n " +
             "currency : " + this.currency + " /n " +
             "customer : " + this.customer + " /n " +
             "total_amout : " + this.totalAmount + " /n "

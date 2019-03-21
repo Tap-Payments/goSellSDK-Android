@@ -262,6 +262,7 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
     @Override
     public @Nullable
     ArrayList<PaymentItem> getItems() {
+        if(items==null) return new ArrayList<PaymentItem>();
         return items;
     }
 
@@ -274,12 +275,14 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
     @Override
     public @Nullable
     ArrayList<Tax> getTaxes() {
+        if(taxes==null) return new ArrayList<Tax>();
         return taxes;
     }
 
     @Override
     public @Nullable
     ArrayList<Shipping> getShipping() {
+        if(shipping==null) return new ArrayList<Shipping>();
         return shipping;
     }
 
