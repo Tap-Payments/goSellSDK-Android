@@ -71,9 +71,9 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
             settingsManager.setPref(this);
         }
 
-        configureSDKThemeObject();
-
-        configureSDKSession();
+//        configureSDKThemeObject();
+//
+//        configureSDKSession();
 
 
     }
@@ -84,40 +84,36 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
     private void configureSDKThemeObject() {
 
         ThemeObject.getInstance()
-        .setSdkLanguage(settingsManager.getString(SettingsKeys.TAP_SDK_LANGUAGE_KEY,"EN"))
-//        .setAppearanceMode(settingsManager.getAppearanceMode(SettingsKeys.TAP_APPEARANCE_MODE))
+        .setSdkLanguage("EN")
         .setAppearanceMode(AppearanceMode.WINDOWED_MODE)
 
-        .setHeaderFont(getTypeface(SettingsKeys.TAP_APPEARANCE_HEADER_FONT))
-        .setHeaderTextColor(settingsManager.getColor(SettingsKeys.TAP_APPEARANCE_HEADER_TEXT_COLOR,getResources().getColor(R.color.black)))
-//        .setHeaderTextColor(R.color.black1)
+        .setHeaderFont(Typeface.createFromAsset(getAssets(),"fonts/roboto_light.ttf"))
+        .setHeaderTextColor(getResources().getColor(R.color.black1))
         .setHeaderTextSize(17)
-        .setHeaderBackgroundColor(settingsManager.getColor(SettingsKeys.TAP_APPEARANCE_HEADER_BACKGROUND_COLOR,getResources().getColor(R.color.french_gray_new)))
+        .setHeaderBackgroundColor(getResources().getColor(R.color.french_gray_new))
 
 
+        .setCardInputFont(Typeface.createFromAsset(getAssets(),"fonts/roboto_light.ttf"))
+        .setCardInputTextColor(getResources().getColor(R.color.black))
+        .setCardInputInvalidTextColor(getResources().getColor(R.color.red))
+        .setCardInputPlaceholderTextColor(getResources().getColor(R.color.black))
 
-        .setCardInputFont(getTypeface(SettingsKeys.TAP_CARD_INPUT_FONT))
-        .setCardInputTextColor(settingsManager.getColor(SettingsKeys.TAP_CARD_INPUT_TEXT_COLOR,getResources().getColor(R.color.black)))
-        .setCardInputInvalidTextColor(settingsManager.getColor(SettingsKeys.TAP_CARD_INPUT_INVALID_TEXT_COLOR,getResources().getColor(R.color.red)))
-        .setCardInputPlaceholderTextColor(settingsManager.getColor(SettingsKeys.TAP_CARD_INPUT_PLACEHOLDER_TEXT_COLOR,getResources().getColor(R.color.black)))
 
-
-        .setSaveCardSwitchOffThumbTint(settingsManager.getColor(SettingsKeys.TAP_CARD_INPUT_SWITCH_OFF_THUMB_TINT_COLOR,getResources().getColor(R.color.gray)))
-        .setSaveCardSwitchOnThumbTint(settingsManager.getColor(SettingsKeys.TAP_CARD_INPUT_SWITCH_ON_THUMB_TINT_COLOR,getResources().getColor(R.color.vibrant_green)))
-        .setSaveCardSwitchOffTrackTint(settingsManager.getColor(SettingsKeys.TAP_CARD_INPUT_SWITCH_OFF_TRACK_TINT_COLOR,getResources().getColor(R.color.gray)))
-        .setSaveCardSwitchOnTrackTint(settingsManager.getColor(SettingsKeys.TAP_CARD_INPUT_SWITCH_ON_TRACK_TINT_COLOR,getResources().getColor(R.color.white)))
+        .setSaveCardSwitchOffThumbTint(getResources().getColor(R.color.gray))
+        .setSaveCardSwitchOnThumbTint(getResources().getColor(R.color.vibrant_green))
+        .setSaveCardSwitchOffTrackTint(getResources().getColor(R.color.gray))
+        .setSaveCardSwitchOnTrackTint(getResources().getColor(R.color.white))
 
         .setScanIconDrawable(getResources().getDrawable(R.drawable.btn_card_scanner_normal))
 
-//        .setPayButtonResourceId(R.drawable.btn_pay_selector)  //btn_pay_merchant_selector
-//        .setPayButtonFont(getTypeface(SettingsKeys.TAP_BUTTON_FONT_KEY))
+        .setPayButtonResourceId(R.drawable.btn_pay_selector)  //btn_pay_merchant_selector
+        .setPayButtonFont(Typeface.createFromAsset(getAssets(),"fonts/roboto_light.ttf"))
 
-        .setPayButtonDisabledTitleColor(settingsManager.getColor(SettingsKeys.TAP_BUTTON_DISABLED_TITLE_COLOR_KEY,getResources().getColor(R.color.black)))
-        .setPayButtonEnabledTitleColor(settingsManager.getColor(SettingsKeys.TAP_BUTTON_ENABLED_TITLE_COLOR_KEY,getResources().getColor(R.color.White)))
-
-//        .setPayButtonTextSize(17)
-//        .setPayButtonLoaderVisible(settingsManager.getBoolean(SettingsKeys.TAP_BUTTON_LOADER_VISIBLE,true))
-//        .setPayButtonSecurityIconVisible(settingsManager.getBoolean(SettingsKeys.TAP_BUTTON_SECURITY_VISIBLE,true))
+        .setPayButtonDisabledTitleColor(getResources().getColor(R.color.black))
+        .setPayButtonEnabledTitleColor(getResources().getColor(R.color.White))
+        .setPayButtonTextSize(14)
+        .setPayButtonLoaderVisible(true)
+        .setPayButtonSecurityIconVisible(true)
         ;
 
     }
@@ -128,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
      */
     private void configureSDKSession() {
 
-        if(sdkSession==null)sdkSession = new SDKSession();
+        if(sdkSession==null) sdkSession = new SDKSession();
 
          sdkSession.addSessionDelegate(this);
 
@@ -174,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         initPayButton();
 
         //start without PayButton
-        //sdkSession.start();
+//        sdkSession.start(this);
     }
 
     /**
@@ -184,36 +180,29 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
         payButtonView = findViewById(R.id.payButtonId);
 
-//        payButtonView.setupFontTypeFace(ThemeObject.getInstance().getPayButtonFont());
+        payButtonView.setupFontTypeFace(ThemeObject.getInstance().getPayButtonFont());
 
         payButtonView.setupTextColor(ThemeObject.getInstance().getPayButtonEnabledTitleColor(),
                 ThemeObject.getInstance().getPayButtonDisabledTitleColor());
 //
-//        payButtonView.getPayButton().setTextSize(ThemeObject.getInstance().getPayButtonTextSize());
+        payButtonView.getPayButton().setTextSize(ThemeObject.getInstance().getPayButtonTextSize());
 //
-//        payButtonView.getSecurityIconView().setVisibility(ThemeObject.getInstance().isPayButtSecurityIconVisible()?View.VISIBLE:View.INVISIBLE);
+        payButtonView.getSecurityIconView().setVisibility(ThemeObject.getInstance().isPayButtSecurityIconVisible()?View.VISIBLE:View.INVISIBLE);
 
-        //payButtonView.setBackgroundSelector(ThemeObject.getInstance().getPayButtonResourceId());
+        payButtonView.setBackgroundSelector(ThemeObject.getInstance().getPayButtonResourceId());
 
         TransactionMode trx_mode = settingsManager.getTransactionsMode(SettingsKeys.TAP_TRANSACTION_MODE);
 
         if (TransactionMode.SAVE_CARD == trx_mode) {
             payButtonView.getPayButton().setText(getString(company.tap.gosellapi.R.string.save_card));
-        } else {
+        } else if(TransactionMode.TOKENIZE_CARD == trx_mode){
+            payButtonView.getPayButton().setText(getString(company.tap.gosellapi.R.string.tokenize));
+        }else {
             payButtonView.getPayButton().setText(getString(company.tap.gosellapi.R.string.pay));
         }
-
         sdkSession.setButtonView(payButtonView, this, SDK_REQUEST_CODE);
-
-//        sdkSession.setPayButtonLoaderVisible();
-
     }
 
-    private Typeface getTypeface(String tapButtonFontKey) {
-        System.out.println(" font: "+tapButtonFontKey);
-        return Typeface.createFromAsset(getAssets(),
-                settingsManager.getFont(tapButtonFontKey, "fonts/roboto_light.ttf"));
-    }
 
     public void openSettings(View view) {
         startActivity(new Intent(this, SettingsActivity.class));
@@ -393,5 +382,10 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
     @Override
     public void sessionCancelled() {
         Log.d("MainActivity","Session Cancelled.........");
+    }
+
+    @Override
+    public void sessionFailedToStart() {
+        Log.d("MainActivity","Session Failed to start.........");
     }
 }

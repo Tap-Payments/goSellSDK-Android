@@ -217,9 +217,10 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         }
         businessName.setText(header_title);
 
+
         if(ThemeObject.getInstance().getHeaderFont()!=null)
         businessName.setTypeface(ThemeObject.getInstance().getHeaderFont());
-        if(ThemeObject.getInstance().getHeaderTextColor()!=0)
+        if(ThemeObject.getInstance().getHeaderTextColor()!=0 )
         businessName.setTextColor(ThemeObject.getInstance().getHeaderTextColor());
         if(ThemeObject.getInstance().getHeaderTextSize()!=0)
         businessName.setTextSize(ThemeObject.getInstance().getHeaderTextSize());
@@ -260,6 +261,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         if(ThemeObject.getInstance().getPayButtonFont()!=null)
            payButton.getPayButton().setTypeface(ThemeObject.getInstance().getPayButtonFont());
 
+        if(ThemeObject.getInstance().getPayButtonDisabledTitleColor()!=0)
         payButton.getPayButton().setTextColor(ThemeObject.getInstance().getPayButtonDisabledTitleColor());
 
         payButton.getPayButton().setText(getResources().getString(R.string.save_card));
