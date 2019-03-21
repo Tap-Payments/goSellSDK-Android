@@ -266,8 +266,7 @@ public class SDKSession implements View.OnClickListener {
     persistPaymentDataSource();
     if(payButtonView!=null)
     payButtonView.getLoadingView().start();
-    Log.d("",
-            " before call request this.paymentDataSource.getCurrency() : " + this.paymentDataSource
+   System.out.println(" before call request this.paymentDataSource.getCurrency() : " + this.paymentDataSource
                     .getCurrency().getIsoCode());
 
 
@@ -283,7 +282,7 @@ public class SDKSession implements View.OnClickListener {
     );
 
 
-   // System.out.println("request >>> "+request.getPaymentOptionRequestInfo());
+    System.out.println("request >>> "+request);
     GoSellAPI.getInstance().getPaymentOptions(request,
         new APIRequestCallback<PaymentOptionsResponse>() {
 
@@ -303,6 +302,9 @@ public class SDKSession implements View.OnClickListener {
 
           @Override
           public void onFailure(GoSellError errorDetails) {
+
+            System.out.println("getPaymentOptions>>> error: "+errorDetails.getErrorMessage());
+            System.out.println("getPaymentOptions>>> error: "+errorDetails.getErrorBody());
             if(ThemeObject.getInstance().isPayButtLoaderVisible()) {
 
               if(payButtonView!=null)
