@@ -14,8 +14,8 @@ public class GoSellSDK {
      * @param context   the context
      * @param authToken the auth token
      */
-    public static void init(Context context, String authToken) {
-        AppInfo.setAuthToken(context, authToken);
+    public static void init(Context context, String authToken,String packageId) {
+        AppInfo.setAuthToken(context, authToken,packageId);
     }
 
     /**
