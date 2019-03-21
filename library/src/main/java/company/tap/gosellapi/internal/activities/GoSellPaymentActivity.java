@@ -821,7 +821,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     @Override
     public void fireCardTokenizationProcessCompleted(Token token) {
         closePaymentActivity();
-        SDKSession.getListener().cardTokenizedSuccessfully(token);
+        SDKSession.getListener().cardTokenizedSuccessfully(token.getId());
     }
 
 

@@ -27,6 +27,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
@@ -151,29 +152,29 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
         sdkSession.setShipping(new ArrayList<>());
 
-        sdkSession.setPostURL(settingsManager.getPostURL());
+        sdkSession.setPostURL("");
 
-        sdkSession.setPaymentDescription(settingsManager.getPaymentDescription());
+        sdkSession.setPaymentDescription("");
 
-        sdkSession.setPaymentMetadata(settingsManager.getPaymentMetaData());
+        sdkSession.setPaymentMetadata(new HashMap<>());
 
-        sdkSession.setPaymentReference(settingsManager.getPaymentReference());
+        sdkSession.setPaymentReference(null);
 
-        sdkSession.setPaymentStatementDescriptor(settingsManager.getPaymentStatementDescriptor());
+        sdkSession.setPaymentStatementDescriptor("");
 
-        sdkSession.isRequires3DSecure(settingsManager.getBoolean(SettingsKeys.TAP_3DSECURE_MODE,false));
+        sdkSession.isRequires3DSecure(true);
 
-        sdkSession.setReceiptSettings(settingsManager.getReceipt());
+        sdkSession.setReceiptSettings(null);
 
-        sdkSession.setAuthorizeAction(settingsManager.getAuthorizeAction());
+        sdkSession.setAuthorizeAction(null);
 
-        sdkSession.setDestination(settingsManager.getDestination());
+        sdkSession.setDestination(null);
 
         // start with pay button
-        initPayButton();
+       // initPayButton();
 
         //start without PayButton
-//        sdkSession.start(this);
+        sdkSession.start(this);
     }
 
     /**
@@ -354,9 +355,9 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
     }
 
     @Override
-    public void cardTokenizedSuccessfully(@NonNull Token token) {
-        System.out.println("Card Tokenized Succeeded : "+ token.getId());
-        showDialog(token.getId(),"",company.tap.gosellapi.R.drawable.ic_checkmark_normal);
+    public void cardTokenizedSuccessfully(@NonNull String token) {
+        System.out.println("Card Tokenized Succeeded : "+ token);
+        showDialog(token,"",company.tap.gosellapi.R.drawable.ic_checkmark_normal);
     }
 
 
