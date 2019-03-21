@@ -269,6 +269,8 @@ public class SDKSession implements View.OnClickListener {
     Log.d("",
             " before call request this.paymentDataSource.getCurrency() : " + this.paymentDataSource
                     .getCurrency().getIsoCode());
+
+
     PaymentOptionsRequest request = new PaymentOptionsRequest(
 
         this.paymentDataSource.getTransactionMode(),
@@ -321,6 +323,14 @@ public class SDKSession implements View.OnClickListener {
    */
   private void startMainActivity() {
 
+    System.out.println("startMainActivity started........");
+    System.out.println("startMainActivity payButtonView........"+payButtonView);
+    System.out.println("startMainActivity payButtonView.getContext()........"+payButtonView.getContext());
+
+    System.out.println("startMainActivity getListener........"+getListener());
+    System.out.println("startMainActivity context........"+context);
+    System.out.println("startMainActivity activityListener........"+activityListener);
+
     if(payButtonView!=null )
       payButtonView.getLoadingView().setForceStop(true);
 
@@ -336,6 +346,7 @@ public class SDKSession implements View.OnClickListener {
     }else if (getListener()!=null){
         getListener().sessionFailedToStart();
     }
+
   }
 
   public void addSessionDelegate(SessionDelegate _sessionDelegate){
