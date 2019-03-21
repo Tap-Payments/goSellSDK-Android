@@ -325,7 +325,6 @@ public class SDKSession implements View.OnClickListener {
 
     System.out.println("startMainActivity started........");
     System.out.println("startMainActivity payButtonView........"+payButtonView);
-    System.out.println("startMainActivity payButtonView.getContext()........"+payButtonView.getContext());
 
     System.out.println("startMainActivity getListener........"+getListener());
     System.out.println("startMainActivity context........"+context);
