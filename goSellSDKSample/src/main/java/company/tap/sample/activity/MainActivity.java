@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         settingsManager = SettingsManager.getInstance();
         settingsManager.setPref(this);
 
-        configureSDKThemeObject();
+        configureSDKThemeObject(); // here you can configure your app theme.
 
         configureSDKSession();
     }
