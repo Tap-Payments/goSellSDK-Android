@@ -982,8 +982,14 @@ public class PaymentOptionsDataManager {
     private CardCredentialsViewModel generateCardPaymentModel(
         ArrayList<PaymentOption> paymentOptions) {
 
-      boolean displaysSaveCardSection = PaymentDataManager.getInstance().getSDKSettings().getData()
+        boolean displaysSaveCardSection=false;
+
+      if(PaymentDataManager.getInstance().getSDKSettings().getData()
+        .getPermissions()!=null)
+
+       displaysSaveCardSection = PaymentDataManager.getInstance().getSDKSettings().getData()
           .getPermissions().contains(Permission.MERCHANT_CHECKOUT);
+
       CardCredentialsViewModelData data = new CardCredentialsViewModelData(paymentOptions,
           displaysSaveCardSection);
 
