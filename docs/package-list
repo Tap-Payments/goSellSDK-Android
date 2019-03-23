@@ -31,7 +31,6 @@ company.tap.gosellapi.internal.toolbar
 company.tap.gosellapi.internal.utils
 company.tap.gosellapi.internal.viewholders
 company.tap.gosellapi.open.buttons
-company.tap.gosellapi.open.constants
 company.tap.gosellapi.open.controllers
 company.tap.gosellapi.open.data_manager
 company.tap.gosellapi.open.delegate
