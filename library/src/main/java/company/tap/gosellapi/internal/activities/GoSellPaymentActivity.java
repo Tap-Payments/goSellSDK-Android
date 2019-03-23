@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewCompat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -91,6 +92,8 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -102,9 +105,24 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
         if (apperanceMode == AppearanceMode.WINDOWED_MODE) {
             setContentView(R.layout.gosellapi_activity_main_windowed);
+//            RelativeLayout basicLayout = findViewById(R.id.basicLayout);
+//            if("AR".equalsIgnoreCase(ThemeObject.getInstance().getSdkLanguage())){
+//                System.out.println("direction RTL........");
+//                ViewCompat.setLayoutDirection(basicLayout,ViewCompat.LAYOUT_DIRECTION_RTL);
+//            }else{
+//                System.out.println("direction LTR........");
+//                ViewCompat.setLayoutDirection(basicLayout,ViewCompat.LAYOUT_DIRECTION_LTR);
+//            }
         } else {
             setContentView(R.layout.gosellapi_activity_main);
+//            LinearLayout basicLayout = findViewById(R.id.basicLayout);
+//            if("AR".equalsIgnoreCase(ThemeObject.getInstance().getSdkLanguage())){
+//                ViewCompat.setLayoutDirection(basicLayout,ViewCompat.LAYOUT_DIRECTION_RTL);
+//            }else{
+//                ViewCompat.setLayoutDirection(basicLayout,ViewCompat.LAYOUT_DIRECTION_LTR);
+//            }
         }
+
 
         fragmentManager = getSupportFragmentManager();
         /**
@@ -166,9 +184,9 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
     private void setupHeader() {
         android.support.v7.widget.Toolbar  toolbar = findViewById(R.id.toolbar);
-        ImageView cancel_payment_icon = findViewById(R.id.cancel_payment_icon);
+        TextView cancel_payment_text = findViewById(R.id.cancel_payment_icon);
 
-        RelativeLayout cancel_payment_ll = findViewById(R.id.cancel_payment);
+        LinearLayout cancel_payment_ll = findViewById(R.id.cancel_payment);
 
         cancel_payment_ll.setOnClickListener(v -> {
             SDKSession.getListener().sessionCancelled();
@@ -182,33 +200,27 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
         if (isTransactionModeSaveCard() || isTransactionModeTokenizeCard()) {
             header_title = getString(R.string.textview_disclaimer_save_card_header_title);
-            LinearLayout pll = findViewById(R.id.businessIconNameContainer);
-            pll.removeView(businessIcon);
-            pll.removeView(businessName);
+
+            LinearLayout businessIconNameContainer = findViewById(R.id.businessIconNameContainer);
+            businessIconNameContainer.removeView(businessIcon);
+            businessIconNameContainer.removeView(businessName);
             LinearLayout.LayoutParams ll = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             ll.leftMargin = 0;
             ll.bottomMargin = 5;
             ll.topMargin = 18;
             ll.gravity = Gravity.CENTER_VERTICAL;
             businessName.setLayoutParams(ll);
-            pll.addView(businessName);
+            businessIconNameContainer.addView(businessName);
 
-            cancel_payment_ll.removeView(cancel_payment_icon);
-            TextView cancelTv = new TextView(this);
-            cancelTv.setTextSize(15);
-
-            if(ThemeObject.getInstance().getHeaderFont()!=null)
-                cancelTv.setTypeface(ThemeObject.getInstance().getHeaderFont());
-
-            cancelTv.setText(getResources().getString(R.string.cancel));
-            RelativeLayout.LayoutParams ll2 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            cancel_payment_ll.removeView(cancel_payment_text);
+            LinearLayout.LayoutParams ll2 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             ll2.leftMargin = 0;
             ll2.bottomMargin = 5;
-            ll2.topMargin = 50;
-//            ll2.rightMargin = 15;
-            ll.gravity = Gravity.CENTER_VERTICAL;
-            cancelTv.setLayoutParams(ll2);
-            cancel_payment_ll.addView(cancelTv);
+            ll2.topMargin = 18;
+            ll2.gravity = Gravity.CENTER_VERTICAL;
+            cancel_payment_text.setLayoutParams(ll2);
+            cancel_payment_ll.addView(cancel_payment_text);
+
 
         } else {
             String logoPath = PaymentDataManager.getInstance().getSDKSettings().getData().getMerchant().getLogo();
