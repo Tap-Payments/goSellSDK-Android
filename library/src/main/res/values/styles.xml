@@ -154,6 +154,19 @@
         <item name="android:textStyle">normal</item>
     </style>
 
+
+    <style name="custom_style_cvv_expdate">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginStart">@dimen/edit_text_default_padding</item>
+        <item name="android:layout_marginLeft">@dimen/edit_text_default_padding</item>
+        <item name="android:textCursorDrawable">@null</item>
+        <item name="android:textColor">@color/greyish_brown</item>
+        <item name="android:textSize">@dimen/font_size_16sp</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif-light</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
     <style name="EditText.Password"></style>
 
     <!--Floating label text style-->

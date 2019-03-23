@@ -91,7 +91,7 @@ public class ErrorEditText extends TextInputEditText {
      * @param hint The string resource to use as the hint.
      */
     public void setFieldHint(int hint) {
-        setFieldHint(getContext().getString(hint));
+        //setFieldHint(getContext().getString(hint));
     }
 
     /**
@@ -101,11 +101,11 @@ public class ErrorEditText extends TextInputEditText {
      * @param hint The string value to use as the hint.
      */
     public void setFieldHint(String hint) {
-        if (getTextInputLayoutParent() != null) {
-            getTextInputLayoutParent().setHint(hint);
-        } else {
-            setHint(hint);
-        }
+//        if (getTextInputLayoutParent() != null) {
+//            getTextInputLayoutParent().setHint(hint);
+//        } else {
+//            setHint(hint);
+//        }
     }
 
     /**
@@ -239,7 +239,7 @@ public class ErrorEditText extends TextInputEditText {
         if (SDK_INT >= JELLY_BEAN_MR1) {
             if (getResources().getConfiguration().getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
                 setTextDirection(View.TEXT_DIRECTION_LTR);
-                setGravity(Gravity.END);
+                setGravity(Gravity.START);
             }
         }
     }

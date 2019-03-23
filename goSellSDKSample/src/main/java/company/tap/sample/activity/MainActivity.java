@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 // Change locale settings in the app.
         DisplayMetrics dm = res.getDisplayMetrics();
         android.content.res.Configuration conf = res.getConfiguration();
+//        conf.setLocale(new Locale("EN".toLowerCase())); // API 17+ only.
         conf.setLocale(new Locale("AR".toLowerCase())); // API 17+ only.
 //        conf.locale = new Locale("AR".toLowerCase());
 // Use conf.locale = new Locale(...) if targeting lower versions
