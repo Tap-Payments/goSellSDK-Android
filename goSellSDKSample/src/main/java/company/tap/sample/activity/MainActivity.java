@@ -30,9 +30,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import company.tap.gosellapi.GoSellSDK;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.models.Authorize;
 import company.tap.gosellapi.internal.api.models.Charge;
+import company.tap.gosellapi.internal.api.models.PhoneNumber;
 import company.tap.gosellapi.internal.api.models.Token;
 import company.tap.gosellapi.open.buttons.PayButtonView;
 import company.tap.gosellapi.open.controllers.SDKSession;
@@ -40,7 +42,10 @@ import company.tap.gosellapi.open.controllers.ThemeObject;
 import company.tap.gosellapi.open.delegate.SessionDelegate;
 import company.tap.gosellapi.open.enums.AppearanceMode;
 import company.tap.gosellapi.open.enums.TransactionMode;
+import company.tap.gosellapi.open.models.Customer;
+import company.tap.gosellapi.open.models.PaymentItem;
 import company.tap.gosellapi.open.models.TapCurrency;
+import company.tap.gosellapi.open.models.Tax;
 import company.tap.sample.R;
 import company.tap.sample.constants.SettingsKeys;
 import company.tap.sample.managers.SettingsManager;
@@ -60,6 +65,8 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         settingsManager = SettingsManager.getInstance();
         settingsManager.setPref(this);
 
+        configureApp();
+
         configureSDKThemeObject(); // here you can configure your app theme.
 
         configureSDKSession();
@@ -73,14 +80,13 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
             settingsManager = SettingsManager.getInstance();
             settingsManager.setPref(this);
         }
-
-//        configureSDKThemeObject();
-//
-//        configureSDKSession();
-
-
     }
 
+
+    private void configureApp(){
+        GoSellSDK.init(this, "sk_test_kovrMB0mupFJXfNZWx6Etg5y","company.tap.goSellSDKExample");  // to be replaced by merchant
+        GoSellSDK.setLocale(ThemeObject.getInstance().getSdkLanguage());
+    }
     /**
      * Configure SDK Theme
      */
@@ -113,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         .setPayButtonFont(Typeface.createFromAsset(getAssets(),"fonts/roboto_light.ttf"))
 
         .setPayButtonDisabledTitleColor(getResources().getColor(R.color.black))
-        .setPayButtonEnabledTitleColor(getResources().getColor(R.color.White))
+        .setPayButtonEnabledTitleColor(getResources().getColor(R.color.white))
         .setPayButtonTextSize(14)
         .setPayButtonLoaderVisible(true)
         .setPayButtonSecurityIconVisible(true)
@@ -127,54 +133,80 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
      */
     private void configureSDKSession() {
 
-        if(sdkSession==null) sdkSession = new SDKSession();
+        // Instantiate SDK Session
+        if(sdkSession==null) sdkSession = new SDKSession();   //** Required **
 
-         sdkSession.addSessionDelegate(this);
+        // pass your activity as a session delegate to listen to SDK internal payment process follow
+        sdkSession.addSessionDelegate(this);    //** Required **
 
         // initiate PaymentDataSource
-        sdkSession.instantiatePaymentDataSource();
+        sdkSession.instantiatePaymentDataSource();    //** Required **
 
-        // setup Payment Data Source
-        sdkSession.setTransactionCurrency(new TapCurrency("KWD"));
+        // set transaction currency associated to your account
+        sdkSession.setTransactionCurrency(new TapCurrency("KWD"));    //** Required **
 
+        // set transaction mode [TransactionMode.PURCHASE - TransactionMode.AUTHORIZE_CAPTURE - TransactionMode.SAVE_CARD - TransactionMode.TOKENIZE_CARD ]
+        sdkSession.setTransactionMode(TransactionMode.TOKENIZE_CARD);    //** Required **
 
+        // Using static CustomerBuilder method available inside TAP Customer Class you can populate TAP Customer object and pass it to SDK
+        sdkSession.setCustomer(getCustomer());    //** Required **
 
-        sdkSession.setTransactionMode(settingsManager.getTransactionsMode(SettingsKeys.TAP_TRANSACTION_MODE));
-//        sdkSession.setTransactionMode(TransactionMode.TOKENIZE_CARD);
+        // Set Total Amount. The Total amount will be recalculated according to provided Taxes and Shipping
+        sdkSession.setAmount(new BigDecimal(40));  //** Required **
 
-        sdkSession.setCustomer(settingsManager.getCustomer());
+        // Set Payment Items array list
+        sdkSession.setPaymentItems(new ArrayList<PaymentItem>());// ** Optional ** you can pass empty array list
 
-        sdkSession.setAmount(new BigDecimal(40));
+        // Set Taxes array list
+        sdkSession.setTaxes(new ArrayList<Tax>());// ** Optional ** you can pass empty array list
 
-        sdkSession.setPaymentItems(new ArrayList<>());
+        // Set Shipping array list
+        sdkSession.setShipping(new ArrayList<>());// ** Optional ** you can pass empty array list
 
-        sdkSession.setTaxes(new ArrayList<>());
+        // Post URL
+        sdkSession.setPostURL(""); // ** Optional **
 
-        sdkSession.setShipping(new ArrayList<>());
+        // Payment Description
+        sdkSession.setPaymentDescription(""); //** Optional **
 
-        sdkSession.setPostURL("");
+        // Payment Extra Info
+        sdkSession.setPaymentMetadata(new HashMap<>());// ** Optional ** you can pass empty array hash map
 
-        sdkSession.setPaymentDescription("");
+        // Payment Reference
+        sdkSession.setPaymentReference(null); // ** Optional ** you can pass null
 
-        sdkSession.setPaymentMetadata(new HashMap<>());
+        // Payment Statement Descriptor
+        sdkSession.setPaymentStatementDescriptor(""); // ** Optional **
 
-        sdkSession.setPaymentReference(null);
-
-        sdkSession.setPaymentStatementDescriptor("");
-
+        // Enable or Disable 3DSecure
         sdkSession.isRequires3DSecure(true);
 
-        sdkSession.setReceiptSettings(null);
+        //Set Receipt Settings [SMS - Email ]
+        sdkSession.setReceiptSettings(null); // ** Optional ** you can pass Receipt object or null
 
-        sdkSession.setAuthorizeAction(null);
+        // Set Authorize Action
+        sdkSession.setAuthorizeAction(null); // ** Optional ** you can pass AuthorizeAction object or null
 
-        sdkSession.setDestination(null);
+        sdkSession.setDestination(null); // ** Optional ** you can pass Destinations object or null
 
-        // start with pay button
-       // initPayButton();
+/**
+ * If you included Tap Pay Button then configure it first
+ */
+        initPayButton();
 
-        //start without PayButton
-        sdkSession.start(this);
+        /**
+         * Use this method where ever you want to show TAP SDK Main Screen.
+         * This method must be called after you configured SDK as above
+         * This method will be used in case of you are not using TAP PayButton in your activity.
+         */
+
+//        sdkSession.start(this);
+    }
+
+    private Customer getCustomer() {
+        return new Customer.CustomerBuilder(null).email("abc@abc.com").firstName("firstname")
+                .lastName("lastname").metadata("").phone(new PhoneNumber("965","65562630"))
+                .middleName("middlename").build();
     }
 
     /**

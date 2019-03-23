@@ -523,7 +523,7 @@ public class CardCredentialsViewHolder
   }
 
   private boolean validateCardHolderName(){
-      return nameOnCardField.getText().toString().trim().length() > 0;
+      return nameOnCardField.getText().toString().trim().length() >= 3;
   }
 
   @Override

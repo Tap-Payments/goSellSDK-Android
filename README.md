@@ -19,28 +19,26 @@ A library that fully covers payment/authorization/card saving process inside you
 3. [Setup](#setup)
     1. [goSellSDK Class Properties](#setup_gosellsdk_class_properties)
 4. [Usage](#usage)
-    1. [Pay Button](#paybutton)
-       1. [Start SDK with Pay Button](#start_sdk_with_pay_button)
-       2. [Init Pay Button](#pay_button_init)
-       3. [Appearance](#pay_button_appearance)
-    2. [API SDKSession](#api_sdkSession)
-    	 1. [Properties](#api_sdkSession_properties)
-    	 2. [Methods](#api_sdkSession_methods)
-    3. [SDKSession Data Source](#sdkSession_data_source)
-        1. [Structure](#sdkSession_data_source_structure)
-        2. [Samples](#sdkSession_data_source_samples)
-    4. [SDKSession Delegate](#sdk_delegate)
-        1. [Payment Success Callback](#payment_success_callback)
-    	2. [Payment Failure Callback](#payment_failure_callback)
-    	3. [Authorization Success Callback](#authorization_success_callback)
-    	4. [Authorization Failure Callback](#authorization_failure_callback)
-    	5. [Card Saving Success Callback](#card_saving_success_callback)
-    	6. [Card Saving Failure Callback](#card_saving_failure_callback)
-    	7. [Session Other Failure Callback](#session_error_callback)
-    	7. [Session Is Starting Callback](#session_is_starting_callback)
-    	8. [Session Has Started Callback](#session_has_started_callback)
-    	9. [Session Cancel Callback](#session_cancel_callback)
-5. [Documentation](#docs)
+    1. [Configure SDK with Required Data](#configure_sdk_with_required_data)
+    2. [Configure SDK Look and Feel](#configure_sdk_look_and_feel)
+    3. [Configure SDK Session](#configure_sdk_Session)
+    4. [Open SDK Interfaces](#sdk_open_interfaces)
+    5. [Open SDK ENUMs](#sdk_open_enums)
+    6. [Open SDK Models](#sdk_open_models)
+5. [SDKSession Delegate](#sdk_delegate)
+    1. [Payment Success Callback](#payment_success_callback)
+    2. [Payment Failure Callback](#payment_failure_callback)
+    3. [Authorization Success Callback](#authorization_success_callback)
+    4. [Authorization Failure Callback](#authorization_failure_callback)
+    5. [Card Saving Success Callback](#card_saving_success_callback)
+    6. [Card Saving Failure Callback](#card_saving_failure_callback)
+    7. [Card Tokenized Success Callback](#card_tokenized_success_callback)
+    8. [Session Other Failure Callback](#session_error_callback)
+    9. [Session Is Starting Callback](#session_is_starting_callback)
+    10. [Session Has Started Callback](#session_has_started_callback)
+    11. [Session Failed To Start Callback](#session_failed_to_start_callback)
+    12. [Session Cancel Callback](#session_cancel_callback)
+6. [Documentation](#docs)
 
 
 <a name="requirements"></a>
@@ -94,7 +92,7 @@ Step 2. Add the dependency
 <a name="setup"></a>
 # Setup
 ---
-First of all, `goSellSDK` should be set up. In this section only secret key is required.
+First of all, `goSellSDK` should be set up. In this section secret key and application ID are required.
 
 <a name="setup_gosellsdk_class_properties"></a>
 ## goSellSDK Class Properties
@@ -103,15 +101,16 @@ First of all, `goSellSDK` should be set up. To set it up, add the following line
 Below is the list of properties in goSellSDK class you can manipulate. Make sure you do the setup before any usage of the SDK.
 
 <a name="setup_gosellsdk_class_properties_secret_key"></a>
-### Secret Key
+### Secret Key and Application ID
 
 To set it up, add the following line of code somewhere in your project and make sure it will be called before any usage of `goSellSDK`, otherwise an exception will be thrown. **Required**.
 
 Android
 ```java
-    GoSellSDK.init(context, "sk_XXXXXXXXXXXXXXXXXXXXXXXX"); // Authentication key
+    GoSellSDK.init(context, "sk_XXXXXXXXXXXXXXXXXXXXXXXX","app_id");
 ```
 1. **`authToken`** - to authorize your requests.// Secret key (format: "sk_XXXXXXXXXXXXXXXXXXXXXXXX")
+2. **`app_id`** - replace it using your application ID "Application main package".
 
 Don't forget to import the class at the beginning of the file:
 
@@ -125,9 +124,7 @@ Don't forget to import the class at the beginning of the file:
 
 SDK mode defines which mode SDK is operating in, either **sandbox** or **production**.
 
-Use this property to test your integration with the sandbox transactions.
-
-**WARNING:** Default value of this property is *production* which means your transaction are real transactions. Switch to *sandbox* while in development.
+SDK Mode is automatically identified in the backend based on the secrete key you defined earlier in setup process.
 
 <a name="setup_gosellsdk_class_properties_language"></a>
 
@@ -154,66 +151,115 @@ Currently we support the following languages:
 <a name="usage"></a>
 #Usage
 ---
-<a name="paybutton"></a>
-### Pay Button
----
-<a name="start_sdk_with_pay_button"></a>
-**Pay Button** is an instance of android button view customized by tap. Pay button look and feel is totally customized.
+<a name="configure_sdk_with_required_data"></a>
+### Configure SDK With Required Data
 
-Pay Button is restricted to the height of exactly **40 dp**. For better experience, make sure that it has enough **width** to display the content.
+`goSellSDK` should be set up. To set it up, add the following lines of code somewhere in your project and make sure they will be called before any usage of `goSellSDK`.
 
-<a name="start_sdk_with_pay_button"></a>
-If you would like to include it do the following:
+Below is the list of properties in goSellSDK class you can manipulate. Make sure you do the setup before any usage of the SDK.
 
-1. include PayButton view into your layout xml
+<a name="setup_gosellsdk_class_properties_secret_key"></a>
+### Secret Key and Application ID
+
+To set it up, add the following line of code somewhere in your project and make sure it will be called before any usage of `goSellSDK`, otherwise an exception will be thrown. **Required**.
+
+Android
 ```java
-   <company.tap.gosellapi.open.buttons.PayButtonView
-        android:id="@+id/payButtonId"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_alignParentBottom="true"/>
+    GoSellSDK.init(context, "sk_XXXXXXXXXXXXXXXXXXXXXXXX","app_id");
+```
+1. **`authToken`** - to authorize your requests.// Secret key (format: "sk_XXXXXXXXXXXXXXXXXXXXXXXX")
+2. **`app_id`** - replace it using your application ID "Application main package".
+
+Don't forget to import the class at the beginning of the file:
+
+*Android*:
+
+```java
+ import company.tap.gosellapi.GoSellSDK;
 ```
 
-<a name="pay_button_init"></a>
-2. get reference inside your activity
-```java
-    payButtonView = findViewById(R.id.payButtonId);
+<a name="configure_sdk_look_and_feel"></a>
+### Configure SDK Look and Feel
+ To customize the SDK look and feel you must use **ThemeObject** and populate it as following:
+
+ ```java
+       private void configureSDKThemeObject() {
+
+          ThemeObject.getInstance()
+          // set SDK Locale
+          .setSdkLanguage("EN") // **Required**
+
+          // set Appearance mode [Full Screen Mode - Windowed Mode]
+          .setAppearanceMode(AppearanceMode.WINDOWED_MODE) // **Required**
+
+          // Setup header font type face **Make sure that you already have asset folder with required fonts**
+          .setHeaderFont(Typeface.createFromAsset(getAssets(),"fonts/roboto_light.ttf"))//**Optional**
+
+          //Setup header text color
+          .setHeaderTextColor(getResources().getColor(R.color.black1))  // **Optional**
+
+          // Setup header text size
+          .setHeaderTextSize(17) // **Optional**
+
+          // setup header background
+          .setHeaderBackgroundColor(getResources().getColor(R.color.french_gray_new))//**Optional**
+
+          // setup card form input font type
+          .setCardInputFont(Typeface.createFromAsset(getAssets(),"fonts/roboto_light.ttf"))//**Optional**
+
+          // setup card input field text color
+          .setCardInputTextColor(getResources().getColor(R.color.black))//**Optional**
+
+          // setup card input field text color in case of invalid input
+          .setCardInputInvalidTextColor(getResources().getColor(R.color.red))//**Optional**
+
+          // setup card input hint text color
+          .setCardInputPlaceholderTextColor(getResources().getColor(R.color.black))//**Optional**
+
+          // setup Switch button Thumb Tint Color in case of Off State
+          .setSaveCardSwitchOffThumbTint(getResources().getColor(R.color.gray)) // **Optional**
+
+          // setup Switch button Thumb Tint Color in case of On State
+          .setSaveCardSwitchOnThumbTint(getResources().getColor(R.color.vibrant_green)) // **Optional**
+
+          // setup Switch button Track Tint Color in case of Off State
+          .setSaveCardSwitchOffTrackTint(getResources().getColor(R.color.gray)) // **Optional**
+
+          // setup Switch button Track Tint Color in case of On State
+          .setSaveCardSwitchOnTrackTint(getResources().getColor(R.color.white)) // **Optional**
+
+          // change scan icon
+          .setScanIconDrawable(getResources().getDrawable(R.drawable.btn_card_scanner_normal)) // **Optional**
+
+          // setup pay button selector [ background - round corner ]
+          .setPayButtonResourceId(R.drawable.btn_pay_selector)
+
+          // setup pay button font type face
+          .setPayButtonFont(Typeface.createFromAsset(getAssets(),"fonts/roboto_light.ttf")) // **Optional**
+
+          // setup pay button disable title color
+          .setPayButtonDisabledTitleColor(getResources().getColor(R.color.black)) // **Optional**
+
+          // setup pay button enable title color
+          .setPayButtonEnabledTitleColor(getResources().getColor(R.color.White)) // **Optional**
+
+          //setup pay button text size
+          .setPayButtonTextSize(14) // **Optional**
+
+          // show/hide pay button loader
+          .setPayButtonLoaderVisible(true) // **Optional**
+
+          // show/hide pay button security icon
+          .setPayButtonSecurityIconVisible(true) // **Optional**
+      ;
+
+          }
  ```
 
-<a name="pay_button_appearance"></a>
-## Appearance
- To customize pay button appearance you must instantiate an object of SDKSession and then use it to do the customization as following:
-
- 1. Instantiate an instance of SDKSession
- ```java
-      sdkSession = new SDKSession();
- ```
- 2. set button view
- ```java
-     sdkSession.setButtonView(payButtonView, this, SDK_REQUEST_CODE);
- ```
- 3. setup button view background
-     1. setup pay button using xml selector
-     ```java
-         sdkSession.setPayButtonBackgroundSelector(YOUR_XML_SELECTOR);
-     ```
-     2. setup pay button using color list
-     ```java
-         sdkSession.setupBackgroundWithColorList(ENABLED_COLOR_CODE,DISABLED_COLOR_CODE);
-     ```
-  4. setup pay button font type face
-  ```java
-         sdkSession.setupPayButtonFontTypeFace(FONT_FACE);
-  ```
-  5. set pay button text color
-  ```java
-         sdkSession.setupTextColor(ENABLED_TEXT_COLOR, DISABLED_TEXT_COLOR);
-  ```
-<a name="api_sdkSession"></a>
-## SDKSession
+<a name="configure_sdk_Session"></a>
+## Configure SDK Session
 **SDKSession** is the main interface for goSellSDK library from you application, so you can use it to start SDK with pay button or without pay button.
 
-<a name="api_sdkSession_properties"></a>
 ### Properties
 
 <table style="text-align:center">
@@ -232,50 +278,196 @@ If you would like to include it do the following:
 	<td> PaymentDataSource </td>
 	<td> Payment data source. All input payment information is passed through this protocol. Required. </td>
    <tr>
-  <tr>
+
+   <tr>
 	<td> activityListener  </td>
 	<td> Activity </td>
-	<td> Activity. used as a context to setup sdk. also, it is used to notify Merchant application when goSellSDK finish's its work . </td>
+	<td> Activity. used as a context to setup sdk.</td>
    <tr>
 
+   <tr>
+	<td> sessionDelegate  </td>
+	<td> Activity </td>
+	<td> Activity. it is used to notify Merchant application with all SDK Events </td>
+   <tr>
 
 
 </table>
 
-<a name="api_sdkSession_methods"></a>
 ### Methods
 
 <table style="text-align:center">
-    <th colspan=1>Method</th>
-    <th rowspan=1>Description</th>
-
-   <tr>
-	<td> setButtonView  </td>
-	<td> Set pay button instance. Pay Button can be used to start the payment process </td>
-   </tr>
-
-   <tr>
-	<td> setPayButtonBackgroundSelector  </td>
-	<td> Setup pay button background using selector xml file. </td>
-   </tr>
-  <tr>
-	<td> setupBackgroundWithColorList  </td>
-	<td> Setup pay button background using two colors. You need to provide method with color to be applied in case of button is enabled and also color to be applied in case of button is disabled. </td>
-   </tr>
-   <tr>
-	<td> setupPayButtonFontTypeFace </td>
-	<td> Setup pay button font type face. You need to passs font type face to this method </td>
-   </tr>
-   <tr>
-	<td> setupTextColor </td>
-	<td> Setup pay button text color. You need to passs color code to be applied in case of pay button is enabled and int color to be applied in case of pay button is disabled</td>
-   </tr>
-<tr>
-	<td> persistPaymentDataSource </td>
-	<td> Setup pay button title. You can setup paay button text according to payment type [Payment - Authorize - Save Cards].</td>
-   </tr>
-
+    <th colspan=1>Property</th>
+    <th colspan=1>Type</th>
+    <tr>
+	 <td> addSessionDelegate  </td>
+	 <td> pass your activity that implements SessionDelegate interface . you have to override all methods available through this interface </td>
+    </tr>
+    <tr>
+	 <td> instantiatePaymentDataSource  </td>
+	 <td> Payment Data Source Object is the main object that is responsible of holding all data required from our backend to return all payment options [ Debit Cards - Credit Cards ] available for this merchant . </td>
+    </tr>
+    <tr>
+   	 <td> setTransactionCurrency  </td>
+   	 <td> Set the transaction currency associated to your account. Transaction currency must be of type TapCurrency("currency_iso_code"). i.e new TapCurrency("KWD") </td>
+    </tr>
+    <tr>
+	 <td> setTransactionMode  </td>
+	 <td> SDK offers different transaction modes such as [ TransactionMode.PURCHASE - TransactionMode.AUTHORIZE_CAPTURE - TransactionMode.SAVE_CARD - TransactionMode.TOKENIZE_CARD]   </td>
+    </tr>
+    <tr>
+	 <td> setCustomer </td>
+	 <td> Pass your customer data. Customer must be of type Tap Customer. You can create Tap Customer as following
+	  new Customer.CustomerBuilder(customerRefNumber).email("cut_email").firstName("cust_firstName")
+                      .lastName("cust_lastName").metadata("").phone(new PhoneNumber("country_code","mobileNo"))
+                      .middleName("cust_middleName").build();</td>
+    </tr>
+    <tr>
+	 <td> setAmount </td>
+	 <td> Set Total Amount. Amount value must be of type BigDecimal i.e new BigDecimal(40) </td>
+    </tr>
+    <tr>
+	 <td> setPaymentItems </td>
+	 <td> ArrayList that contains payment items. each item of this array must be of type PaymentItem. in case of SAVE_CARD or TOKENIZE_CARD you can pass it null</td>
+    </tr>
+    <tr>
+  	 <td> setTaxes </td>
+  	 <td> ArrayList that contains Tax items. each item of this array must be of type Tax. in case of SAVE_CARD or TOKENIZE_CARD you can pass it null</td>
+  	</tr>
+  	<tr>
+  	 <td> setShipping </td>
+  	 <td> ArrayList that contains Shipping items. each item of this array must be of type Shipping. in case of SAVE_CARD or TOKENIZE_CARD you can pass it null</td>
+  	</tr>
+  	<tr>
+  	 <td> setPostURL </td>
+  	 <td> POST URL. </td>
+  	</tr>
+  	<tr>
+  	 <td> setPaymentDescription </td>
+  	 <td> Payment description. </td>
+  	</tr>
+  	<tr>
+  	 <td> setPaymentMetadata </td>
+  	 <td> HashMap that contains any other payment related data. </td>
+  	</tr>
+  	<tr>
+  	 <td> setPaymentReference </td>
+  	 <td> Payment reference. it must be of type Reference object or null </td>
+  	</tr>
+  	<tr>
+  	 <td> setPaymentStatementDescriptor </td>
+  	 <td> Payment Statement Description </td>
+  	</tr>
+  	<tr>
+  	 <td> isRequires3DSecure </td>
+  	 <td> Enable or Disable 3D Secure </td>
+  	</tr>
+  	<tr>
+  	 <td> setReceiptSettings </td>
+  	 <td> Identify Receipt Settings. You must pass  Receipt object or null </td>
+  	</tr>
+  	<tr>
+  	 <td> setAuthorizeAction </td>
+  	 <td> Identify AuthorizeAction. You must pass AuthorizeAction object or null </td>
+  	</tr>
+  	<tr>
+  	 <td> setDestination </td>
+  	 <td> Identify Array of destination. You must pass Destinations object or null </td>
+  	</tr>
+  	<tr>
+  	 <td> start </td>
+  	 <td> Start SDK Without using Tap Pay button. You must call this method whereever you want to show TAP Payment screen. Also, you must pass your activity as a context   </td>
+  	</tr>
+  	<tr>
+  	 <td> setButtonView </td>
+  	 <td> If you included TAP PayButton in your activity then you need to configure it and then pass it to SDKSession through this method.</td>
+    </tr>
 </table>
+
+
+**Configure SDK Session Example**
+
+```java
+
+          /**
+           * Configure SDK Session
+           */
+           private void configureSDKSession() {
+            
+            // Instantiate SDK Session
+            if(sdkSession==null) sdkSession = new SDKSession();   //** Required **
+    
+            // pass your activity as a session delegate to listen to SDK internal payment process follow
+            sdkSession.addSessionDelegate(this);    //** Required **
+    
+            // initiate PaymentDataSource
+            sdkSession.instantiatePaymentDataSource();    //** Required **
+    
+            // set transaction currency associated to your account
+            sdkSession.setTransactionCurrency(new TapCurrency("KWD"));    //** Required **
+    
+            // set transaction mode [TransactionMode.PURCHASE - TransactionMode.AUTHORIZE_CAPTURE - TransactionMode.SAVE_CARD - TransactionMode.TOKENIZE_CARD ]
+            sdkSession.setTransactionMode(TransactionMode.TOKENIZE_CARD);    //** Required **
+    
+            // Using static CustomerBuilder method available inside TAP Customer Class you can populate TAP Customer object and pass it to SDK
+            sdkSession.setCustomer(getCustomer());    //** Required **
+    
+            // Set Total Amount. The Total amount will be recalculated according to provided Taxes and Shipping
+            sdkSession.setAmount(new BigDecimal(40));  //** Required **
+    
+            // Set Payment Items array list
+            sdkSession.setPaymentItems(new ArrayList<PaymentItem>());// ** Optional ** you can pass empty array list
+    
+            // Set Taxes array list
+            sdkSession.setTaxes(new ArrayList<Tax>());// ** Optional ** you can pass empty array list
+    
+            // Set Shipping array list
+            sdkSession.setShipping(new ArrayList<>());// ** Optional ** you can pass empty array list
+    
+            // Post URL
+            sdkSession.setPostURL(""); // ** Optional **
+    
+            // Payment Description
+            sdkSession.setPaymentDescription(""); //** Optional **
+    
+            // Payment Extra Info
+            sdkSession.setPaymentMetadata(new HashMap<>());// ** Optional ** you can pass empty array hash map
+    
+            // Payment Reference
+            sdkSession.setPaymentReference(null); // ** Optional ** you can pass null
+    
+            // Payment Statement Descriptor
+            sdkSession.setPaymentStatementDescriptor(""); // ** Optional **
+    
+            // Enable or Disable 3DSecure
+            sdkSession.isRequires3DSecure(true);
+    
+            //Set Receipt Settings [SMS - Email ]
+            sdkSession.setReceiptSettings(null); // ** Optional ** you can pass Receipt object or null
+    
+            // Set Authorize Action
+            sdkSession.setAuthorizeAction(null); // ** Optional ** you can pass AuthorizeAction object or null
+    
+            sdkSession.setDestination(null); // ** Optional ** you can pass Destinations object or null
+    
+    
+            /**
+             * Use this method where ever you want to show TAP SDK Main Screen.
+             * This method must be called after you configured SDK as above
+             * This method will be used in case of you are not using TAP PayButton in your activity.
+             */
+            sdkSession.start(this);
+                }
+ ```
+ 
+**To populate TAP Customer object**
+```java
+     private Customer getCustomer() {
+                         return new Customer.CustomerBuilder(null).email("abc@abc.com").firstName("firstname")
+                                 .lastName("lastname").metadata("").phone(new PhoneNumber("965","65562630"))
+                                 .middleName("middlename").build();
+     }
+```
 
 <a name="sdkSession_data_source"></a>
 ### SDKSession Payment Data Source
@@ -388,283 +580,733 @@ The following table describes its structure and specifies which fields are requi
     <td><sub><i>false</i></sub></td><td><sub><i>true</i></sub></td><td><sub><i>false</i></sub></td>
     <td align="left"><sub>Action to perform after authorization succeeds.</sub></td>
 </tr>
-<tr>
-    <td><sub><i>allowsToSaveSameCardMoreThanOnce</i></sub></td>
-    <td colspan=1><sub><b>Boolean </b></sub></td>
-    <td colspan=3><sub><i>false</i></sub></td>
-    <td align="left"><sub>Defines if same card can be saved more than once.<br><b>Note:</b> Same cards means absolutely equal data set. For example, if customer specifies same card details, but different cardholder names, we will treat this like different cards.</sub></td>
-</tr>
+
 </table>
 
-<a name="sdkSession_data_source_samples"></a>
-## Samples
- SDKSession class supports you with all methods needed to setup PaymentDataSource object as following:
+<a name="sdk_open_interfaces"></a>
+## SDK Open Interfaces
+ SDK open Interfaces available for implementation through Merchant Project:
 
- 1. Instantiate an instance of PaymentDataSource
+ 1. SessionDelegate
  ```java
-      sdkSession.instantiatePaymentDataSource();
+      public interface SessionDelegate {
+      
+              void paymentSucceed(@NonNull Charge charge);
+              void paymentFailed(@Nullable Charge charge);
+      
+              void authorizationSucceed(@NonNull Authorize authorize);
+              void authorizationFailed(Authorize authorize);
+      
+      
+              void cardSaved(@NonNull Charge charge);
+              void cardSavingFailed(@NonNull Charge charge);
+      
+              void cardTokenizedSuccessfully(@NonNull String token);
+      
+              void sdkError(@Nullable GoSellError goSellError);
+      
+              void sessionIsStarting();
+              void sessionHasStarted();
+              void sessionCancelled();
+              void sessionFailedToStart();
+      }
  ```
- 2. Set TransactionCurrency
+ 2. PaymentDataSource
  ```java
-      sdkSession.setTransactionCurrency(TapCurrency);
+      public interface PaymentDataSource {
+      
+          /**
+           * Transaction currency. @return the currency
+           */
+          @NonNull     TapCurrency            getCurrency();
+      
+          /**
+           * Customer. @return the customer
+           */
+          @NonNull     Customer                getCustomer();
+      
+          /**
+           * Amount. Either amount or items should return nonnull value. If both return nonnull, then items is preferred. @return the amount
+           */
+          @Nullable    BigDecimal              getAmount();
+      
+          /**
+           * List of items to pay for. Either amount or items should return nonnull value. If both return nonnull, then items is preferred. @return the items
+           */
+          @Nullable    ArrayList<PaymentItem>  getItems();
+      
+          /**
+           * Transaction mode. If you return null in this method, it will be treated as PURCHASE. @return the transaction mode
+           */
+          @Nullable    TransactionMode         getTransactionMode();
+      
+          /**
+           * List of taxes. Optional. Note: specifying taxes will affect total payment amount. @return the taxes
+           */
+          @Nullable    ArrayList<Tax>          getTaxes();
+      
+          /**
+           * Shipping list. Optional. Note: specifying shipping will affect total payment amount. @return the shipping
+           */
+          @Nullable    ArrayList<Shipping>     getShipping();
+      
+          /**
+           * Tap will post to this URL after transaction finishes. Optional. @return the post url
+           */
+          @Nullable    String                  getPostURL();
+      
+          /**
+           * Description of the payment. @return the payment description
+           */
+          @Nullable    String                  getPaymentDescription();
+      
+          /**
+           * If you would like to pass additional information with the payment, pass it here. @return the payment metadata
+           */
+          @Nullable    HashMap<String, String> getPaymentMetadata();
+      
+          /**
+           * Payment reference. Implement this property to keep a reference to the transaction on your backend. @return the payment reference
+           */
+          @Nullable    Reference               getPaymentReference();
+      
+          /**
+           * Payment statement descriptor. @return the payment statement descriptor
+           */
+          @Nullable    String                  getPaymentStatementDescriptor();
+      
+          /**
+           * Defines if 3D secure check is required. @return the requires 3 d secure
+           */
+          @Nullable    boolean                 getRequires3DSecure();
+      
+          /**
+           * Receipt dispatch settings. @return the receipt settings
+           */
+          @Nullable    Receipt                 getReceiptSettings();
+      
+          /**
+           * Action to perform after authorization succeeds. Used only if transaction mode is AUTHORIZE_CAPTURE. @return the authorize action
+           */
+          @Nullable    AuthorizeAction         getAuthorizeAction();
+      
+          /**
+           *  The Destination array contains list of Merchant desired destinations accounts to receive money from payment transactions
+           */
+      
+          @Nullable
+          Destinations getDestination();
+      }
  ```
- **Transaction Currency** model class:
+ 
+<a name="sdk_open_enums"></a>
+## SDK Open ENUMs
+ SDK open Enums available for implementation through Merchant Project:
+
+ 1. AppearanceMode 
  ```java
-  public TapCurrency(@NonNull String isoCode) throws CurrencyException {
-    String code = isoCode.toLowerCase();
-    if(!LocaleCurrencies.checkUserCurrency(code)) {
-      throw CurrencyException.getUnknown(code);
+    public enum AppearanceMode {
+    
+        /**
+         * Windowed mode with translucent
+         */
+        @SerializedName("WINDOWED_MODE")            WINDOWED_MODE,
+        /**
+         * Full screen mode
+         */
+        @SerializedName("FULLSCREEN_MODE")          FULLSCREEN_MODE,
     }
-    this.isoCode = code;
-  }
+
  ```
-  3. Set TransactionMode
-     ```java
-          sdkSession.setTransactionMode(TransactionMode); // PURCHASE,AUTHORIZE_CAPTURE, SAVE_CARD
-     ```
-
-**Transaction Mode** is an enum:
-```java
-    public enum TransactionMode {
-
-        @SerializedName("PURCHASE")             PURCHASE,
-        @SerializedName("AUTHORIZE_CAPTURE")    AUTHORIZE_CAPTURE,
-        @SerializedName("SAVE_CARD")            SAVE_CARD
-        }
-```
-   4. Set Customer
+ 2. TransactionMode 
  ```java
-      sdkSession.setCustomer(Customer);
+    public enum TransactionMode {
+    
+        /**
+         * Purchase transaction mode.
+         */
+        @SerializedName("PURCHASE")                     PURCHASE,
+        /**
+         * Authorize capture transaction mode.
+         */
+        @SerializedName("AUTHORIZE_CAPTURE")            AUTHORIZE_CAPTURE,
+        /**
+         * Save card transaction mode.
+         */
+        @SerializedName("SAVE_CARD")                    SAVE_CARD,
+        /**
+         * Tokenize card mode.
+         */
+        @SerializedName("TOKENIZE_CARD")                TOKENIZE_CARD,
+    }
  ```
+ <a name="sdk_open_models"></a>
+ ## SDK Open Models
+  SDK open Models available for implementation through Merchant Project: 
+  
+  1. Customer 
+   ```java
+      public final class Customer implements Serializable {
+      
+        @SerializedName("id")
+        @Expose
+        private String identifier;
+      
+        @SerializedName("first_name")
+        @Expose
+        private String firstName;
+      
+        @SerializedName("middle_name")
+        @Expose
+        private String middleName;
+      
+        @SerializedName("last_name")
+        @Expose
+        private String lastName;
+      
+        @SerializedName("email")
+        @Expose
+        private String email;
+      
+        @SerializedName("phone")
+        @Expose
+        private PhoneNumber phone;
+      
+        /**
+         * The Meta data.
+         */
+        @SerializedName("metadata")
+        String metaData;
+     }
+   ```
+   2. TapCurrency 
+   ```java
+      public class TapCurrency {
+      
+        @NonNull
+        private String isoCode;
+      
+          /**
+           * Instantiates a new Tap currency.
+           *
+           * @param isoCode the iso code
+           * @throws CurrencyException the currency exception
+           */
+          public TapCurrency(@NonNull String isoCode) throws CurrencyException {
+          String code = isoCode.toLowerCase();
+          if(!LocaleCurrencies.checkUserCurrency(code)) {
+            throw CurrencyException.getUnknown(code);
+          }
+          this.isoCode = code;
+        }
+      
+      
+          /**
+           * Gets iso code.
+           *
+           * @return the iso code
+           */
+          @NonNull
+        public String getIsoCode() {
+          return isoCode;
+        }
+      
+      }
+   ```
+   3. AuthorizeAction 
+      ```java
+         public final class AuthorizeAction {
+         
+             @SerializedName("type")
+             @Expose
+             private AuthorizeActionType type;
+         
+             @SerializedName("time")
+             @Expose
+             private int timeInHours;
+         
+             /**
+              * Gets default.
+              *
+              * @return the default
+              */
+             public static AuthorizeAction getDefault() {
+         
+                 return new AuthorizeAction(AuthorizeActionType.VOID, 168);
+             }
+         
+             /**
+              * Gets type.
+              *
+              * @return the type
+              */
+             public AuthorizeActionType getType() {
+                 return type;
+             }
+         
+             /**
+              * Gets time in hours.
+              *
+              * @return the time in hours
+              */
+             public int getTimeInHours() {
+                 return timeInHours;
+             }
+         
+             /**
+              * Instantiates a new Authorize action.
+              *
+              * @param type        the type
+              * @param timeInHours the time in hours
+              */
+             public AuthorizeAction(AuthorizeActionType type, int timeInHours) {
+         
+                 this.type = type;
+                 this.timeInHours = timeInHours;
+             }
+         }
+      ```
+      4. Destination 
+         ```java
+           public class Destination implements Serializable {
+           
+               @SerializedName("id")
+               @Expose
+               private String id;                              // Destination unique identifier (Required)
+           
+               @SerializedName("amount")
+               @Expose
+               private BigDecimal amount;                      // Amount to be transferred to the destination account (Required)
+           
+               @SerializedName("currency")
+               @Expose
+               private String currency;                   // Currency code (three digit ISO format) (Required)
+           
+               @SerializedName("description")
+               @Expose
+               private String description;                    //  Description about the transfer (Optional)
+           
+               @SerializedName("reference")
+               @Expose
+               private String reference;                     //   Merchant reference number to the destination (Optional)
+           
+           
+               /**
+                * Create an instance of destination
+                * @param id
+                * @param amount
+                * @param currency
+                * @param description
+                * @param reference
+                */
+               public Destination(String id, BigDecimal amount, TapCurrency currency, String description, String reference) {
+                   this.id = id;
+                   this.amount = amount;
+                   this.currency = (currency!=null)? currency.getIsoCode().toUpperCase():null;
+                   this.description =description;
+                   this.reference = reference;
+               }
+           
+               /**
+                *
+                * @return Destination unique identifier
+                */
+               public String getId() {
+                   return id;
+               }
+           
+               /**
+                *
+                * @return Amount to be transferred to the destination account
+                */
+               public BigDecimal getAmount() {
+                   return amount;
+               }
+           
+               /**
+                *
+                * @return Currency code (three digit ISO format)
+                */
+               public String getCurrency() {
+                   return currency;
+               }
+           
+               /**
+                *
+                * @return Description about the transfer
+                */
+               public String getDescription() {
+                   return description;
+               }
+           
+               /**
+                *  Merchant reference number to the destination
+                * @return
+                */
+               public String getReference() {
+                   return reference;
+               }
+           }
 
- **Customer** model class:
-```java
-     class Customer {
-
+         ```
+      5. Destinations 
+         ```java
+            public class Destinations  implements Serializable {
+                @SerializedName("amount")
+                @Expose
+                private BigDecimal             amount;
+            
+                @SerializedName("currency")
+                @Expose
+                private String                currency;
+            
+                @SerializedName("count")
+                @Expose
+                private int                     count;
+            
+                @SerializedName("destination")
+                @Expose
+                private ArrayList<Destination>  destination;
+            
+                /**
+                 * @param amount
+                 * @param currency
+                 * @param count
+                 * @param destinations
+                 */
+                public Destinations(@NonNull  BigDecimal amount, @NonNull TapCurrency currency, int count, @NonNull ArrayList<Destination> destinations)
+                {
+                    this.amount = amount;
+                    this.currency = (currency!=null)? currency.getIsoCode().toUpperCase():null;
+                    this.count = count;
+                    this.destination = destinations;
+                }
+            
+                /**
+                 * Total amount, transferred to the destination account
+                 * @return
+                 */
+                public BigDecimal getAmount() {
+                    return amount;
+                }
+            
+                /**
+                 * Tap transfer currency code
+                 * @return
+                 */
+                public String getCurrency() {
+                    return currency;
+                }
+            
+                /**
+                 * Total number of destinations transfer involved
+                 * @return
+                 */
+                public int getCount() {
+                    return count;
+                }
+            
+                /**
+                 * List of destinations object
+                 * @return
+                 */
+                public ArrayList<Destination> getDestination() {
+                    return destination;
+                }
+            }
+         ```
+      6. PaymentItem 
+         ```java
+            public class PaymentItem {
+            
+              @SerializedName("name")
+              @Expose
+              private String name;
+            
+            
+              @SerializedName("description")
+              @Expose
+              @Nullable private String description;
+            
+              @SerializedName("quantity")
+              @Expose
+              private Quantity quantity;
+            
+              @SerializedName("amount_per_unit")
+              @Expose
+              private BigDecimal amountPerUnit;
+            
+              @SerializedName("discount")
+              @Expose
+              @Nullable private AmountModificator discount;
+            
+              @SerializedName("taxes")
+              @Expose
+              @Nullable private ArrayList<Tax> taxes;
+            
+              @SerializedName("total_amount")
+              @Expose
+              private BigDecimal totalAmount;
+            
+            }
+         ```
+      6. Receipt 
+           ```java
+              public final class Receipt implements Serializable {
+              
                   @SerializedName("id")
                   @Expose
-                  private String identifier;
-
-                  @SerializedName("first_name")
-                  @Expose
-                  private String firstName;
-
-                  @SerializedName("middle_name")
-                  @Expose
-                  private String middleName;
-
-                  @SerializedName("last_name")
-                  @Expose
-                  private String lastName;
-
+                  @Nullable private String id;
+              
                   @SerializedName("email")
                   @Expose
-                  private String email;
-
-                  @SerializedName("phone")
+                  private boolean email;
+              
+                  @SerializedName("sms")
                   @Expose
-                  private PhoneNumber phone;
+                  private boolean sms;
+              
+                  /**
+                   * Instantiates a new Receipt.
+                   *
+                   * @param email the email
+                   * @param sms   the sms
+                   */
+                  public Receipt(boolean email, boolean sms) {
+                      this.email = email;
+                      this.sms = sms;
+                  }
+              
+                  /**
+                   * Gets id.
+                   *
+                   * @return the id
+                   */
+                  public String getId() {
+                      return id;
+                  }
+              
+                  /**
+                   * Is email boolean.
+                   *
+                   * @return the boolean
+                   */
+                  public boolean isEmail() {
+                      return email;
+                  }
+              
+                  /**
+                   * Is sms boolean.
+                   *
+                   * @return the boolean
+                   */
+                  public boolean isSms() {
+                      return sms;
+                  }
+              }
+           ```
+       6. Reference 
+            ```java
+               public final class Reference implements Serializable {
+               
+                   @SerializedName("acquirer")
+                   @Expose
+                   @Nullable private String acquirer;
+               
+                   @SerializedName("gateway")
+                   @Expose
+                   @Nullable private String gateway;
+               
+                   @SerializedName("payment")
+                   @Expose
+                   @Nullable private String payment;
+               
+                   @SerializedName("track")
+                   @Expose
+                   @Nullable private String track;
+               
+                   @SerializedName("transaction")
+                   @Expose
+                   @Nullable private String transaction;
+               
+                   @SerializedName("order")
+                   @Expose
+                   @Nullable private String order;
+               
+                   /**
+                    * Gets acquirer.
+                    *
+                    * @return the acquirer
+                    */
+                   @Nullable public String getAcquirer() {
+                       return acquirer;
+                   }
+               
+                   /**
+                    * Gets gateway.
+                    *
+                    * @return the gateway
+                    */
+                   @Nullable public String getGateway() {
+                       return gateway;
+                   }
+               
+                   /**
+                    * Gets payment.
+                    *
+                    * @return the payment
+                    */
+                   @Nullable public String getPayment() {
+                       return payment;
+                   }
+               
+                   /**
+                    * Gets track.
+                    *
+                    * @return the track
+                    */
+                   @Nullable public String getTrack() {
+                       return track;
+                   }
+               
+                   /**
+                    * Gets transaction.
+                    *
+                    * @return the transaction
+                    */
+                   @Nullable public String getTransaction() {
+                       return transaction;
+                   }
+               
+                   /**
+                    * Gets order.
+                    *
+                    * @return the order
+                    */
+                   @Nullable public String getOrder() {
+                       return order;
+                   }
+               
+                   /**
+                    * Instantiates a new Reference.
+                    *
+                    * @param acquirer    the acquirer
+                    * @param gateway     the gateway
+                    * @param payment     the payment
+                    * @param track       the track
+                    * @param transaction the transaction
+                    * @param order       the order
+                    */
+                   public Reference(@Nullable String acquirer, @Nullable String gateway, @Nullable String payment, @Nullable String track, @Nullable String transaction, @Nullable String order) {
+               
+                       this.acquirer = acquirer;
+                       this.gateway = gateway;
+                       this.payment = payment;
+                       this.track = track;
+                       this.transaction = transaction;
+                       this.order = order;
+                   }
+               }
 
-                  @SerializedName("metadata")
-                  String metaData;
-          }
-```
-    5. Set Payment Items
- ```java
-      sdkSession.setPaymentItems(ArraList<Item>);
- ```
-
- **Item** model class:
-```java
-	class PaymentItem {
-
-          @SerializedName("name")
-          @Expose
-          private String name;
-
-
-          @SerializedName("description")
-          @Expose
-          @Nullable private String description;
-
-          @SerializedName("quantity")
-          @Expose
-          private Quantity quantity;
-
-          @SerializedName("amount_per_unit")
-          @Expose
-          private BigDecimal amountPerUnit;
-
-          @SerializedName("discount")
-          @Expose
-          @Nullable private AmountModificator discount;
-
-          @SerializedName("taxes")
-          @Expose
-          @Nullable private ArrayList<Tax> taxes;
-
-          @SerializedName("total_amount")
-          @Expose
-          private BigDecimal totalAmount;
-	}
-```
-
- 5. Set Taxes
- ```java
-      sdkSession.setTaxes(ArraList<Tax>);
- ```
-  **Tax** model class:
-```java
-	class class Tax {
-
-            @SerializedName("name")
-            @Expose
-            private String name;
-
-            @SerializedName("description")
-            @Expose
-            @Nullable private String description;
-
-            @SerializedName("amount")
-            @Expose
-            private AmountModificator amount;
-    }
-```
-  6. Set Shipping
- ```java
-      sdkSession.setShipping(ArraList<Shipping>);
- ```
- **Tax** is a model class:
-```java
-	class class Shipping {
-
-            @SerializedName("name")
-            @Expose
-            private String name;
-
-            @SerializedName("description")
-            @Expose
-            @Nullable private String description;
-
-            @SerializedName("amount")
-            @Expose
-            private BigDecimal amount;
-    }
-```
-   7. Set Post URL
- ```java
-      sdkSession.setPostURL(String);
- ```
- **Post URL**:
-```java
-   return  "https://tap.company";
-```
- 8. Set Payment Description
- ```java
-      sdkSession.setPaymentDescription(String);
- ```
-  **Description**:
-```java
-    return @"Awesome payment description will be here.";
-```
- 9. Set Payment Metadata
- ```java
-      sdkSession.setPaymentMetadata(HashMap<String,String>);
- ```
- **Metadata** HashMap:
-```java
-    HashMap<String,String> paymentMetadata = new HashMap<>();
-        paymentMetadata.put("metadata_key_1", "metadata value 1");
-        return paymentMetadata;
-```
-  10. Set Payment Reference
- ```java
-      sdkSession.setPaymentReference(Reference);
- ```
-  **Reference** model class:
-```java
-	class class Reference {
-
-            @SerializedName("acquirer")
-            @Expose
-            @Nullable private String acquirer;
-
-            @SerializedName("gateway")
-            @Expose
-            @Nullable private String gateway;
-
-            @SerializedName("payment")
-            @Expose
-            @Nullable private String payment;
-
-            @SerializedName("track")
-            @Expose
-            @Nullable private String track;
-
-            @SerializedName("transaction")
-            @Expose
-            @Nullable private String transaction;
-
-            @SerializedName("order")
-            @Expose
-            @Nullable private String order;
-    }
-```
-   11. Set Payment Descriptor
- ```java
-      sdkSession.setPaymentStatementDescriptor(String);
- ```
-   **Descriptor** String:
-```java
-    return @"Payment statement descriptor will be here.";
-```
-   12. Set 3DSecure
- ```java
-      sdkSession.isRequires3DSecure(boolean);
- ```
-    **3D Secure** Boolean:
-```java
-    return true;
-```
-   13. Set Receipt Settings
- ```java
-      sdkSession.setReceiptSettings(Receipt);
- ```
-   **Receipt** model class:
-```java
-	class class Receipt {
-
-            @SerializedName("id")
-            @Expose
-            @Nullable private String id;
-
-            @SerializedName("email")
-            @Expose
-            private boolean email;
-
-            @SerializedName("sms")
-            @Expose
-            private boolean sms;
-    }
-```
-    14. Set Authorize Action
- ```java
-      sdkSession.setAuthorizeAction(AuthorizeAction);
- ```
-    **AuthorizeAction** model class:
-```java
-	class AuthorizeAction {
-
-            @SerializedName("type")
-            @Expose
-            private AuthorizeActionType type;
-
-            @SerializedName("time")
-            @Expose
-            private int timeInHours;
-    }
-```
-
+            ```
+        6. Shipping 
+             ```java
+                public final class Shipping {
+                
+                    @SerializedName("name")
+                    @Expose
+                    private String name;
+                
+                    @SerializedName("description")
+                    @Expose
+                    @Nullable private String description;
+                
+                    @SerializedName("amount")
+                    @Expose
+                    private BigDecimal amount;
+                
+                    /**
+                     * Instantiates a new Shipping.
+                     *
+                     * @param name        the name
+                     * @param description the description
+                     * @param amount      the amount
+                     */
+                    public Shipping(String name, @Nullable String description, BigDecimal amount) {
+                
+                        this.name           = name;
+                        this.description    = description;
+                        this.amount         = amount;
+                    }
+                
+                    /**
+                     * Gets amount.
+                     *
+                     * @return the amount
+                     */
+                    public BigDecimal getAmount() {
+                
+                        return amount;
+                    }
+                }
+             ```                   
+      6. Tax 
+           ```java
+             public final class Tax {
+             
+                 @SerializedName("name")
+                 @Expose
+                 private String name;
+             
+                 @SerializedName("description")
+                 @Expose
+                 @Nullable private String description;
+             
+                 @SerializedName("amount")
+                 @Expose
+                 private AmountModificator amount;
+             
+                 /**
+                  * Instantiates a new Tax.
+                  *
+                  * @param name        the name
+                  * @param description the description
+                  * @param amount      the amount
+                  */
+                 public Tax(String name, @Nullable String description, AmountModificator amount) {
+                     this.name = name;
+                     this.description = description;
+                     this.amount = amount;
+                 }
+             
+                 /**
+                  * Gets name.
+                  *
+                  * @return the name
+                  */
+                 public String getName() {
+                     return name;
+                 }
+             
+                 /**
+                  * Gets description.
+                  *
+                  * @return the description
+                  */
+                 @Nullable public String getDescription() {
+                     return description;
+                 }
+             
+                 /**
+                  * Gets amount.
+                  *
+                  * @return the amount
+                  */
+                 public AmountModificator getAmount() {
+                     return amount;
+                 }
+             }
+           ``` 
 <a name="sdk_delegate"></a>
 ## SDKSession Delegate
 
@@ -772,6 +1414,23 @@ Notifies the receiver that the customer failed to save the card.
 
 **Charge**: Charge object with the details (if reached the stage of card saving).
 
+<a name="card_tokenized_success_callback"></a>
+### Card Tokenized Success Callback
+
+Notifies the receiver that the card has successfully tokenized.
+
+#### Declaration
+
+*Android*
+
+```java
+- void cardTokenizedSuccessfully(@NonNull String token);
+```
+
+#### Arguments
+
+**token**: card token string.
+
 <a name="session_error_callback"></a>
 ### Session Other Failure Callback
 
@@ -813,6 +1472,19 @@ Notifies the receiver that session has successfully started and shown the SDK UI
 
 ```java
 -  void sessionHasStarted();
+```
+
+<a name="session_failed_to_start_callback"></a>
+### Session Failed To Start Callback
+
+Notifies the receiver that session has failed to start.
+
+#### Declaration
+
+*Android:*
+
+```java
+-  void sessionFailedToStart();
 ```
 
 <a name="session_cancel_callback"></a>
