@@ -138,6 +138,8 @@
         app:layout_constraintEnd_toStartOf="@id/cvvFieldContainer"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:hintTextAppearance="@style/TextInputLayout.Hint"
+        android:hint="@string/edittext_hint_expiration_date"
+        android:gravity="start"
         >
 
 
@@ -149,7 +151,7 @@
           app:layout_constraintTop_toTopOf="parent"
           app:layout_constraintBottom_toBottomOf="parent"
           app:backgroundTint="@color/separator"
-          android:hint="@string/edittext_hint_expiration_date"
+
           />
 
     </android.support.design.widget.TextInputLayout>
@@ -167,6 +169,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:hintTextAppearance="@style/TextInputLayout.Hint"
+        android:hint="@string/bt_form_hint_cvv"
+        android:gravity="start"
         >
 
 
@@ -181,7 +185,7 @@
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintTop_toTopOf="parent"
           app:layout_constraintBottom_toBottomOf="parent"
-          android:hint="@string/bt_form_hint_cvv"
+
           android:backgroundTint="@color/separator"
           />
 
