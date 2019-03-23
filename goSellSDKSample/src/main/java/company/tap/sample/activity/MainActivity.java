@@ -3,6 +3,7 @@ package company.tap.sample.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,6 +30,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import company.tap.gosellapi.GoSellSDK;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
@@ -70,6 +72,16 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         configureSDKThemeObject(); // here you can configure your app theme.
 
         configureSDKSession();
+
+
+        Resources res = getApplicationContext().getResources();
+// Change locale settings in the app.
+        DisplayMetrics dm = res.getDisplayMetrics();
+        android.content.res.Configuration conf = res.getConfiguration();
+        conf.setLocale(new Locale("AR".toLowerCase())); // API 17+ only.
+//        conf.locale = new Locale("AR".toLowerCase());
+// Use conf.locale = new Locale(...) if targeting lower versions
+        res.updateConfiguration(conf, dm);
     }
 
     @Override
@@ -93,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
     private void configureSDKThemeObject() {
 
         ThemeObject.getInstance()
-        .setSdkLanguage("EN")
+        .setSdkLanguage("AR")
         .setAppearanceMode(AppearanceMode.WINDOWED_MODE)
 
         .setHeaderFont(Typeface.createFromAsset(getAssets(),"fonts/roboto_light.ttf"))

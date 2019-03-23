@@ -44,24 +44,31 @@
         </LinearLayout>
 
 
-        <RelativeLayout
-            android:layout_width="@dimen/cancel_payment_width"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:orientation="horizontal"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:id="@+id/cancel_payment"
-
-
+            android:layout_marginEnd="@dimen/margin_basic_16dp"
+            android:layout_marginRight="@dimen/margin_basic_16dp"
             >
-            <ImageView
-                android:layout_width="@dimen/cancel_icon_width"
-                android:layout_height="@dimen/cancel_icon_height"
-                android:src="@drawable/cancel1"
+            <TextView
                 android:id="@+id/cancel_payment_icon"
-                android:layout_centerInParent="true"
-                android:layout_marginTop="@dimen/margin_basic_29dp"
+                android:textSize="@dimen/font_size_14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cancel"
+
+
+                android:layout_marginBottom="@dimen/margin_basic_16dp"
+                android:layout_marginTop="@dimen/margin_basic_16dp"
+
+
+
                 />
-        </RelativeLayout>
+        </LinearLayout>
 
 
     </RelativeLayout>
