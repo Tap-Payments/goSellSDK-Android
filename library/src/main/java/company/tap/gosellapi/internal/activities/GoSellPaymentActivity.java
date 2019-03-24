@@ -248,7 +248,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         payButton.getPayButton().setTextColor(ThemeObject.getInstance().getPayButtonDisabledTitleColor());
 
         payButton.getPayButton().setText(String
-                .format("%s %s%s", getResources().getString(R.string.pay),
+                .format("%s %s %s", getResources().getString(R.string.pay),
                         dataSource.getSelectedCurrency().getSymbol(),
                         dataSource.getSelectedCurrency().getAmount()));
     }

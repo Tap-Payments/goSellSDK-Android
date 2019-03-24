@@ -1,6 +1,7 @@
 package company.tap.gosellapi.internal.viewholders;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -23,6 +24,7 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.style.ReplacementSpan;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -52,6 +54,9 @@ import company.tap.tapcardvalidator_android.CardBrand;
 import company.tap.tapcardvalidator_android.CardValidationState;
 import company.tap.tapcardvalidator_android.CardValidator;
 import company.tap.tapcardvalidator_android.DefinedCardBrand;
+
+import static android.os.Build.VERSION.SDK_INT;
+import static android.os.Build.VERSION_CODES.JELLY_BEAN_MR1;
 
 /**
  * The type Card credentials view holder.
@@ -246,6 +251,9 @@ public class CardCredentialsViewHolder
              viewModel.checkShakingStatus();
             }
         });
+
+         if(view!=null)
+         setupRTL(view.getContext());
 
 /////////////////////////////////////////////////// CARD SCANNER START ///////////////////////////////////////////////////////
 //        viewModel.bindCardNumberFieldWithWatcher(cardNumberField);
@@ -723,4 +731,17 @@ public class CardCredentialsViewHolder
       linearLayoutManager.onRestoreInstanceState(state);
     }
   }
+
+    private void setupRTL(Context context) {
+       if(context!=null){
+
+           if (SDK_INT >= JELLY_BEAN_MR1) {
+               if (context.getResources().getConfiguration().getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
+                   cardNumberField.setTextDirection(View.TEXT_DIRECTION_LTR);
+                   cardNumberField.setGravity(Gravity.START);
+               }
+           }
+
+       }
+    }
 }
