@@ -3,7 +3,7 @@
   <string name="pay">ادفع</string>
   <string name="tokenize">ادفع</string>
 
-  <string name="actionbar_title_address_on_card">Address on card</string>
+  <string name="actionbar_title_address_on_card">العنوان الموجود في البطاقة</string>
 
 
   <string name="otp_cancel_payment_title">إلغاء عملية الدفع</string>
@@ -14,33 +14,33 @@
 
   <string name="edittext_hint_card_number">رقم البطاقة</string>
   <string name="edittext_hint_expiration_date">شهر/سنة</string>
-  <string name="edittext_hint_CVV">CVV</string>
+  <string name="edittext_hint_CVV">الرمز الأمني</string>
   <string name="edittext_hint_name_on_card">الاسم الموجود في البطاقة</string>
   <string name="edittext_hint_line1">Line 1</string>
   <string name="edittext_hint_line2">Line 2</string>
-  <string name="edittext_hint_city">City</string>
-  <string name="edittext_hint_state">State</string>
+  <string name="edittext_hint_city">المدينة</string>
+  <string name="edittext_hint_state">الدولة</string>
   <string name="edittext_hint_zip_code">Zip code</string>
-  <string name="edittext_hint_name">Name</string>
-  <string name="edittext_hint_phone_number">Phone number</string>
-  <string name="edittext_hint_email">Email</string>
-  <string name="edittext_hint_address_on_card">Address on Card</string>
+  <string name="edittext_hint_name">الاسم</string>
+  <string name="edittext_hint_phone_number">رقم الهاتق</string>
+  <string name="edittext_hint_email">الايميل</string>
+  <string name="edittext_hint_address_on_card">العنوان الموجود في البطاقة</string>
 <string name="business_icon_description">Business icon</string>
-  <string name="textview_title_address_on_card">Address on Card</string>
-  <string name="textview_title_country">Country</string>
-  <string name="textview_title_recent">Recent</string>
-  <string name="textview_title_recent_edit">EDIT</string>
-  <string name="textview_title_recent_cancel">CANCEL</string>
-  <string name="textview_title_others">Others</string>
-  <string name="textview_title_resend_again">Resend OTP</string>
+  <string name="textview_title_address_on_card">العنوان الموجود في البطاقة</string>
+  <string name="textview_title_country">الدولة</string>
+  <string name="textview_title_recent">مؤخراً</string>
+  <string name="textview_title_recent_edit">تعديل</string>
+  <string name="textview_title_recent_cancel">إلغاء</string>
+  <string name="textview_title_others">أخرى</string>
+  <string name="textview_title_resend_again">إعادة إرسال</string>
   <string name="textview_title_save_for_merchant">Save for %s Checkouts</string>
   <string name="textview_title_save_for_gopay">Save for goPay Checkouts</string>
   <string name="textview_title_personal_info">Your Personal Info</string>
 
-  <string name="textview_disclaimer_save_card">For faster and more secure checkout, save your card</string>
-  <string name="textview_disclaimer_save_card_info">Saved cards will only be used with your approval, you can remove them at any time.</string>
+  <string name="textview_disclaimer_save_card">للدفع الآمن والسريع ، احفظ بطاقتك</string>
+  <string name="textview_disclaimer_save_card_info">لن يتم استخدام البطاقات المحفوظة إلا بموافقتك ، ويمكنك إزالتها في أي وقت.</string>
 
-  <string name="textview_disclaimer_otp_sent_number">Please enter the OTP that has been sent to </string>
+  <string name="textview_disclaimer_otp_sent_number">يرجى إدخال رمز التأكيد الذي تم إرساله إلى </string>
   <string name="textview_disclaimer_go_pay_checkouts">By enabling goPay, your card details will be saved with Tap Payments in order for you to get faster and more secure checkouts in multiple apps and websites</string>
 
   <string name="textview_placeholder_last_four_digits">••••%s</string>
