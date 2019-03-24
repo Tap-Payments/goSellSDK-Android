@@ -23,7 +23,7 @@ import company.tap.gosellapi.open.models.Reference;
  * <br>
  * Charge response
  */
-@RestrictTo(RestrictTo.Scope.LIBRARY)
+//@RestrictTo(RestrictTo.Scope.LIBRARY)
 public class Charge implements BaseResponse, Serializable {
     @SerializedName("id")
     @Expose
