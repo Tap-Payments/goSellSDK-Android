@@ -156,6 +156,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         payButton.getPayButton().setTextColor(ThemeObject.getInstance().getPayButtonDisabledTitleColor());
 
         payButton.setOnClickListener(v -> {
+            payButton.setEnabled(false);
             Utils.hideKeyboard(GoSellPaymentActivity.this);
             if (getSavedCard() != null) {
                 startSavedCardPaymentProcess();
