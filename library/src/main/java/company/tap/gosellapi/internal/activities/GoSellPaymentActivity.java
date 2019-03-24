@@ -105,22 +105,8 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
         if (apperanceMode == AppearanceMode.WINDOWED_MODE) {
             setContentView(R.layout.gosellapi_activity_main_windowed);
-//            RelativeLayout basicLayout = findViewById(R.id.basicLayout);
-//            if("AR".equalsIgnoreCase(ThemeObject.getInstance().getSdkLanguage())){
-//                System.out.println("direction RTL........");
-//                ViewCompat.setLayoutDirection(basicLayout,ViewCompat.LAYOUT_DIRECTION_RTL);
-//            }else{
-//                System.out.println("direction LTR........");
-//                ViewCompat.setLayoutDirection(basicLayout,ViewCompat.LAYOUT_DIRECTION_LTR);
-//            }
         } else {
             setContentView(R.layout.gosellapi_activity_main);
-//            LinearLayout basicLayout = findViewById(R.id.basicLayout);
-//            if("AR".equalsIgnoreCase(ThemeObject.getInstance().getSdkLanguage())){
-//                ViewCompat.setLayoutDirection(basicLayout,ViewCompat.LAYOUT_DIRECTION_RTL);
-//            }else{
-//                ViewCompat.setLayoutDirection(basicLayout,ViewCompat.LAYOUT_DIRECTION_LTR);
-//            }
         }
 
 
