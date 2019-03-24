@@ -132,7 +132,7 @@ Localization language of the UI part of the SDK. This is locale identifier.
 
 Make sure it consists only from 2 lowercased letters and is presented in the list of **availableLanguages** property of *goSellSDK* class.
 
-**Notice:** SDK user interface layout direction is based on the language you select, which means that if you would like to have it in Arabic language, the UI will be switched to RTL (right-to-left).
+**Notice:** SDK user interface layout direction is behave similar to your App. There is no effect come form the SDK back to your application locale. 
 
 ### Available Languages
 
@@ -144,6 +144,9 @@ Currently we support the following languages:
 	<th style="text-align:center">Language</th><th style="text-align:center">Locale Identifier</th>
 	<tr>
 		<td>English</td><td>en</td>
+	</tr>
+	<tr>
+	    <td>Arabic</td><td>ar</td>
 	</tr>
 </table>
 
