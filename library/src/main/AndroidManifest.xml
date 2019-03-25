@@ -6,8 +6,7 @@
   <uses-permission android:name="android.permission.CAMERA"/>
   <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
   <uses-permission android:name="android.permission.VIBRATE"/>
-  <uses-permission android:name="android.permission.RECEIVE_SMS"/>
-  <uses-permission android:name="android.permission.READ_SMS"/>
+
 
   <application>
     <activity
@@ -30,14 +29,6 @@
     <activity
         android:name=".internal.activities.CountriesActivity"
         android:theme="@style/GoSellSDKAppTheme"/>
-
-
-    <receiver android:name=".internal.receivers.SMSReceiver">
-      <intent-filter>
-        <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
-      </intent-filter>
-    </receiver>
-
 
   </application>
 
