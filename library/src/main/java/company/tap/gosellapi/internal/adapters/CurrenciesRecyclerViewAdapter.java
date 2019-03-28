@@ -204,28 +204,30 @@ public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<Currenci
             int currencyNameIndex = 0;
 
             if (currency != null) {
-                symbol = currency.getSymbol();
+                symbol = currency.getSymbol(itemView.getContext().getResources().getConfiguration().locale);
             }
 
             String currencyCodeLowered = currencyCode.toLowerCase();
-            String currencyName = Utils.getCurrencyName(currencyCode, currency);
+            String currencyName = Utils.getCurrencyName(currencyCode, currency,itemView.getContext());
             System.out.println("currencyCodeLowered :  "+ currencyCodeLowered);
             System.out.println("currencyName :  "+ currencyName);
+            System.out.println("symbol :  "+ symbol);
 
-            SpannableStringBuilder sb = new SpannableStringBuilder(currencyCode);
+//            SpannableStringBuilder sb = new SpannableStringBuilder(currencyCode);
+            SpannableStringBuilder sb = new SpannableStringBuilder();
 
             if (!symbol.isEmpty() && !symbol.equalsIgnoreCase(currencyCode)) {
-                sb.append(" ");
-                sb.append(symbol);
+                //sb.append(" ");
+                //sb.append(symbol);
             }
 
             if (!currencyName.isEmpty()) {
-                sb.append(" (");
+//                sb.append(" (");
 
                 currencyNameIndex = sb.length();
                 sb.append(currencyName);
 
-                sb.append(")");
+//                sb.append(")");
             }
             /*
               SearchQuery check done By Haitham >>> to avoid null pointer exception

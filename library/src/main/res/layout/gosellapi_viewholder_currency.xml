@@ -37,7 +37,6 @@
       android:layout_weight="1"
       android:animateLayoutChanges="true"
       android:gravity="center_vertical"
-      android:layoutDirection="ltr"
       android:orientation="vertical"
       >
 
@@ -47,7 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="start"
-        android:text="aqsdas"
+        android:text=""
         android:textSize="13sp"
         android:lineSpacingExtra="@dimen/title_lineSpacingExtra_11"
         />
@@ -57,7 +56,7 @@
         style="@style/header_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="wwwwwww"
+        android:text=""
         android:gravity="start"
         />
   </LinearLayout>

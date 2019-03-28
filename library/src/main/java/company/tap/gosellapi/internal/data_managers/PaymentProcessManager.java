@@ -9,7 +9,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.Constants;
+import company.tap.gosellapi.internal.activities.BaseActivity;
 import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.enums.AuthenticationType;
@@ -352,12 +354,31 @@ final class PaymentProcessManager {
     String extraFeesText = Utils.getFormattedCurrency(extraFeesAmount);
     String totalAmountText = Utils.getFormattedCurrency(totalAmount);
 
-    String title = "Confirm extra charges";
-    String message = String.format(
-        "You will be charged an additional fee of %s for this type of payment, totaling an amount of %s",
+    String title = "";
+    String localizedMessage = "";
+    String confirm = "";
+    String cancelled = "";
+
+    if(BaseActivity.getCurrent()!=null) {
+      title = BaseActivity.getCurrent().getResources().getString(R.string.extra_fees_alert_confirm_message_title);
+      localizedMessage = BaseActivity.getCurrent().getResources().getString(R.string.extra_fees_alert_message);
+      confirm= BaseActivity.getCurrent().getResources().getString(R.string.extra_fees_alert_confirm_message_confirm);
+      cancelled= BaseActivity.getCurrent().getResources().getString(R.string.extra_fees_alert_confirm_message_cancel);
+    }
+    else
+    {
+      title ="Confirm extra charges";
+      localizedMessage ="You will be charged an additional fee of %s for this type of payment, totaling an amount of %s";
+      confirm ="Confirm";
+      cancelled ="Cancel";
+    }
+
+
+     String message = String.format(
+        localizedMessage ,
         extraFeesText, totalAmountText);
 
-    DialogManager.getInstance().showDialog(title, message, "Confirm", "Cancel", callback);
+    DialogManager.getInstance().showDialog(title, message, confirm, cancelled, callback);
   }
 
   private void forceStartPaymentProcess(@NonNull PaymentOptionViewModel paymentOptionModel) {

@@ -92,6 +92,12 @@
 
 
 
+  <string name="extra_fees_alert_confirm_message_title">Confirm extra charges</string>
+  <string name="extra_fees_alert_message">You will be charged an additional fee of %s for this type of payment, totaling an amount of %s </string>
+  <string name="extra_fees_alert_confirm_message_confirm">Confirm</string>
+  <string name="extra_fees_alert_confirm_message_cancel">Cancel</string>
+
+
 
 
 </resources>

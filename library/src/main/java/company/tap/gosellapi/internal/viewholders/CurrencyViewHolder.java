@@ -1,6 +1,7 @@
 package company.tap.gosellapi.internal.viewholders;
 
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import company.tap.gosellapi.R;
@@ -10,6 +11,9 @@ import company.tap.gosellapi.internal.data_managers.payment_options.view_models.
 import company.tap.gosellapi.internal.utils.CurrencyFormatter;
 import company.tap.gosellapi.internal.utils.Utils;
 
+import static android.os.Build.VERSION.SDK_INT;
+import static android.os.Build.VERSION_CODES.JELLY_BEAN_MR1;
+
 /**
  * The type Currency view holder.
  */
@@ -17,6 +21,7 @@ public class CurrencyViewHolder extends PaymentOptionsBaseViewHolder<CurrencyVie
 
     private TextView currencyMainText;
     private TextView currencySecondaryText;
+    private ImageView arrowIcon;
 
     /**
      * Instantiates a new Currency view holder.
@@ -29,6 +34,13 @@ public class CurrencyViewHolder extends PaymentOptionsBaseViewHolder<CurrencyVie
 
         currencyMainText = view.findViewById(R.id.currencyMainText);
         currencySecondaryText = view.findViewById(R.id.currencySecondaryText);
+        arrowIcon = view.findViewById(R.id.arrowIcon);
+
+        if (SDK_INT >= JELLY_BEAN_MR1) {
+            if (view.getContext().getResources().getConfiguration().getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
+                arrowIcon.setBackgroundResource(R.drawable.ic_arrow_left_normal);
+            }
+        }
     }
 
     @Override
@@ -66,5 +78,8 @@ public class CurrencyViewHolder extends PaymentOptionsBaseViewHolder<CurrencyVie
             currencySecondaryText.setText(transactionCurrencyText);
         }
         currencyMainText.setText(selectedCurrencyText);
+
+
+
     }
 }
