@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
 import company.tap.gosellapi.R;
+
+import static android.os.Build.VERSION.SDK_INT;
+import static android.os.Build.VERSION_CODES.JELLY_BEAN_MR1;
 
 /**
  * The type Base action bar activity.
@@ -59,6 +63,13 @@ public class BaseActionBarActivity extends BaseActivity {
                 }
             });
 
+            // back button
+            ImageView actionBarBackButton = findViewById(R.id.actionBarBackButton);
+            if (SDK_INT >= JELLY_BEAN_MR1) {
+                if (getResources().getConfiguration().getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
+                    actionBarBackButton.setImageResource(R.drawable.ic_arrow_right_normal);
+                }
+            }
             //title
             actionBarTitle = actionBarCustomView.findViewById(R.id.actionBarTitle);
 

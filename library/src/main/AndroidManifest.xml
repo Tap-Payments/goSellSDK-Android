@@ -8,7 +8,9 @@
   <uses-permission android:name="android.permission.VIBRATE"/>
 
 
-  <application>
+  <application
+      android:supportsRtl="true"
+      >
     <activity
         android:name=".internal.activities.GoSellPaymentActivity"
         android:windowSoftInputMode="adjustResize"

@@ -215,11 +215,11 @@ public class Utils {
      * @param currency     the currency
      * @return the currency name
      */
-    public static String getCurrencyName(String currencyCode, Currency currency) {
+    public static String getCurrencyName(String currencyCode, Currency currency,Context context) {
         String name = "";
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT && currency != null) {
-            name = currency.getDisplayName();
+            name = currency.getDisplayName(context.getResources().getConfiguration().locale);
         }
         return name;
     }

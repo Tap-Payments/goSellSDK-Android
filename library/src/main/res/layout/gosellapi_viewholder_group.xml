@@ -26,7 +26,7 @@
         android:layout_marginEnd="@dimen/margin_basic_16dp"
         android:layout_marginRight="@dimen/margin_basic_16dp"
         android:layout_weight="1"
-        android:gravity="right">
+        android:gravity="start">
 
         <TextView
             android:id="@+id/editTitleTextView"

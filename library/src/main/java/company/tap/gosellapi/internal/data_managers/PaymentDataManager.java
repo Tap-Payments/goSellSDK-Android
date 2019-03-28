@@ -743,4 +743,20 @@ public final class PaymentDataManager {
 
     return paymentProcessManager;
   }
+
+  /**
+   * Expose this method to clear payment process listeners
+   * after SDK finishes his work and becoming ready to fire merchant delegate method
+   * this avoid having more than one instance of payment process listener and hence call delegate
+   * method multiple times.
+   */
+  public void clearPaymentProcessListeners(){
+    if(getProcessListener()!=null)
+    {
+      if(getProcessListener().getListeners()!=null)
+      {
+        getProcessListener().getListeners().clear();
+      }
+    }
+  }
 }

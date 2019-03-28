@@ -590,6 +590,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                 break;
 
             case CURRENCIES_REQUEST_CODE:
+                if(data==null)break;
                 AmountedCurrency userChoiceCurrency = (AmountedCurrency) data
                         .getSerializableExtra(CurrenciesActivity.CURRENCIES_ACTIVITY_USER_CHOICE_CURRENCY);
                 if (userChoiceCurrency != null) {
@@ -602,7 +603,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                 break;
 
             case WEB_PAYMENT_REQUEST_CODE:
-
+                 if(data==null)break;
                 if (resultCode == RESULT_OK)
                 {
                     Log.d("GoSellPaymentActivity","data coming after closing WebPaymentActivity :"+data.getSerializableExtra("charge"));
@@ -612,23 +613,31 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                             fireWebPaymentCallBack(charge);
                         }else
                         {
+                            closePaymentActivity();
                             SDKSession.getListener().sdkError(null);
                         }
                     }
-                    finish();
+                    else {
+                        closePaymentActivity();
+                        SDKSession.getListener().sdkError(null);
+                    }
                 }
                 else if(resultCode == RESULT_CANCELED) {
                     Log.d("GoSellPaymentActivity","data coming after closing WebPaymentActivity :"+data.getSerializableExtra("error"));
                     if(data.getSerializableExtra("error")!=null){
                         GoSellError goSellError = (GoSellError) data.getSerializableExtra("error");
                         if(goSellError!=null) {
+                            closePaymentActivity();
                             SDKSession.getListener().sdkError(goSellError);
                         }else
                         {
+                            closePaymentActivity();
                             SDKSession.getListener().sdkError(null);
                         }
+                    }else {
+                        closePaymentActivity();
+                        SDKSession.getListener().sdkError(null);
                     }
-                    finish();
                 }
                 break;
 
@@ -642,9 +651,11 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
             case AUTHORIZED:
                 try
                 {
+                    closePaymentActivity();
                     SDKSession.getListener().paymentSucceed(charge);
                 }catch (Exception e){
                     Log.d("GoSellPaymentActivity"," Error while calling fireWebPaymentCallBack >>> method paymentSucceed(charge)");
+                    closePaymentActivity();
                 }
                 break;
             case FAILED:
@@ -656,6 +667,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
             case TIMEDOUT:
                 try
                 {
+                    closePaymentActivity();
                     SDKSession.getListener().paymentFailed(charge);
                 }catch (Exception e){
                     Log.d("GoSellPaymentActivity"," Error while calling fireWebPaymentCallBack >>> method paymentFailed(charge)");
@@ -680,7 +692,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
 
     private void closePaymentActivity() {
-       // setPaymentResult(charge);
+        clearPaymentProcessListeners();
         finishActivity();
     }
 
@@ -731,6 +743,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                     closePaymentActivity();
                     SDKSession.getListener().paymentSucceed(charge);
                 }catch (Exception e){
+                    closePaymentActivity();
                     Log.d("GoSellPaymentActivity"," Error while calling delegate method paymentSucceed(charge)");
                 }
                 break;
@@ -989,12 +1002,18 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     private void stopPayButtonLoadingView() {
         LoadingScreenManager.getInstance().closeLoadingScreen();
         if (payButton.getLoadingView() != null) {
-            if (payButton.getLoadingView().isShown())
+                if (payButton.getLoadingView().isShown())
                 payButton.getLoadingView().setForceStop(true);
         }
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    private void clearPaymentProcessListeners(){
+        if(PaymentDataManager.getInstance()!=null)
+            PaymentDataManager.getInstance().clearPaymentProcessListeners();
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -1010,6 +1029,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
 
     private void closeActivity() {
+        clearPaymentProcessListeners();
         setResult(RESULT_OK);
         finish();
     }

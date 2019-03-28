@@ -28,7 +28,7 @@
 <string name="business_icon_description">Business icon</string>
   <string name="textview_title_address_on_card">العنوان الموجود في البطاقة</string>
   <string name="textview_title_country">الدولة</string>
-  <string name="textview_title_recent">مؤخراً</string>
+  <string name="textview_title_recent">حديثاً</string>
   <string name="textview_title_recent_edit">تعديل</string>
   <string name="textview_title_recent_cancel">إلغاء</string>
   <string name="textview_title_others">أخرى</string>
@@ -45,15 +45,15 @@
 
   <string name="textview_placeholder_last_four_digits">••••%s</string>
 
-  <string name="btn_title_confirm">Confirm</string>
-  <string name="btn_title_save">Save</string>
-  <string name="search">Search</string>
-  <string name="payment_status_alert_successful">Successful</string>
-  <string name="payment_status_alert_failed">Failed</string>
-  <string name="payment_status_alert_invalid">Invalid</string>
-  <string name="payment_status_alert_declined">Declined</string>
-  <string name="payment_status_alert_timedout">TIMEDOUT</string>
-  <string name="payment_status_alert_unknown">UNKNOWN</string>
+  <string name="btn_title_confirm">تأكيد</string>
+  <string name="btn_title_save">حفظ</string>
+  <string name="search">بحث</string>
+  <string name="payment_status_alert_successful">ناجح</string>
+  <string name="payment_status_alert_failed">فشل</string>
+  <string name="payment_status_alert_invalid">غير صالحة</string>
+  <string name="payment_status_alert_declined">مرفوض</string>
+  <string name="payment_status_alert_timedout">انتهي الوقت</string>
+  <string name="payment_status_alert_unknown">غير معروف</string>
 
   <string name="bt_month">شهر</string>
   <string name="bt_year">سنة</string>
@@ -91,7 +91,9 @@
   <string name="delete_saved_card_msg">هل أنت متأكد من حذف البطاقة </string>
 
 
-
-
+  <string name="extra_fees_alert_confirm_message_title">تأكيد الرسوم الإضافية</string>
+  <string name="extra_fees_alert_message">سوف تتم إضافة  %s لهذه العملية، إجمالي المبلغ المطلوب  %s</string>
+  <string name="extra_fees_alert_confirm_message_confirm">تأكيد</string>
+  <string name="extra_fees_alert_confirm_message_cancel">إلغاء</string>
 
 </resources>

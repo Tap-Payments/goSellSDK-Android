@@ -11,6 +11,9 @@ import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.WebPaymentViewModel;
 import company.tap.tapcardvalidator_android.CardBrand;
 
+import static android.os.Build.VERSION.SDK_INT;
+import static android.os.Build.VERSION_CODES.JELLY_BEAN_MR1;
+
 /**
  * The type Web payment view holder.
  */
@@ -18,6 +21,7 @@ public class WebPaymentViewHolder
         extends PaymentOptionsBaseViewHolder<PaymentOption, WebPaymentViewHolder, WebPaymentViewModel> {
     private ImageView paymentSystemIcon;
     private TextView paymentSystemName;
+    private ImageView arrowIcon;
 
     /**
      * Instantiates a new Web payment view holder.
@@ -28,6 +32,12 @@ public class WebPaymentViewHolder
         super(itemView);
         paymentSystemIcon = itemView.findViewById(R.id.paymentSystemIcon);
         paymentSystemName = itemView.findViewById(R.id.paymentSystemName);
+        arrowIcon = itemView.findViewById(R.id.arrowIcon);
+        if (SDK_INT >= JELLY_BEAN_MR1) {
+            if (itemView.getContext().getResources().getConfiguration().getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
+                arrowIcon.setBackgroundResource(R.drawable.ic_arrow_left_normal);
+            }
+        }
 
     }
 

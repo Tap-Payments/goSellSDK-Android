@@ -35,7 +35,15 @@ public class GroupViewHolder extends PaymentOptionsBaseViewHolder<String, GroupV
     @Override
     public void bind(String data) {
 
-        titleTextView.setText(data);
+        if("RECENT".equalsIgnoreCase(data)){
+            titleTextView.setText(this.titleTextView.getContext().getString(R.string.textview_title_recent));
+        }else if("OTHERS".equalsIgnoreCase(data)){
+            titleTextView.setText(this.titleTextView.getContext().getString(R.string.textview_title_others));
+        }else {
+            titleTextView.setText(data);
+        }
+
+
         if("RECENT".equalsIgnoreCase(data))
             this.editTextView.setVisibility(View.VISIBLE);
             else
