@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import company.tap.gosellapi.internal.api.models.Merchant;
 import company.tap.gosellapi.open.models.Customer;
 import company.tap.gosellapi.internal.api.models.Order;
 import company.tap.gosellapi.open.models.Destination;
@@ -25,6 +26,10 @@ import company.tap.gosellapi.internal.api.models.TrackingURL;
  */
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 public class CreateChargeRequest {
+
+    @SerializedName("merchant")
+    @Expose
+    @Nullable private Merchant merchant;
 
     @SerializedName("amount")
     @Expose
@@ -92,7 +97,7 @@ public class CreateChargeRequest {
 
     /**
      * Instantiates a new Create charge request.
-     *
+     * @param merchant            the merchant
      * @param amount              the amount
      * @param currency            the currency
      * @param customer            the customer
@@ -110,7 +115,9 @@ public class CreateChargeRequest {
      * @param receipt             the receipt
      * @param destinations        the destinations
      */
-    public CreateChargeRequest(@NonNull     BigDecimal              amount,
+    public CreateChargeRequest(
+                               @Nullable    Merchant                merchant,
+                               @NonNull     BigDecimal              amount,
                                @NonNull     String                  currency,
                                @NonNull     Customer                customer,
                                @NonNull     BigDecimal              fee,
@@ -127,6 +134,7 @@ public class CreateChargeRequest {
                                @Nullable    Receipt                 receipt,
                                @Nullable    Destinations destinations) {
 
+        this.merchant               = merchant;
         this.amount                 = amount;
         this.currency               = currency;
         this.customer               = customer;

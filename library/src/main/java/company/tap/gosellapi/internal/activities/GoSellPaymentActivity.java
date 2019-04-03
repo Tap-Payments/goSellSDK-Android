@@ -1,9 +1,11 @@
 package company.tap.gosellapi.internal.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -24,6 +26,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -90,9 +93,11 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
     private AppearanceMode apperanceMode ;
 
+    static int mAppHeight;
+    static int currentOrientation = -1;
 
-
-
+    private boolean keyboardVisible=false;
+    private boolean startPaymentFlag=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,6 +143,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         SDKSession.getListener().sessionHasStarted();
 
         saveCardChecked = true;
+        setKeyboardVisibilityListener();
     }
 
     private void initViews() {
@@ -157,11 +163,14 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
         payButton.setOnClickListener(v -> {
             payButton.setEnabled(false);
-            Utils.hideKeyboard(GoSellPaymentActivity.this);
-            if (getSavedCard() != null) {
-                startSavedCardPaymentProcess();
-            } else {
-                startCardPaymentProcess(cardCredentialsViewModel);
+
+
+            if(keyboardVisible) {
+                startPaymentFlag=true;
+              Utils.hideKeyboard(GoSellPaymentActivity.this);
+            }
+            else{
+                startPaymentProcess();
             }
         });
 
@@ -228,7 +237,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     }
 
     private void setupPayButton() {
-
         payButton.getPayButton().setTextSize(ThemeObject.getInstance().getPayButtonTextSize());
         payButton.getSecurityIconView().setVisibility(ThemeObject.getInstance().isPayButtSecurityIconVisible()?View.VISIBLE:View.INVISIBLE);
         payButton.getLoadingView().setVisibility(ThemeObject.getInstance().isPayButtLoaderVisible()?View.VISIBLE:View.INVISIBLE);
@@ -264,7 +272,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         payButton.getPayButton().setTextColor(ThemeObject.getInstance().getPayButtonDisabledTitleColor());
 
         payButton.getPayButton().setText(getResources().getString(R.string.save_card));
-        payButton.getSecurityIconView().setVisibility(View.INVISIBLE);
     }
 
 
@@ -346,21 +353,16 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     }
 
     private void initSavedCardPaymentProcess() {
-        // start tokenize card
-        payButton.getLoadingView().start();
         PaymentDataManager.getInstance()
                 .initiateSavedCardPayment(getSavedCard(), recentSectionViewModel, this);
     }
 
     private void initCardPaymentProcess() {
-        payButton.getLoadingView().start();
         PaymentDataManager.getInstance().initiatePayment(cardCredentialsViewModel, this);
-
     }
 
     private void initCardTokenization(){
-        payButton.getLoadingView().start();
-        PaymentDataManager.getInstance().initCardTokenizationPayment(cardCredentialsViewModel,this);
+            PaymentDataManager.getInstance().initCardTokenizationPayment(cardCredentialsViewModel,GoSellPaymentActivity.this);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -891,6 +893,8 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     }
 
 
+
+
     /**
      * The type Card payment web view client.
      */
@@ -1035,6 +1039,76 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     }
 
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    public  void setKeyboardVisibilityListener() {
+
+        final View contentView = findViewById(android.R.id.content);
+        contentView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            private int mPreviousHeight;
+
+            @Override
+            public void onGlobalLayout() {
+                int newHeight = contentView.getHeight();
+
+                if (newHeight == mPreviousHeight)
+                    return;
+
+                mPreviousHeight = newHeight;
+
+                if (getResources().getConfiguration().orientation != currentOrientation) {
+                    currentOrientation = getResources().getConfiguration().orientation;
+                    mAppHeight =0;
+                }
+
+                if (newHeight >= mAppHeight) {
+                    mAppHeight = newHeight;
+                }
+
+                if (newHeight != 0) {
+                    if (mAppHeight > newHeight) {
+                    // Height decreased: keyboard was shown
+                        keyboardVisible = true;
+                    } else
+                    {
+                        System.out.println("inside onGlobalLayout: keyboardVisible: "+ keyboardVisible);
+                        // Height increased: keyboard was hidden
+                        keyboardVisible = false;
+                        System.out.println("inside onGlobalLayout: startPaymentFlag: "+ startPaymentFlag);
+                        if(startPaymentFlag)
+                        {
+
+                            new CountDownTimer(1, 1000) {
+                                @Override
+                                public void onTick(long millisUntilFinished) {
+                                    System.out.println("millisUntilFinished : "+ millisUntilFinished);
+                                }
+
+                                @Override
+                                public void onFinish() {
+                                    startPaymentProcess();
+                                }
+                            }.start();
+
+
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    private void startPaymentProcess(){
+
+        LoadingScreenManager.getInstance().showLoadingScreen(this);
+
+        if (getSavedCard() != null) {
+            startSavedCardPaymentProcess();
+        } else {
+            startCardPaymentProcess(cardCredentialsViewModel);
+        }
+    }
 
 }
 

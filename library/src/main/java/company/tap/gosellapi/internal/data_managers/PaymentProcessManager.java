@@ -18,6 +18,7 @@ import company.tap.gosellapi.internal.api.enums.AuthenticationType;
 import company.tap.gosellapi.internal.api.enums.ExtraFeesStatus;
 import company.tap.gosellapi.internal.api.enums.PaymentType;
 import company.tap.gosellapi.internal.api.models.CreateTokenSavedCard;
+import company.tap.gosellapi.internal.api.models.Merchant;
 import company.tap.gosellapi.internal.api.models.SaveCard;
 import company.tap.gosellapi.internal.api.models.SavedCard;
 import company.tap.gosellapi.internal.api.requests.CreateOTPVerificationRequest;
@@ -354,10 +355,10 @@ final class PaymentProcessManager {
     String extraFeesText = Utils.getFormattedCurrency(extraFeesAmount);
     String totalAmountText = Utils.getFormattedCurrency(totalAmount);
 
-    String title = "";
-    String localizedMessage = "";
-    String confirm = "";
-    String cancelled = "";
+    String title = "Confirm extra charges";
+    String localizedMessage = "You will be charged an additional fee of %s for this type of payment, totaling an amount of %s";
+    String confirm = "Confirm";
+    String cancelled = "Cancel";
 
     if(BaseActivity.getCurrent()!=null) {
       title = BaseActivity.getCurrent().getResources().getString(R.string.extra_fees_alert_confirm_message_title);
@@ -365,14 +366,6 @@ final class PaymentProcessManager {
       confirm= BaseActivity.getCurrent().getResources().getString(R.string.extra_fees_alert_confirm_message_confirm);
       cancelled= BaseActivity.getCurrent().getResources().getString(R.string.extra_fees_alert_confirm_message_cancel);
     }
-    else
-    {
-      title ="Confirm extra charges";
-      localizedMessage ="You will be charged an additional fee of %s for this type of payment, totaling an amount of %s";
-      confirm ="Confirm";
-      cancelled ="Cancel";
-    }
-
 
      String message = String.format(
         localizedMessage ,
@@ -527,8 +520,12 @@ final class PaymentProcessManager {
   }
 
   private void fireCardSavedBeforeDialog(){
-      String title = "Save Card";
-      String message = "Your card has been saved before, you can not save it twice!";
+      String title ="";
+      String message = "";
+      if(BaseActivity.getCurrent()!=null) {
+       title =  BaseActivity.getCurrent().getResources().getString(R.string.save_card);
+        message =  BaseActivity.getCurrent().getResources().getString(R.string.card_saved_before);
+      }
 
       DialogManager.getInstance().showDialog(title, message, "OK", null, new DialogManager.DialogResult() {
           @Override
@@ -539,15 +536,8 @@ final class PaymentProcessManager {
   }
 
   private boolean isCardSavedBefore(@NonNull  String fingerprint){
-      ArrayList<SavedCard> cards =  PaymentDataManager.getInstance().getPaymentOptionsDataManager().getPaymentOptionsResponse().getCards();
-    Log.d("PaymentProcessManager"," cards list check size :" +cards.size());
-      if(cards == null || cards.size()==0) return  false;
-
-      for(SavedCard card: cards){
-        Log.d("PaymentProcessManager"," cards list check fingerprint :"+ fingerprint +"  >>> saved card finger:"+card.getFingerprint());
-          if(card.getFingerprint().equals(fingerprint)) return true;
-      }
-      return  false;
+    if(PaymentDataManager.getInstance().getPaymentOptionsDataManager()==null)return false;
+    return PaymentDataManager.getInstance().getPaymentOptionsDataManager().isCardSavedBefore(fingerprint);
   }
 
   /////////////////////////////////////////////////////////  Saved Card Payment process ////////////////////////////
@@ -643,6 +633,7 @@ final class PaymentProcessManager {
     Receipt receipt = provider.getReceiptSettings();
 
     Destinations destinations = provider.getDestination();
+    @Nullable Merchant     merchant     = provider.getMerchant();
 
     TransactionMode transactionMode = provider.getTransactionMode();
     Log.d("PaymentProcessManager","transactionMode : " + transactionMode);
@@ -651,7 +642,7 @@ final class PaymentProcessManager {
       case PURCHASE:
 
         CreateChargeRequest chargeRequest = new CreateChargeRequest(
-
+            merchant,
             amountedCurrency.getAmount(),
             amountedCurrency.getCurrency(),
             customer,
@@ -691,7 +682,7 @@ final class PaymentProcessManager {
         AuthorizeAction authorizeAction = provider.getAuthorizeAction();
 
         CreateAuthorizeRequest authorizeRequest = new CreateAuthorizeRequest(
-
+            merchant,
             amountedCurrency.getAmount(),
             amountedCurrency.getCurrency(),
             customer,

@@ -1,17 +1,38 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="117dp"
+    android:layout_height="130dp"
+    android:layout_centerInParent="true"
+    android:id="@+id/shakingArea"
+    >
+
+    <ImageView
+        android:id="@+id/deleteImageView"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginBottom="-12dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_alignParentEnd="true"
+        android:elevation="15dp"
+        android:src="@drawable/btn_close_normal"
+        android:visibility="invisible"
+        android:layout_above="@+id/cardView"
+        android:layout_alignParentRight="true" />
+
+
 
     <android.support.design.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/cardView"
         android:layout_width="@dimen/item_recent_width_basic"
         android:layout_height="@dimen/item_recent_height_basic"
-        android:layout_marginStart="@dimen/margin_basic_16dp"
-        android:layout_marginTop="@dimen/margin_basic_10dp"
-        android:layout_marginEnd="@dimen/margin_basic_16dp"
-        android:layout_marginBottom="@dimen/margin_basic_10dp"
+        android:layout_centerInParent="true"
         app:cardCornerRadius="8dp"
         app:cardElevation="5dp"
         app:strokeWidth="1dp"
-     >
+        >
 
         <RelativeLayout
             android:id="@+id/recentPaymentsCardViewLayout"
@@ -26,19 +47,6 @@
 
                 />
 
-            <ImageView
-                android:id="@+id/deleteImageView"
-                android:layout_width="@dimen/cancel_icon_width"
-                android:layout_height="@dimen/cancel_icon_height"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="@dimen/margin_basic_3dp"
-                android:layout_marginEnd="@dimen/margin_basic_3dp"
-                android:layout_marginRight="@dimen/margin_basic_3dp"
-                android:src="@drawable/btn_close_normal"
-                android:visibility="invisible"
-                />
 
 
             <LinearLayout
@@ -68,3 +76,5 @@
 
     </android.support.design.card.MaterialCardView>
 
+
+</RelativeLayout>

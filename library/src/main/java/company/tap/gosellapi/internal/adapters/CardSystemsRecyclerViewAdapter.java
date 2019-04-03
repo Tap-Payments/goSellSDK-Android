@@ -149,7 +149,6 @@ public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSys
 
   private boolean comparePaymentOptionWithCardScheme(@NonNull PaymentOption paymentOption,
                                                      @NonNull CardScheme cardScheme) {
-    boolean flag = false;
 
     if (paymentOption.getName().equalsIgnoreCase(cardScheme.name())) {
       return true;
@@ -159,12 +158,12 @@ public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSys
     if (paymentOption.getBrand().compareTo(cardScheme.getCardBrand()) == 0) {
       return true;
     }
+// stop this check to avoid displaying mada with master in case of scheme is not mada
+//    if (paymentOption.getSupportedCardBrands().contains(cardScheme.getCardBrand())) {
+//      return true;
+//    }
 
-    if (paymentOption.getSupportedCardBrands().contains(cardScheme.getCardBrand())) {
-      return true;
-    }
-
-    return flag;
+    return false;
   }
 
 }

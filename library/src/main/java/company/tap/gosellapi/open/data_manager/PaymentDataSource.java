@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import company.tap.gosellapi.internal.api.models.Merchant;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.gosellapi.open.models.AuthorizeAction;
 import company.tap.gosellapi.open.models.Customer;
@@ -62,6 +63,8 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
     AuthorizeAction authorizeAction;
     private @Nullable
     Destinations destination;
+    private @Nullable
+    Merchant merchant;
 
     private @NonNull
     Context context;
@@ -240,6 +243,12 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
         this.destination = destination;
     }
 
+    /**
+     * set Merchant
+     * @param merchant
+     */
+    public void setMerchant(Merchant merchant){this.merchant=merchant;}
+
 /////////////////   Getter's Area  /////////////////////////////////////////////////////////////////
     @Override
     public @NonNull
@@ -338,6 +347,12 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
     public @Nullable
     Destinations getDestination(){
         return  destination;
+    }
+
+    @Nullable
+    @Override
+    public Merchant getMerchant() {
+        return merchant;
     }
 
 }

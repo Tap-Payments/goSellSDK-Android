@@ -36,6 +36,7 @@ import company.tap.gosellapi.GoSellSDK;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.models.Authorize;
 import company.tap.gosellapi.internal.api.models.Charge;
+import company.tap.gosellapi.internal.api.models.Merchant;
 import company.tap.gosellapi.internal.api.models.PhoneNumber;
 import company.tap.gosellapi.internal.api.models.Token;
 import company.tap.gosellapi.open.buttons.PayButtonView;
@@ -46,6 +47,8 @@ import company.tap.gosellapi.open.enums.AppearanceMode;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.gosellapi.open.models.Customer;
 import company.tap.gosellapi.open.models.PaymentItem;
+import company.tap.gosellapi.open.models.Receipt;
+import company.tap.gosellapi.open.models.Reference;
 import company.tap.gosellapi.open.models.TapCurrency;
 import company.tap.gosellapi.open.models.Tax;
 import company.tap.sample.R;
@@ -106,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
     private void configureSDKThemeObject() {
 
         ThemeObject.getInstance()
-        .setSdkLanguage("AR")
+        .setSdkLanguage("EN")
         .setAppearanceMode(AppearanceMode.WINDOWED_MODE)
 
         .setHeaderFont(Typeface.createFromAsset(getAssets(),"fonts/roboto_light.ttf"))
@@ -118,13 +121,13 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         .setCardInputFont(Typeface.createFromAsset(getAssets(),"fonts/roboto_light.ttf"))
         .setCardInputTextColor(getResources().getColor(R.color.black))
         .setCardInputInvalidTextColor(getResources().getColor(R.color.red))
-        .setCardInputPlaceholderTextColor(getResources().getColor(R.color.black))
+        .setCardInputPlaceholderTextColor(getResources().getColor(R.color.gray))
 
 
         .setSaveCardSwitchOffThumbTint(getResources().getColor(R.color.gray))
         .setSaveCardSwitchOnThumbTint(getResources().getColor(R.color.vibrant_green))
         .setSaveCardSwitchOffTrackTint(getResources().getColor(R.color.gray))
-        .setSaveCardSwitchOnTrackTint(getResources().getColor(R.color.white))
+        .setSaveCardSwitchOnTrackTint(getResources().getColor(R.color.vibrant_green_pressed))
 
         .setScanIconDrawable(getResources().getDrawable(R.drawable.btn_card_scanner_normal))
 
@@ -156,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         sdkSession.instantiatePaymentDataSource();    //** Required **
 
         // set transaction currency associated to your account
-        sdkSession.setTransactionCurrency(new TapCurrency("KWD"));    //** Required **
+        sdkSession.setTransactionCurrency(new TapCurrency("SAR"));    //** Required **
 
         // set transaction mode [TransactionMode.PURCHASE - TransactionMode.AUTHORIZE_CAPTURE - TransactionMode.SAVE_CARD - TransactionMode.TOKENIZE_CARD ]
         sdkSession.setTransactionMode(TransactionMode.TOKENIZE_CARD);    //** Required **
@@ -168,10 +171,10 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         sdkSession.setAmount(new BigDecimal(40));  //** Required **
 
         // Set Payment Items array list
-        sdkSession.setPaymentItems(new ArrayList<PaymentItem>());// ** Optional ** you can pass empty array list
+        sdkSession.setPaymentItems(new ArrayList<>());// ** Optional ** you can pass empty array list
 
         // Set Taxes array list
-        sdkSession.setTaxes(new ArrayList<Tax>());// ** Optional ** you can pass empty array list
+        sdkSession.setTaxes(new ArrayList<>());// ** Optional ** you can pass empty array list
 
         // Set Shipping array list
         sdkSession.setShipping(new ArrayList<>());// ** Optional ** you can pass empty array list
@@ -195,12 +198,14 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         sdkSession.isRequires3DSecure(true);
 
         //Set Receipt Settings [SMS - Email ]
-        sdkSession.setReceiptSettings(null); // ** Optional ** you can pass Receipt object or null
+        sdkSession.setReceiptSettings(new Receipt(false,false)); // ** Optional ** you can pass Receipt object or null
 
         // Set Authorize Action
         sdkSession.setAuthorizeAction(null); // ** Optional ** you can pass AuthorizeAction object or null
 
         sdkSession.setDestination(null); // ** Optional ** you can pass Destinations object or null
+
+        sdkSession.setMerchantID(null); // ** Optional ** you can pass merchant id or null
 
 /**
  * If you included Tap Pay Button then configure it first
@@ -217,7 +222,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
     }
 
     private Customer getCustomer() {
-        return new Customer.CustomerBuilder(null).email("abc@abc.com").firstName("firstname")
+        return new Customer.CustomerBuilder("cus_Hn3s3020191346s0YR0304764").email("abc@abc.com").firstName("firstname")
                 .lastName("lastname").metadata("").phone(new PhoneNumber("965","65562630"))
                 .middleName("middlename").build();
     }

@@ -55,7 +55,7 @@ public class CvvEditText extends ErrorEditText implements TextWatcher {
     }
 
     private void init() {
-        setInputType(InputType.TYPE_CLASS_NUMBER);
+        setInputType(InputType.TYPE_CLASS_NUMBER| InputType.TYPE_NUMBER_VARIATION_PASSWORD);
         setFilters(new InputFilter[]{new LengthFilter(DEFAULT_MAX_LENGTH)});
         addTextChangedListener(this);
     }
@@ -96,7 +96,7 @@ public class CvvEditText extends ErrorEditText implements TextWatcher {
         if (mask) {
             setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
         } else {
-            setInputType(InputType.TYPE_CLASS_NUMBER);
+            setInputType(InputType.TYPE_NUMBER_VARIATION_PASSWORD);
         }
     }
 

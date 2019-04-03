@@ -180,7 +180,7 @@ public class CardCredentialsViewHolder
                 String str =s.toString();
 
                 DefinedCardBrand brand = validateCardNumber(str);
-                // String str = validateLength(s.toString());
+
                 CardBrand cardBrand = brand.getCardBrand();
 
                 int[] spacings;

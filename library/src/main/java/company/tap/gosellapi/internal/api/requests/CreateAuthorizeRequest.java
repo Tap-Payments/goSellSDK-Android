@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import company.tap.gosellapi.internal.api.models.Merchant;
 import company.tap.gosellapi.open.models.AuthorizeAction;
 import company.tap.gosellapi.open.models.Customer;
 import company.tap.gosellapi.internal.api.models.Order;
@@ -50,7 +51,9 @@ public final class CreateAuthorizeRequest extends CreateChargeRequest {
      * @param authorizeAction     the authorize action
      * @param destinations        the destinations object
      */
-    public CreateAuthorizeRequest(@NonNull  BigDecimal              amount,
+    public CreateAuthorizeRequest(
+                                  @NonNull  Merchant                merchant,
+                                  @NonNull  BigDecimal              amount,
                                   @NonNull  String                  currency,
                                   @NonNull  Customer                customer,
                                   @NonNull  BigDecimal              fee,
@@ -68,7 +71,7 @@ public final class CreateAuthorizeRequest extends CreateChargeRequest {
                                   @NonNull  AuthorizeAction         authorizeAction,
                                   @Nullable Destinations destinations) {
 
-        super(amount, currency, customer, fee, order, redirect, post, source, description, metadata, reference, saveCard, statementDescriptor, threeDSecure, receipt,destinations);
+        super(merchant,amount, currency, customer, fee, order, redirect, post, source, description, metadata, reference, saveCard, statementDescriptor, threeDSecure, receipt,destinations);
 
         this.authorizeAction = authorizeAction;
     }
