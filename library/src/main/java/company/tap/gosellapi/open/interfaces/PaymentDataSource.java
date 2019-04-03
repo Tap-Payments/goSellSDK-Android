@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import company.tap.gosellapi.internal.api.models.Merchant;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.gosellapi.open.models.AuthorizeAction;
 import company.tap.gosellapi.open.models.Customer;
@@ -107,4 +108,7 @@ public interface PaymentDataSource {
 
     @Nullable
     Destinations getDestination();
+
+    @Nullable
+    Merchant     getMerchant();
 }

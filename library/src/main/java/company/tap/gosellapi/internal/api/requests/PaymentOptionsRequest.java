@@ -51,6 +51,10 @@ public final class PaymentOptionsRequest {
     @Expose
     @NonNull private BigDecimal totalAmount;
 
+    @SerializedName("merchant_id")
+    @Expose
+    @NonNull private String merchant_id;
+
     /**
      * Instantiates a new Payment options request.
      *
@@ -68,13 +72,17 @@ public final class PaymentOptionsRequest {
                                  @Nullable ArrayList<Shipping> shipping,
                                  @Nullable ArrayList<Tax> taxes,
                                  @Nullable String currency,
-                                 @Nullable String customer) {
+                                 @Nullable String customer,
+                                 @Nullable String merchant_id
+
+    ) {
 
         this.transactionMode    = transactionMode == null ? TransactionMode.PURCHASE : transactionMode;
         this.shipping           = shipping;
         this.taxes              = taxes;
         this.currency           = currency;
         this.customer           = customer;
+        this.merchant_id        = merchant_id;
 
         if (items != null && items.size() > 0) {
 
@@ -112,8 +120,8 @@ public final class PaymentOptionsRequest {
             "taxes : " + this.taxes + " /n " +
             "currency : " + this.currency + " /n " +
             "customer : " + this.customer + " /n " +
-            "total_amout : " + this.totalAmount + " /n "
-
-            ;
+            "total_amout : " + this.totalAmount + " /n " +
+            "merchant_id : " + this.merchant_id + " /n "
+        ;
     }
 }

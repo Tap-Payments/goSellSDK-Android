@@ -45,7 +45,7 @@
 
 
 
-    <style name="TextView"></style>
+    <style name="TextView"/>
 
     <style name="header_text">
         <item name="android:textColor">@color/greyish_brown</item>
@@ -110,7 +110,7 @@
         <item name="android:textStyle">normal</item>
     </style>
 
-    <style name="TextView.Disclaimer"></style>
+    <style name="TextView.Disclaimer"/>
 
     <style name="TextView.Disclaimer.Small">
         <item name="android:textColor">@color/black</item>
@@ -167,7 +167,7 @@
         <item name="android:textStyle">normal</item>
     </style>
 
-    <style name="EditText.Password"></style>
+    <style name="EditText.Password"/>
 
     <!--Floating label text style-->
     <style name="TextInputLayout.Hint" parent="TextAppearance.AppCompat.Small">

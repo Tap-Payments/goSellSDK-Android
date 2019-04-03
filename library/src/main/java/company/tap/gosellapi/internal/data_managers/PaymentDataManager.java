@@ -8,11 +8,13 @@ import android.util.Log;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import company.tap.gosellapi.internal.activities.GoSellPaymentActivity;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.enums.PaymentType;
 import company.tap.gosellapi.internal.api.enums.Permission;
+import company.tap.gosellapi.internal.api.models.Merchant;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.api.models.SaveCard;
 import company.tap.gosellapi.internal.api.models.SavedCard;
@@ -611,15 +613,21 @@ public final class PaymentDataManager {
           Destinations destinations = getExternalDataSource().getDestination();
           return destinations;
       }
+
+    @Nullable
+    @Override
+    public Merchant getMerchant() {
+      Merchant merchant = getExternalDataSource().getMerchant();
+      return merchant;
+    }
   }
 
   private class PaymentProcessListener implements IPaymentProcessListener {
 
     @Override
     public void didReceiveCharge(Charge charge) {
-
-      for (IPaymentProcessListener listener : getListeners()) {
-
+      for (Iterator i = getListeners().iterator(); i.hasNext();) {
+        IPaymentProcessListener listener = (IPaymentProcessListener) i.next();
         listener.didReceiveCharge(charge);
       }
     }
@@ -627,41 +635,49 @@ public final class PaymentDataManager {
     @Override
     public void didReceiveAuthorize(Authorize authorize) {
 
-      for (IPaymentProcessListener listener : getListeners()) {
-
-        listener.didReceiveAuthorize(authorize);
-      }
+        for (Iterator i = getListeners().iterator(); i.hasNext();) {
+            IPaymentProcessListener listener = (IPaymentProcessListener) i.next();
+            listener.didReceiveAuthorize(authorize);
+        }
     }
 
     @Override
     public void didReceiveSaveCard(SaveCard saveCard) {
-      for(IPaymentProcessListener listener: getListeners()){
-        listener.didReceiveSaveCard(saveCard);
-      }
+
+        for (Iterator i = getListeners().iterator(); i.hasNext();) {
+            IPaymentProcessListener listener = (IPaymentProcessListener) i.next();
+            listener.didReceiveSaveCard(saveCard);
+        }
+
     }
 
     @Override
     public void didReceiveError(GoSellError error) {
-      for (IPaymentProcessListener listener : getListeners()) {
-        listener.didReceiveError(error);
-      }
+
+        for (Iterator i = getListeners().iterator(); i.hasNext();) {
+            IPaymentProcessListener listener = (IPaymentProcessListener) i.next();
+            listener.didReceiveError(error);
+        }
     }
 
 
     @Override
     public void didCardSavedBefore() {
-      for (IPaymentProcessListener listener : getListeners()) {
 
-        listener.didCardSavedBefore();
-      }
+        for (Iterator i = getListeners().iterator(); i.hasNext();) {
+            IPaymentProcessListener listener = (IPaymentProcessListener) i.next();
+            listener.didCardSavedBefore();
+        }
+
     }
 
     @Override
     public void fireCardTokenizationProcessCompleted(Token token) {
-      for (IPaymentProcessListener listener : getListeners()) {
 
-        listener.fireCardTokenizationProcessCompleted(token);
-      }
+        for (Iterator i = getListeners().iterator(); i.hasNext();) {
+            IPaymentProcessListener listener = (IPaymentProcessListener) i.next();
+            listener.fireCardTokenizationProcessCompleted(token);
+        }
     }
 
 

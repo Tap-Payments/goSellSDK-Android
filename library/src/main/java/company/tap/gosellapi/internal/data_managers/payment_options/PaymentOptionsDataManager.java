@@ -28,6 +28,7 @@ import company.tap.gosellapi.internal.data_managers.payment_options.view_models.
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.WebPaymentViewModel;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models_data.CardCredentialsViewModelData;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models_data.CurrencyViewModelData;
+import company.tap.gosellapi.internal.interfaces.IPaymentProcessListener;
 import company.tap.gosellapi.internal.utils.ActivityDataExchanger;
 import company.tap.gosellapi.internal.utils.CompoundFilter;
 import company.tap.gosellapi.internal.utils.Utils;
@@ -537,18 +538,34 @@ public class PaymentOptionsDataManager {
     boolean isCardDeleted = false;
 
     Log.d("PaymentOptionsDataMgr","updateSavedCards list before deleting:  = "+recentSectionViewModel.getData().size());
-    for(int i=0;i < recentSectionViewModel.getData().size();i++) {
-      if (recentSectionViewModel.getData().get(i).getId().equals(cardId)) {
-        recentSectionViewModel.getData().remove(i);
+    for (Iterator i = recentSectionViewModel.getData().iterator(); i.hasNext();) {
+      SavedCard sCard = (SavedCard) i.next();
+      if (sCard.getId().equals(cardId)) {
+       i.remove();
         isCardDeleted=true;
       }
     }
+
     Log.d("PaymentOptionsDataMgr","updateSavedCards list after deleting:  = "+recentSectionViewModel.getData().size());
 
     if(recentSectionViewModel.getData().size()==0)
       clearPaymentOptionsResponseCards();
 
       if(isCardDeleted)  recentSectionViewModel.updateData();
+  }
+
+  public boolean isCardSavedBefore(@NonNull  String fingerprint){
+
+    RecentSectionViewModel recentSectionViewModel =  getModelsHandler().findSavedCardsModel();
+
+    if(recentSectionViewModel == null)return false;
+
+    if(recentSectionViewModel.getData()== null) return false;
+    for(Iterator i = recentSectionViewModel.getData().iterator(); i.hasNext();){
+      SavedCard sCard = (SavedCard) i.next();
+      if(sCard.getFingerprint().equals(fingerprint)) return true;
+    }
+    return false;
   }
 
   private void clearPaymentOptionsResponseCards(){

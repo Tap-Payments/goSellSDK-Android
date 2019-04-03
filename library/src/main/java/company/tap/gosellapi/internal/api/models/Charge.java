@@ -29,6 +29,10 @@ public class Charge implements BaseResponse, Serializable {
     @Expose
     private String id;
 
+    @SerializedName("merchant")
+    @Expose
+    private Merchant merchant;
+
     @SerializedName("amount")
     @Expose
     private double amount;
@@ -112,6 +116,14 @@ public class Charge implements BaseResponse, Serializable {
      */
     public String getId() {
         return id;
+    }
+
+    /**
+     *  get merchant id
+     * @return merchant object
+     */
+    public Merchant getMerchant() {
+        return merchant;
     }
 
     /**

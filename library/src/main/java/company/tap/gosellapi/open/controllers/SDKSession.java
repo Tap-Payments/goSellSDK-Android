@@ -16,6 +16,7 @@ import company.tap.gosellapi.internal.activities.GoSellPaymentActivity;
 import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.facade.GoSellAPI;
+import company.tap.gosellapi.internal.api.models.Merchant;
 import company.tap.gosellapi.internal.api.requests.PaymentOptionsRequest;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
@@ -234,6 +235,20 @@ public class SDKSession implements View.OnClickListener {
   public void setDestination(Destinations destination){
     paymentDataSource.setDestination(destination);
   }
+
+  /**
+   * set Merchant ID
+   * @param merchantId
+   */
+
+  public void setMerchantID(String merchantId){
+    if(merchantId!=null && merchantId.trim().length()!=0)
+    paymentDataSource.setMerchant(new Merchant(merchantId));
+    else
+      paymentDataSource.setMerchant(null);
+  }
+
+
   /**
    * Handle pay button click event
    * @param v
@@ -278,11 +293,12 @@ public class SDKSession implements View.OnClickListener {
         this.paymentDataSource.getShipping(),
         this.paymentDataSource.getTaxes(),
         this.paymentDataSource.getCurrency().getIsoCode(),
-        this.paymentDataSource.getCustomer().getIdentifier()
+        this.paymentDataSource.getCustomer().getIdentifier(),
+        (this.paymentDataSource.getMerchant()!=null)?this.paymentDataSource.getMerchant().getId():null
     );
 
 
-    System.out.println("request >>> "+request);
+    System.out.println("request >>> "+request.getPaymentOptionRequestInfo());
     GoSellAPI.getInstance().getPaymentOptions(request,
         new APIRequestCallback<PaymentOptionsResponse>() {
 

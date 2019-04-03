@@ -104,12 +104,14 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
         this.groupViewHolderListener = groupViewHolderListener;
         for (int childCount = this.parent.getChildCount(), i = 0; i < childCount; ++i) {
             final RecentPaymentsViewHolder holder = (RecentPaymentsViewHolder) this.parent.getChildViewHolder(this.parent.getChildAt(i));
-            Log.d("RecePaymentRecycleAdapt", holder.card.getId());
+            System.out.println("RecePaymentRecycleAdapt : "+holder.card.getId());
             holder.setFocused(false);
             holder.showDelete();
             Animation animation =
                     AnimationUtils.loadAnimation(this.parent.getContext(), R.anim.shake);
-            holder.cardView.startAnimation(animation);
+//            holder.cardView.startAnimation(animation);
+//            holder.deleteImageView.startAnimation(animation);
+            holder.shakingArea.startAnimation(animation);
         }
     }
 
@@ -119,7 +121,7 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
             for (int childCount = this.parent.getChildCount(), i = 0; i < childCount; ++i) {
                 final RecentPaymentsViewHolder holder = (RecentPaymentsViewHolder) this.parent.getChildViewHolder(this.parent.getChildAt(i));
                 holder.hideDelete();
-                holder.cardView.setAnimation(null);
+                holder.shakingArea.setAnimation(null);
             }
             if(this.groupViewHolderListener!=null)groupViewHolderListener.changeGroupActionTitle();
         }
@@ -215,6 +217,7 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
         private RelativeLayout recentPaymentsCardViewLayout;
         private MaterialCardView cardView;
         private ImageView deleteImageView;
+        private RelativeLayout shakingArea;
 
         private boolean alreadyFocusedFlag;
         private boolean shakingStatusFlag;
@@ -229,6 +232,7 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
             this.card = card;
 
             recentPaymentsCardViewLayout = itemView.findViewById(R.id.recentPaymentsCardViewLayout);
+            shakingArea = itemView.findViewById(R.id.shakingArea);
 
             String cardNumber = String.format(itemView.getResources().getString(R.string.textview_placeholder_last_four_digits), card.getLastFour());
             TextView cardLastDigits = itemView.findViewById(R.id.cardLastDigits);

@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import company.tap.gosellapi.internal.api.models.Merchant;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 import company.tap.gosellapi.open.models.AuthorizeAction;
@@ -115,4 +116,9 @@ public interface IPaymentDataProvider {
      * get Destination
      */
     @Nullable    Destinations               getDestination();
+
+    /**
+     *
+     */
+    @Nullable    Merchant                   getMerchant();
 }
