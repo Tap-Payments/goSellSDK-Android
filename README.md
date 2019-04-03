@@ -86,7 +86,7 @@ To integrate goSellSDK into your project add it in your **root** `build.gradle` 
 Step 2. Add the dependency
 ```java
 	dependencies {
-	        implementation 'com.github.Tap-Payments:goSellSDK-Android:2.1.10'
+	        implementation 'com.github.Tap-Payments:goSellSDK-Android:2.2'
 	}
 ```
 <a name="setup"></a>
@@ -229,7 +229,7 @@ Don't forget to import the class at the beginning of the file:
           .setSaveCardSwitchOffTrackTint(getResources().getColor(R.color.gray)) // **Optional**
 
           // setup Switch button Track Tint Color in case of On State
-          .setSaveCardSwitchOnTrackTint(getResources().getColor(R.color.white)) // **Optional**
+          .setSaveCardSwitchOnTrackTint(getResources().getColor(R.color.green)) // **Optional**
 
           // change scan icon
           .setScanIconDrawable(getResources().getDrawable(R.drawable.btn_card_scanner_normal)) // **Optional**
@@ -452,7 +452,8 @@ Don't forget to import the class at the beginning of the file:
             sdkSession.setAuthorizeAction(null); // ** Optional ** you can pass AuthorizeAction object or null
     
             sdkSession.setDestination(null); // ** Optional ** you can pass Destinations object or null
-    
+            
+            sdkSession.setMerchantID(null); // ** Optional ** you can pass merchant id or null
     
             /**
              * Use this method where ever you want to show TAP SDK Main Screen.
