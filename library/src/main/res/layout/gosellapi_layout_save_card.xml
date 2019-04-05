@@ -31,7 +31,7 @@
         android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/margin_basic_16dp"
         android:layout_marginStart="@dimen/margin_basic_16dp"
-        android:checked="true"
+        android:checked="false"
         android:theme="@style/SwitchPrimary"
         android:layout_alignParentRight="true"
         />
