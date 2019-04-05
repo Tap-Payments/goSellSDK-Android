@@ -1,6 +1,10 @@
 package company.tap.gosellapi.internal.custom_views;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
@@ -22,9 +26,11 @@ import java.util.concurrent.TimeUnit;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.activities.GoSellPaymentActivity;
+import company.tap.gosellapi.internal.data_managers.LoadingScreenManager;
 import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 import company.tap.gosellapi.internal.utils.Utils;
 import company.tap.gosellapi.open.buttons.PayButtonView;
+import company.tap.gosellapi.open.enums.OperationMode;
 
 /**
  * The type Otp full screen dialog.
@@ -65,7 +71,10 @@ public class OTPFullScreenDialog extends DialogFragment {
   }
 
 
-
+  enum OperationType{
+      CONFIRM_OTP,
+    RESEND_OTP
+  }
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -102,7 +111,6 @@ public class OTPFullScreenDialog extends DialogFragment {
     super.onResume();
     Dialog dialog = getDialog();
     if (dialog != null) {
-      //DisplayMetrics  displayMatrix =  Utils.getWindowDisplayMetrics();
       int width =ViewGroup.LayoutParams.MATCH_PARENT; // displayMatrix.widthPixels;//
       int height = ViewGroup.LayoutParams.MATCH_PARENT;// displayMatrix.heightPixels - 56;//
       dialog.getWindow().setLayout(width, height);
@@ -113,9 +121,6 @@ public class OTPFullScreenDialog extends DialogFragment {
   @Override
   public void onActivityCreated(@Nullable Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
-
-   // getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-    //getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
   }
 
 
@@ -142,12 +147,7 @@ public class OTPFullScreenDialog extends DialogFragment {
     }
 
     timerTextView = view.findViewById(R.id.timerTextView);
-    timerTextView.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        resendOTPCode();
-      }
-    });
+    timerTextView.setOnClickListener(v -> checkInternetConnectivity(v.getContext(), OperationType.RESEND_OTP));
 
     phoneNumberTextView = view.findViewById(R.id.phoneNumberValue);
     Bundle b = getArguments();
@@ -164,16 +164,46 @@ public class OTPFullScreenDialog extends DialogFragment {
     payButtonView.setEnabled(false);
     payButtonView.getPayButton().setText(R.string.btn_title_confirm);
 
-    payButtonView.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        confirmOTPCode();
-      }
-    });
+    payButtonView.setOnClickListener(v -> checkInternetConnectivity(v.getContext(),OperationType.CONFIRM_OTP));
 
 
 
   }
+
+  private void checkInternetConnectivity(Context context,OperationType  action){
+    ConnectivityManager connectivityManager =   (ConnectivityManager) context.getSystemService(context.CONNECTIVITY_SERVICE);
+    if(connectivityManager!=null){
+      NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+      if(activeNetworkInfo != null && activeNetworkInfo.isConnected()){
+       switch (action){
+         case CONFIRM_OTP:
+           confirmOTPCode();
+           break;
+         case RESEND_OTP:
+           resendOTPCode();
+       }
+
+      }
+      else
+        showDialog(context,action,getResources().getString(R.string.internet_connectivity_title),getResources().getString(R.string.internet_connectivity_message));
+    }
+    System.out.println(" some error in connectivity manager...");
+  }
+
+  private void showDialog(Context context, OperationType action, String title, String message){
+    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+    dialogBuilder.setTitle(title);
+    dialogBuilder.setMessage(message);
+    dialogBuilder.setCancelable(false);
+
+    dialogBuilder.setPositiveButton(getResources().getString(R.string.dismiss), (dialog, which) -> System.out.println(" user dismissed process....."));
+
+    dialogBuilder.setNegativeButton(getResources().getString(R.string.retry), (dialog, which) -> checkInternetConnectivity(context,action));
+
+    dialogBuilder.show();
+
+  }
+
 
 
   private void handleConfirmationCodeInputEditText(View view) {

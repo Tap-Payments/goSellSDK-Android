@@ -139,36 +139,33 @@ final class PaymentProcessManager {
                              PaymentOptionsDataManager.PaymentOptionsDataListener paymentOptionsDataListener,
                              PaymentType paymentType
                              ) {
-    showExtraFeesAlert(amount, extraFeesAmount, new DialogManager.DialogResult() {
-      @Override
-      public void dialogClosed(boolean positiveButtonClicked) {
-        if (positiveButtonClicked) {
-          if(paymentType==PaymentType.WEB){
-            paymentOptionsDataListener
-                .fireWebPaymentExtraFeesUserDecision(ExtraFeesStatus.ACCEPT_EXTRA_FEES);
-          }
-        else if(paymentType==PaymentType.CARD){
-            paymentOptionsDataListener
-                .fireCardPaymentExtraFeesUserDecision(ExtraFeesStatus.ACCEPT_EXTRA_FEES);
-          }
-        else if(paymentType==PaymentType.SavedCard){
-            paymentOptionsDataListener
-                .fireSavedCardPaymentExtraFeesUserDecision(ExtraFeesStatus.ACCEPT_EXTRA_FEES);
-          }
-        } else {
+    showExtraFeesAlert(amount, extraFeesAmount, positiveButtonClicked -> {
+      if (positiveButtonClicked) {
+        if(paymentType==PaymentType.WEB){
+          paymentOptionsDataListener
+              .fireWebPaymentExtraFeesUserDecision(ExtraFeesStatus.ACCEPT_EXTRA_FEES);
+        }
+      else if(paymentType==PaymentType.CARD){
+          paymentOptionsDataListener
+              .fireCardPaymentExtraFeesUserDecision(ExtraFeesStatus.ACCEPT_EXTRA_FEES);
+        }
+      else if(paymentType==PaymentType.SavedCard){
+          paymentOptionsDataListener
+              .fireSavedCardPaymentExtraFeesUserDecision(ExtraFeesStatus.ACCEPT_EXTRA_FEES);
+        }
+      } else {
 
-          if(paymentType==PaymentType.WEB){
-            paymentOptionsDataListener
-                .fireWebPaymentExtraFeesUserDecision(ExtraFeesStatus.REFUSE_EXTRA_FEES);
-          }
-          else if(paymentType==PaymentType.CARD){
-            paymentOptionsDataListener
-                .fireCardPaymentExtraFeesUserDecision(ExtraFeesStatus.REFUSE_EXTRA_FEES);
-          }
-          else if(paymentType==PaymentType.SavedCard){
-            paymentOptionsDataListener
-                .fireSavedCardPaymentExtraFeesUserDecision(ExtraFeesStatus.REFUSE_EXTRA_FEES);
-          }
+        if(paymentType==PaymentType.WEB){
+          paymentOptionsDataListener
+              .fireWebPaymentExtraFeesUserDecision(ExtraFeesStatus.REFUSE_EXTRA_FEES);
+        }
+        else if(paymentType==PaymentType.CARD){
+          paymentOptionsDataListener
+              .fireCardPaymentExtraFeesUserDecision(ExtraFeesStatus.REFUSE_EXTRA_FEES);
+        }
+        else if(paymentType==PaymentType.SavedCard){
+          paymentOptionsDataListener
+              .fireSavedCardPaymentExtraFeesUserDecision(ExtraFeesStatus.REFUSE_EXTRA_FEES);
         }
       }
     });
@@ -791,7 +788,6 @@ final class PaymentProcessManager {
       public void onSuccess(int responseCode, T serializedResponse) {
         Log.d("PaymentProcessManager"," retrieveChargeOrAuthorizeOrSaveCardAPI >>> " + responseCode);
         if(serializedResponse!=null) Log.d("PaymentProcessManager"," retrieveChargeOrAuthorizeOrSaveCardAPI >>> " + serializedResponse.getId());
-       // Log.d("PaymentProcessManager"," retrieveChargeOrAuthorizeOrSaveCardAPI >>> " + serializedResponse.getResponse().getMessage());
           handleChargeOrAuthorizeOrSaveCardResponse(serializedResponse, null);
       }
 

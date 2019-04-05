@@ -234,6 +234,14 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
             recentPaymentsCardViewLayout = itemView.findViewById(R.id.recentPaymentsCardViewLayout);
             shakingArea = itemView.findViewById(R.id.shakingArea);
 
+            shakingArea.setOnLongClickListener(
+                    v -> {
+                        System.out.println("LONG CLICK   ......");
+
+                        return false;
+                    }
+            );
+
             String cardNumber = String.format(itemView.getResources().getString(R.string.textview_placeholder_last_four_digits), card.getLastFour());
             TextView cardLastDigits = itemView.findViewById(R.id.cardLastDigits);
             cardLastDigits.setText(cardNumber);

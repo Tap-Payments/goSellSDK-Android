@@ -476,6 +476,8 @@ public class CardCredentialsViewHolder
         expirationDateField.addTextChangedListener(cardCredentialsTextWatcher);
         cvvField.addTextChangedListener(cardCredentialsTextWatcher);
 
+
+
     }
 
     /**
@@ -509,10 +511,12 @@ public class CardCredentialsViewHolder
           && expirationDateField.getText()!=null
           && cvvField.getText()!=null && nameOnCardField.getText()!=null) {
 
-              if(  validateCardNumber(cardNumberField.getText().toString())
+              if(validateCardNumber(cardNumberField.getText().toString())
                 .getValidationState() == CardValidationState.valid
                 &&
                 validateCVV()
+                &&
+                validateEXPDate()
                 &&
                 validateCardHolderName()){
                 status= true;
@@ -523,11 +527,17 @@ public class CardCredentialsViewHolder
                 viewModel.setNameOnCard(nameOnCardField.getText().toString().trim());
               }
       }
+      if(status)saveCardSwitch.setChecked(true);
+      else saveCardSwitch.setChecked(false);
       return status;
   }
 
   private boolean validateCVV(){
     return cvvField.getmCardType().getSecurityCodeLength()== cvvField.getText().toString().length();
+  }
+
+  private boolean validateEXPDate(){
+        return expirationDateField.isValid();
   }
 
   private boolean validateCardHolderName(){

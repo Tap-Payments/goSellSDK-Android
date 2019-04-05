@@ -97,4 +97,10 @@
   <string name="extra_fees_alert_confirm_message_confirm">تأكيد</string>
   <string name="extra_fees_alert_confirm_message_cancel">إلغاء</string>
 
+
+  <string name="internet_connectivity_title">خطأ في الشبكة</string>
+  <string name="internet_connectivity_message">اتصال الإنترنت غير متوفر</string>
+  <string name="retry">إعادة المحاولة</string>
+  <string name="dismiss">إلغاء</string>
+
 </resources>

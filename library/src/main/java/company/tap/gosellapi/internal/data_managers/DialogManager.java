@@ -10,12 +10,12 @@ import company.tap.gosellapi.internal.activities.BaseActivity;
 /**
  * The type Dialog manager.
  */
-class DialogManager {
+public class DialogManager {
 
     /**
      * The interface Dialog result.
      */
-    interface DialogResult {
+    public interface DialogResult {
 
         /**
          * Dialog closed.
@@ -44,7 +44,7 @@ class DialogManager {
      * @param negativeButtonTitle the negative button title
      * @param callback            the callback
      */
-    void showDialog(@NonNull String title, @NonNull String message, @NonNull String positiveButtonTitle, @Nullable String negativeButtonTitle, final @Nullable DialogResult callback) {
+   public void showDialog(@NonNull String title, @NonNull String message, @NonNull String positiveButtonTitle, @Nullable String negativeButtonTitle, final @Nullable DialogResult callback) {
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(BaseActivity.getCurrent());
         dialogBuilder.setTitle(title);

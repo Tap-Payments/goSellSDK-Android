@@ -1,8 +1,13 @@
 package company.tap.gosellapi.internal.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -513,6 +518,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                 startWebPaymentProcess();
                 break;
             case REFUSE_EXTRA_FEES:
+                LoadingScreenManager.getInstance().closeLoadingScreen();
                 break;
         }
     }
@@ -525,6 +531,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                 initCardPaymentProcess();
                 break;
             case REFUSE_EXTRA_FEES:
+                LoadingScreenManager.getInstance().closeLoadingScreen();
                 break;
         }
     }
@@ -537,6 +544,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                 initSavedCardPaymentProcess();
                 break;
             case REFUSE_EXTRA_FEES:
+                LoadingScreenManager.getInstance().closeLoadingScreen();
                 break;
         }
     }
@@ -1100,14 +1108,39 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     }
 
     private void startPaymentProcess(){
+        payButton.setEnabled(true);
+       checkInternetConnectivity();
+    }
 
-        LoadingScreenManager.getInstance().showLoadingScreen(this);
-
-        if (getSavedCard() != null) {
-            startSavedCardPaymentProcess();
-        } else {
-            startCardPaymentProcess(cardCredentialsViewModel);
+    private void checkInternetConnectivity(){
+        ConnectivityManager connectivityManager =   (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        if(connectivityManager!=null){
+            NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+            if(activeNetworkInfo != null && activeNetworkInfo.isConnected()){
+                LoadingScreenManager.getInstance().showLoadingScreen(this);
+                if (getSavedCard() != null) {
+                    startSavedCardPaymentProcess();
+                } else {
+                    startCardPaymentProcess(cardCredentialsViewModel);
+                }
+            }
+            else
+                showDialog(getResources().getString(R.string.internet_connectivity_title),getResources().getString(R.string.internet_connectivity_message));
         }
+        System.out.println(" some error in connectivity manager...");
+    }
+    private void showDialog(String title,String message){
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        dialogBuilder.setTitle(title);
+        dialogBuilder.setMessage(message);
+        dialogBuilder.setCancelable(false);
+
+        dialogBuilder.setPositiveButton(getResources().getString(R.string.dismiss), (dialog, which) -> System.out.println(" user dismissed process....."));
+
+        dialogBuilder.setNegativeButton(getResources().getString(R.string.retry), (dialog, which) -> checkInternetConnectivity());
+
+        dialogBuilder.show();
+
     }
 
 }

@@ -1,10 +1,12 @@
 package company.tap.gosellapi.open.controllers;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Typeface;
-import android.util.Log;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.view.View;
 
 import java.math.BigDecimal;
@@ -26,7 +28,6 @@ import company.tap.gosellapi.open.delegate.SessionDelegate;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.gosellapi.open.models.AuthorizeAction;
 import company.tap.gosellapi.open.models.Customer;
-import company.tap.gosellapi.open.models.Destination;
 import company.tap.gosellapi.open.models.Destinations;
 import company.tap.gosellapi.open.models.PaymentItem;
 import company.tap.gosellapi.open.models.Receipt;
@@ -38,7 +39,7 @@ import company.tap.gosellapi.open.models.Tax;
 /**
  * The type Sdk session.
  */
-public class SDKSession implements View.OnClickListener {
+public class SDKSession implements View.OnClickListener{
 
   private PayButtonView payButtonView;
   private PaymentDataSource paymentDataSource;
@@ -53,6 +54,18 @@ public class SDKSession implements View.OnClickListener {
    */
   public SDKSession() {}
 
+
+  /**
+   * Error Type
+   */
+
+  public enum ErrorTypes {
+      SDK_NOT_CONFIGURED_WITH_VALID_CONTEXT,
+      INTERNET_NOT_AVAILABLE,
+      INTERNET_AVAILABLE,
+      CONNECTIVITY_MANAGER_ERROR,
+
+  }
   /**
    * Sets button view.
    *
@@ -277,7 +290,24 @@ public class SDKSession implements View.OnClickListener {
    * call payment methods API
    */
   private void getPaymentOptions() {
-    System.out.println("getPaymentOptions........"+this.paymentDataSource.getAmount());
+    System.out.println("isInternetConnectionAvailable() : " + isInternetConnectionAvailable());
+    switch (isInternetConnectionAvailable()) {
+      case SDK_NOT_CONFIGURED_WITH_VALID_CONTEXT:
+        showDialog("SDK Error", "SDK Not Configured Correctly");
+        break;
+      case CONNECTIVITY_MANAGER_ERROR:
+        showDialog("SDK Error", "Device has a problem in Connectivity manager");
+        break;
+      case INTERNET_NOT_AVAILABLE:
+        showDialog("Connection Error", "Internet connection is not available");
+        break;
+      case INTERNET_AVAILABLE:
+        startPayment();
+    }
+  }
+
+  public void startPayment(){
+    System.out.println("startPayment ...getPaymentOptions........"+this.paymentDataSource.getAmount());
     persistPaymentDataSource();
     if(payButtonView!=null)
     payButtonView.getLoadingView().start();
@@ -319,8 +349,7 @@ public class SDKSession implements View.OnClickListener {
           @Override
           public void onFailure(GoSellError errorDetails) {
 
-            System.out.println("getPaymentOptions>>> error: "+errorDetails.getErrorMessage());
-            System.out.println("getPaymentOptions>>> error: "+errorDetails.getErrorBody());
+           if(errorDetails!=null) System.out.println("getPaymentOptions>>> error: "+errorDetails.getErrorBody());
             if(ThemeObject.getInstance().isPayButtLoaderVisible()) {
 
               if(payButtonView!=null)
@@ -336,6 +365,21 @@ public class SDKSession implements View.OnClickListener {
         });
   }
 
+
+
+  private ErrorTypes isInternetConnectionAvailable(){
+    Context ctx = getSDKContext();
+    if(ctx==null) return ErrorTypes.SDK_NOT_CONFIGURED_WITH_VALID_CONTEXT;
+
+    ConnectivityManager connectivityManager =   (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
+    if(connectivityManager!=null){
+      NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+      if(activeNetworkInfo != null && activeNetworkInfo.isConnected()) return ErrorTypes.INTERNET_AVAILABLE;
+      else
+        return ErrorTypes.INTERNET_NOT_AVAILABLE;
+    }
+     return ErrorTypes.CONNECTIVITY_MANAGER_ERROR;
+  }
   /**
    * launch goSellSDK activity
    */
@@ -377,5 +421,22 @@ public class SDKSession implements View.OnClickListener {
   }
 
 
+  private void showDialog(String title,String message){
+    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getSDKContext());
+    dialogBuilder.setTitle(title);
+    dialogBuilder.setMessage(message);
+    dialogBuilder.setCancelable(false);
 
+    dialogBuilder.setPositiveButton("Ok", (dialog, which) -> System.out.println("dialog ok button clicked...."));
+
+    dialogBuilder.show();
+
+  }
+
+  private Context getSDKContext(){
+    if(context!=null)return context;
+    else if(payButtonView!=null && payButtonView.getContext()!=null)
+     return payButtonView.getContext();
+    return null;
+  }
 }
