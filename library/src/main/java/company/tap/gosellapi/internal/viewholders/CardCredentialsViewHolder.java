@@ -267,7 +267,12 @@ public class CardCredentialsViewHolder
 
 /////////////////////////////////////////////////// CVV START ///////////////////////////////////////////////////////
         cvvField = itemView.findViewById(R.id.cvvField);
-
+        cvvField.setOnFocusChangeListener((v, hasFocus) -> {
+            if(hasFocus ){
+                cvvField.setText("");
+//                    isFirstTimeGetFocused = false;
+            }
+        }) ;
 /////////////////////////////////////////////////// NAME ON CARD START ///////////////////////////////////////////////////////
         // Name on card
         nameOnCardField = itemView.findViewById(R.id.cardholderNameField);
