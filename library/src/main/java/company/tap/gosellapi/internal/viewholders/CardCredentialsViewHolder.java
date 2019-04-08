@@ -154,8 +154,6 @@ public class CardCredentialsViewHolder
 
         super(view);
 
-
-
         cardNumberFieldTextInputLayout=itemView.findViewById(R.id.cardNumberFieldTextInputLayout);
         cvvFieldTextInputLayout=itemView.findViewById(R.id.cvvFieldContainer);
         expirationDateFieldTextInputLayout=itemView.findViewById(R.id.expirationDateContainer);

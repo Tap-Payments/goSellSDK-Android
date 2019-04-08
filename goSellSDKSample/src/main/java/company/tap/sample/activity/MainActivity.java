@@ -124,9 +124,9 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         .setCardInputPlaceholderTextColor(getResources().getColor(R.color.gray))
 
 
-        .setSaveCardSwitchOffThumbTint(getResources().getColor(R.color.gray))
+        .setSaveCardSwitchOffThumbTint(getResources().getColor(R.color.french_gray_new))
         .setSaveCardSwitchOnThumbTint(getResources().getColor(R.color.vibrant_green))
-        .setSaveCardSwitchOffTrackTint(getResources().getColor(R.color.gray))
+        .setSaveCardSwitchOffTrackTint(getResources().getColor(R.color.french_gray))
         .setSaveCardSwitchOnTrackTint(getResources().getColor(R.color.vibrant_green_pressed))
 
         .setScanIconDrawable(getResources().getDrawable(R.drawable.btn_card_scanner_normal))
@@ -276,7 +276,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
                 View layout = inflater.inflate(company.tap.gosellapi.R.layout.charge_status_layout, findViewById(
                         company.tap.gosellapi.R.id.popup_element));
 
-                popupWindow = new PopupWindow(layout, width, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+                popupWindow = new PopupWindow(layout, width, 250, true);
 
                 ImageView status_icon = layout.findViewById(company.tap.gosellapi.R.id.status_icon);
                 TextView statusText = layout.findViewById(company.tap.gosellapi.R.id.status_text);
@@ -407,7 +407,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
     @Override
     public void cardTokenizedSuccessfully(@NonNull String token) {
         System.out.println("Card Tokenized Succeeded : "+ token);
-        showDialog(token,"",company.tap.gosellapi.R.drawable.ic_checkmark_normal);
+        showDialog(token,"Token",company.tap.gosellapi.R.drawable.ic_checkmark_normal);
     }
 
 

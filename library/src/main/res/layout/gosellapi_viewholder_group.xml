@@ -2,7 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="28dp"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:background="@color/french_gray_new"
+    >
 
 
     <TextView
@@ -11,18 +13,19 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="18dp"
         android:layout_marginLeft="18dp"
-        android:layout_marginTop="7dp"
+        android:layout_marginTop="5dp"
 
         android:layout_weight="1"
         android:text="@string/textview_title_recent"
         android:textColor="@color/dark_gray"
-        android:textSize="@dimen/font_size_14sp" />
+        android:textSize="@dimen/font_size_16sp"
+        />
 
 
     <RelativeLayout
         android:layout_width="48dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="@dimen/margin_basic_16dp"
         android:layout_marginRight="@dimen/margin_basic_16dp"
         android:layout_weight="1"
@@ -36,7 +39,7 @@
             android:textColor="@color/dark_gray"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:textSize="@dimen/font_size_14sp" />
+            android:textSize="@dimen/font_size_16sp" />
 
         <TextView
             android:id="@+id/cancelTitleTextView"
@@ -46,7 +49,7 @@
             android:textColor="@color/dark_gray"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:textSize="@dimen/font_size_14sp"
+            android:textSize="@dimen/font_size_16sp"
             android:visibility="invisible" />
     </RelativeLayout>
 
