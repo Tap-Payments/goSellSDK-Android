@@ -98,7 +98,9 @@
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toTopOf="parent"
           app:backgroundTint="@color/separator"
-          />
+          android:background="@android:color/transparent"
+          android:paddingStart="3dp"
+          android:paddingLeft="3dp" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -142,6 +144,8 @@
         app:hintTextAppearance="@style/TextInputLayout.Hint"
         android:hint="@string/edittext_hint_expiration_date"
         android:gravity="start"
+        android:paddingStart="3dp"
+        android:paddingLeft="3dp"
         >
 
 
@@ -153,7 +157,9 @@
           app:layout_constraintTop_toTopOf="parent"
           app:layout_constraintBottom_toBottomOf="parent"
           app:backgroundTint="@color/separator"
-
+          android:background="@android:color/transparent"
+          android:paddingStart="3dp"
+          android:paddingLeft="3dp"
           />
 
     </android.support.design.widget.TextInputLayout>
@@ -189,6 +195,7 @@
           app:layout_constraintBottom_toBottomOf="parent"
 
           android:backgroundTint="@color/separator"
+          android:background="@android:color/transparent"
           />
 
     </android.support.design.widget.TextInputLayout>
@@ -215,8 +222,8 @@
         android:layout_marginStart="@dimen/edit_text_default_padding"
 
         android:layout_marginEnd="@dimen/edit_text_default_padding"
-        android:paddingEnd="20dp"
-        android:paddingRight="20dp"
+        android:paddingEnd="4dp"
+        android:paddingRight="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -226,6 +233,7 @@
         style="@style/EditText"
         app:backgroundTint="@color/transparent"
         tools:ignore="RtlSymmetry"
+        android:background="@android:color/transparent"
         />
 
   </android.support.design.widget.TextInputLayout>

@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         sdkSession.setTransactionCurrency(new TapCurrency("KWD"));    //** Required **
 
         // set transaction mode [TransactionMode.PURCHASE - TransactionMode.AUTHORIZE_CAPTURE - TransactionMode.SAVE_CARD - TransactionMode.TOKENIZE_CARD ]
-        sdkSession.setTransactionMode(TransactionMode.PURCHASE);    //** Required **
+        sdkSession.setTransactionMode(TransactionMode.TOKENIZE_CARD);    //** Required **
 
         // Using static CustomerBuilder method available inside TAP Customer Class you can populate TAP Customer object and pass it to SDK
         sdkSession.setCustomer(getCustomer());    //** Required **
@@ -282,6 +282,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
                 TextView statusText = layout.findViewById(company.tap.gosellapi.R.id.status_text);
                 TextView chargeText = layout.findViewById(company.tap.gosellapi.R.id.charge_id_txt);
                 status_icon.setImageResource(icon);
+//                status_icon.setVisibility(View.INVISIBLE);
                 chargeText.setText(chargeID);
                 statusText.setText((msg!=null&& msg.length()>30)?msg.substring(0,29):msg);
 

@@ -447,24 +447,27 @@ final class PaymentProcessManager {
                             @Nullable final boolean saveCard) {
 
     GoSellAPI.getInstance().createTokenWithEncryptedCard(request, new APIRequestCallback<Token>() {
-
+      boolean canUserSaveCard= saveCard;
       @Override
       public void onSuccess(int responseCode, Token serializedResponse) {
+
 
         Log.d("PaymentProcessManager","startPaymentProcessWithCard >> serializedResponse: " + responseCode);
         Log.d("PaymentProcessManager","startPaymentProcessWithCard >> transaction mode: " +
                 PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode());
 
+        // stop alerting user with card saved before and make it save = false.
         if(PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode() == TransactionMode.SAVE_CARD
                 || saveCard) {
           if(isCardSavedBefore(serializedResponse.getCard().getFingerprint())){
-            fireCardSavedBeforeDialog();
-            return;
+//            fireCardSavedBeforeDialog();
+//            return;
+            canUserSaveCard=false;
           }
         }
         SourceRequest source = new SourceRequest(serializedResponse);
         callChargeOrAuthorizeOrSaveCardAPI(source, paymentOption, serializedResponse.getCard().getFirstSix(),
-                saveCard);
+                canUserSaveCard);
       }
 
       @Override
@@ -516,21 +519,21 @@ final class PaymentProcessManager {
         PaymentDataManager.getInstance().fireCardTokenizationProcessCompleted(token);
   }
 
-  private void fireCardSavedBeforeDialog(){
-      String title ="";
-      String message = "";
-      if(BaseActivity.getCurrent()!=null) {
-       title =  BaseActivity.getCurrent().getResources().getString(R.string.save_card);
-        message =  BaseActivity.getCurrent().getResources().getString(R.string.card_saved_before);
-      }
-
-      DialogManager.getInstance().showDialog(title, message, "OK", null, new DialogManager.DialogResult() {
-          @Override
-          public void dialogClosed(boolean positiveButtonClicked) {
-              PaymentDataManager.getInstance().fireCardSavedBeforeListener();
-          }
-      });
-  }
+//  private void fireCardSavedBeforeDialog(){
+//      String title ="";
+//      String message = "";
+//      if(BaseActivity.getCurrent()!=null) {
+//       title =  BaseActivity.getCurrent().getResources().getString(R.string.save_card);
+//        message =  BaseActivity.getCurrent().getResources().getString(R.string.card_saved_before);
+//      }
+//
+//      DialogManager.getInstance().showDialog(title, message, "OK", null, new DialogManager.DialogResult() {
+//          @Override
+//          public void dialogClosed(boolean positiveButtonClicked) {
+//              PaymentDataManager.getInstance().fireCardSavedBeforeListener();
+//          }
+//      });
+//  }
 
   private boolean isCardSavedBefore(@NonNull  String fingerprint){
     if(PaymentDataManager.getInstance().getPaymentOptionsDataManager()==null)return false;
