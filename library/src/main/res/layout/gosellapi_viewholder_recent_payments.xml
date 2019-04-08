@@ -5,6 +5,7 @@
     android:layout_height="130dp"
     android:layout_centerInParent="true"
     android:id="@+id/shakingArea"
+    android:background="@color/french_gray_new"
     >
 
     <ImageView

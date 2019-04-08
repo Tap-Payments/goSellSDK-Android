@@ -28,7 +28,7 @@
 <string name="business_icon_description">Business icon</string>
   <string name="textview_title_address_on_card">العنوان الموجود في البطاقة</string>
   <string name="textview_title_country">الدولة</string>
-  <string name="textview_title_recent">حديثاً</string>
+  <string name="textview_title_recent">تم الحفظ مؤخرًا</string>
   <string name="textview_title_recent_edit">تعديل</string>
   <string name="textview_title_recent_cancel">إلغاء</string>
   <string name="textview_title_others">أخرى</string>
