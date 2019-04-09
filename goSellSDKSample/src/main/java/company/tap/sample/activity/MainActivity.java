@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         sdkSession.setTransactionCurrency(new TapCurrency("KWD"));    //** Required **
 
         // set transaction mode [TransactionMode.PURCHASE - TransactionMode.AUTHORIZE_CAPTURE - TransactionMode.SAVE_CARD - TransactionMode.TOKENIZE_CARD ]
-        sdkSession.setTransactionMode(TransactionMode.TOKENIZE_CARD);    //** Required **
+        sdkSession.setTransactionMode(TransactionMode.PURCHASE);    //** Required **
 
         // Using static CustomerBuilder method available inside TAP Customer Class you can populate TAP Customer object and pass it to SDK
         sdkSession.setCustomer(getCustomer());    //** Required **
@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         sdkSession.setPaymentStatementDescriptor(""); // ** Optional **
 
         // Enable or Disable 3DSecure
-        sdkSession.isRequires3DSecure(true);
+        sdkSession.isRequires3DSecure(false);
 
         //Set Receipt Settings [SMS - Email ]
         sdkSession.setReceiptSettings(new Receipt(false,false)); // ** Optional ** you can pass Receipt object or null
@@ -222,8 +222,8 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
     }
 
     private Customer getCustomer() {
-        return new Customer.CustomerBuilder("cus_Hn3s3020191346s0YR0304764").email("abc@abc.com").firstName("firstname")
-                .lastName("lastname").metadata("").phone(new PhoneNumber("965","65562630"))
+        return new Customer.CustomerBuilder("").email("abc@abc.com").firstName("firstname")
+                .lastName("lastname").metadata("").phone(new PhoneNumber("965","97211878"))
                 .middleName("middlename").build();
     }
 

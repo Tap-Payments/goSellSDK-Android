@@ -573,7 +573,8 @@ public final class PaymentDataManager {
 
       boolean merchantRequires3DSecure = getSDKSettings().getData().getPermissions()
           .contains(Permission.THREEDSECURE_DISABLED);
-      return merchantRequires3DSecure || getExternalDataSource().getRequires3DSecure();
+//      return merchantRequires3DSecure || getExternalDataSource().getRequires3DSecure(); // stopped and we will only send merchant configuration
+      return  getExternalDataSource().getRequires3DSecure();
     }
 
     @Nullable
