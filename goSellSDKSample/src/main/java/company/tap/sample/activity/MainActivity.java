@@ -223,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
     private Customer getCustomer() {
         return new Customer.CustomerBuilder("").email("abc@abc.com").firstName("firstname")
-                .lastName("lastname").metadata("").phone(new PhoneNumber("965","97211878"))
+                .lastName("lastname").metadata("").phone(new PhoneNumber("000","0000000"))
                 .middleName("middlename").build();
     }
 

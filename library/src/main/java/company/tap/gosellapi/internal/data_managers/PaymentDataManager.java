@@ -572,7 +572,7 @@ public final class PaymentDataManager {
     public boolean getRequires3DSecure() {
 /**
  * Stop checking SDKsettings in SDK to decide if  the payment will be 3DSecure or not
- * instead always send value configured by the Merchant.
+ * instead always send value configured by the Merchant. 
  */
 //      boolean merchantRequires3DSecure = getSDKSettings().getData().getPermissions().contains(Permission.THREEDSECURE_DISABLED);
 //      return merchantRequires3DSecure || getExternalDataSource().getRequires3DSecure();
