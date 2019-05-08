@@ -333,8 +333,13 @@ public class CardCredentialsViewHolder
             saveCardDescriptionTextView.setText(itemView.getResources().getString(R.string.textview_disclaimer_save_card_info));
             TextViewCompat.setTextAppearance(saveCardDescriptionTextView,R.style.SecurityText);
         }
-
-        if(PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode() == TransactionMode.TOKENIZE_CARD)
+        System.out.println("CardCredentials ViewHolder .... save card status = "+
+                PaymentDataManager.getInstance().getExternalDataSource().getAllowedToSaveCard());
+        
+        if(PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode() == TransactionMode.TOKENIZE_CARD
+           ||
+         !PaymentDataManager.getInstance().getExternalDataSource().getAllowedToSaveCard()
+        )
         {
 //            saveCardLayout.setVisibility(View.INVISIBLE);
             saveCardSwitch.setVisibility(View.GONE);

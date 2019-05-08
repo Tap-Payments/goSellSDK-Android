@@ -212,6 +212,16 @@ public class SDKSession implements View.OnClickListener{
     paymentDataSource.setPaymentStatementDescriptor(setPaymentStatementDescriptor);
   }
 
+
+  /**
+   * enable or disable saving card.
+   * @param saveCardStatus
+   */
+  public void isUserAllowedToSaveCard(boolean saveCardStatus){
+    System.out.println("isUserAllowedToSaveCard >>> "+saveCardStatus);
+    paymentDataSource.isUserAllowedToSaveCard(saveCardStatus);
+  }
+
   /**
    * enable or disable 3dsecure
    *

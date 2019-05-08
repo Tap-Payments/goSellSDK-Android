@@ -194,6 +194,9 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         // Payment Statement Descriptor
         sdkSession.setPaymentStatementDescriptor(""); // ** Optional **
 
+        // Enable or Disable Saving Card
+        sdkSession.isUserAllowedToSaveCard(false); //  ** Required ** you can pass boolean
+
         // Enable or Disable 3DSecure
         sdkSession.isRequires3DSecure(false);
 
