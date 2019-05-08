@@ -88,6 +88,11 @@ public interface PaymentDataSource {
     @Nullable    String                  getPaymentStatementDescriptor();
 
     /**
+     * Defines if user allowed to save card. @return the allowUserToSaveCard
+     * @return
+     */
+    @NonNull    boolean                 getAllowedToSaveCard();
+    /**
      * Defines if 3D secure check is required. @return the requires 3 d secure
      */
     @Nullable    boolean                 getRequires3DSecure();

@@ -57,6 +57,8 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
     String paymentStatementDescriptor;
     private @Nullable
     boolean requires3DSecure;
+    private @NonNull
+    boolean allowUserToSaveCard=true;
     private @Nullable
     Receipt receiptSettings;
     private @Nullable
@@ -209,6 +211,14 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
    }
 
     /**
+     * Is user allowed to save his card
+     * @param saveCardStatus
+     */
+    public void isUserAllowedToSaveCard(boolean saveCardStatus){
+        this.allowUserToSaveCard = saveCardStatus;
+    }
+
+    /**
      * Is requires 3 d secure.
      *
      * @param requires3DSecure the requires 3 d secure
@@ -216,6 +226,8 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
     public void isRequires3DSecure(@Nullable boolean requires3DSecure){
      this.requires3DSecure = requires3DSecure;
    }
+
+
 
     /**
      * Set receipt settings.
@@ -325,6 +337,9 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
         return paymentStatementDescriptor;
     }
 
+    @Override
+    public @NonNull
+    boolean getAllowedToSaveCard(){return allowUserToSaveCard; }
     @Override
     public @Nullable
     boolean getRequires3DSecure() {
