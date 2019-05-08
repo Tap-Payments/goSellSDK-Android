@@ -195,10 +195,10 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         sdkSession.setPaymentStatementDescriptor(""); // ** Optional **
 
         // Enable or Disable Saving Card
-        sdkSession.isUserAllowedToSaveCard(false); //  ** Required ** you can pass boolean
+        sdkSession.isUserAllowedToSaveCard(true); //  ** Required ** you can pass boolean
 
         // Enable or Disable 3DSecure
-        sdkSession.isRequires3DSecure(false);
+        sdkSession.isRequires3DSecure(true);
 
         //Set Receipt Settings [SMS - Email ]
         sdkSession.setReceiptSettings(new Receipt(false,false)); // ** Optional ** you can pass Receipt object or null
