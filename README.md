@@ -441,7 +441,10 @@ Don't forget to import the class at the beginning of the file:
     
             // Payment Statement Descriptor
             sdkSession.setPaymentStatementDescriptor(""); // ** Optional **
-    
+            
+             // Enable or Disable Saving Card
+             sdkSession.isUserAllowedToSaveCard(true); //  ** Required ** you can pass boolean
+                    
             // Enable or Disable 3DSecure
             sdkSession.isRequires3DSecure(true);
     
