@@ -2,11 +2,9 @@ package company.tap.gosellapi.internal.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.ViewGroup;
 
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
-import company.tap.gosellapi.internal.viewholders.PaymentOptionsBaseViewHolder;
 import company.tap.gosellapi.internal.viewholders.PaymentOptionsBaseViewHolder1;
 
 /**

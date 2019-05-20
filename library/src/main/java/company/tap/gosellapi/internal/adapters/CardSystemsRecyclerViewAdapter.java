@@ -18,8 +18,6 @@ import company.tap.gosellapi.internal.api.enums.PaymentType;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
-import company.tap.gosellapi.internal.utils.CompoundFilter;
-import company.tap.gosellapi.internal.utils.Utils;
 import company.tap.tapcardvalidator_android.CardBrand;
 
 

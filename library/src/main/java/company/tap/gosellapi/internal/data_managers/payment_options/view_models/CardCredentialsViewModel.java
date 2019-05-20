@@ -1,37 +1,20 @@
 package company.tap.gosellapi.internal.data_managers.payment_options.view_models;
 
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.os.Parcel;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.Editable;
-import android.text.ParcelableSpan;
 import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.TextPaint;
-import android.text.TextWatcher;
-import android.text.style.MetricAffectingSpan;
-import android.text.style.ReplacementSpan;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import company.tap.gosellapi.internal.api.enums.CardScheme;
 
-import company.tap.gosellapi.internal.api.models.Card;
-import company.tap.gosellapi.internal.api.models.CardRawData;
 import company.tap.gosellapi.internal.api.models.CreateTokenCard;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.api.responses.BINLookupResponse;
-import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.card_input_fields_text_handlers.CardNumberTextHandler;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models_data.CardCredentialsViewModelData;
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
-import company.tap.gosellapi.internal.utils.Utils;
 import company.tap.gosellapi.internal.viewholders.CardCredentialsViewHolder;
 import company.tap.gosellapi.internal.viewholders.PaymentOptionsBaseViewHolder;
 import company.tap.tapcardvalidator_android.CardBrand;

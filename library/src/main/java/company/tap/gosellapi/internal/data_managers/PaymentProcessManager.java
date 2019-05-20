@@ -3,7 +3,6 @@ package company.tap.gosellapi.internal.data_managers;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

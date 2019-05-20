@@ -1,7 +1,6 @@
 package company.tap.gosellapi.internal.custom_views;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.view.View;

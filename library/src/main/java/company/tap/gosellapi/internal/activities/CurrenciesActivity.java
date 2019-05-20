@@ -19,10 +19,8 @@ import java.util.ArrayList;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.interfaces.CurrenciesAdapterCallback;
-import company.tap.gosellapi.internal.utils.Utils;
 import company.tap.gosellapi.internal.adapters.CurrenciesRecyclerViewAdapter;
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
-import company.tap.gosellapi.internal.data_managers.payment_options.view_models_data.CurrencyViewModelData;
 
 /**
  * The type Currencies activity.
