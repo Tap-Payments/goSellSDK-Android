@@ -2,6 +2,8 @@ package company.tap.gosellapi;
 
 import android.content.Context;
 
+import org.jetbrains.annotations.Nullable;
+
 import company.tap.gosellapi.internal.api.api_service.AppInfo;
 
 /**

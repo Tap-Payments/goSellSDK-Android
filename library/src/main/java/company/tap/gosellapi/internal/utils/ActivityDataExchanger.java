@@ -36,13 +36,7 @@ public class ActivityDataExchanger {
      * @return the extra
      */
     public @Nullable Object getExtra(Intent intent, String key) {
-        System.out.println("ActivityDataExchanger >>> intentData : "+ key);
-        System.out.println("ActivityDataExchanger >>> intent : "+ intent.getDataString());
-
         Map<String, Object> intentData = getStorage().get(intent);
-
-        System.out.println(" ActivityDataExchanger >>> intentData : "+intentData );
-
         if ( intentData == null ) {
 
             return null;

@@ -104,7 +104,6 @@ public final class GoSellAPI {
      * @param requestCallback the request callback
      */
     public void retrieveSaveCard(final String saveCardId,final APIRequestCallback<SaveCard> requestCallback){
-        System.out.println("#################### saveCardId :"+saveCardId);
         requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.retrieveSaveCard(saveCardId),requestCallback));
     }
 
@@ -224,8 +223,6 @@ public final class GoSellAPI {
     public void getPaymentOptions(PaymentOptionsRequest paymentOptionsRequest, final APIRequestCallback<PaymentOptionsResponse> requestCallback) {
 
         // check paymentOptions Request
-        Log.d("#paymentOptionsRequest" , paymentOptionsRequest.getPaymentOptionRequestInfo());
-
         PaymentDataManager.getInstance().setPaymentOptionsRequest(paymentOptionsRequest);
         requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.getPaymentOptions(paymentOptionsRequest), new APIRequestCallback<PaymentOptionsResponse>() {
             @Override
@@ -248,7 +245,6 @@ public final class GoSellAPI {
      * @param cardId
      */
     public void deleteCard(String customerId, String cardId, final APIRequestCallback<DeleteCardResponse> requestCallback){
-        Log.d("Delete Card :", "Customer Id: "+ customerId + " && Card Id : "+cardId);
         requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.deleteCard(customerId,cardId),requestCallback));
     }
 }

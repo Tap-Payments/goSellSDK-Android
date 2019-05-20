@@ -108,10 +108,8 @@ public final class PaymentDataManager {
      * @param otpCode the otp code
      */
     public void confirmOTPCode(String otpCode) {
-      Log.d("PaymentDataManager"," otpCode : "+otpCode);
     if(getChargeOrAuthorize()!=null ) {
 
-      Log.d("PaymentDataManager","getChargeOrAuthorize() instanceof  Authorize :"+(getChargeOrAuthorize() instanceof  Authorize));
       if(getChargeOrAuthorize() instanceof  Authorize)
         getPaymentProcessManager().confirmAuthorizeOTPCode((Authorize) getChargeOrAuthorize(), otpCode);
 
@@ -629,13 +627,11 @@ public final class PaymentDataManager {
 
     @Override
     public void didReceiveCharge(Charge charge) {
-     if(getListeners()!=null) System.out.println("getListeners() : "+ getListeners().size());
       for (Iterator i = getListeners().iterator(); i.hasNext();) {
         try{
                 IPaymentProcessListener listener = (IPaymentProcessListener) i.next();
                 listener.didReceiveCharge(charge);
         }catch (Exception e){
-          Log.d("PaymentDataManager","didReceiveCharge :: exception while looping over listeners");
           break;
         }
       }
@@ -649,7 +645,6 @@ public final class PaymentDataManager {
             IPaymentProcessListener listener = (IPaymentProcessListener) i.next();
             listener.didReceiveAuthorize(authorize);
           }catch (Exception e){
-            Log.d("PaymentDataManager","didReceiveAuthorize :: exception while looping over listeners");
             break;
           }
         }
@@ -663,7 +658,6 @@ public final class PaymentDataManager {
             IPaymentProcessListener listener = (IPaymentProcessListener) i.next();
             listener.didReceiveSaveCard(saveCard);
           }catch (Exception e){
-            Log.d("PaymentDataManager","didReceiveSaveCard :: exception while looping over listeners");
             break;
           }
         }
@@ -678,7 +672,6 @@ public final class PaymentDataManager {
             IPaymentProcessListener listener = (IPaymentProcessListener) i.next();
             listener.didReceiveError(error);
           }catch (Exception e){
-            Log.d("PaymentDataManager","didReceiveError :: exception while looping over listeners");
             break;
           }
         }
@@ -693,7 +686,6 @@ public final class PaymentDataManager {
             IPaymentProcessListener listener = (IPaymentProcessListener) i.next();
             listener.didCardSavedBefore();
            }catch (Exception e){
-             Log.d("PaymentDataManager","didCardSavedBefore :: exception while looping over listeners");
              break;
            }
         }
@@ -708,7 +700,6 @@ public final class PaymentDataManager {
             IPaymentProcessListener listener = (IPaymentProcessListener) i.next();
             listener.fireCardTokenizationProcessCompleted(token);
           }catch (Exception e){
-            Log.d("PaymentDataManager","fireCardTokenizationProcessCompleted:: exception while looping over listeners");
             break;
           }
         }
@@ -755,9 +746,7 @@ public final class PaymentDataManager {
 
     @Override
     public void didCardDeleted(DeleteCardResponse deleteCardResponse) {
-      Log.d("PaymentDataManager"," PaymentDataManager: listener.getClass()>  " + listener.getClass());
        if(listener!=null && (listener instanceof GoSellPaymentActivity)) {
-            Log.d("PaymentDataManager"," PaymentDataManager: call CardDeleteListener to delete card  " + deleteCardResponse.getId());
             listener.didCardDeleted(deleteCardResponse);
         }
       }

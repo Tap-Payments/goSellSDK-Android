@@ -63,8 +63,6 @@ public class PaymentItem {
     this.discount = discount;
     this.taxes = taxes;
     this.totalAmount = AmountCalculator.calculateTotalAmountOf(this);
-
-    System.out.println("calculated total amount : " + this.totalAmount);
   }
 
     /**
@@ -100,9 +98,6 @@ public class PaymentItem {
      * @return the plain amount
      */
     public BigDecimal getPlainAmount() {
-    System.out.println("  #### getPlainAmount : " + this.getAmountPerUnit() );
-    System.out.println("  #### this.getQuantity().getValue() : " + this.getQuantity().getValue() );
-    System.out.println("  #### result : " + this.getAmountPerUnit().multiply(this.getQuantity().getValue()) );
     return this.getAmountPerUnit().multiply(this.getQuantity().getValue());
   }
 

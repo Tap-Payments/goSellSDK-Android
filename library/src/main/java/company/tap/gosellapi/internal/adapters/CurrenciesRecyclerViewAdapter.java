@@ -173,7 +173,6 @@ public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<Currenci
         }
 
         private void bind(String currencyCode) {
-            System.out.println("getCurrencySelectionString(currencyCode) :   "+ getCurrencySelectionString(currencyCode));
             tvCurrencyName.setText(getCurrencySelectionString(currencyCode));
 
             if (currencyCode.equals(selectedCurrency)) {
@@ -188,12 +187,10 @@ public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<Currenci
         public void onClick(View view) {
 
             int position = getAdapterPosition();
-            System.out.println(" get selected adapter position : " + position);
             setSelection(position);
 
             AmountedCurrency selectedCurrency = getFilteredCurrencies()!=null ? getFilteredCurrencies().get(position).getCurrency()
                                                 : getAllCurrencies().get(position).getCurrency();
-            System.out.println("get user selected currency : " + selectedCurrency.getCurrency());
             callback.itemSelected(selectedCurrency);
         }
 
@@ -209,9 +206,6 @@ public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<Currenci
 
             String currencyCodeLowered = currencyCode.toLowerCase();
             String currencyName = Utils.getCurrencyName(currencyCode, currency,itemView.getContext());
-            System.out.println("currencyCodeLowered :  "+ currencyCodeLowered);
-            System.out.println("currencyName :  "+ currencyName);
-            System.out.println("symbol :  "+ symbol);
 
 //            SpannableStringBuilder sb = new SpannableStringBuilder(currencyCode);
             SpannableStringBuilder sb = new SpannableStringBuilder();

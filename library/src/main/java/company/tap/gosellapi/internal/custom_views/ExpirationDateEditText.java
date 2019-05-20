@@ -95,7 +95,6 @@ public class ExpirationDateEditText extends ErrorEditText implements TextWatcher
 
     @Override
     public void onClick(View v) {
-        System.out.println("ExpirationDateEditText >> onclick : "+mUseExpirationDateDialog);
         if (mUseExpirationDateDialog) {
             closeSoftKeyboard();
             mExpirationDateDialog.show();

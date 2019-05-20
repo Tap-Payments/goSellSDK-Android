@@ -64,7 +64,6 @@ public class WebPaymentActivity extends BaseActionBarActivity implements IPaymen
     }
 
     viewModel = (viewModelObject instanceof WebPaymentViewModel) ? (WebPaymentViewModel) viewModelObject : null;
-    Log.d("WebPaymentActivity"," WebPaymentActivity >>  viewModel :" + viewModel);
     setContentView(R.layout.gosellapi_activity_web_payment);
 
     webView = findViewById(R.id.webPaymentWebView);
@@ -121,11 +120,9 @@ public class WebPaymentActivity extends BaseActionBarActivity implements IPaymen
 
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
-      Log.d("WebPaymentActivity"," shouldOverrideUrlLoading : " + url);
       PaymentDataManager.WebPaymentURLDecision decision = PaymentDataManager.getInstance().decisionForWebPaymentURL(url);
 
       boolean shouldOverride = !decision.shouldLoad();
-      Log.d("WebPaymentActivity"," shouldOverrideUrlLoading : decision : " + shouldOverride);
       if (shouldOverride) { // if decision is true and response has TAP_ID
         // call backend to get charge response >> based of charge object type [Authorize - Charge] call retrieveCharge / retrieveAuthorize
         PaymentDataManager.getInstance().retrieveChargeOrAuthorizeOrSaveCardAPI(getChargeOrAuthorize());
@@ -157,7 +154,6 @@ public class WebPaymentActivity extends BaseActionBarActivity implements IPaymen
   @Override
   public void didReceiveCharge(Charge charge) {
     if (charge != null) {
-      Log.d("WebPaymentActivity"," web payment activity* * * " + charge.getStatus());
       switch (charge.getStatus()) {
         case INITIATED:
           break;
@@ -181,17 +177,14 @@ public class WebPaymentActivity extends BaseActionBarActivity implements IPaymen
 
   @Override
   public void didReceiveSaveCard(@NonNull SaveCard saveCard) {
-    Log.d("WebPaymentActivity"," didReceiveSaveCard() not available in case of WebPayment ");
   }
 
   @Override
   public void didCardSavedBefore() {
-    Log.d("WebPaymentActivity"," didCardSavedBefore() not available in case of WebPayment ");
   }
 
   @Override
   public void fireCardTokenizationProcessCompleted(Token token) {
-    Log.d("WebPaymentActivity"," fireCardTokenizationProcessCompleted() not available in case of WebPayment ");
   }
 
   /**
@@ -230,13 +223,11 @@ public class WebPaymentActivity extends BaseActionBarActivity implements IPaymen
 
   @Override
   public void didReceiveError(GoSellError error) {
-    Log.d("WebPaymentActivity"," web payment : didReceiveError");
     closeLoadingScreen();
     finishActivityWithResultCancelled(error);
   }
 
   private void obtainPaymentURLFromChargeOrAuthorize(Charge chargeOrAuthorize) {
-    Log.d("WebPaymentActivity"," WebPaymentActivity >> chargeOrAuthorize : " + chargeOrAuthorize.getStatus());
 
     if (chargeOrAuthorize.getStatus() != ChargeStatus.INITIATED) {
       return;
@@ -244,14 +235,11 @@ public class WebPaymentActivity extends BaseActionBarActivity implements IPaymen
 
     Authenticate authentication = chargeOrAuthorize.getAuthenticate();
     if (authentication != null)
-      Log.d("WebPaymentActivity"," WebPaymentActivity >> authentication : " + authentication.getStatus());
     if (authentication != null && authentication.getStatus() == AuthenticationStatus.INITIATED) {
       return;
     }
 
     String url = chargeOrAuthorize.getTransaction().getUrl();
-    Log.d("WebPaymentActivity","WebPaymentActivity >> Transaction().getUrl() :" + url);
-    Log.d("WebPaymentActivity","WebPaymentActivity >> chargeOrAuthorize :" + chargeOrAuthorize.getId());
 
 
     if (url != null) {

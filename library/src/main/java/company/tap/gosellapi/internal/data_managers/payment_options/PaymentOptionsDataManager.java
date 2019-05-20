@@ -354,7 +354,6 @@ public class PaymentOptionsDataManager {
    * @param groupViewHolderListener
    */
   public void editItemClicked(GroupViewHolder groupViewHolderListener){
-      Log.d("PayOptionsDataManager","editItemClicked.......");
     RecentSectionViewModel recentSectionViewModel = getModelsHandler().findSavedCardsModel();
     if (recentSectionViewModel == null) return;
 
@@ -366,7 +365,6 @@ public class PaymentOptionsDataManager {
    * this method will be called if user clicks on cancel saved card
    */
   public void cancelItemClicked(){
-    Log.d("PayOptionsDataManager","cancelItemClicked.......");
     RecentSectionViewModel recentSectionViewModel = getModelsHandler().findSavedCardsModel();
     if (recentSectionViewModel == null) return;
 
@@ -537,7 +535,6 @@ public class PaymentOptionsDataManager {
 
     boolean isCardDeleted = false;
 
-    Log.d("PaymentOptionsDataMgr","updateSavedCards list before deleting:  = "+recentSectionViewModel.getData().size());
     for (Iterator i = recentSectionViewModel.getData().iterator(); i.hasNext();) {
       SavedCard sCard = (SavedCard) i.next();
       if (sCard.getId().equals(cardId)) {
@@ -546,7 +543,6 @@ public class PaymentOptionsDataManager {
       }
     }
 
-    Log.d("PaymentOptionsDataMgr","updateSavedCards list after deleting:  = "+recentSectionViewModel.getData().size());
 
     if(recentSectionViewModel.getData().size()==0)
       clearPaymentOptionsResponseCards();
@@ -569,7 +565,6 @@ public class PaymentOptionsDataManager {
   }
 
   private void clearPaymentOptionsResponseCards(){
-    Log.d("PaymentOptionsDataMgr","clearPaymentOptionsResponseCards .....");
     getPaymentOptionsResponse().getCards().clear();
     getModelsHandler().filterViewModels(getPaymentOptionsResponse().getCurrency());
   }
@@ -611,8 +606,6 @@ public class PaymentOptionsDataManager {
 
     int expirationMonth = card.expiryMonth;
     int expirationYear = card.expiryYear;
-    Log.d("PaymentOptionsDataMgr"," cardScanned >>> expirationMonth " + expirationMonth);
-      Log.d("PaymentOptionsDataMgr"," cardScanned >>> expirationYear " + expirationYear);
     if (expirationMonth != 0 && expirationYear != 0) {
 
       cardCredentialsViewModel.setExpirationYear(String.valueOf(expirationYear));
@@ -646,7 +639,6 @@ public class PaymentOptionsDataManager {
   
   
   public void checkShakingStatus(){
-    Log.d("PayOptionsDataManager","checkShakingStatus .......");
     RecentSectionViewModel recentSectionViewModel = getModelsHandler().findSavedCardsModel();
     if (recentSectionViewModel == null) return;
 
@@ -752,7 +744,6 @@ public class PaymentOptionsDataManager {
       ArrayList<PaymentOption> paymentOptionsWorker = new ArrayList<>(getPaymentOptionsResponse().getPaymentOptions());
 
 
-      Log.d("PaymentOptionsDataMgr","/////////////////////  get web/card payment options   ///////////////");
       /**
        * Haitham Sheshtawy 20/12/2018
        * Java 8 way of filtering collection against old Utils filter method
@@ -827,9 +818,6 @@ public class PaymentOptionsDataManager {
       ArrayList<PaymentOptionViewModel> viewModelResult = new ArrayList<>();
 
         ArrayList<SavedCard> savedCards=null;
-
-        Log.d("filterViewModels","PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode():"+
-                PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode());
       if(
               PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode() != TransactionMode.SAVE_CARD
       &&

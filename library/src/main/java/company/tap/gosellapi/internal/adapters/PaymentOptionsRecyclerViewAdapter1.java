@@ -28,14 +28,12 @@ public class PaymentOptionsRecyclerViewAdapter1 extends RecyclerView.Adapter<Pay
   @NonNull
   @Override
   public PaymentOptionsBaseViewHolder1 onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-    Log.d(" >> onCreateViewHolder",viewType+"");
     return null;
   }
 
   @Override
   public void onBindViewHolder(@NonNull PaymentOptionsBaseViewHolder1 paymentOptionsBaseViewHolder1,
                                int i) {
-    Log.d(" >> onBindViewHolder","");
   }
 
   @Override

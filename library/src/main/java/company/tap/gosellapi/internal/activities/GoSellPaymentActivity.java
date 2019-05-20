@@ -343,10 +343,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     }
 
     private void startSavedCardPaymentProcess() {
-        Log.d("GoSellPaymentActivity"," getSavedCard().getPaymentOptionIdentifier() : " + getSavedCard()
-                .getPaymentOptionIdentifier());
         PaymentDataManager.getInstance().checkSavedCardPaymentExtraFees(getSavedCard(), this);
-
     }
 
     private void startCardPaymentProcess(CardCredentialsViewModel paymentOptionViewModel) {
@@ -405,7 +402,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         BigDecimal feesAmount = PaymentDataManager.getInstance()
                 .calculateCardExtraFees(paymentOption);
 
-        Log.d("GoSellPaymentActivity"," update pay button with : fees : " + feesAmount);
 
         if (!isTransactionModeSaveCard())
             payButton.getPayButton().setText(
@@ -490,7 +486,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
     @Override
     public void binNumberEntered(String binNumber) {
-        Log.d("GoSellPaymentActivity"," binNumberEntered >>> binNumber:" + binNumber);
         GoSellAPI.getInstance()
                 .retrieveBINLookupBINLookup(binNumber, new APIRequestCallback<BINLookupResponse>() {
                     @Override
@@ -552,7 +547,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     //////////////////////////////////////////////////////////////////////////////////////////////////
 
     private void openOTPScreen(Charge charge) {
-        Log.d("GoSellPaymentActivity","openOTPScreen called .........");
         stopPayButtonLoadingView();
         if (charge.getAuthenticate() != null) {
             String phoneNumber = charge.getAuthenticate().getValue();
@@ -616,7 +610,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                  if(data==null)break;
                 if (resultCode == RESULT_OK)
                 {
-                    Log.d("GoSellPaymentActivity","data coming after closing WebPaymentActivity :"+data.getSerializableExtra("charge"));
                     if(data.getSerializableExtra("charge")!=null){
                         Charge charge = (Charge) data.getSerializableExtra("charge");
                         if(charge!=null) {
@@ -633,7 +626,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                     }
                 }
                 else if(resultCode == RESULT_CANCELED) {
-                    Log.d("GoSellPaymentActivity","data coming after closing WebPaymentActivity :"+data.getSerializableExtra("error"));
                     if(data.getSerializableExtra("error")!=null){
                         GoSellError goSellError = (GoSellError) data.getSerializableExtra("error");
                         if(goSellError!=null) {
@@ -664,7 +656,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                     closePaymentActivity();
                     SDKSession.getListener().paymentSucceed(charge);
                 }catch (Exception e){
-                    Log.d("GoSellPaymentActivity"," Error while calling fireWebPaymentCallBack >>> method paymentSucceed(charge)");
                     closePaymentActivity();
                 }
                 break;
@@ -680,7 +671,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                     closePaymentActivity();
                     SDKSession.getListener().paymentFailed(charge);
                 }catch (Exception e){
-                    Log.d("GoSellPaymentActivity"," Error while calling fireWebPaymentCallBack >>> method paymentFailed(charge)");
                     closePaymentActivity();
                 }
                 break;
@@ -691,7 +681,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
      * @param amountedCurrency this method will be called after user changes currency
      */
     private void updateDisplayedCards(AmountedCurrency amountedCurrency) {
-        Log.d("GoSellPaymentActivity","new currency ... " + amountedCurrency.getCurrency());
         // filter views
         dataSource.currencySelectedByUser(amountedCurrency);
         // refresh layout [ filter view models according to new currency - reload views ]
@@ -725,9 +714,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
     @Override
     public void didReceiveCharge(Charge charge) {
-        Log.d("GoSellPaymentActivity"," Cards >> didReceiveCharge * * * " + charge);
         if (charge == null) return;
-        Log.d("GoSellPaymentActivity"," Cards >> didReceiveCharge * * * " + charge.getStatus());
 
         switch (charge.getStatus()) {
             case INITIATED:
@@ -739,7 +726,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                             break;
 
                         case OTP:
-                            Log.d("GoSellPaymentActivity"," coming charge type is ...  caller didReceiveCharge");
                             PaymentDataManager.getInstance().setChargeOrAuthorize(charge);
                             openOTPScreen(charge);
                             break;
@@ -754,7 +740,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                     SDKSession.getListener().paymentSucceed(charge);
                 }catch (Exception e){
                     closePaymentActivity();
-                    Log.d("GoSellPaymentActivity"," Error while calling delegate method paymentSucceed(charge)");
                 }
                 break;
             case FAILED:
@@ -769,7 +754,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                     closePaymentActivity();
                     SDKSession.getListener().paymentFailed(charge);
                 }catch (Exception e){
-                    Log.d("GoSellPaymentActivity"," Error while calling delegate method paymentFailed(charge)");
                     closePaymentActivity();
                 }
                 break;
@@ -781,9 +765,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
     @Override
     public void didReceiveSaveCard(SaveCard saveCard) {
-        Log.d("GoSellPaymentActivity"," Cards >> didReceiveSaveCard * * * " + saveCard);
         if (saveCard == null) return;
-        Log.d("GoSellPaymentActivity"," Cards >> didReceiveSaveCard * * * status :" + saveCard.getStatus());
 
         switch (saveCard.getStatus()) {
             case INITIATED:
@@ -795,7 +777,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                             break;
 
                         case OTP:
-                            Log.d("GoSellPaymentActivity"," start otp for save card mode........");
                             PaymentDataManager.getInstance().setChargeOrAuthorize(saveCard);
                             openOTPScreen(saveCard);
                             break;
@@ -810,7 +791,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                     closePaymentActivity();
                     SDKSession.getListener().cardSaved(saveCard);
                 }catch (Exception e){
-                    Log.d("GoSellPaymentActivity"," Error while calling delegate method cardSaved(saveCard)");
                     closePaymentActivity();
                 }
                 break;
@@ -825,7 +805,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                     closePaymentActivity();
                     SDKSession.getListener().cardSavingFailed(saveCard);
                 }catch (Exception e){
-                    Log.d("GoSellPaymentActivity"," Error while calling delegate method cardSavingFailed(saveCard)");
                     closePaymentActivity();
                 }
                 break;
@@ -835,7 +814,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
     @Override
     public void didCardSavedBefore() {
-        Log.d("GoSellPaymentActivity"," card already saved before ....");
         stopPayButtonLoadingView();
 
     }
@@ -848,7 +826,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
 
     private void obtainPaymentURLFromChargeOrAuthorizeOrSaveCard(Charge chargeOrAuthorizeOrSaveCard) {
-        Log.d("GoSellPaymentActivity","GoSellPaymentActivity..chargeOrAuthorizeOrSaveCard :" + chargeOrAuthorizeOrSaveCard.getStatus());
 
         if (chargeOrAuthorizeOrSaveCard.getStatus() != ChargeStatus.INITIATED) {
             return;
@@ -856,14 +833,11 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
         Authenticate authentication = chargeOrAuthorizeOrSaveCard.getAuthenticate();
         if (authentication != null)
-            Log.d("GoSellPaymentActivity"," GoSellPaymentActivity>authentication : " + authentication.getStatus());
         if (authentication != null && authentication.getStatus() == AuthenticationStatus.INITIATED) {
             return;
         }
 
         String url = chargeOrAuthorizeOrSaveCard.getTransaction().getUrl();
-        Log.d("GoSellPaymentActivity","GoSellPaymentActivity >> Transaction().getUrl() :" + url);
-        Log.d("GoSellPaymentActivity","GoSellPaymentActivity >> chargeOrAuthorize :" + chargeOrAuthorizeOrSaveCard.getId());
 
 
         if (url != null) {
@@ -895,7 +869,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
     @Override
     public void didCardDeleted(DeleteCardResponse deleteCardResponse) {
-            Log.d("GoSellPaymentActivity","didCardDeleted: response >>> "+deleteCardResponse);
             LoadingScreenManager.getInstance().closeLoadingScreen();
             dataSource.updateSavedCards(deleteCardResponse.getId());
     }
@@ -910,18 +883,15 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            Log.d("GoSellPaymentActivity"," on page started : " + url);
             super.onPageStarted(view, url, favicon);
         }
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            Log.d("GoSellPaymentActivity","shouldOverrideUrlLoading :" + url);
             PaymentDataManager.WebPaymentURLDecision decision = PaymentDataManager.getInstance()
                     .decisionForWebPaymentURL(url);
 
             boolean shouldOverride = !decision.shouldLoad();
-            Log.d("GoSellPaymentActivity"," shouldOverrideUrlLoading : decision : " + shouldOverride);
             if (shouldOverride) { // if decision is true and response has TAP_ID
                 // call backend to get charge response >> based of charge object type [Authorize - Charge] call retrieveCharge / retrieveAuthorize
                 PaymentDataManager.getInstance().retrieveChargeOrAuthorizeOrSaveCardAPI(getChargeOrAuthorize());
@@ -932,16 +902,13 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            Log.d("GoSellPaymentActivity","onPageFinished :" + url);
         }
     }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
     public void didReceiveAuthorize(Authorize authorize) {
-        Log.d("GoSellPaymentActivity"," Cards >> didReceiveAuthorize * * * " + authorize);
         if (authorize == null) return;
-        Log.d("GoSellPaymentActivity"," Cards >> didReceiveAuthorize * * * " + authorize.getStatus());
 
         switch (authorize.getStatus()) {
             case INITIATED:
@@ -966,7 +933,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                     closePaymentActivity();
                     SDKSession.getListener().authorizationSucceed(authorize);
                 }catch (Exception e){
-                    Log.d("GoSellPaymentActivity"," Error while calling delegate method authorizationSucceed(authorize)");
                     closePaymentActivity();
                 }
                 break;
@@ -980,7 +946,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                     closePaymentActivity();
                     SDKSession.getListener().authorizationFailed(authorize);
                 }catch (Exception e){
-                    Log.d("GoSellPaymentActivity"," Error while calling delegate method authorizationFailed(authorize)");
                     closePaymentActivity();
                 }
                 break;
@@ -994,7 +959,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
             closePaymentActivity();
             SDKSession.getListener().sdkError(error);
         }catch (Exception e){
-            Log.d("GoSellPaymentActivity","Error while try to call delegate method  sdkError(error)");
             closePaymentActivity();
         }
     }
@@ -1080,17 +1044,14 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                         keyboardVisible = true;
                     } else
                     {
-                        System.out.println("inside onGlobalLayout: keyboardVisible: "+ keyboardVisible);
                         // Height increased: keyboard was hidden
                         keyboardVisible = false;
-                        System.out.println("inside onGlobalLayout: startPaymentFlag: "+ startPaymentFlag);
                         if(startPaymentFlag)
                         {
 
                             new CountDownTimer(1, 1000) {
                                 @Override
                                 public void onTick(long millisUntilFinished) {
-                                    System.out.println("millisUntilFinished : "+ millisUntilFinished);
                                 }
 
                                 @Override
@@ -1127,7 +1088,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
             else
                 showDialog(getResources().getString(R.string.internet_connectivity_title),getResources().getString(R.string.internet_connectivity_message));
         }
-        System.out.println(" some error in connectivity manager...");
     }
     private void showDialog(String title,String message){
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
@@ -1135,7 +1095,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         dialogBuilder.setMessage(message);
         dialogBuilder.setCancelable(false);
 
-        dialogBuilder.setPositiveButton(getResources().getString(R.string.dismiss), (dialog, which) -> System.out.println(" user dismissed process....."));
 
         dialogBuilder.setNegativeButton(getResources().getString(R.string.retry), (dialog, which) -> checkInternetConnectivity());
 

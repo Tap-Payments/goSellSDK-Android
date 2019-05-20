@@ -187,7 +187,6 @@ public class OTPFullScreenDialog extends DialogFragment {
       else
         showDialog(context,action,getResources().getString(R.string.internet_connectivity_title),getResources().getString(R.string.internet_connectivity_message));
     }
-    System.out.println(" some error in connectivity manager...");
   }
 
   private void showDialog(Context context, OperationType action, String title, String message){
@@ -196,7 +195,6 @@ public class OTPFullScreenDialog extends DialogFragment {
     dialogBuilder.setMessage(message);
     dialogBuilder.setCancelable(false);
 
-    dialogBuilder.setPositiveButton(getResources().getString(R.string.dismiss), (dialog, which) -> System.out.println(" user dismissed process....."));
 
     dialogBuilder.setNegativeButton(getResources().getString(R.string.retry), (dialog, which) -> checkInternetConnectivity(context,action));
 
@@ -233,7 +231,6 @@ public class OTPFullScreenDialog extends DialogFragment {
 
       @Override
       public void afterTextChanged(Editable s) {
-        System.out.println(" count text  :" + s.toString());
         otpCode = s.toString();
         if (s.toString().length() == CONFIRMATION_CODE_LENGTH )
           payButtonView.setEnabled(true);

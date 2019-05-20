@@ -20,7 +20,6 @@ import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import company.tap.gosellapi.internal.api.serializers.SecureSerializer;
 import company.tap.gosellapi.internal.exceptions.NoAuthTokenProvidedException;
 import company.tap.gosellapi.internal.interfaces.SecureSerializable;
-import company.tap.gosellapi.internal.logger.lo;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -85,17 +84,14 @@ public final class RetrofitHelper {
         httpClientBuilder.connectTimeout(30, TimeUnit.SECONDS);
         httpClientBuilder.readTimeout(30, TimeUnit.SECONDS);
         // add application interceptor to httpClientBuilder
-        httpClientBuilder.addInterceptor(new Interceptor() {
-            @Override
-            public Response intercept(@NonNull Chain chain) throws IOException {
-                Request request = chain.request()
-                        .newBuilder()
-                        .addHeader(API_Constants.AUTH_TOKEN_KEY, API_Constants.AUTH_TOKEN_PREFIX + AppInfo.getAuthToken())
-                        .addHeader(API_Constants.APPLICATION, AppInfo.getApplicationInfo())
-                        .addHeader(API_Constants.ACCEPT_KEY,API_Constants.ACCEPT_VALUE)
-                        .addHeader(API_Constants.CONTENT_TYPE_KEY, API_Constants.CONTENT_TYPE_VALUE).build();
-                return chain.proceed(request);
-            }
+        httpClientBuilder.addInterceptor(chain -> {
+            Request request = chain.request()
+                    .newBuilder()
+                    .addHeader(API_Constants.AUTH_TOKEN_KEY, API_Constants.AUTH_TOKEN_PREFIX + AppInfo.getAuthToken())
+                    .addHeader(API_Constants.APPLICATION, AppInfo.getApplicationInfo())
+                    .addHeader(API_Constants.ACCEPT_KEY,API_Constants.ACCEPT_VALUE)
+                    .addHeader(API_Constants.CONTENT_TYPE_KEY, API_Constants.CONTENT_TYPE_VALUE).build();
+            return chain.proceed(request);
         });
         httpClientBuilder.addInterceptor(new HttpLoggingInterceptor().setLevel(!BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.NONE : HttpLoggingInterceptor.Level.BODY));
 

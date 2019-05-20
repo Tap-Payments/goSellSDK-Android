@@ -244,7 +244,6 @@ public class CardCredentialsViewHolder
 
            @Override
             public void afterTextChanged(Editable s) {
-             System.out.println("afterText changed ...");
              viewModel.cardDetailsFilled(validateCardFields(),viewModel);
              viewModel.checkShakingStatus();
             }
@@ -497,7 +496,6 @@ public class CardCredentialsViewHolder
 
       @Override
       public void onTextChanged(CharSequence s, int start, int before, int count) {
-        System.out.println("validateCardFields : "+ validateCardFields());
         viewModel.cardDetailsFilled(validateCardFields(), viewModel);
       }
 
@@ -585,7 +583,6 @@ public class CardCredentialsViewHolder
         // get preferred card brands from payment option
         ArrayList<CardBrand> paymentOptionsCardBrands = PaymentDataManager.getInstance().getAvailablePaymentOptionsCardBrands();
         DefinedCardBrand brand = CardValidator.validate(cardNumber,paymentOptionsCardBrands);
-        System.out.println("brand >>  card number :" + cardNumber + " brand:"+brand.getCardBrand());
 
         // update CCVEditText CardType: to set CCV Length according to CardType
         updateCCVEditTextCardType(brand.getCardBrand());
@@ -611,10 +608,8 @@ public class CardCredentialsViewHolder
      * @param cardBrand the card brand
      */
     public void updateCCVEditTextCardType(CardBrand cardBrand){
-      System.out.println("updateCCVEditTextCardType : " + cardBrand);
       if (cardBrand == null) return;
 
-      System.out.println("updateCCVEditTextCardType : " + cardBrand.getRawValue());
 
       if (cardBrand.getRawValue().contains("AMEX") || cardBrand.getRawValue().contains("AMERICAN_EXPRESS"))
         cvvField.setCardType(CardType.AMEX);
@@ -718,9 +713,7 @@ public class CardCredentialsViewHolder
      private String validateLength(String cardNumber) {
 
                 cardNumber = cardNumber.replace(" ", "");
-                System.out.println("brand >>  card number : replaced card no = " + cardNumber);
                 DefinedCardBrand brand = CardValidator.validate(cardNumber);
-                System.out.println("brand >>  card number :" + cardNumber + " brand:"+brand.getCardBrand());
 
                 String str = cardNumberField.getText().toString();
                 String newStr = str;

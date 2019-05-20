@@ -108,7 +108,6 @@ public class SDKSession implements View.OnClickListener{
    * set amount
    */
   public void setAmount(BigDecimal amount){
-    System.out.println("amount ... "+amount);
     paymentDataSource.setAmount(amount);
   }
 
@@ -218,7 +217,6 @@ public class SDKSession implements View.OnClickListener{
    * @param saveCardStatus
    */
   public void isUserAllowedToSaveCard(boolean saveCardStatus){
-    System.out.println("isUserAllowedToSaveCard >>> "+saveCardStatus);
     paymentDataSource.isUserAllowedToSaveCard(saveCardStatus);
   }
 
@@ -228,7 +226,6 @@ public class SDKSession implements View.OnClickListener{
    * @param is3DSecure the is 3 d secure
    */
   public void isRequires3DSecure(boolean is3DSecure){
-    System.out.println("isRequires3DSecure >>> "+is3DSecure);
     paymentDataSource.isRequires3DSecure(is3DSecure);
   }
 
@@ -300,7 +297,6 @@ public class SDKSession implements View.OnClickListener{
    * call payment methods API
    */
   private void getPaymentOptions() {
-    System.out.println("isInternetConnectionAvailable() : " + isInternetConnectionAvailable());
     switch (isInternetConnectionAvailable()) {
       case SDK_NOT_CONFIGURED_WITH_VALID_CONTEXT:
         showDialog("SDK Error", "SDK Not Configured Correctly");
@@ -317,13 +313,9 @@ public class SDKSession implements View.OnClickListener{
   }
 
   public void startPayment(){
-    System.out.println("startPayment ...getPaymentOptions........"+this.paymentDataSource.getAmount());
     persistPaymentDataSource();
     if(payButtonView!=null)
     payButtonView.getLoadingView().start();
-   System.out.println(" before call request this.paymentDataSource.getCurrency() : " + this.paymentDataSource
-                    .getCurrency().getIsoCode());
-
 
     PaymentOptionsRequest request = new PaymentOptionsRequest(
 
@@ -337,8 +329,6 @@ public class SDKSession implements View.OnClickListener{
         (this.paymentDataSource.getMerchant()!=null)?this.paymentDataSource.getMerchant().getId():null
     );
 
-
-    System.out.println("request >>> "+request.getPaymentOptionRequestInfo());
     GoSellAPI.getInstance().getPaymentOptions(request,
         new APIRequestCallback<PaymentOptionsResponse>() {
 
@@ -358,8 +348,6 @@ public class SDKSession implements View.OnClickListener{
 
           @Override
           public void onFailure(GoSellError errorDetails) {
-
-           if(errorDetails!=null) System.out.println("getPaymentOptions>>> error: "+errorDetails.getErrorBody());
             if(ThemeObject.getInstance().isPayButtLoaderVisible()) {
 
               if(payButtonView!=null)
@@ -394,14 +382,6 @@ public class SDKSession implements View.OnClickListener{
    * launch goSellSDK activity
    */
   private void startMainActivity() {
-
-    System.out.println("startMainActivity started........");
-    System.out.println("startMainActivity payButtonView........"+payButtonView);
-
-    System.out.println("startMainActivity getListener........"+getListener());
-    System.out.println("startMainActivity context........"+context);
-    System.out.println("startMainActivity activityListener........"+activityListener);
-
     if(payButtonView!=null )
       payButtonView.getLoadingView().setForceStop(true);
 
@@ -437,7 +417,7 @@ public class SDKSession implements View.OnClickListener{
     dialogBuilder.setMessage(message);
     dialogBuilder.setCancelable(false);
 
-    dialogBuilder.setPositiveButton("Ok", (dialog, which) -> System.out.println("dialog ok button clicked...."));
+    dialogBuilder.setPositiveButton("Ok", (dialog, which) -> {});
 
     dialogBuilder.show();
 
