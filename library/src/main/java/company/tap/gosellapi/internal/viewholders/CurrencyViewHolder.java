@@ -6,10 +6,8 @@ import android.widget.TextView;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
-import company.tap.gosellapi.internal.data_managers.payment_options.view_models_data.CurrencyViewModelData;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.CurrencyViewModel;
-import company.tap.gosellapi.internal.utils.CurrencyFormatter;
-import company.tap.gosellapi.internal.utils.Utils;
+import company.tap.gosellapi.internal.data_managers.payment_options.view_models_data.CurrencyViewModelData;
 
 import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.JELLY_BEAN_MR1;

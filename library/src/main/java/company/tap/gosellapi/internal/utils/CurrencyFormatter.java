@@ -4,15 +4,11 @@ import android.support.annotation.NonNull;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.text.FieldPosition;
 import java.text.NumberFormat;
-import java.text.ParsePosition;
-import java.util.Collection;
 import java.util.Currency;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 

@@ -12,14 +12,13 @@ import company.tap.gosellapi.internal.api.models.Merchant;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.gosellapi.open.models.AuthorizeAction;
 import company.tap.gosellapi.open.models.Customer;
-import company.tap.gosellapi.open.models.Destination;
 import company.tap.gosellapi.open.models.Destinations;
 import company.tap.gosellapi.open.models.PaymentItem;
 import company.tap.gosellapi.open.models.Receipt;
 import company.tap.gosellapi.open.models.Reference;
 import company.tap.gosellapi.open.models.Shipping;
-import company.tap.gosellapi.open.models.Tax;
 import company.tap.gosellapi.open.models.TapCurrency;
+import company.tap.gosellapi.open.models.Tax;
 
 /**
  * The interface Payment data source.

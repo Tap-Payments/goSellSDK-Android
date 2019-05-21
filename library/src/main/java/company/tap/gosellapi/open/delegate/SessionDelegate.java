@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.models.Authorize;
 import company.tap.gosellapi.internal.api.models.Charge;
-import company.tap.gosellapi.internal.api.models.Token;
 
 public interface SessionDelegate {
 

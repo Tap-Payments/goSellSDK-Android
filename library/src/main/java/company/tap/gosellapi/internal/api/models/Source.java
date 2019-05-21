@@ -1,7 +1,6 @@
 package company.tap.gosellapi.internal.api.models;
 
 import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

@@ -2,7 +2,6 @@ package company.tap.gosellapi.internal.utils;
 
 import android.text.TextUtils;
 
-
 import java.util.regex.Pattern;
 
 import company.tap.gosellapi.R;

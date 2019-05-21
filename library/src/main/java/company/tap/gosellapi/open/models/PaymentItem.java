@@ -1,9 +1,9 @@
 package company.tap.gosellapi.open.models;
 
+import android.support.annotation.Nullable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
-import android.support.annotation.Nullable;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tapfontlistpreference="http://schemas.android.com/apk/res-auto"
-    xmlns:tapcolorlistpreference="http://schemas.android.com/apk/res-auto"
-    xmlns:tapdimensionpreference="http://schemas.android.com/apk/res-auto"
-    >
+    xmlns:tapcolorlistpreference="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory android:title="General">
 

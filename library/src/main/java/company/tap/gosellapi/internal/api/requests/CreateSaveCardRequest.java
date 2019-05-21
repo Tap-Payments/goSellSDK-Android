@@ -7,7 +7,6 @@ import android.support.annotation.RestrictTo;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 
 import company.tap.gosellapi.internal.api.models.Order;

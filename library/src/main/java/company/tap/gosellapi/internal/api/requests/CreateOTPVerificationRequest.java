@@ -1,6 +1,5 @@
 package company.tap.gosellapi.internal.api.requests;
 
-import android.os.Build;
 import android.support.annotation.RestrictTo;
 
 import com.google.gson.annotations.Expose;

@@ -1,7 +1,6 @@
 package company.tap.gosellapi.internal.utils;
 
 import android.app.Activity;
-import android.arch.core.util.Function;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.PorterDuff;
@@ -17,12 +16,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.Currency;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
-import java.util.function.Consumer;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.api_service.AppInfo;

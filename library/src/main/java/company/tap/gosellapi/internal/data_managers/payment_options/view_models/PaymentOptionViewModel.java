@@ -1,9 +1,7 @@
 package company.tap.gosellapi.internal.data_managers.payment_options.view_models;
 
 import android.os.Parcelable;
-import android.util.Log;
 
-import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
 import company.tap.gosellapi.internal.viewholders.PaymentOptionsBaseViewHolder;
 

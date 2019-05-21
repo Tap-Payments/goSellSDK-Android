@@ -1,9 +1,5 @@
 package company.tap.gosellapi.internal.api.callbacks;
 
-import com.google.gson.JsonObject;
-
-import android.support.annotation.RestrictTo;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

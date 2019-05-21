@@ -1,7 +1,6 @@
 package company.tap.gosellapi.internal.adapters;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
@@ -18,7 +17,6 @@ import java.util.regex.Pattern;
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 import company.tap.gosellapi.internal.interfaces.CurrenciesAdapterCallback;
-import company.tap.gosellapi.internal.utils.CurrencyFormatter;
 import company.tap.gosellapi.internal.utils.LocalizedCurrency;
 import company.tap.gosellapi.internal.utils.Utils;
 

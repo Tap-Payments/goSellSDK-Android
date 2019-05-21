@@ -3,9 +3,6 @@ package company.tap.gosellapi.internal.data_managers.payment_options.view_models
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import java.util.ArrayList;
-
-import company.tap.gosellapi.internal.utils.Utils;
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 
 /**

@@ -1,9 +1,9 @@
 package company.tap.gosellapi.internal.api.requests;
 
+import android.support.annotation.RestrictTo;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
-import android.support.annotation.RestrictTo;
 
 import company.tap.gosellapi.internal.api.models.CreateTokenCard;
 import company.tap.gosellapi.internal.interfaces.CreateTokenRequest;

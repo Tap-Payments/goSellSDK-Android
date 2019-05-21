@@ -1,7 +1,6 @@
 package company.tap.gosellapi.internal.utils;
 
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 

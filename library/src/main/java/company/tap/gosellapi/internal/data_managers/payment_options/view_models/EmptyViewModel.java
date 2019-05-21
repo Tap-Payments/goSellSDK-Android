@@ -1,7 +1,7 @@
 package company.tap.gosellapi.internal.data_managers.payment_options.view_models;
 
-import company.tap.gosellapi.internal.data_managers.payment_options.view_models_data.EmptyViewModelData;
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
+import company.tap.gosellapi.internal.data_managers.payment_options.view_models_data.EmptyViewModelData;
 import company.tap.gosellapi.internal.viewholders.EmptyViewHolder;
 import company.tap.gosellapi.internal.viewholders.PaymentOptionsBaseViewHolder;
 

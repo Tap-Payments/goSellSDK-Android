@@ -13,35 +13,33 @@ import java.util.Iterator;
 import company.tap.gosellapi.internal.activities.GoSellPaymentActivity;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.enums.PaymentType;
-import company.tap.gosellapi.internal.api.enums.Permission;
+import company.tap.gosellapi.internal.api.models.AmountedCurrency;
+import company.tap.gosellapi.internal.api.models.Authorize;
+import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.models.Merchant;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.api.models.SaveCard;
 import company.tap.gosellapi.internal.api.models.SavedCard;
 import company.tap.gosellapi.internal.api.models.Token;
+import company.tap.gosellapi.internal.api.requests.PaymentOptionsRequest;
+import company.tap.gosellapi.internal.api.responses.BINLookupResponse;
 import company.tap.gosellapi.internal.api.responses.DeleteCardResponse;
+import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
+import company.tap.gosellapi.internal.api.responses.SDKSettings;
+import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.CardCredentialsViewModel;
+import company.tap.gosellapi.internal.data_managers.payment_options.view_models.PaymentOptionViewModel;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.RecentSectionViewModel;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.WebPaymentViewModel;
+import company.tap.gosellapi.internal.interfaces.IPaymentDataProvider;
+import company.tap.gosellapi.internal.interfaces.IPaymentProcessListener;
 import company.tap.gosellapi.open.enums.TransactionMode;
-import company.tap.gosellapi.internal.api.models.AmountedCurrency;
-import company.tap.gosellapi.internal.api.models.Authorize;
+import company.tap.gosellapi.open.interfaces.PaymentDataSource;
 import company.tap.gosellapi.open.models.AuthorizeAction;
-import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.open.models.Customer;
-import company.tap.gosellapi.open.models.Destination;
 import company.tap.gosellapi.open.models.Destinations;
 import company.tap.gosellapi.open.models.Receipt;
 import company.tap.gosellapi.open.models.Reference;
-import company.tap.gosellapi.internal.api.requests.PaymentOptionsRequest;
-import company.tap.gosellapi.internal.api.responses.BINLookupResponse;
-import company.tap.gosellapi.internal.api.responses.SDKSettings;
-import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
-import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
-import company.tap.gosellapi.internal.data_managers.payment_options.view_models.PaymentOptionViewModel;
-import company.tap.gosellapi.internal.interfaces.IPaymentDataProvider;
-import company.tap.gosellapi.internal.interfaces.IPaymentProcessListener;
-import company.tap.gosellapi.open.interfaces.PaymentDataSource;
 import company.tap.tapcardvalidator_android.CardBrand;
 
 /**
@@ -753,7 +751,7 @@ public final class PaymentDataManager {
 
     @Override
     public void didCardDeleted(DeleteCardResponse deleteCardResponse) {
-      Log.d("PaymentDataManager"," PaymentDataManager: listener.getClass()>  " + listener);
+//      Log.d("PaymentDataManager"," PaymentDataManager: listener.getClass()>  " + listener);
        if(listener!=null && (listener instanceof GoSellPaymentActivity)) {
             Log.d("PaymentDataManager"," PaymentDataManager: call CardDeleteListener to delete card  ");
             listener.didCardDeleted(deleteCardResponse);
