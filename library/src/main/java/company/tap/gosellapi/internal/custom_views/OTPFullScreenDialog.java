@@ -26,11 +26,9 @@ import java.util.concurrent.TimeUnit;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.activities.GoSellPaymentActivity;
-import company.tap.gosellapi.internal.data_managers.LoadingScreenManager;
 import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 import company.tap.gosellapi.internal.utils.Utils;
 import company.tap.gosellapi.open.buttons.PayButtonView;
-import company.tap.gosellapi.open.enums.OperationMode;
 
 /**
  * The type Otp full screen dialog.

@@ -10,12 +10,11 @@ import com.google.gson.annotations.SerializedName;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
+import company.tap.gosellapi.internal.utils.AmountCalculator;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.gosellapi.open.models.PaymentItem;
 import company.tap.gosellapi.open.models.Shipping;
 import company.tap.gosellapi.open.models.Tax;
-import company.tap.gosellapi.internal.utils.AmountCalculator;
-import company.tap.gosellapi.open.models.TapCurrency;
 
 /**
  * The type Payment options request.

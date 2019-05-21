@@ -1,9 +1,6 @@
 package company.tap.gosellapi.internal.activities;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
@@ -14,7 +11,6 @@ import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewCompat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -31,7 +27,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

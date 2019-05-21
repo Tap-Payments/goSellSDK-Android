@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.adapters.PaymentOptionsRecyclerViewAdapter;
-import company.tap.gosellapi.internal.adapters.PaymentOptionsRecyclerViewAdapter1;
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
 
 /**

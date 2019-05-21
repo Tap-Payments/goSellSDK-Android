@@ -9,7 +9,6 @@ import com.bumptech.glide.Glide;
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.WebPaymentViewModel;
-import company.tap.tapcardvalidator_android.CardBrand;
 
 import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.JELLY_BEAN_MR1;

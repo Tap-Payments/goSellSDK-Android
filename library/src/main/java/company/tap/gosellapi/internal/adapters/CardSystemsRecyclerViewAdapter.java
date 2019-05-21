@@ -18,8 +18,6 @@ import company.tap.gosellapi.internal.api.enums.PaymentType;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
-import company.tap.gosellapi.internal.utils.CompoundFilter;
-import company.tap.gosellapi.internal.utils.Utils;
 import company.tap.tapcardvalidator_android.CardBrand;
 
 
@@ -38,10 +36,10 @@ public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSys
      */
     public CardSystemsRecyclerViewAdapter(ArrayList<PaymentOption> _data) {
     data = new ArrayList<>(_data);
-    for (PaymentOption option : _data) {
-//      System.out.println(" filter based on  currency inside card view holder : " + option
-//          .getPaymentType() + " >> " + option.getName());
-    }
+//    for (PaymentOption option : _data) {
+////      System.out.println(" filter based on  currency inside card view holder : " + option
+////          .getPaymentType() + " >> " + option.getName());
+//    }
     this.initialData = new ArrayList<>(filter(_data));
     filterPaymentOptions();
   }

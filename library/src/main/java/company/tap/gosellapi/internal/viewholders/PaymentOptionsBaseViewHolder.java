@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import company.tap.gosellapi.R;
-import company.tap.gosellapi.internal.api.enums.CardScheme;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.PaymentOptionViewModel;
 
 /**

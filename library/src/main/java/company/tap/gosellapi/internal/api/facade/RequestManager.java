@@ -1,7 +1,6 @@
 package company.tap.gosellapi.internal.api.facade;
 
 import android.support.annotation.RestrictTo;
-import android.util.Log;
 
 import java.io.IOException;
 import java.util.ArrayList;

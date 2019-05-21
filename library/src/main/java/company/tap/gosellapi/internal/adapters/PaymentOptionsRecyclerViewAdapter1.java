@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.ViewGroup;
 
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
-import company.tap.gosellapi.internal.viewholders.PaymentOptionsBaseViewHolder;
 import company.tap.gosellapi.internal.viewholders.PaymentOptionsBaseViewHolder1;
 
 /**

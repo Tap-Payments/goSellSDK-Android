@@ -1,19 +1,16 @@
 package company.tap.gosellapi.internal.api.models;
 
 import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import company.tap.gosellapi.internal.api.enums.ChargeStatus;
 import company.tap.gosellapi.internal.api.responses.BaseResponse;
 import company.tap.gosellapi.open.models.Customer;
-import company.tap.gosellapi.open.models.Destination;
 import company.tap.gosellapi.open.models.Destinations;
 import company.tap.gosellapi.open.models.Receipt;
 import company.tap.gosellapi.open.models.Reference;

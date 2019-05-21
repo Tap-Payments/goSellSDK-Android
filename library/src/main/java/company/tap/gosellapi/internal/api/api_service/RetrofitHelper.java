@@ -9,10 +9,8 @@ import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 
 import company.tap.gosellapi.BuildConfig;
-import company.tap.gosellapi.internal.Constants;
 import company.tap.gosellapi.internal.api.deserializers.AmountedCurrencyDeserializer;
 import company.tap.gosellapi.internal.api.deserializers.PaymentOptionsResponseDeserializer;
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
@@ -20,7 +18,6 @@ import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import company.tap.gosellapi.internal.api.serializers.SecureSerializer;
 import company.tap.gosellapi.internal.exceptions.NoAuthTokenProvidedException;
 import company.tap.gosellapi.internal.interfaces.SecureSerializable;
-import company.tap.gosellapi.internal.logger.lo;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

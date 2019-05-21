@@ -31,8 +31,6 @@ import company.tap.gosellapi.open.models.Reference;
 import company.tap.gosellapi.open.models.Shipping;
 import company.tap.gosellapi.open.models.TapCurrency;
 import company.tap.gosellapi.open.models.Tax;
-import company.tap.sample.R;
-import company.tap.sample.constants.SettingsKeys;
 import company.tap.sample.viewmodels.CustomerViewModel;
 
 import static company.tap.gosellapi.internal.api.enums.AmountModificatorType.FIXED;

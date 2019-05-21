@@ -3,8 +3,8 @@ package company.tap.gosellapi.internal.viewholders;
 import android.view.View;
 import android.view.ViewGroup;
 
-import company.tap.gosellapi.internal.data_managers.payment_options.view_models_data.EmptyViewModelData;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.EmptyViewModel;
+import company.tap.gosellapi.internal.data_managers.payment_options.view_models_data.EmptyViewModelData;
 
 /**
  * The type Empty view holder.

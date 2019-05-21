@@ -2,7 +2,9 @@ package company.tap.gosellapi.internal.api.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
 import java.math.BigDecimal;
+
 import company.tap.gosellapi.internal.api.enums.measurements.Measurement;
 import company.tap.gosellapi.internal.api.enums.measurements.MeasurementUnit;
 

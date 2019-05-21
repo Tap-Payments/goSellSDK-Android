@@ -1,20 +1,14 @@
 package company.tap.gosellapi.internal.data_managers;
 
-import android.app.ActionBar;
 import android.content.Context;
-import android.text.Layout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.api.enums.ChargeStatus;
-import company.tap.gosellapi.internal.api.enums.RedirectStatus;
 
 /**
  * The type Payment result toast manager.

@@ -28,12 +28,10 @@ import company.tap.gosellapi.internal.data_managers.payment_options.view_models.
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.WebPaymentViewModel;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models_data.CardCredentialsViewModelData;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models_data.CurrencyViewModelData;
-import company.tap.gosellapi.internal.interfaces.IPaymentProcessListener;
 import company.tap.gosellapi.internal.utils.ActivityDataExchanger;
 import company.tap.gosellapi.internal.utils.CompoundFilter;
 import company.tap.gosellapi.internal.utils.Utils;
 import company.tap.gosellapi.internal.viewholders.GroupViewHolder;
-import company.tap.gosellapi.internal.viewholders.PaymentOptionsBaseViewHolder;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import io.card.payment.CreditCard;
 
