@@ -50,7 +50,7 @@ public class RecentSectionViewHolder
 
     @Override
     public void setFocused(boolean isFocused) {
-        System.out.println("afterText changed ...");
+//        System.out.println("afterText changed ...");
         if (adapter != null) {
             adapter.clearFocus();
         }
@@ -81,14 +81,14 @@ public class RecentSectionViewHolder
 
 
     public void shakeAllCards(GroupViewHolder groupViewHolderListener) {
-        Log.d("RecentSectionViewHolder","shake all cards...");
+//        Log.d("RecentSectionViewHolder","shake all cards...");
         viewModel.disablePayButton();
         adapter.shakeAllCards(groupViewHolderListener);
     }
 
     public void stopShakingAllCards() {
         if(adapter== null) return;
-        Log.d("RecentSectionViewHolder","stop shake all cards...");
+//        Log.d("RecentSectionViewHolder","stop shake all cards...");
         adapter.stopShakingAllCards();
     }
 

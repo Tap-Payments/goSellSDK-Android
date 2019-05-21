@@ -101,7 +101,6 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
     private void configureApp(){
         GoSellSDK.init(this, "sk_test_kovrMB0mupFJXfNZWx6Etg5y","company.tap.goSellSDKExample");  // to be replaced by merchant
-        GoSellSDK.setLocale(ThemeObject.getInstance().getSdkLanguage());
     }
     /**
      * Configure SDK Theme
@@ -109,7 +108,6 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
     private void configureSDKThemeObject() {
 
         ThemeObject.getInstance()
-        .setSdkLanguage("EN")
         .setAppearanceMode(AppearanceMode.WINDOWED_MODE)
 
         .setHeaderFont(Typeface.createFromAsset(getAssets(),"fonts/roboto_light.ttf"))
@@ -134,8 +132,8 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         .setPayButtonResourceId(R.drawable.btn_pay_selector)  //btn_pay_merchant_selector
         .setPayButtonFont(Typeface.createFromAsset(getAssets(),"fonts/roboto_light.ttf"))
 
-        .setPayButtonDisabledTitleColor(getResources().getColor(R.color.black))
-        .setPayButtonEnabledTitleColor(getResources().getColor(R.color.white))
+        .setPayButtonDisabledTitleColor(getResources().getColor(R.color.white))
+        .setPayButtonEnabledTitleColor(getResources().getColor(R.color.White))
         .setPayButtonTextSize(14)
         .setPayButtonLoaderVisible(true)
         .setPayButtonSecurityIconVisible(true)
@@ -410,7 +408,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
     @Override
     public void cardTokenizedSuccessfully(@NonNull String token) {
-        System.out.println("Card Tokenized Succeeded : "+ token);
+        System.out.println("Card Tokenized Succeeded : ");
         showDialog(token,"Token",company.tap.gosellapi.R.drawable.ic_checkmark_normal);
     }
 

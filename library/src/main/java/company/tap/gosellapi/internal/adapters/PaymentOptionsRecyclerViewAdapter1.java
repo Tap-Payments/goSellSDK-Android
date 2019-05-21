@@ -35,7 +35,7 @@ public class PaymentOptionsRecyclerViewAdapter1 extends RecyclerView.Adapter<Pay
   @Override
   public void onBindViewHolder(@NonNull PaymentOptionsBaseViewHolder1 paymentOptionsBaseViewHolder1,
                                int i) {
-    Log.d(" >> onBindViewHolder","");
+//    Log.d(" >> onBindViewHolder","");
   }
 
   @Override

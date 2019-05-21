@@ -338,7 +338,6 @@ public class SDKSession implements View.OnClickListener{
     );
 
 
-    System.out.println("request >>> "+request.getPaymentOptionRequestInfo());
     GoSellAPI.getInstance().getPaymentOptions(request,
         new APIRequestCallback<PaymentOptionsResponse>() {
 
@@ -359,7 +358,7 @@ public class SDKSession implements View.OnClickListener{
           @Override
           public void onFailure(GoSellError errorDetails) {
 
-           if(errorDetails!=null) System.out.println("getPaymentOptions>>> error: "+errorDetails.getErrorBody());
+
             if(ThemeObject.getInstance().isPayButtLoaderVisible()) {
 
               if(payButtonView!=null)
@@ -394,13 +393,6 @@ public class SDKSession implements View.OnClickListener{
    * launch goSellSDK activity
    */
   private void startMainActivity() {
-
-    System.out.println("startMainActivity started........");
-    System.out.println("startMainActivity payButtonView........"+payButtonView);
-
-    System.out.println("startMainActivity getListener........"+getListener());
-    System.out.println("startMainActivity context........"+context);
-    System.out.println("startMainActivity activityListener........"+activityListener);
 
     if(payButtonView!=null )
       payButtonView.getLoadingView().setForceStop(true);

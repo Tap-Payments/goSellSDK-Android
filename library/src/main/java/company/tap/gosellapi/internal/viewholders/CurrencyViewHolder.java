@@ -49,7 +49,7 @@ public class CurrencyViewHolder extends PaymentOptionsBaseViewHolder<CurrencyVie
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println(" currency model clicked...... " + viewModel.getData());
+//                System.out.println(" currency model clicked...... " + viewModel.getData());
                 viewModel.holderClicked();
             }
         });

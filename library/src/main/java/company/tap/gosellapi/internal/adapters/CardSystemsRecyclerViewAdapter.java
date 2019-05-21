@@ -39,8 +39,8 @@ public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSys
     public CardSystemsRecyclerViewAdapter(ArrayList<PaymentOption> _data) {
     data = new ArrayList<>(_data);
     for (PaymentOption option : _data) {
-      System.out.println(" filter based on  currency inside card view holder : " + option
-          .getPaymentType() + " >> " + option.getName());
+//      System.out.println(" filter based on  currency inside card view holder : " + option
+//          .getPaymentType() + " >> " + option.getName());
     }
     this.initialData = new ArrayList<>(filter(_data));
     filterPaymentOptions();
@@ -84,7 +84,7 @@ public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSys
   private void filterPaymentOptions() {
     for (Iterator<PaymentOption> it = data.iterator(); it.hasNext(); ) {
       PaymentOption p = it.next();
-      System.out.println("payment type : " + p.getName());
+//      System.out.println("payment type : " + p.getName());
       if (p.getPaymentType() != PaymentType.CARD) {
         it.remove();
       } else if (p.getPaymentType() == PaymentType.CARD &&
@@ -125,7 +125,7 @@ public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSys
     for (PaymentOption option : initialData) {
 
       ArrayList<CardBrand> cardBrands = option.getSupportedCardBrands();
-      System.out.println("brand :" + brand + " >>> scheme :" + cardScheme);
+//      System.out.println("brand :" + brand + " >>> scheme :" + cardScheme);
 
       if (cardScheme != null) {
         if (comparePaymentOptionWithCardScheme(option, cardScheme)) {

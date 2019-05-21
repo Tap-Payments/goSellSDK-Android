@@ -88,7 +88,7 @@ public class LoadingScreenManager {
     }
 
     private void removeLoadingView() {
-        Log.d("LoadingScreenManager","removeLoadingView : "+loadingLayout +" >> loadingView = "+loadingView );
+//        Log.d("LoadingScreenManager","removeLoadingView : "+loadingLayout +" >> loadingView = "+loadingView );
         if (loadingLayout == null ) return;
 
         final ViewGroup insertPoint = hostActivity.findViewById(android.R.id.content);
@@ -153,8 +153,7 @@ public class LoadingScreenManager {
 
         int w = view.getWidth();
         int h = view.getHeight();
-        Log.d("LoadingScreenManager","w: "+w);
-        Log.d("LoadingScreenManager","h: "+h);
+
 
         if(w<=0 )
             w=800;
