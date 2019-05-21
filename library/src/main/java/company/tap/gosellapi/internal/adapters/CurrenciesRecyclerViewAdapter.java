@@ -188,7 +188,7 @@ public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<Currenci
         public void onClick(View view) {
 
             int position = getAdapterPosition();
-            System.out.println(" get selected adapter position : " + position);
+//            System.out.println(" get selected adapter position : " + position);
             setSelection(position);
 
             AmountedCurrency selectedCurrency = getFilteredCurrencies()!=null ? getFilteredCurrencies().get(position).getCurrency()
@@ -209,9 +209,9 @@ public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<Currenci
 
             String currencyCodeLowered = currencyCode.toLowerCase();
             String currencyName = Utils.getCurrencyName(currencyCode, currency,itemView.getContext());
-            System.out.println("currencyCodeLowered :  "+ currencyCodeLowered);
-            System.out.println("currencyName :  "+ currencyName);
-            System.out.println("symbol :  "+ symbol);
+//            System.out.println("currencyCodeLowered :  "+ currencyCodeLowered);
+//            System.out.println("currencyName :  "+ currencyName);
+//            System.out.println("symbol :  "+ symbol);
 
 //            SpannableStringBuilder sb = new SpannableStringBuilder(currencyCode);
             SpannableStringBuilder sb = new SpannableStringBuilder();

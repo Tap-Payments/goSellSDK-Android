@@ -369,7 +369,7 @@ public class CardCredentialsViewModel
 
     @Override
     public BrandWithScheme getRecognizedCardType() {
-        System.out.println(" getRecognizedType: "+ getCurrentBINData());
+//        System.out.println(" getRecognizedType: "+ getCurrentBINData());
         BINLookupResponse binData = getCurrentBINData();
 
         @Nullable CardScheme scheme = null;
@@ -454,8 +454,8 @@ public class CardCredentialsViewModel
               updatePayButtonWithExtraFees(selectedCardPaymentOption);
           }
       }
-      if(selectedCardPaymentOption!=null && selectedCardPaymentOption.getBrand()!=null)
-          System.out.println("card cred ... paymentOption. final : "+selectedCardPaymentOption.getBrand().name());
+//      if(selectedCardPaymentOption!=null && selectedCardPaymentOption.getBrand()!=null)
+//          System.out.println("card cred ... paymentOption. final : "+selectedCardPaymentOption.getBrand().name());
   }
 
   private void updatePayButtonWithExtraFees(PaymentOption paymentOption){

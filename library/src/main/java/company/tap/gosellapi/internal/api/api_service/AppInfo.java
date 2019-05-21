@@ -26,7 +26,7 @@ public class AppInfo {
      */
     public static void setAuthToken(Context context, String authToken,String appId) {
         AppInfo.authToken = authToken;
-        System.out.println("appId : "+appId);
+        //System.out.println("appId : "+appId);
         initApplicationInfo(appId);
 
         lo.init(context);

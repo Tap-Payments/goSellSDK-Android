@@ -490,7 +490,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
     @Override
     public void binNumberEntered(String binNumber) {
-        Log.d("GoSellPaymentActivity"," binNumberEntered >>> binNumber:" + binNumber);
+//        Log.d("GoSellPaymentActivity"," binNumberEntered >>> binNumber:" + binNumber);
         GoSellAPI.getInstance()
                 .retrieveBINLookupBINLookup(binNumber, new APIRequestCallback<BINLookupResponse>() {
                     @Override
@@ -863,7 +863,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
         String url = chargeOrAuthorizeOrSaveCard.getTransaction().getUrl();
         Log.d("GoSellPaymentActivity","GoSellPaymentActivity >> Transaction().getUrl() :" + url);
-        Log.d("GoSellPaymentActivity","GoSellPaymentActivity >> chargeOrAuthorize :" + chargeOrAuthorizeOrSaveCard.getId());
+//        Log.d("GoSellPaymentActivity","GoSellPaymentActivity >> chargeOrAuthorize :" + chargeOrAuthorizeOrSaveCard.getId());
 
 
         if (url != null) {
@@ -916,7 +916,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            Log.d("GoSellPaymentActivity","shouldOverrideUrlLoading :" + url);
+//            Log.d("GoSellPaymentActivity","shouldOverrideUrlLoading :" + url);
             PaymentDataManager.WebPaymentURLDecision decision = PaymentDataManager.getInstance()
                     .decisionForWebPaymentURL(url);
 

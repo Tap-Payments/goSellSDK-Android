@@ -121,7 +121,7 @@ public class WebPaymentActivity extends BaseActionBarActivity implements IPaymen
 
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
-      Log.d("WebPaymentActivity"," shouldOverrideUrlLoading : " + url);
+//      Log.d("WebPaymentActivity"," shouldOverrideUrlLoading : " + url);
       PaymentDataManager.WebPaymentURLDecision decision = PaymentDataManager.getInstance().decisionForWebPaymentURL(url);
 
       boolean shouldOverride = !decision.shouldLoad();
@@ -250,8 +250,8 @@ public class WebPaymentActivity extends BaseActionBarActivity implements IPaymen
     }
 
     String url = chargeOrAuthorize.getTransaction().getUrl();
-    Log.d("WebPaymentActivity","WebPaymentActivity >> Transaction().getUrl() :" + url);
-    Log.d("WebPaymentActivity","WebPaymentActivity >> chargeOrAuthorize :" + chargeOrAuthorize.getId());
+//    Log.d("WebPaymentActivity","WebPaymentActivity >> Transaction().getUrl() :" + url);
+//    Log.d("WebPaymentActivity","WebPaymentActivity >> chargeOrAuthorize :" + chargeOrAuthorize.getId());
 
 
     if (url != null) {

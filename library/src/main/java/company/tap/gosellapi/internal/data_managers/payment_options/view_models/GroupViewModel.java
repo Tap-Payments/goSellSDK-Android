@@ -23,12 +23,10 @@ public class GroupViewModel extends PaymentOptionViewModel<String, GroupViewHold
     }
 
     public void editItemClicked(GroupViewHolder groupViewHolderListener){
-        Log.d("GroupViewModel","editItemClicked......");
         parentDataManager.editItemClicked(groupViewHolderListener);
     }
 
     public void cancelItemClicked(){
-        Log.d("GroupViewModel","cancelItemClicked......");
         parentDataManager.cancelItemClicked();
     }
 }

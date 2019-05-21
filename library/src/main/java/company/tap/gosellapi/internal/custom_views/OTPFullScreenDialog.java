@@ -233,7 +233,6 @@ public class OTPFullScreenDialog extends DialogFragment {
 
       @Override
       public void afterTextChanged(Editable s) {
-        System.out.println(" count text  :" + s.toString());
         otpCode = s.toString();
         if (s.toString().length() == CONFIRMATION_CODE_LENGTH )
           payButtonView.setEnabled(true);

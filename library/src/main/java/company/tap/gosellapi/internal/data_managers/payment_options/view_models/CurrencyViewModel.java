@@ -25,7 +25,6 @@ public class CurrencyViewModel extends PaymentOptionViewModel<CurrencyViewModelD
      * Holder clicked.
      */
     public void holderClicked() {
-        System.out.println(" Currency ViewModel >>  parentDataManager :"+parentDataManager + " >> position :"+position);
         parentDataManager.currencyHolderClicked(position);
     }
 }

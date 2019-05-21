@@ -100,11 +100,11 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
 
 
     public void shakeAllCards(GroupViewHolder groupViewHolderListener) {
-        Log.d("RecePaymentRecycleAdapt","shake all cards...");
+//        Log.d("RecePaymentRecycleAdapt","shake all cards...");
         this.groupViewHolderListener = groupViewHolderListener;
         for (int childCount = this.parent.getChildCount(), i = 0; i < childCount; ++i) {
             final RecentPaymentsViewHolder holder = (RecentPaymentsViewHolder) this.parent.getChildViewHolder(this.parent.getChildAt(i));
-            System.out.println("RecePaymentRecycleAdapt : "+holder.card.getId());
+//            System.out.println("RecePaymentRecycleAdapt : "+holder.card.getId());
             holder.setFocused(false);
             holder.showDelete();
             Animation animation =
@@ -116,7 +116,7 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
     }
 
     public void stopShakingAllCards() {
-        Log.d("RecePaymentRecycleAdapt","stop shake all cards...");
+//        Log.d("RecePaymentRecycleAdapt","stop shake all cards...");
         if(this.parent.getChildCount()>0){
             for (int childCount = this.parent.getChildCount(), i = 0; i < childCount; ++i) {
                 final RecentPaymentsViewHolder holder = (RecentPaymentsViewHolder) this.parent.getChildViewHolder(this.parent.getChildAt(i));
@@ -152,7 +152,7 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
      */
     public void clearFocus()
     {
-        System.out.println("afterText changed ... adapter.clear "+focusedPosition);
+//        System.out.println("afterText changed ... adapter.clear "+focusedPosition);
         RecentPaymentsViewHolder oldHolder;
         parent.clearFocus();
         if (focusedPosition != Constants.NO_FOCUS) {
@@ -236,7 +236,7 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
 
             shakingArea.setOnLongClickListener(
                     v -> {
-                        System.out.println("LONG CLICK   ......");
+//                        System.out.println("LONG CLICK   ......");
 
                         return false;
                     }
@@ -259,7 +259,7 @@ public class RecentPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<Rece
 
 
         private void showDeleteConfirmationDialog(View v, int clickedPosition){
-            System.out.println("position ... "+clickedPosition);
+//            System.out.println("position ... "+clickedPosition);
             SpannableStringBuilder str = new SpannableStringBuilder(" xxxx");
             str.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD),
                     0, str.length()-1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
