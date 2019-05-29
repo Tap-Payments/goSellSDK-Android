@@ -418,12 +418,16 @@ final class PaymentProcessManager {
   }
 
     private boolean getSaveCardStatus(CardCredentialsViewModel paymentOptionModel){
-        if (PaymentDataManager.getInstance().getExternalDataSource() != null &&
-                PaymentDataManager.getInstance().getExternalDataSource().getAllowedToSaveCard() &&
-                paymentOptionModel.shouldSaveCard())
-            return true;
-        return false;
-    }
+
+    if(PaymentDataManager.getInstance().getExternalDataSource() == null ) return false;
+
+    if(PaymentDataManager.getInstance().getExternalDataSource().getTransactionMode() == TransactionMode.SAVE_CARD  ) return true; // always allow save card in case of trx_mode = TransactionMode.SAVE_CARD
+
+    if (PaymentDataManager.getInstance().getExternalDataSource().getAllowedToSaveCard() && paymentOptionModel.shouldSaveCard())  return true;
+
+    return false;
+
+  }
 
   private void startCardTokenizationPaymentProcessWithCardPaymentModel(
           @NonNull CardCredentialsViewModel paymentOptionModel) {
