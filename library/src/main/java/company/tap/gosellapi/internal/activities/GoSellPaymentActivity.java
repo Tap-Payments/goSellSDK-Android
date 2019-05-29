@@ -142,7 +142,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         initViews();
         SDKSession.getListener().sessionHasStarted();
 
-        saveCardChecked = true;
+        saveCardChecked = false;
         setKeyboardVisibilityListener();
     }
 

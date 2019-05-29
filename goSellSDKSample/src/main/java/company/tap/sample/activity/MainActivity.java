@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         .setPayButtonFont(Typeface.createFromAsset(getAssets(),"fonts/roboto_light.ttf"))
 
         .setPayButtonDisabledTitleColor(getResources().getColor(R.color.white))
-        .setPayButtonEnabledTitleColor(getResources().getColor(R.color.White))
+        .setPayButtonEnabledTitleColor(getResources().getColor(R.color.white))
         .setPayButtonTextSize(14)
         .setPayButtonLoaderVisible(true)
         .setPayButtonSecurityIconVisible(true)

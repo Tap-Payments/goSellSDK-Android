@@ -528,9 +528,16 @@ public class CardCredentialsViewHolder
                 viewModel.setNameOnCard(nameOnCardField.getText().toString().trim());
               }
       }
-      if(status)saveCardSwitch.setChecked(true);
+
+      if (status
+          && PaymentDataManager.getInstance().getExternalDataSource() != null
+          && PaymentDataManager.getInstance().getExternalDataSource().getAllowedToSaveCard())
+          saveCardSwitch.setChecked(true);
+
       else saveCardSwitch.setChecked(false);
+
       return status;
+
   }
 
   private boolean validateCVV(){
@@ -593,8 +600,14 @@ public class CardCredentialsViewHolder
             viewModel.saveCardSwitchClicked(false);
             cardNumberField.setTextColor(ThemeObject.getInstance().getCardInputInvalidTextColor());
         } else {
-            saveCardSwitch.setChecked(true);
-            viewModel.saveCardSwitchClicked(true);
+            if (PaymentDataManager.getInstance().getExternalDataSource() != null
+                && PaymentDataManager.getInstance().getExternalDataSource().getAllowedToSaveCard()) {
+                saveCardSwitch.setChecked(true);
+                viewModel.saveCardSwitchClicked(true);
+            } else {
+                saveCardSwitch.setChecked(false);
+                viewModel.saveCardSwitchClicked(false);
+            }
             cardNumberField.setTextColor(ThemeObject.getInstance().getCardInputTextColor());
         }
         return brand;

@@ -411,12 +411,19 @@ final class PaymentProcessManager {
     if (card == null) {
       return;
     }
-
-    startPaymentProcessWithCard(card,
-        paymentOptionModel.getSelectedCardPaymentOption(),
-        paymentOptionModel.shouldSaveCard());
+//      System.out.println("shouldSaveCard() >>>>> " + getSaveCardStatus(paymentOptionModel));
+      startPaymentProcessWithCard(card,
+              paymentOptionModel.getSelectedCardPaymentOption(),
+              getSaveCardStatus(paymentOptionModel));
   }
 
+    private boolean getSaveCardStatus(CardCredentialsViewModel paymentOptionModel){
+        if (PaymentDataManager.getInstance().getExternalDataSource() != null &&
+                PaymentDataManager.getInstance().getExternalDataSource().getAllowedToSaveCard() &&
+                paymentOptionModel.shouldSaveCard())
+            return true;
+        return false;
+    }
 
   private void startCardTokenizationPaymentProcessWithCardPaymentModel(
           @NonNull CardCredentialsViewModel paymentOptionModel) {
