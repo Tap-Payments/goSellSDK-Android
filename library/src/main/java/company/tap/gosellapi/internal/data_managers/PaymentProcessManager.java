@@ -51,6 +51,7 @@ import company.tap.gosellapi.internal.interfaces.IPaymentProcessListener;
 import company.tap.gosellapi.internal.utils.AmountCalculator;
 import company.tap.gosellapi.internal.utils.Utils;
 import company.tap.gosellapi.open.enums.TransactionMode;
+import company.tap.gosellapi.open.interfaces.PaymentDataSource;
 import company.tap.gosellapi.open.models.AuthorizeAction;
 import company.tap.gosellapi.open.models.Customer;
 import company.tap.gosellapi.open.models.Destinations;
@@ -412,9 +413,10 @@ final class PaymentProcessManager {
       return;
     }
 
+    PaymentDataSource source = PaymentDataManager.getInstance().getExternalDataSource();
     startPaymentProcessWithCard(card,
         paymentOptionModel.getSelectedCardPaymentOption(),
-        paymentOptionModel.shouldSaveCard());
+        source != null && source.getAllowedToSaveCard() && paymentOptionModel.shouldSaveCard());
   }
 
 
