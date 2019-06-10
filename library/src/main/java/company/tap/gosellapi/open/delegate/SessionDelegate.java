@@ -27,4 +27,10 @@ public interface SessionDelegate {
         void sessionHasStarted();
         void sessionCancelled();
         void sessionFailedToStart();
+
+        void invalidCardDetails();
+
+        void backendUnknownError();
+
+        void invalidTransactionMode();
 }

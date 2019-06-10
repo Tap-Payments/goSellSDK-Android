@@ -625,7 +625,6 @@ public final class PaymentDataManager {
 
     @Override
     public void didReceiveCharge(Charge charge) {
-//     if(getListeners()!=null) System.out.println("getListeners() : "+ getListeners().size());
       for (Iterator i = getListeners().iterator(); i.hasNext();) {
         try{
                 IPaymentProcessListener listener = (IPaymentProcessListener) i.next();
@@ -762,7 +761,7 @@ public final class PaymentDataManager {
 
 
   @NonNull
-  private IPaymentDataProvider getPaymentDataProvider() {
+  public  IPaymentDataProvider getPaymentDataProvider() {
 
     return dataProvider;
   }

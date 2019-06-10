@@ -1075,17 +1075,14 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                         keyboardVisible = true;
                     } else
                     {
-                        System.out.println("inside onGlobalLayout: keyboardVisible: "+ keyboardVisible);
                         // Height increased: keyboard was hidden
                         keyboardVisible = false;
-                        System.out.println("inside onGlobalLayout: startPaymentFlag: "+ startPaymentFlag);
                         if(startPaymentFlag)
                         {
 
                             new CountDownTimer(1, 1000) {
                                 @Override
                                 public void onTick(long millisUntilFinished) {
-                                    System.out.println("millisUntilFinished : "+ millisUntilFinished);
                                 }
 
                                 @Override

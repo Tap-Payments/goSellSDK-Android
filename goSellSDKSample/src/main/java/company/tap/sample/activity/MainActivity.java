@@ -64,22 +64,9 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         settingsManager = SettingsManager.getInstance();
         settingsManager.setPref(this);
 
-        configureApp();
+        // start tap goSellSDK
+        startSDK();
 
-        configureSDKThemeObject(); // here you can configure your app theme.
-
-        configureSDKSession();
-
-
-        Resources res = getApplicationContext().getResources();
-// Change locale settings in the app.
-        DisplayMetrics dm = res.getDisplayMetrics();
-        android.content.res.Configuration conf = res.getConfiguration();
-//        conf.setLocale(new Locale("EN".toLowerCase())); // API 17+ only.
-        conf.setLocale(new Locale("EN".toLowerCase())); // API 17+ only.
-//        conf.locale = new Locale("AR".toLowerCase());
-// Use conf.locale = new Locale(...) if targeting lower versions
-        res.updateConfiguration(conf, dm);
     }
 
     @Override
@@ -92,7 +79,44 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         }
     }
 
+    /**
+     * Integrating SDK.
+     */
+    private void startSDK(){
+        /**
+         * Required step.
+         * Configure SDK with your Secret API key and App Bundle name registered with tap company.
+         */
+        configureApp();
 
+        /**
+         * Optional step
+         * Here you can configure your app theme (Look and Feel).
+         */
+        configureSDKThemeObject();
+
+        /**
+         * Required step.
+         * Configure SDK Session with all required data.
+         */
+        configureSDKSession();
+
+        /**
+         * Required step.
+         * Choose between different SDK modes
+         */
+        configureSDKMode();
+
+        /**
+         * If you included Tap Pay Button then configure it first, if not then ignore this step.
+         */
+        initPayButton();
+    }
+
+    /**
+     * Required step.
+     * Configure SDK with your Secret API key and App Bundle name registered with tap company.
+     */
     private void configureApp(){
         GoSellSDK.init(this, "sk_test_kovrMB0mupFJXfNZWx6Etg5y","company.tap.goSellSDKExample");  // to be replaced by merchant
     }
@@ -153,9 +177,6 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         // set transaction currency associated to your account
         sdkSession.setTransactionCurrency(new TapCurrency("KWD"));    //** Required **
 
-        // set transaction mode [TransactionMode.PURCHASE - TransactionMode.AUTHORIZE_CAPTURE - TransactionMode.SAVE_CARD - TransactionMode.TOKENIZE_CARD ]
-        sdkSession.setTransactionMode(TransactionMode.PURCHASE);    //** Required **
-
         // Using static CustomerBuilder method available inside TAP Customer Class you can populate TAP Customer object and pass it to SDK
         sdkSession.setCustomer(getCustomer());    //** Required **
 
@@ -190,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         sdkSession.isUserAllowedToSaveCard(true); //  ** Required ** you can pass boolean
 
         // Enable or Disable 3DSecure
-        sdkSession.isRequires3DSecure(true);
+        sdkSession.isRequires3DSecure(false);
 
         //Set Receipt Settings [SMS - Email ]
         sdkSession.setReceiptSettings(new Receipt(false,false)); // ** Optional ** you can pass Receipt object or null
@@ -202,25 +223,90 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
         sdkSession.setMerchantID(null); // ** Optional ** you can pass merchant id or null
 
-/**
- * If you included Tap Pay Button then configure it first
- */
-        initPayButton();
+    }
+
+
+    /**
+     * Configure SDK Theme
+     */
+    private void configureSDKMode(){
 
         /**
-         * Use this method where ever you want to show TAP SDK Main Screen.
-         * This method must be called after you configured SDK as above
-         * This method will be used in case of you are not using TAP PayButton in your activity.
+         * You have to choose only one Mode of the following modes:
+         * Note:-
+         *      - In case of using PayButton, then don't call sdkSession.start(this); because the SDK will start when user clicks the tap pay button.
          */
+        //////////////////////////////////////////////////////    SDK with UI //////////////////////
+        /**
+         * 1- Start using  SDK features through SDK main activity (With Tap CARD FORM)
+         */
+//        startSDKWithUI();
 
+        //////////////////////////////////////////////////////    SDK Tokenization without UI //////////////////////
+        /**
+         * 2- Start using  SDK to tokenize your card without using SDK main activity (Without Tap CARD FORM)
+         * After the SDK finishes card tokenization, it will notify this activity with tokenization result in either
+         * cardTokenizedSuccessfully(@NonNull String token) or sdkError(@Nullable GoSellError goSellError)
+         */
+//          startSDKTokenizationWithoutUI();
 //        sdkSession.start(this);
+
+        //////////////////////////////////////////////////////    SDK Saving card without UI //////////////////////
+        /**
+         *  3- Start using  SDK to save your card without using SDK main activity ((Without Tap CARD FORM))
+         *  After the SDK finishes card tokenization, it will notify this activity with save card result in either
+         *  cardSaved(@NonNull Charge charge) or sdkError(@Nullable GoSellError goSellError)
+         *
+         */
+         startSDKSavingCardWithoutUI();
+//       sdkSession.start(this);
     }
 
-    private Customer getCustomer() {
-        return new Customer.CustomerBuilder("").email("abc@abc.com").firstName("firstname")
-                .lastName("lastname").metadata("").phone(new PhoneNumber("000","0000000"))
-                .middleName("middlename").build();
+
+    /**
+     * Start using  SDK features through SDK main activity
+     */
+    private void startSDKWithUI(){
+        if(sdkSession!=null){
+            // set transaction mode [TransactionMode.PURCHASE - TransactionMode.AUTHORIZE_CAPTURE - TransactionMode.SAVE_CARD - TransactionMode.TOKENIZE_CARD ]
+            sdkSession.setTransactionMode(TransactionMode.PURCHASE);    //** Required **
+            // if you are not using tap button then start SDK using the following call
+            sdkSession.start(this);
+        }
     }
+
+
+    /**
+     * Start using  SDK to tokenize your card without using SDK main activity
+     */
+
+    private void startSDKTokenizationWithoutUI(){
+        System.out.println("sdkSession >>> "+ sdkSession);
+        if(sdkSession!=null){
+            // set transaction mode [ TransactionMode.TOKENIZE_CARD_NO_UI ]
+            sdkSession.setTransactionMode(TransactionMode.TOKENIZE_CARD_NO_UI);    //** Required **
+            // pass card info to SDK
+            sdkSession.setCardInfo("5123450000000008","05","21","100","Haitham Elsheshtawy",null); //** Required **
+            // if you are not using tap button then start SDK using the following call
+           // sdkSession.start(this);
+        }
+    }
+
+
+    /**
+     * Start using  SDK to save your card without using SDK main activity
+     */
+    private void startSDKSavingCardWithoutUI(){
+        if(sdkSession!=null){
+            // set transaction mode [ TransactionMode.SAVE_CARD_NO_UI ]
+            sdkSession.setTransactionMode(TransactionMode.SAVE_CARD_NO_UI);    //** Required **
+            // pass card info to SDK
+            sdkSession.setCardInfo("5123450000000008","05","21","100","Haitham Elsheshtawy",null); //** Required **
+            // if you are not using tap button then start SDK using the following call
+          //  sdkSession.start(this);
+        }
+    }
+
 
     /**
      * Include pay button in merchant page
@@ -240,75 +326,30 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
         payButtonView.setBackgroundSelector(ThemeObject.getInstance().getPayButtonResourceId());
 
-        TransactionMode trx_mode = settingsManager.getTransactionsMode(SettingsKeys.TAP_TRANSACTION_MODE);
+        if(sdkSession!=null){
+            TransactionMode trx_mode = sdkSession.getTransactionMode();
+            if(trx_mode!=null){
 
-        if (TransactionMode.SAVE_CARD == trx_mode) {
-            payButtonView.getPayButton().setText(getString(company.tap.gosellapi.R.string.save_card));
-        } else if(TransactionMode.TOKENIZE_CARD == trx_mode){
-            payButtonView.getPayButton().setText(getString(company.tap.gosellapi.R.string.tokenize));
-        }else {
-            payButtonView.getPayButton().setText(getString(company.tap.gosellapi.R.string.pay));
+                if (TransactionMode.SAVE_CARD == trx_mode  || TransactionMode.SAVE_CARD_NO_UI ==trx_mode) {
+                    payButtonView.getPayButton().setText(getString(company.tap.gosellapi.R.string.save_card));
+                }
+                else if(TransactionMode.TOKENIZE_CARD == trx_mode || TransactionMode.TOKENIZE_CARD_NO_UI == trx_mode){
+                    payButtonView.getPayButton().setText(getString(company.tap.gosellapi.R.string.tokenize));
+                }
+                else {
+                    payButtonView.getPayButton().setText(getString(company.tap.gosellapi.R.string.pay));
+                }
+            }else{
+                configureSDKMode();
+            }
+            sdkSession.setButtonView(payButtonView, this, SDK_REQUEST_CODE);
         }
-        sdkSession.setButtonView(payButtonView, this, SDK_REQUEST_CODE);
+
+
     }
 
 
-    public void openSettings(View view) {
-        startActivity(new Intent(this, SettingsActivity.class));
-    }
-
-
-    private void showDialog(String chargeID, String msg,int icon)
-    {
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int width = displayMetrics.widthPixels;
-        PopupWindow popupWindow;
-        try {
-            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            if (inflater != null) {
-
-                View layout = inflater.inflate(company.tap.gosellapi.R.layout.charge_status_layout, findViewById(
-                        company.tap.gosellapi.R.id.popup_element));
-
-                popupWindow = new PopupWindow(layout, width, 250, true);
-
-                ImageView status_icon = layout.findViewById(company.tap.gosellapi.R.id.status_icon);
-                TextView statusText = layout.findViewById(company.tap.gosellapi.R.id.status_text);
-                TextView chargeText = layout.findViewById(company.tap.gosellapi.R.id.charge_id_txt);
-                status_icon.setImageResource(icon);
-//                status_icon.setVisibility(View.INVISIBLE);
-                chargeText.setText(chargeID);
-                statusText.setText((msg!=null&& msg.length()>30)?msg.substring(0,29):msg);
-
-
-                LinearLayout close_icon_ll = layout.findViewById(company.tap.gosellapi.R.id.close_icon_ll);
-                close_icon_ll.setOnClickListener(v -> {
-                });
-
-                popupWindow.showAtLocation(layout, Gravity.TOP, 0, 50);
-                popupWindow.getContentView().startAnimation(AnimationUtils.loadAnimation(this, R.anim.popup_show));
-
-                setupTimer(popupWindow);
-            }
-        }catch(Exception e){
-                e.printStackTrace();
-            }
-            }
-
-    private void setupTimer(PopupWindow popupWindow) {
-        // Hide after some seconds
-        final Handler handler = new Handler();
-        final Runnable runnable = () -> {
-            if (popupWindow.isShowing()) {
-                popupWindow.dismiss();
-            }
-        };
-
-        popupWindow.setOnDismissListener(() -> handler.removeCallbacks(runnable));
-
-        handler.postDelayed(runnable, 4000);
-    }
+//    //////////////////////////////////////////////////////  Overridden section : Session Delegation ////////////////////////
 
     @Override
     public void paymentSucceed(@NonNull Charge charge) {
@@ -320,40 +361,6 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         saveCustomerRefInSession(charge);
         configureSDKSession();
         showDialog(charge.getId(),charge.getResponse().getMessage(),company.tap.gosellapi.R.drawable.ic_checkmark_normal);
-    }
-
-    private void saveCustomerRefInSession(Charge charge) {
-        SharedPreferences preferences =  PreferenceManager.getDefaultSharedPreferences(this);
-
-        Gson gson = new Gson();
-
-        String response = preferences.getString("customer" , "");
-
-
-        ArrayList<CustomerViewModel> customersList = gson.fromJson(response,
-                new TypeToken<List<CustomerViewModel>>(){}.getType());
-
-        if(customersList!=null) {
-            customersList.clear();
-            customersList.add(new CustomerViewModel(
-                    charge.getCustomer().getIdentifier(),
-                            charge.getCustomer().getFirstName(),
-                            charge.getCustomer().getMiddleName(),
-                            charge.getCustomer().getLastName(),
-                            charge.getCustomer().getEmail(),
-                            charge.getCustomer().getPhone().getCountryCode(),
-                            charge.getCustomer().getPhone().getNumber()));
-
-            String data = gson.toJson(customersList);
-
-            writeCustomersToPreferences(data, preferences);
-        }
-    }
-
-    private void writeCustomersToPreferences(String data, SharedPreferences preferences){
-        SharedPreferences.Editor editor =  preferences.edit();
-        editor.putString("customer",data);
-        editor.commit();
     }
 
     @Override
@@ -438,4 +445,122 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
     public void sessionFailedToStart() {
         Log.d("MainActivity","Session Failed to start.........");
     }
+
+
+    @Override
+    public void invalidCardDetails() {
+        System.out.println(" Card details are invalid....");
+    }
+
+    @Override
+    public void backendUnknownError() {
+        System.out.println("Backend Un-Known error....");
+    }
+
+    @Override
+    public void invalidTransactionMode() {
+        System.out.println(" invalidTransactionMode  ......");
+    }
+
+
+/////////////////////////////////////////////////////////  needed only for demo ////////////////////
+
+    public void openSettings(View view) {
+        startActivity(new Intent(this, SettingsActivity.class));
+    }
+
+    private Customer getCustomer() {
+        return new Customer.CustomerBuilder("").email("abc@abc.com").firstName("firstname")
+                .lastName("lastname").metadata("").phone(new PhoneNumber("000","0000000"))
+                .middleName("middlename").build();
+    }
+
+    private void showDialog(String chargeID, String msg,int icon)
+    {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int width = displayMetrics.widthPixels;
+        PopupWindow popupWindow;
+        try {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            if (inflater != null) {
+
+                View layout = inflater.inflate(company.tap.gosellapi.R.layout.charge_status_layout, findViewById(
+                        company.tap.gosellapi.R.id.popup_element));
+
+                popupWindow = new PopupWindow(layout, width, 250, true);
+
+                ImageView status_icon = layout.findViewById(company.tap.gosellapi.R.id.status_icon);
+                TextView statusText = layout.findViewById(company.tap.gosellapi.R.id.status_text);
+                TextView chargeText = layout.findViewById(company.tap.gosellapi.R.id.charge_id_txt);
+                status_icon.setImageResource(icon);
+//                status_icon.setVisibility(View.INVISIBLE);
+                chargeText.setText(chargeID);
+                statusText.setText((msg!=null&& msg.length()>30)?msg.substring(0,29):msg);
+
+
+                LinearLayout close_icon_ll = layout.findViewById(company.tap.gosellapi.R.id.close_icon_ll);
+                close_icon_ll.setOnClickListener(v -> {
+                });
+
+                popupWindow.showAtLocation(layout, Gravity.TOP, 0, 50);
+                popupWindow.getContentView().startAnimation(AnimationUtils.loadAnimation(this, R.anim.popup_show));
+
+                setupTimer(popupWindow);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private void setupTimer(PopupWindow popupWindow) {
+        // Hide after some seconds
+        final Handler handler = new Handler();
+        final Runnable runnable = () -> {
+            if (popupWindow.isShowing()) {
+                popupWindow.dismiss();
+            }
+        };
+
+        popupWindow.setOnDismissListener(() -> handler.removeCallbacks(runnable));
+
+        handler.postDelayed(runnable, 4000);
+    }
+
+    private void saveCustomerRefInSession(Charge charge) {
+        SharedPreferences preferences =  PreferenceManager.getDefaultSharedPreferences(this);
+
+        Gson gson = new Gson();
+
+        String response = preferences.getString("customer" , "");
+
+
+        ArrayList<CustomerViewModel> customersList = gson.fromJson(response,
+                new TypeToken<List<CustomerViewModel>>(){}.getType());
+
+        if(customersList!=null) {
+            customersList.clear();
+            customersList.add(new CustomerViewModel(
+                    charge.getCustomer().getIdentifier(),
+                    charge.getCustomer().getFirstName(),
+                    charge.getCustomer().getMiddleName(),
+                    charge.getCustomer().getLastName(),
+                    charge.getCustomer().getEmail(),
+                    charge.getCustomer().getPhone().getCountryCode(),
+                    charge.getCustomer().getPhone().getNumber()));
+
+            String data = gson.toJson(customersList);
+
+            writeCustomersToPreferences(data, preferences);
+        }
+    }
+
+
+    private void writeCustomersToPreferences(String data, SharedPreferences preferences){
+        SharedPreferences.Editor editor =  preferences.edit();
+        editor.putString("customer",data);
+        editor.commit();
+    }
+
+
 }

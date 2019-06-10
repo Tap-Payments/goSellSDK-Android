@@ -411,7 +411,6 @@ final class PaymentProcessManager {
     if (card == null) {
       return;
     }
-//      System.out.println("shouldSaveCard() >>>>> " + getSaveCardStatus(paymentOptionModel));
       startPaymentProcessWithCard(card,
               paymentOptionModel.getSelectedCardPaymentOption(),
               getSaveCardStatus(paymentOptionModel));

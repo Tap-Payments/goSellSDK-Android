@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 
 import java.math.BigDecimal;
@@ -13,14 +15,27 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import company.tap.gosellapi.R;
+import company.tap.gosellapi.internal.Constants;
 import company.tap.gosellapi.internal.activities.GoSellPaymentActivity;
 import company.tap.gosellapi.internal.api.callbacks.APIRequestCallback;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.facade.GoSellAPI;
+import company.tap.gosellapi.internal.api.models.Address;
+import company.tap.gosellapi.internal.api.models.AmountedCurrency;
+import company.tap.gosellapi.internal.api.models.CreateTokenCard;
 import company.tap.gosellapi.internal.api.models.Merchant;
+import company.tap.gosellapi.internal.api.models.Order;
+import company.tap.gosellapi.internal.api.models.SaveCard;
+import company.tap.gosellapi.internal.api.models.SourceRequest;
+import company.tap.gosellapi.internal.api.models.Token;
+import company.tap.gosellapi.internal.api.models.TrackingURL;
+import company.tap.gosellapi.internal.api.requests.CreateSaveCardRequest;
+import company.tap.gosellapi.internal.api.requests.CreateTokenWithCardDataRequest;
 import company.tap.gosellapi.internal.api.requests.PaymentOptionsRequest;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
+import company.tap.gosellapi.internal.interfaces.IPaymentDataProvider;
+import company.tap.gosellapi.internal.utils.AmountCalculator;
 import company.tap.gosellapi.open.buttons.PayButtonView;
 import company.tap.gosellapi.open.data_manager.PaymentDataSource;
 import company.tap.gosellapi.open.delegate.SessionDelegate;
@@ -44,6 +59,7 @@ public class SDKSession implements View.OnClickListener{
   private PaymentDataSource paymentDataSource;
   private Activity activityListener;
   private int SDK_REQUEST_CODE;
+  private CardInfo cardInfo;
 
   private static SessionDelegate sessionDelegate;
   private Activity context;
@@ -59,10 +75,10 @@ public class SDKSession implements View.OnClickListener{
    */
 
   public enum ErrorTypes {
-      SDK_NOT_CONFIGURED_WITH_VALID_CONTEXT,
-      INTERNET_NOT_AVAILABLE,
-      INTERNET_AVAILABLE,
-      CONNECTIVITY_MANAGER_ERROR,
+    SDK_NOT_CONFIGURED_WITH_VALID_CONTEXT,
+    INTERNET_NOT_AVAILABLE,
+    INTERNET_AVAILABLE,
+    CONNECTIVITY_MANAGER_ERROR,
 
   }
   /**
@@ -265,7 +281,7 @@ public class SDKSession implements View.OnClickListener{
 
   public void setMerchantID(String merchantId){
     if(merchantId!=null && merchantId.trim().length()!=0)
-    paymentDataSource.setMerchant(new Merchant(merchantId));
+      paymentDataSource.setMerchant(new Merchant(merchantId));
     else
       paymentDataSource.setMerchant(null);
   }
@@ -277,6 +293,13 @@ public class SDKSession implements View.OnClickListener{
    */
   @Override
   public void onClick(View v) {
+
+    if(getTransactionMode()==null)
+    {
+      sessionDelegate.invalidTransactionMode();
+      return;
+    }
+
     int i = v.getId();
 
     if (i == payButtonView.getLayoutId() || i == R.id.pay_button_id) {
@@ -319,58 +342,100 @@ public class SDKSession implements View.OnClickListener{
     System.out.println("startPayment ...getPaymentOptions........"+this.paymentDataSource.getAmount());
     persistPaymentDataSource();
     if(payButtonView!=null)
-    payButtonView.getLoadingView().start();
-   System.out.println(" before call request this.paymentDataSource.getCurrency() : " + this.paymentDataSource
-                    .getCurrency().getIsoCode());
+      payButtonView.getLoadingView().start();
+    System.out.println(" before call request this.paymentDataSource.getCurrency() : " + this.paymentDataSource
+            .getCurrency().getIsoCode());
 
 
     PaymentOptionsRequest request = new PaymentOptionsRequest(
 
-        this.paymentDataSource.getTransactionMode(),
-        this.paymentDataSource.getAmount(),
-        this.paymentDataSource.getItems(),
-        this.paymentDataSource.getShipping(),
-        this.paymentDataSource.getTaxes(),
-        this.paymentDataSource.getCurrency().getIsoCode(),
-        this.paymentDataSource.getCustomer().getIdentifier(),
-        (this.paymentDataSource.getMerchant()!=null)?this.paymentDataSource.getMerchant().getId():null
+            this.paymentDataSource.getTransactionMode(),
+            this.paymentDataSource.getAmount(),
+            this.paymentDataSource.getItems(),
+            this.paymentDataSource.getShipping(),
+            this.paymentDataSource.getTaxes(),
+            this.paymentDataSource.getCurrency().getIsoCode(),
+            this.paymentDataSource.getCustomer().getIdentifier(),
+            (this.paymentDataSource.getMerchant()!=null)?this.paymentDataSource.getMerchant().getId():null
     );
 
 
     GoSellAPI.getInstance().getPaymentOptions(request,
-        new APIRequestCallback<PaymentOptionsResponse>() {
+            new APIRequestCallback<PaymentOptionsResponse>() {
 
-          @Override
-          public void onSuccess(int responseCode, PaymentOptionsResponse serializedResponse) {
-            if(payButtonView!=null){
-              if(ThemeObject.getInstance().isPayButtLoaderVisible())
-                payButtonView.getLoadingView()
-                        .setForceStop(true, () -> startMainActivity());
-              else
-                startMainActivity();
-            }else {
-              startMainActivity();
-            }
+              @Override
+              public void onSuccess(int responseCode, PaymentOptionsResponse serializedResponse) {
+                if(payButtonView!=null){
+                  if(ThemeObject.getInstance().isPayButtLoaderVisible())
+                    payButtonView.getLoadingView()
+                            .setForceStop(true, () -> startSDK());
+                  else
+                    startSDK();
+                }else {
+                  startSDK();
+                }
 
+              }
+
+              @Override
+              public void onFailure(GoSellError errorDetails) {
+
+
+                if(ThemeObject.getInstance().isPayButtLoaderVisible()) {
+
+                  if(payButtonView!=null)
+                    payButtonView.getLoadingView().setForceStop(true);
+
+                  sessionDelegate.sdkError(errorDetails);
+                }
+                else{
+                  sessionDelegate.sdkError(errorDetails);
+                }
+
+              }
+            });
+  }
+
+
+  private void startSDK(){
+    if(getTransactionMode()!=null){
+      switch (getTransactionMode()){
+        case PURCHASE:
+        case AUTHORIZE_CAPTURE:
+        case SAVE_CARD:
+        case TOKENIZE_CARD:
+          startMainActivity();  // start SDK Main activity.
+          break;
+        case TOKENIZE_CARD_NO_UI:  // use SDK without UI (Card Form)
+          if(this.cardInfo!=null){
+            APIsExposer.getInstance().startToknizingCard(
+                    this.cardInfo.cardNumber,
+                    this.cardInfo.expirationMonth,
+                    this.cardInfo.expirationYear,
+                    this.cardInfo.cvc,
+                    this.cardInfo.cardholderName,
+                    this.cardInfo.address,
+                    sessionDelegate);
           }
-
-          @Override
-          public void onFailure(GoSellError errorDetails) {
-
-
-            if(ThemeObject.getInstance().isPayButtLoaderVisible()) {
-
-              if(payButtonView!=null)
-              payButtonView.getLoadingView().setForceStop(true);
-
-              sessionDelegate.sdkError(errorDetails);
-            }
-            else{
-              sessionDelegate.sdkError(errorDetails);
-            }
-
+          else
+            sessionDelegate.invalidCardDetails();
+          break;
+        case SAVE_CARD_NO_UI:
+          if(this.cardInfo!=null){
+            APIsExposer.getInstance().startToknizingCard(
+                    this.cardInfo.cardNumber,
+                    this.cardInfo.expirationMonth,
+                    this.cardInfo.expirationYear,
+                    this.cardInfo.cvc,
+                    this.cardInfo.cardholderName,
+                    this.cardInfo.address,
+                    sessionDelegate);
           }
-        });
+          else
+            sessionDelegate.invalidCardDetails();
+          break;
+      }
+    }
   }
 
 
@@ -386,7 +451,7 @@ public class SDKSession implements View.OnClickListener{
       else
         return ErrorTypes.INTERNET_NOT_AVAILABLE;
     }
-     return ErrorTypes.CONNECTIVITY_MANAGER_ERROR;
+    return ErrorTypes.CONNECTIVITY_MANAGER_ERROR;
   }
   /**
    * launch goSellSDK activity
@@ -397,7 +462,7 @@ public class SDKSession implements View.OnClickListener{
       payButtonView.getLoadingView().setForceStop(true);
 
     if(getListener()!=null)
-    getListener().sessionIsStarting();
+      getListener().sessionIsStarting();
 
     if(context!=null) {
       Intent intent = new Intent(context, GoSellPaymentActivity.class);
@@ -406,7 +471,7 @@ public class SDKSession implements View.OnClickListener{
       Intent intent = new Intent(payButtonView.getContext(), GoSellPaymentActivity.class);
       activityListener.startActivityForResult(intent,SDK_REQUEST_CODE );
     }else if (getListener()!=null){
-        getListener().sessionFailedToStart();
+      getListener().sessionFailedToStart();
     }
 
   }
@@ -437,7 +502,51 @@ public class SDKSession implements View.OnClickListener{
   private Context getSDKContext(){
     if(context!=null)return context;
     else if(payButtonView!=null && payButtonView.getContext()!=null)
-     return payButtonView.getContext();
+      return payButtonView.getContext();
     return null;
+  }
+
+
+  public TransactionMode getTransactionMode(){
+    if(this.paymentDataSource!=null)
+      return this.paymentDataSource.getTransactionMode();
+    else
+      return null;
+  }
+
+  public void setCardInfo(@NonNull String cardNumber,
+                          @NonNull String expirationMonth,
+                          @NonNull String expirationYear,
+                          @NonNull String cvc,
+                          @NonNull String cardholderName,
+                          @Nullable Address address) {
+    this.cardInfo = new CardInfo(cardNumber,expirationMonth,expirationYear,cvc,cardholderName,address);
+  }
+
+  /**
+   * Card details holder in case of Merchant will not use the SDK UI.
+   */
+  class CardInfo{
+    String cardNumber;
+    String expirationMonth;
+    String expirationYear;
+    String cvc;
+    String cardholderName;
+    Address address;
+
+    CardInfo( @NonNull String cardNumber,
+              @NonNull String expirationMonth,
+              @NonNull String expirationYear,
+              @NonNull String cvc,
+              @NonNull String cardholderName,
+              @Nullable Address address){
+      this.cardNumber = cardNumber;
+      this.expirationMonth = expirationMonth;
+      this.expirationYear = expirationYear;
+      this.cvc = cvc;
+      this.cardholderName = cardholderName;
+      this.address = address;
+    }
+
   }
 }

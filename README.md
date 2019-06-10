@@ -22,9 +22,11 @@ A library that fully covers payment/authorization/card saving process inside you
     1. [Configure SDK with Required Data](#configure_sdk_with_required_data)
     2. [Configure SDK Look and Feel](#configure_sdk_look_and_feel)
     3. [Configure SDK Session](#configure_sdk_Session)
-    4. [Open SDK Interfaces](#sdk_open_interfaces)
-    5. [Open SDK ENUMs](#sdk_open_enums)
-    6. [Open SDK Models](#sdk_open_models)
+    4. [Configure SDK Transaction Mode](#configure_sdk_transaction_mode)
+    5. [Use Tap PayButton](#init_pay_button)
+    6. [Open SDK Interfaces](#sdk_open_interfaces)
+    7. [Open SDK ENUMs](#sdk_open_enums)
+    8. [Open SDK Models](#sdk_open_models)
 5. [SDKSession Delegate](#sdk_delegate)
     1. [Payment Success Callback](#payment_success_callback)
     2. [Payment Failure Callback](#payment_failure_callback)
@@ -34,10 +36,13 @@ A library that fully covers payment/authorization/card saving process inside you
     6. [Card Saving Failure Callback](#card_saving_failure_callback)
     7. [Card Tokenized Success Callback](#card_tokenized_success_callback)
     8. [Session Other Failure Callback](#session_error_callback)
-    9. [Session Is Starting Callback](#session_is_starting_callback)
-    10. [Session Has Started Callback](#session_has_started_callback)
-    11. [Session Failed To Start Callback](#session_failed_to_start_callback)
-    12. [Session Cancel Callback](#session_cancel_callback)
+    9. [Invalid Card Details](#invalid_card_details)
+    10. [Backend Un-known Error](#backecnd_unknow_error)
+    11. [Invalid Transaction Mode](#invalid_transaction_mode)
+    12. [Session Is Starting Callback](#session_is_starting_callback)
+    13. [Session Has Started Callback](#session_has_started_callback)
+    14. [Session Failed To Start Callback](#session_failed_to_start_callback)
+    15. [Session Cancel Callback](#session_cancel_callback)
 6. [Documentation](#docs)
 
 
@@ -86,7 +91,7 @@ To integrate goSellSDK into your project add it in your **root** `build.gradle` 
 Step 2. Add the dependency
 ```java
 	dependencies {
-	        implementation 'com.github.Tap-Payments:goSellSDK-Android:2.2.6'
+	        implementation 'com.github.Tap-Payments:goSellSDK-Android:2.2.7'
 	}
 ```
 <a name="setup"></a>
@@ -134,23 +139,6 @@ Make sure it consists only from 2 lowercased letters and is presented in the lis
 
 **Notice:** SDK user interface layout direction is behave similar to your App. There is no effect come form the SDK back to your application locale. 
 
-### Available Languages
-
-This property returns the list of locale identifiers the SDK is currently localized into.
-
-Currently we support the following languages:
-
-<table>
-	<th style="text-align:center">Language</th><th style="text-align:center">Locale Identifier</th>
-	<tr>
-		<td>English</td><td>en</td>
-	</tr>
-	<tr>
-	    <td>Arabic</td><td>ar</td>
-	</tr>
-</table>
-
-
 <a name="usage"></a>
 #Usage
 ---
@@ -159,16 +147,63 @@ Currently we support the following languages:
 
 `goSellSDK` should be set up. To set it up, add the following lines of code somewhere in your project and make sure they will be called before any usage of `goSellSDK`.
 
+*Android*:
+```java
+
+    /**
+     * Integrating SDK.
+     */
+    private void startSDK(){
+        /**
+         * Required step.
+         * Configure SDK with your Secret API key and App Bundle name registered with tap company.
+         */
+        configureApp();
+
+        /**
+         * Optional step
+         * Here you can configure your app theme (Look and Feel).
+         */
+        configureSDKThemeObject();
+
+        /**
+         * Required step.
+         * Configure SDK Session with all required data.
+         */
+        configureSDKSession();
+
+        /**
+         * Required step.
+         * Choose between different SDK modes
+         */
+        configureSDKMode();
+
+        /**
+         * If you included Tap Pay Button then configure it first, if not then ignore this step.
+         */
+        initPayButton();
+    }
+
+
+
+```
+
 Below is the list of properties in goSellSDK class you can manipulate. Make sure you do the setup before any usage of the SDK.
 
 <a name="setup_gosellsdk_class_properties_secret_key"></a>
-### Secret Key and Application ID
+### Configure SDK Secret Key and Application ID
 
 To set it up, add the following line of code somewhere in your project and make sure it will be called before any usage of `goSellSDK`, otherwise an exception will be thrown. **Required**.
 
 Android
 ```java
-    GoSellSDK.init(context, "sk_XXXXXXXXXXXXXXXXXXXXXXXX","app_id");
+     /**
+         * Required step.
+         * Configure SDK with your Secret API key and App Bundle name registered with tap company.
+         */
+        private void configureApp(){
+            GoSellSDK.init(this, "sk_test_kovrMB0mupFJXfNZWx6Etg5y","company.tap.goSellSDKExample");  // to be replaced by merchant
+        }
 ```
 1. **`authToken`** - to authorize your requests.// Secret key (format: "sk_XXXXXXXXXXXXXXXXXXXXXXXX")
 2. **`app_id`** - replace it using your application ID "Application main package".
@@ -407,9 +442,6 @@ Don't forget to import the class at the beginning of the file:
             // set transaction currency associated to your account
             sdkSession.setTransactionCurrency(new TapCurrency("KWD"));    //** Required **
     
-            // set transaction mode [TransactionMode.PURCHASE - TransactionMode.AUTHORIZE_CAPTURE - TransactionMode.SAVE_CARD - TransactionMode.TOKENIZE_CARD ]
-            sdkSession.setTransactionMode(TransactionMode.TOKENIZE_CARD);    //** Required **
-    
             // Using static CustomerBuilder method available inside TAP Customer Class you can populate TAP Customer object and pass it to SDK
             sdkSession.setCustomer(getCustomer());    //** Required **
     
@@ -465,6 +497,99 @@ Don't forget to import the class at the beginning of the file:
                 }
  ```
  
+ <a name="configure_sdk_transaction_mode"></a>
+  **Configure SDK Transaction Mode**
+  
+  You have to choose only one Mode of the following modes:
+  
+   **Note:-**
+     - In case of using PayButton, then don't call sdkSession.start(this); because the SDK will start when user clicks the tap pay button.
+
+ ```java
+        /**
+           * Configure SDK Theme
+           */
+          private void configureSDKMode(){
+      
+              /**
+               * You have to choose only one Mode of the following modes:
+               * Note:-
+               *      - In case of using PayButton, then don't call sdkSession.start(this); because the SDK will start when user clicks the tap pay button.
+               */
+              //////////////////////////////////////////////////////    SDK with UI //////////////////////
+              /**
+               * 1- Start using  SDK features through SDK main activity (With Tap CARD FORM)
+               */
+              startSDKWithUI();
+      
+              //////////////////////////////////////////////////////    SDK Tokenization without UI //////////////////////
+              /**
+               * 2- Start using  SDK to tokenize your card without using SDK main activity (Without Tap CARD FORM)
+               * After the SDK finishes card tokenization, it will notify this activity with tokenization result in either
+               * cardTokenizedSuccessfully(@NonNull String token) or sdkError(@Nullable GoSellError goSellError)
+               */
+      //          startSDKTokenizationWithoutUI();
+      //        sdkSession.start(this);
+      
+              //////////////////////////////////////////////////////    SDK Saving card without UI //////////////////////
+              /**
+               *  3- Start using  SDK to save your card without using SDK main activity ((Without Tap CARD FORM))
+               *  After the SDK finishes card tokenization, it will notify this activity with save card result in either
+               *  cardSaved(@NonNull Charge charge) or sdkError(@Nullable GoSellError goSellError)
+               *
+               */
+      //         startSDKSavingCardWithoutUI();
+      //       sdkSession.start(this);
+          }
+ ```
+ 
+ <a name="init_pay_button"></a>
+   If you included Tap Pay Button then configure it first, if not then ignore this step.
+   
+  **Use Tap PayButton**
+  ```java
+     /**
+          * Include pay button in merchant page
+          */
+         private void initPayButton() {
+     
+             payButtonView = findViewById(R.id.payButtonId);
+     
+             payButtonView.setupFontTypeFace(ThemeObject.getInstance().getPayButtonFont());
+     
+             payButtonView.setupTextColor(ThemeObject.getInstance().getPayButtonEnabledTitleColor(),
+                     ThemeObject.getInstance().getPayButtonDisabledTitleColor());
+     //
+             payButtonView.getPayButton().setTextSize(ThemeObject.getInstance().getPayButtonTextSize());
+     //
+             payButtonView.getSecurityIconView().setVisibility(ThemeObject.getInstance().isPayButtSecurityIconVisible()?View.VISIBLE:View.INVISIBLE);
+     
+             payButtonView.setBackgroundSelector(ThemeObject.getInstance().getPayButtonResourceId());
+     
+             if(sdkSession!=null){
+                 TransactionMode trx_mode = sdkSession.getTransactionMode();
+                 if(trx_mode!=null){
+     
+                     if (TransactionMode.SAVE_CARD == trx_mode  || TransactionMode.SAVE_CARD_NO_UI ==trx_mode) {
+                         payButtonView.getPayButton().setText(getString(company.tap.gosellapi.R.string.save_card));
+                     }
+                     else if(TransactionMode.TOKENIZE_CARD == trx_mode || TransactionMode.TOKENIZE_CARD_NO_UI == trx_mode){
+                         payButtonView.getPayButton().setText(getString(company.tap.gosellapi.R.string.tokenize));
+                     }
+                     else {
+                         payButtonView.getPayButton().setText(getString(company.tap.gosellapi.R.string.pay));
+                     }
+                 }else{
+                     configureSDKMode();
+                 }
+                 sdkSession.setButtonView(payButtonView, this, SDK_REQUEST_CODE);
+             }
+     
+     
+         }
+ 
+  ```         
+         
 **To populate TAP Customer object**
 ```java
      private Customer getCustomer() {
@@ -596,24 +721,30 @@ The following table describes its structure and specifies which fields are requi
  ```java
       public interface SessionDelegate {
       
-              void paymentSucceed(@NonNull Charge charge);
-              void paymentFailed(@Nullable Charge charge);
-      
-              void authorizationSucceed(@NonNull Authorize authorize);
-              void authorizationFailed(Authorize authorize);
-      
-      
-              void cardSaved(@NonNull Charge charge);
-              void cardSavingFailed(@NonNull Charge charge);
-      
-              void cardTokenizedSuccessfully(@NonNull String token);
-      
-              void sdkError(@Nullable GoSellError goSellError);
-      
-              void sessionIsStarting();
-              void sessionHasStarted();
-              void sessionCancelled();
-              void sessionFailedToStart();
+                      void paymentSucceed(@NonNull Charge charge);
+                      void paymentFailed(@Nullable Charge charge);
+              
+                      void authorizationSucceed(@NonNull Authorize authorize);
+                      void authorizationFailed(Authorize authorize);
+              
+              
+                      void cardSaved(@NonNull Charge charge);
+                      void cardSavingFailed(@NonNull Charge charge);
+              
+                      void cardTokenizedSuccessfully(@NonNull String token);
+              
+                      void sdkError(@Nullable GoSellError goSellError);
+              
+                      void sessionIsStarting();
+                      void sessionHasStarted();
+                      void sessionCancelled();
+                      void sessionFailedToStart();
+              
+                      void invalidCardDetails();
+              
+                      void backendUnknownError();
+              
+                      void invalidTransactionMode();
       }
  ```
  2. PaymentDataSource
@@ -727,22 +858,33 @@ The following table describes its structure and specifies which fields are requi
  ```java
     public enum TransactionMode {
     
-        /**
-         * Purchase transaction mode.
-         */
-        @SerializedName("PURCHASE")                     PURCHASE,
-        /**
-         * Authorize capture transaction mode.
-         */
-        @SerializedName("AUTHORIZE_CAPTURE")            AUTHORIZE_CAPTURE,
-        /**
-         * Save card transaction mode.
-         */
-        @SerializedName("SAVE_CARD")                    SAVE_CARD,
-        /**
-         * Tokenize card mode.
-         */
-        @SerializedName("TOKENIZE_CARD")                TOKENIZE_CARD,
+            /**
+             * Purchase transaction mode.
+             */
+            @SerializedName("PURCHASE")                           PURCHASE,
+            /**
+             * Authorize capture transaction mode.
+             */
+            @SerializedName("AUTHORIZE_CAPTURE")                   AUTHORIZE_CAPTURE,
+            /**
+             * Save card transaction mode.
+             */
+            @SerializedName("SAVE_CARD")                           SAVE_CARD,
+            /**
+             * Tokenize card mode.
+             */
+            @SerializedName("TOKENIZE_CARD")                       TOKENIZE_CARD,
+        
+        /////////////////////////////////////  APIs exposer without UI ////////////////////////////
+            /**
+             * Tokenize card mode no UI.
+             */
+            @SerializedName("TOKENIZE_CARD_NO_UI")                 TOKENIZE_CARD_NO_UI,
+        
+            /**
+             * Save card transaction mode no UI.
+             */
+            @SerializedName("SAVE_CARD_NO_UI")                      SAVE_CARD_NO_UI,
     }
  ```
  <a name="sdk_open_models"></a>
@@ -1452,6 +1594,48 @@ Notifies the receiver if any other error occurred.
 #### Arguments
 
 **GoSellError**: GoSellError object with details of error.
+
+
+<a name="invalid_card_details"></a>
+### Invalid Card details
+
+Notifies the client that card data passed are invalid
+
+#### Declaration
+
+*Android:
+
+```java
+- void invalidCardDetails();
+```
+
+
+<a name="backecnd_unknow_error"></a>
+### Backend Unknown Error
+
+Notifies the client that an unknown error has occurred in the backend
+
+#### Declaration
+
+*Android:
+
+```java
+-  void backendUnknownError();
+```
+
+<a name="invalid_transaction_mode"></a>
+### Invalid Transaction Mode
+
+Notifies the client that Transaction Mode not configured.
+
+#### Declaration
+
+*Android:
+
+```java
+-  void invalidTransactionMode();
+```
+
 
 <a name="session_is_starting_callback"></a>
 ### Session Is Starting Callback
