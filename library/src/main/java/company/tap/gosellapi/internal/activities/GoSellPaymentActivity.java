@@ -163,7 +163,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
         payButton.setOnClickListener(v -> {
             payButton.setEnabled(false);
-
+            if(payButton.getLoadingView()!=null)payButton.getLoadingView().start();
 
             if(keyboardVisible) {
                 startPaymentFlag=true;
@@ -178,16 +178,19 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     }
 
 
+    @Override
+    public void onBackPressed() {
+        SDKSession.getListener().sessionCancelled();
+        super.onBackPressed();
+    }
+
     private void setupHeader() {
         android.support.v7.widget.Toolbar  toolbar = findViewById(R.id.toolbar);
         TextView cancel_payment_text = findViewById(R.id.cancel_payment_icon);
 
         LinearLayout cancel_payment_ll = findViewById(R.id.cancel_payment);
 
-        cancel_payment_ll.setOnClickListener(v -> {
-            SDKSession.getListener().sessionCancelled();
-            onBackPressed();
-        });
+        cancel_payment_ll.setOnClickListener(v -> onBackPressed());
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         ImageView businessIcon = findViewById(R.id.businessIcon);
@@ -338,8 +341,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     }
 
     private void startSavedCardPaymentProcess() {
-        Log.d("GoSellPaymentActivity"," getSavedCard().getPaymentOptionIdentifier() : " + getSavedCard()
-                .getPaymentOptionIdentifier());
+//        Log.d("GoSellPaymentActivity"," getSavedCard().getPaymentOptionIdentifier() : " + getSavedCard().getPaymentOptionIdentifier());
         PaymentDataManager.getInstance().checkSavedCardPaymentExtraFees(getSavedCard(), this);
 
     }
@@ -347,7 +349,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     private void startCardPaymentProcess(CardCredentialsViewModel paymentOptionViewModel) {
         if(PaymentDataManager.getInstance().getExternalDataSource().getTransactionMode()==TransactionMode.TOKENIZE_CARD)
             initCardTokenization();
-
         else
         PaymentDataManager.getInstance().checkCardPaymentExtraFees(paymentOptionViewModel, this);
     }
@@ -400,7 +401,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         BigDecimal feesAmount = PaymentDataManager.getInstance()
                 .calculateCardExtraFees(paymentOption);
 
-        Log.d("GoSellPaymentActivity"," update pay button with : fees : " + feesAmount);
+//        Log.d("GoSellPaymentActivity"," update pay button with : fees : " + feesAmount);
 
         if (!isTransactionModeSaveCard())
             payButton.getPayButton().setText(
@@ -514,12 +515,15 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                 break;
             case REFUSE_EXTRA_FEES:
                 LoadingScreenManager.getInstance().closeLoadingScreen();
+                if(payButton!=null && payButton.getLoadingView()!=null)payButton.getLoadingView().setForceStop(true);
+                payButton.setEnabled(true);
                 break;
         }
     }
 
     @Override
     public void fireCardPaymentExtraFeesUserDecision(ExtraFeesStatus userChoice) {
+        if(payButton!=null && payButton.getLoadingView()!=null)payButton.getLoadingView().setForceStop(true);
         switch (userChoice) {
             case ACCEPT_EXTRA_FEES:
             case NO_EXTRA_FEES:
@@ -527,12 +531,14 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                 break;
             case REFUSE_EXTRA_FEES:
                 LoadingScreenManager.getInstance().closeLoadingScreen();
+                payButton.setEnabled(true);
                 break;
         }
     }
 
     @Override
     public void fireSavedCardPaymentExtraFeesUserDecision(ExtraFeesStatus userChoice) {
+        if(payButton!=null && payButton.getLoadingView()!=null)payButton.getLoadingView().setForceStop(true);
         switch (userChoice) {
             case ACCEPT_EXTRA_FEES:
             case NO_EXTRA_FEES:
@@ -540,6 +546,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                 break;
             case REFUSE_EXTRA_FEES:
                 LoadingScreenManager.getInstance().closeLoadingScreen();
+                payButton.setEnabled(true);
                 break;
         }
     }
@@ -720,7 +727,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
     @Override
     public void didReceiveCharge(Charge charge) {
-        Log.d("GoSellPaymentActivity"," Cards >> didReceiveCharge * * * " + charge);
+//        Log.d("GoSellPaymentActivity"," Cards >> didReceiveCharge * * * " + charge);
         if (charge == null) return;
         Log.d("GoSellPaymentActivity"," Cards >> didReceiveCharge * * * " + charge.getStatus());
 
@@ -857,7 +864,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         }
 
         String url = chargeOrAuthorizeOrSaveCard.getTransaction().getUrl();
-        Log.d("GoSellPaymentActivity","GoSellPaymentActivity >> Transaction().getUrl() :" + url);
+//        Log.d("GoSellPaymentActivity","GoSellPaymentActivity >> Transaction().getUrl() :" + url);
 //        Log.d("GoSellPaymentActivity","GoSellPaymentActivity >> chargeOrAuthorize :" + chargeOrAuthorizeOrSaveCard.getId());
 
 
@@ -905,7 +912,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            Log.d("GoSellPaymentActivity"," on page started : " + url);
+//            Log.d("GoSellPaymentActivity"," on page started : " + url);
             super.onPageStarted(view, url, favicon);
         }
 
@@ -927,7 +934,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            Log.d("GoSellPaymentActivity","onPageFinished :" + url);
+//            Log.d("GoSellPaymentActivity","onPageFinished :" + url);
         }
     }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1100,7 +1107,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     }
 
     private void startPaymentProcess(){
-        payButton.setEnabled(true);
        checkInternetConnectivity();
     }
 
@@ -1119,8 +1125,10 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
             else
                 showDialog(getResources().getString(R.string.internet_connectivity_title),getResources().getString(R.string.internet_connectivity_message));
         }
+        else
         System.out.println(" some error in connectivity manager...");
     }
+
     private void showDialog(String title,String message){
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         dialogBuilder.setTitle(title);
