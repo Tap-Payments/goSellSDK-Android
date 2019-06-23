@@ -244,7 +244,6 @@ public final class PayButtonView extends FrameLayout  {
             }
 
             int textColor = a.getColor(R.styleable.PayButtonView_android_textColor, VALUE_IS_MISSING);
-            Log.d("PayButton: "," Initial text color: "+textColor);
             if (textColor != VALUE_IS_MISSING) {
                 mTextColor = textColor;
             }

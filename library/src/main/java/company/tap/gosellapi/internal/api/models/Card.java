@@ -17,9 +17,13 @@ public final class Card {
     @Expose
     private String object;
 
-    @SerializedName("last4")
+    @SerializedName("first_six")
     @Expose
-    private String last4;
+    private String firstSix;
+
+    @SerializedName("last_four")
+    @Expose
+    private String lastFour;
 
     @SerializedName("exp_month")
     @Expose
@@ -60,12 +64,22 @@ public final class Card {
     }
 
     /**
+     * Gets first 6.
+     *
+     * @return the first 6
+     */
+    public String getFirstSix() {
+        return firstSix;
+    }
+
+
+    /**
      * Gets last 4.
      *
      * @return the last 4
      */
     public String getLast4() {
-        return last4;
+        return lastFour;
     }
 
     /**

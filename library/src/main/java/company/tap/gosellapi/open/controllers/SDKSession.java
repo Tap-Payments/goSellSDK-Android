@@ -64,6 +64,8 @@ public class SDKSession implements View.OnClickListener{
   private static SessionDelegate sessionDelegate;
   private Activity context;
 
+  private boolean sessionActive;
+
   /**
    * Instantiates a new Sdk session.
    */
@@ -294,6 +296,8 @@ public class SDKSession implements View.OnClickListener{
   @Override
   public void onClick(View v) {
 
+    if(sessionActive) return;
+
     if(getTransactionMode()==null)
     {
       sessionDelegate.invalidTransactionMode();
@@ -303,17 +307,22 @@ public class SDKSession implements View.OnClickListener{
     int i = v.getId();
 
     if (i == payButtonView.getLayoutId() || i == R.id.pay_button_id) {
+      System.out.println(" sessionActive : "+sessionActive);
+      sessionActive = true;
       getPaymentOptions();
-    } else if (i != R.id.pay_security_icon_id) {
-      return;
-    }
 
+    }
   }
 
   /**
    * start goSellSDK without pay button
    */
   public void start(Activity context){
+    System.out.println(" sessionActive : "+ sessionActive);
+    if(sessionActive) return;
+
+    sessionActive = true;
+
     this.context = context;
     getPaymentOptions();
   }
@@ -322,16 +331,24 @@ public class SDKSession implements View.OnClickListener{
    * call payment methods API
    */
   private void getPaymentOptions() {
-    System.out.println("isInternetConnectionAvailable() : " + isInternetConnectionAvailable());
     switch (isInternetConnectionAvailable()) {
       case SDK_NOT_CONFIGURED_WITH_VALID_CONTEXT:
-        showDialog("SDK Error", "SDK Not Configured Correctly");
+        if(getSDKContext()!=null)
+        showDialog(getSDKContext().getResources().getString(R.string.sdk_error), getSDKContext().getResources().getString(R.string.sdk_not_configure_correctly));
+        else
+          showDialog("SDK Error", "SDK Not Configured Correctly");
         break;
       case CONNECTIVITY_MANAGER_ERROR:
-        showDialog("SDK Error", "Device has a problem in Connectivity manager");
+        if(getSDKContext()!=null)
+          showDialog(getSDKContext().getResources().getString(R.string.sdk_error), getSDKContext().getResources().getString(R.string.device_has_aproblem_in_connectivity_manager));
+        else
+          showDialog("SDK Error", "Device has a problem in Connectivity manager");
         break;
       case INTERNET_NOT_AVAILABLE:
-        showDialog("Connection Error", "Internet connection is not available");
+        if(getSDKContext()!=null)
+          showDialog(getSDKContext().getResources().getString(R.string.sdk_error), getSDKContext().getResources().getString(R.string.internet_connection_is_not_available));
+        else
+          showDialog("Connection Error", "Internet connection is not available");
         break;
       case INTERNET_AVAILABLE:
         startPayment();
@@ -339,14 +356,11 @@ public class SDKSession implements View.OnClickListener{
   }
 
   public void startPayment(){
-    System.out.println("startPayment ...getPaymentOptions........"+this.paymentDataSource.getAmount());
     persistPaymentDataSource();
     if(payButtonView!=null)
       payButtonView.getLoadingView().start();
-    System.out.println(" before call request this.paymentDataSource.getCurrency() : " + this.paymentDataSource
-            .getCurrency().getIsoCode());
 
-
+    System.out.println(" this.paymentDataSource.getTransactionMode() : "+ this.paymentDataSource.getTransactionMode());
     PaymentOptionsRequest request = new PaymentOptionsRequest(
 
             this.paymentDataSource.getTransactionMode(),
@@ -416,13 +430,16 @@ public class SDKSession implements View.OnClickListener{
                     this.cardInfo.cardholderName,
                     this.cardInfo.address,
                     sessionDelegate);
+            sessionActive = false;
           }
-          else
+          else {
+            sessionActive = false;
             sessionDelegate.invalidCardDetails();
+          }
           break;
         case SAVE_CARD_NO_UI:
           if(this.cardInfo!=null){
-            APIsExposer.getInstance().startToknizingCard(
+            APIsExposer.getInstance().startSavingCard(
                     this.cardInfo.cardNumber,
                     this.cardInfo.expirationMonth,
                     this.cardInfo.expirationYear,
@@ -430,12 +447,18 @@ public class SDKSession implements View.OnClickListener{
                     this.cardInfo.cardholderName,
                     this.cardInfo.address,
                     sessionDelegate);
+            sessionActive = false;
           }
-          else
+          else {
+            sessionActive = false;
             sessionDelegate.invalidCardDetails();
+          }
           break;
       }
+    }else {
+      sessionActive = false;
     }
+
   }
 
 
@@ -467,11 +490,14 @@ public class SDKSession implements View.OnClickListener{
     if(context!=null) {
       Intent intent = new Intent(context, GoSellPaymentActivity.class);
       context.startActivityForResult(intent, SDK_REQUEST_CODE);
+      sessionActive = false;
     }else if(payButtonView!=null && payButtonView.getContext()!=null) {
       Intent intent = new Intent(payButtonView.getContext(), GoSellPaymentActivity.class);
       activityListener.startActivityForResult(intent,SDK_REQUEST_CODE );
+      sessionActive = false;
     }else if (getListener()!=null){
       getListener().sessionFailedToStart();
+      sessionActive = false;
     }
 
   }
@@ -493,7 +519,7 @@ public class SDKSession implements View.OnClickListener{
     dialogBuilder.setMessage(message);
     dialogBuilder.setCancelable(false);
 
-    dialogBuilder.setPositiveButton("Ok", (dialog, which) -> System.out.println("dialog ok button clicked...."));
+    dialogBuilder.setPositiveButton(getSDKContext().getResources().getString(R.string.close), (dialog, which) -> System.out.println("dialog ok button clicked...."));
 
     dialogBuilder.show();
 

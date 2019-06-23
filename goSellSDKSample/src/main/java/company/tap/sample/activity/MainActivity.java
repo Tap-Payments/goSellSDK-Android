@@ -36,6 +36,8 @@ import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.models.Authorize;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.models.PhoneNumber;
+import company.tap.gosellapi.internal.api.models.SaveCard;
+import company.tap.gosellapi.internal.api.models.SavedCard;
 import company.tap.gosellapi.open.buttons.PayButtonView;
 import company.tap.gosellapi.open.controllers.SDKSession;
 import company.tap.gosellapi.open.controllers.ThemeObject;
@@ -66,7 +68,6 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
         // start tap goSellSDK
         startSDK();
-
     }
 
     @Override
@@ -211,7 +212,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         sdkSession.isUserAllowedToSaveCard(true); //  ** Required ** you can pass boolean
 
         // Enable or Disable 3DSecure
-        sdkSession.isRequires3DSecure(false);
+        sdkSession.isRequires3DSecure(true);
 
         //Set Receipt Settings [SMS - Email ]
         sdkSession.setReceiptSettings(new Receipt(false,false)); // ** Optional ** you can pass Receipt object or null
@@ -240,7 +241,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         /**
          * 1- Start using  SDK features through SDK main activity (With Tap CARD FORM)
          */
-//        startSDKWithUI();
+        startSDKWithUI();
 
         //////////////////////////////////////////////////////    SDK Tokenization without UI //////////////////////
         /**
@@ -249,7 +250,6 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
          * cardTokenizedSuccessfully(@NonNull String token) or sdkError(@Nullable GoSellError goSellError)
          */
 //          startSDKTokenizationWithoutUI();
-//        sdkSession.start(this);
 
         //////////////////////////////////////////////////////    SDK Saving card without UI //////////////////////
         /**
@@ -258,8 +258,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
          *  cardSaved(@NonNull Charge charge) or sdkError(@Nullable GoSellError goSellError)
          *
          */
-         startSDKSavingCardWithoutUI();
-//       sdkSession.start(this);
+//         startSDKSavingCardWithoutUI();
     }
 
 
@@ -271,7 +270,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
             // set transaction mode [TransactionMode.PURCHASE - TransactionMode.AUTHORIZE_CAPTURE - TransactionMode.SAVE_CARD - TransactionMode.TOKENIZE_CARD ]
             sdkSession.setTransactionMode(TransactionMode.PURCHASE);    //** Required **
             // if you are not using tap button then start SDK using the following call
-            sdkSession.start(this);
+            //sdkSession.start(this);
         }
     }
 
@@ -281,7 +280,6 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
      */
 
     private void startSDKTokenizationWithoutUI(){
-        System.out.println("sdkSession >>> "+ sdkSession);
         if(sdkSession!=null){
             // set transaction mode [ TransactionMode.TOKENIZE_CARD_NO_UI ]
             sdkSession.setTransactionMode(TransactionMode.TOKENIZE_CARD_NO_UI);    //** Required **
@@ -303,7 +301,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
             // pass card info to SDK
             sdkSession.setCardInfo("5123450000000008","05","21","100","Haitham Elsheshtawy",null); //** Required **
             // if you are not using tap button then start SDK using the following call
-          //  sdkSession.start(this);
+//            sdkSession.start(this);
         }
     }
 
@@ -392,9 +390,13 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
     @Override
     public void cardSaved(@NonNull Charge charge) {
+        // Cast charge object to SaveCard first to get all the Card info.
+        if(charge instanceof SaveCard){
+            System.out.println("Card Saved Succeeded : first six digits : "+ ((SaveCard)charge).getCard().getFirstSix() + "  last four :"+ ((SaveCard)charge).getCard().getLast4());
+        }
         System.out.println("Card Saved Succeeded : "+ charge.getStatus());
         System.out.println("Card Saved Succeeded : "+ charge.getDescription());
-        System.out.println("Card Saved Succeeded : "+ charge.getResponse().getMessage());
+        System.out.println("Card Saved Succeeded : "+ charge.getResponse(). getMessage());
         saveCustomerRefInSession(charge);
         showDialog(charge.getId(),charge.getStatus().toString(),company.tap.gosellapi.R.drawable.ic_checkmark_normal);
     }

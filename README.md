@@ -1537,7 +1537,7 @@ Notifies the receiver that the customer has successfully saved the card.
 *Android*
 
 ```java
-- void cardSaved(@NonNull Charge charge);
+- void cardSaved(@NonNull Charge charge); // you have to cast Charge object to SaveCard object first to get card info 
 ```
 
 #### Arguments
@@ -1679,7 +1679,7 @@ Notifies the receiver that session has failed to start.
 <a name="session_cancel_callback"></a>
 ### Session Cancel Callback
 
-Notifies the receiver that payment/authorization was cancelled by user.
+Notifies the receiver (Merchant Activity) that the user cancelled payment process, clicked on soft back button, clicked hard back button or clicked Header cancel button. 
 
 #### Declaration
 
