@@ -918,7 +918,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//            Log.d("GoSellPaymentActivity","shouldOverrideUrlLoading :" + url);
+            Log.d("GoSellPaymentActivity","shouldOverrideUrlLoading :" + url);
             PaymentDataManager.WebPaymentURLDecision decision = PaymentDataManager.getInstance()
                     .decisionForWebPaymentURL(url);
 
