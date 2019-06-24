@@ -2,8 +2,10 @@ package company.tap.gosellapi.internal.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -116,7 +118,7 @@ public class WebPaymentActivity extends BaseActionBarActivity implements IPaymen
 
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//      Log.d("WebPaymentActivity"," shouldOverrideUrlLoading : " + url);
+      Log.d("WebPaymentActivity"," shouldOverrideUrlLoading : " + url);
       PaymentDataManager.WebPaymentURLDecision decision = PaymentDataManager.getInstance().decisionForWebPaymentURL(url);
 
       boolean shouldOverride = !decision.shouldLoad();
@@ -131,13 +133,26 @@ public class WebPaymentActivity extends BaseActionBarActivity implements IPaymen
     @Override
     public void onPageFinished(WebView view, String url) {
       super.onPageFinished(view, url);
+      System.out.println(" onpagefinished : url :: "+url);
       LoadingScreenManager.getInstance().closeLoadingScreen();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
       super.onReceivedError(view, request, error);
 
+      if(request!=null && request.getUrl()!=null)
+      System.out.println("web view error : request : "+request.getUrl().toString());
+      else
+        System.out.println("web view error : request : " +request);
+
+      if(error!=null)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+          System.out.println("error.getErrorCode() : "+ error.getErrorCode() + " msg : "+error.getDescription());
+        }
+        else
+          System.out.println("web view error : not supported to display it" );
       view.stopLoading();
       view.loadUrl("about:blank");
     }
