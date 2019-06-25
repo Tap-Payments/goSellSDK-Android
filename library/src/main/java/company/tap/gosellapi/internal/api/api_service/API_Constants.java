@@ -123,5 +123,10 @@ final class API_Constants {
      */
     static final String CARD_ID="card_id";
 
+    /**
+     *
+     */
+    static final String LIST_CARD="card";
+
 
 }

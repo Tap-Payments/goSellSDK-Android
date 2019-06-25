@@ -16,6 +16,7 @@ import company.tap.gosellapi.internal.api.requests.PaymentOptionsRequest;
 import company.tap.gosellapi.internal.api.responses.AddressFormatsResponse;
 import company.tap.gosellapi.internal.api.responses.BINLookupResponse;
 import company.tap.gosellapi.internal.api.responses.DeleteCardResponse;
+import company.tap.gosellapi.internal.api.responses.ListCardsResponse;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import company.tap.gosellapi.internal.api.responses.SDKSettings;
 import retrofit2.Call;
@@ -214,8 +215,13 @@ public interface APIService {
     Call<DeleteCardResponse> deleteCard(@Path(API_Constants.CUSTOMER_ID) String customerId,@Path(API_Constants.CARD_ID) String cardId);
 
 
-
-
+    /**
+     * Retrieve list of saved cards.
+     * @param customer_id
+     * @return
+     */
+    @GET(API_Constants.LIST_CARD +"/{"+API_Constants.CUSTOMER_ID+"}")
+    Call<ListCardsResponse> listAllCards(@Path(API_Constants.CUSTOMER_ID) String customer_id);
 
 
 }

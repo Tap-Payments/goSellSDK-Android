@@ -3,7 +3,6 @@ package company.tap.sample.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,7 +28,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 import company.tap.gosellapi.GoSellSDK;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
@@ -37,18 +35,17 @@ import company.tap.gosellapi.internal.api.models.Authorize;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.models.PhoneNumber;
 import company.tap.gosellapi.internal.api.models.SaveCard;
-import company.tap.gosellapi.internal.api.models.SavedCard;
 import company.tap.gosellapi.open.buttons.PayButtonView;
 import company.tap.gosellapi.open.controllers.SDKSession;
 import company.tap.gosellapi.open.controllers.ThemeObject;
 import company.tap.gosellapi.open.delegate.SessionDelegate;
 import company.tap.gosellapi.open.enums.AppearanceMode;
 import company.tap.gosellapi.open.enums.TransactionMode;
+import company.tap.gosellapi.open.models.CardsList;
 import company.tap.gosellapi.open.models.Customer;
 import company.tap.gosellapi.open.models.Receipt;
 import company.tap.gosellapi.open.models.TapCurrency;
 import company.tap.sample.R;
-import company.tap.sample.constants.SettingsKeys;
 import company.tap.sample.managers.SettingsManager;
 import company.tap.sample.viewmodels.CustomerViewModel;
 
@@ -112,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
          * If you included Tap Pay Button then configure it first, if not then ignore this step.
          */
         initPayButton();
+
     }
 
     /**
@@ -347,6 +345,16 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
     }
 
 
+    //    //////////////////////////////////////////////////////  List Saved Cards  ////////////////////////
+
+    /**
+     * retrieve list of saved cards from the backend.
+     */
+    private void listSavedCards(){
+        if(sdkSession!=null)
+            sdkSession.listAllCards("CUSTOMER_ID",this);
+    }
+
 //    //////////////////////////////////////////////////////  Overridden section : Session Delegation ////////////////////////
 
     @Override
@@ -415,6 +423,13 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         showDialog(token,"Token",company.tap.gosellapi.R.drawable.ic_checkmark_normal);
     }
 
+    @Override
+    public void savedCardsList(@NonNull CardsList cardsList) {
+        System.out.println(" Card List Response Code : "+cardsList.getResponseCode());
+        System.out.println(" Card List Top 10 : "+cardsList.getCards().size());
+        System.out.println(" Card List Has More : "+cardsList.isHas_more());
+    }
+
 
     @Override
     public void sdkError(@Nullable GoSellError goSellError) {
@@ -455,13 +470,18 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
     }
 
     @Override
-    public void backendUnknownError() {
-        System.out.println("Backend Un-Known error....");
+    public void backendUnknownError(String message) {
+        System.out.println("Backend Un-Known error.... : "+ message);
     }
 
     @Override
     public void invalidTransactionMode() {
         System.out.println(" invalidTransactionMode  ......");
+    }
+
+    @Override
+    public void invalidCustomerID() {
+        System.out.println("Invalid Customer ID .......");
     }
 
 

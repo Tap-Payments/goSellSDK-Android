@@ -20,6 +20,7 @@ import company.tap.gosellapi.internal.api.requests.PaymentOptionsRequest;
 import company.tap.gosellapi.internal.api.responses.AddressFormatsResponse;
 import company.tap.gosellapi.internal.api.responses.BINLookupResponse;
 import company.tap.gosellapi.internal.api.responses.DeleteCardResponse;
+import company.tap.gosellapi.internal.api.responses.ListCardsResponse;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 
@@ -247,5 +248,10 @@ public final class GoSellAPI {
     public void deleteCard(String customerId, String cardId, final APIRequestCallback<DeleteCardResponse> requestCallback){
 //        Log.d("Delete Card :", "Customer Id: "+ customerId + " && Card Id : "+cardId);
         requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.deleteCard(customerId,cardId),requestCallback));
+    }
+
+
+    public void listAllCards(String customer_id,final APIRequestCallback<ListCardsResponse> requestCallback){
+        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.listAllCards(customer_id),requestCallback));
     }
 }
