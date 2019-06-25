@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.models.Authorize;
 import company.tap.gosellapi.internal.api.models.Charge;
+import company.tap.gosellapi.open.models.CardsList;
 
 public interface SessionDelegate {
 
@@ -21,6 +22,8 @@ public interface SessionDelegate {
 
         void cardTokenizedSuccessfully(@NonNull String token);
 
+        void savedCardsList(@NonNull CardsList cardsList);
+
         void sdkError(@Nullable GoSellError goSellError);
 
         void sessionIsStarting();
@@ -30,7 +33,9 @@ public interface SessionDelegate {
 
         void invalidCardDetails();
 
-        void backendUnknownError();
+        void backendUnknownError(String message);
 
         void invalidTransactionMode();
+
+        void invalidCustomerID();
 }

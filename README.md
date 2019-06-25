@@ -16,6 +16,7 @@ A library that fully covers payment/authorization/card saving process inside you
 2. [Installation](#installation)
    1. [Include goSellSDK library as a dependency module in your project](#include_library_to_code_locally)
    2. [Installation with jitpack](#installation_with_jitpack)
+   3. [Proguard Rules](#proguard_rules)
 3. [Setup](#setup)
     1. [goSellSDK Class Properties](#setup_gosellsdk_class_properties)
 4. [Usage](#usage)
@@ -24,6 +25,7 @@ A library that fully covers payment/authorization/card saving process inside you
     3. [Configure SDK Session](#configure_sdk_Session)
     4. [Configure SDK Transaction Mode](#configure_sdk_transaction_mode)
     5. [Use Tap PayButton](#init_pay_button)
+    6. [List Saved Cards](#list_saved_cards)
     6. [Open SDK Interfaces](#sdk_open_interfaces)
     7. [Open SDK ENUMs](#sdk_open_enums)
     8. [Open SDK Models](#sdk_open_models)
@@ -35,14 +37,15 @@ A library that fully covers payment/authorization/card saving process inside you
     5. [Card Saving Success Callback](#card_saving_success_callback)
     6. [Card Saving Failure Callback](#card_saving_failure_callback)
     7. [Card Tokenized Success Callback](#card_tokenized_success_callback)
-    8. [Session Other Failure Callback](#session_error_callback)
-    9. [Invalid Card Details](#invalid_card_details)
-    10. [Backend Un-known Error](#backecnd_unknow_error)
-    11. [Invalid Transaction Mode](#invalid_transaction_mode)
-    12. [Session Is Starting Callback](#session_is_starting_callback)
-    13. [Session Has Started Callback](#session_has_started_callback)
-    14. [Session Failed To Start Callback](#session_failed_to_start_callback)
-    15. [Session Cancel Callback](#session_cancel_callback)
+    8. [Saved Cards List Callback](#saved_cards_list_callback)
+    9. [Session Other Failure Callback](#session_error_callback)
+    10. [Invalid Card Details](#invalid_card_details)
+    11. [Backend Un-known Error](#backecnd_unknow_error)
+    12. [Invalid Transaction Mode](#invalid_transaction_mode)
+    13. [Session Is Starting Callback](#session_is_starting_callback)
+    14. [Session Has Started Callback](#session_has_started_callback)
+    15. [Session Failed To Start Callback](#session_failed_to_start_callback)
+    16. [Session Cancel Callback](#session_cancel_callback)
 6. [Documentation](#docs)
 
 
@@ -94,6 +97,30 @@ Step 2. Add the dependency
 	        implementation 'com.github.Tap-Payments:goSellSDK-Android:2.2.7'
 	}
 ```
+
+<a name="proguard_rules"></a>
+### Proguard Rules
+---
+  Proguard rules for SDK Library are: 
+```java
+    -keepattributes Signature
+    -keepclassmembernames,allowobfuscation interface * {
+        @retrofit2.http.* <methods>;
+    }
+    -dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+
+    #########################################################################
+    # OkHttp
+    #########################################################################
+    -dontwarn okhttp3.**
+    -dontwarn okhttp2.**
+    -dontwarn okio.**
+    -dontwarn javax.annotation.**
+    -dontwarn org.conscrypt.**
+    -keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
+```  
+
+
 <a name="setup"></a>
 # Setup
 ---
@@ -589,7 +616,18 @@ Don't forget to import the class at the beginning of the file:
          }
  
   ```         
-         
+  
+<a name="list_saved_cards"></a>
+  **List Saved Cards**
+  ```java
+       /**
+          * retrieve list of saved cards from the backend.
+          */
+         private void listSavedCards(){
+             if(sdkSession!=null)
+                 sdkSession.listAllCards("CUSTOMER_ID",this);
+         } 
+  ```                  
 **To populate TAP Customer object**
 ```java
      private Customer getCustomer() {
@@ -1453,7 +1491,64 @@ The following table describes its structure and specifies which fields are requi
                      return amount;
                  }
              }
-           ``` 
+           ```
+      7. CardsList
+           ```java
+            public class CardsList {
+            
+                private int responseCode;
+                private String object;
+                private boolean has_more;
+                private ArrayList<SavedCard> cards;
+            
+            
+                public CardsList( int responseCode,String object,boolean has_more,ArrayList<SavedCard> data){
+                    this.responseCode = responseCode;
+                    this.object  = object;
+                    this.has_more = has_more;
+                    this.cards = data;
+                }
+            
+                /**
+                 * Gets Response Code
+                  * @return responseCode
+                 */
+                public int getResponseCode(){
+                    return responseCode;
+                }
+            
+                /**
+                 *  Gets Object type
+                 * @return object
+                 */
+                public String getObject() {
+                    return object;
+                }
+            
+                /**
+                 *  Check if customer has more cards
+                 * @return has_more
+                 */
+                public boolean isHas_more() {
+                    return has_more;
+                }
+            
+                /**
+                 * Gets cards.
+                 *
+                 * @return the cards
+                 */
+                  public ArrayList<SavedCard> getCards() {
+            
+                    if ( cards == null ) {
+            
+                        cards = new ArrayList<>();
+                    }
+            
+                    return cards;
+                }
+            }
+           ```        
 <a name="sdk_delegate"></a>
 ## SDKSession Delegate
 
@@ -1577,6 +1672,24 @@ Notifies the receiver that the card has successfully tokenized.
 #### Arguments
 
 **token**: card token string.
+
+<a name="saved_cards_list_callback"></a>
+### Saved Cards List Callback
+
+Notifies the receiver with list of saved cards for a customer.
+
+#### Declaration
+
+*Android*
+
+```java
+-  void savedCardsList(@NonNull CardsList cardsList);
+```
+
+#### Arguments
+
+**cardsList**: CardsList model that holds the response.
+
 
 <a name="session_error_callback"></a>
 ### Session Other Failure Callback

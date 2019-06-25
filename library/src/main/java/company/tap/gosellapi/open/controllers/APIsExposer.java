@@ -3,6 +3,7 @@ package company.tap.gosellapi.open.controllers;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import java.util.HashMap;
 
@@ -20,9 +21,11 @@ import company.tap.gosellapi.internal.api.models.Token;
 import company.tap.gosellapi.internal.api.models.TrackingURL;
 import company.tap.gosellapi.internal.api.requests.CreateSaveCardRequest;
 import company.tap.gosellapi.internal.api.requests.CreateTokenWithCardDataRequest;
+import company.tap.gosellapi.internal.api.responses.ListCardsResponse;
 import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 import company.tap.gosellapi.internal.interfaces.IPaymentDataProvider;
 import company.tap.gosellapi.open.delegate.SessionDelegate;
+import company.tap.gosellapi.open.models.CardsList;
 import company.tap.gosellapi.open.models.Customer;
 import company.tap.gosellapi.open.models.Receipt;
 import company.tap.gosellapi.open.models.Reference;
@@ -93,7 +96,7 @@ public class APIsExposer {
                 if (serializedResponse != null) {
                     sessionDelegate.cardTokenizedSuccessfully(serializedResponse.getId());
                 } else {
-                    sessionDelegate.backendUnknownError();
+                    sessionDelegate.backendUnknownError(" Tokenizing card response is null with response code :"+responseCode);
                 }
             }
 
@@ -166,7 +169,7 @@ public class APIsExposer {
     private void callSaveCardAPI(SourceRequest source, boolean b, SessionDelegate sessionDelegate) {
         IPaymentDataProvider provider = PaymentDataManager.getInstance().getPaymentDataProvider();
         if (provider == null) {
-            sessionDelegate.backendUnknownError();
+            sessionDelegate.backendUnknownError(" callSaveCardAPI error : Payment Data Provider is null.");
             return;
         }
 
@@ -260,6 +263,32 @@ public class APIsExposer {
                 null);
         return card;
     }
+
+    /**
+     * Gets all available cards for the passed Customer.
+     * @param customer
+     * @param sessionDelegate
+     */
+    public void listAllCards(@NonNull String customer,@NonNull SessionDelegate sessionDelegate){
+
+       GoSellAPI.getInstance().listAllCards(customer, new APIRequestCallback<ListCardsResponse>() {
+           @Override
+           public void onSuccess(int responseCode, ListCardsResponse serializedResponse) {
+               if(serializedResponse!=null) {
+                 sessionDelegate.savedCardsList(new CardsList(responseCode,serializedResponse.getObject(),serializedResponse.isHas_more(),serializedResponse.getCards()));
+               }else
+                   sessionDelegate.backendUnknownError("list All cards response is null,  with response code : "+ responseCode);
+           }
+
+           @Override
+           public void onFailure(GoSellError errorDetails) {
+              if(errorDetails!=null) Log.d("listAllCards API "," listAllCards errorDetails :  " + errorDetails.getErrorBody());
+               sessionDelegate.sdkError(errorDetails);
+           }
+       }
+       );
+    }
+
 
 
 }

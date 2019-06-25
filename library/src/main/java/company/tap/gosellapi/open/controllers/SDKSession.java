@@ -327,6 +327,18 @@ public class SDKSession implements View.OnClickListener{
     getPaymentOptions();
   }
 
+
+  public void listAllCards(@NonNull String customer_id,@NonNull  SessionDelegate sessionDelegate){
+
+    if(sessionDelegate==null) return;
+
+    if( customer_id==null || customer_id.trim().length()==0) {
+      sessionDelegate.invalidCustomerID();
+    return;
+    }
+      APIsExposer.getInstance().listAllCards(customer_id,sessionDelegate);
+  }
+
   /**
    * call payment methods API
    */
