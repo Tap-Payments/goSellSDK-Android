@@ -49,13 +49,15 @@
             android:layout_marginRight="@dimen/margin_basic_16dp"
             android:id="@+id/cancel_payment"
             android:gravity="center_horizontal"
+            android:onClick="getCustomerSavedCardsList"
             >
             <ImageView
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/plus_48"
-                android:visibility="invisible"
+                android:src="@drawable/cards1"
+                android:visibility="visible"
+
                 />
         </LinearLayout>
 

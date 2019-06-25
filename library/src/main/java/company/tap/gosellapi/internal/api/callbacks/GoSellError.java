@@ -68,6 +68,12 @@ public class GoSellError implements Serializable {
 //          if(jsonObject1!=null) res = (String)jsonObject1.get("description");
         }
       }catch(JSONException errorMessage2){
+          try{
+              JSONObject jsonObject = new JSONObject(errorBody);
+              res= (String)jsonObject.get("message");
+          }catch (Exception ex){
+              ex.printStackTrace();
+          }
         errorMessage2.printStackTrace();
       }
     }
