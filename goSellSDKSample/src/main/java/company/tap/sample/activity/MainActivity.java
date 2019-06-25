@@ -1,5 +1,7 @@
 package company.tap.sample.activity;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,8 +18,12 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -35,6 +41,7 @@ import company.tap.gosellapi.internal.api.models.Authorize;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.models.PhoneNumber;
 import company.tap.gosellapi.internal.api.models.SaveCard;
+import company.tap.gosellapi.internal.api.models.SavedCard;
 import company.tap.gosellapi.open.buttons.PayButtonView;
 import company.tap.gosellapi.open.controllers.SDKSession;
 import company.tap.gosellapi.open.controllers.ThemeObject;
@@ -55,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
     private SDKSession sdkSession;
     private PayButtonView payButtonView;
     private SettingsManager settingsManager;
+    private ProgressDialog progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -352,7 +360,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
      */
     private void listSavedCards(){
         if(sdkSession!=null)
-            sdkSession.listAllCards("CUSTOMER_ID",this);
+            sdkSession.listAllCards("cus_Kh1b4220191939i1KP2506448",this);
     }
 
 //    //////////////////////////////////////////////////////  Overridden section : Session Delegation ////////////////////////
@@ -428,6 +436,8 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         System.out.println(" Card List Response Code : "+cardsList.getResponseCode());
         System.out.println(" Card List Top 10 : "+cardsList.getCards().size());
         System.out.println(" Card List Has More : "+cardsList.isHas_more());
+
+        showSavedCardsDialog(cardsList);
     }
 
 
@@ -487,12 +497,51 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
 /////////////////////////////////////////////////////////  needed only for demo ////////////////////
 
+
+    public void showSavedCardsDialog(CardsList cardsList){
+        if(progress!=null)
+            progress.dismiss();
+
+        String[] cards = new String[cardsList.getCards().size()];
+        for( int x = 0 ;x<cardsList.getCards().size(); x++){
+            cards[x] = cardsList.getCards().get(x).getFirstSix() + "*******" +  cardsList.getCards().get(x).getLastFour();
+        }
+        final Dialog dialog = new Dialog(this);
+        // dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.saved_cards_listview);
+
+        Button btndialog = (Button) dialog.findViewById(R.id.btndialog);
+        btndialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.dismiss();
+            }
+        });
+
+        ListView listView = (ListView) dialog.findViewById(R.id.listview);
+        ArrayAdapter arrayAdapter = new ArrayAdapter(this,R.layout.card_list_item, R.id.tv, cards);
+        listView.setAdapter(arrayAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                textView.setText("You have clicked : "+cards[position]);
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+
+    }
+
     public void openSettings(View view) {
         startActivity(new Intent(this, SettingsActivity.class));
     }
 
-    private Customer getCustomer() {
-        return new Customer.CustomerBuilder("").email("abc@abc.com").firstName("firstname")
+    private Customer getCustomer() { // test customer id cus_Kh1b4220191939i1KP2506448
+        return new Customer.CustomerBuilder("cus_Kh1b4220191939i1KP2506448").email("abc@abc.com").firstName("firstname")
                 .lastName("lastname").metadata("").phone(new PhoneNumber("000","0000000"))
                 .middleName("middlename").build();
     }
@@ -585,4 +634,12 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
     }
 
 
+    public void getCustomerSavedCardsList(View view) {
+        progress = new ProgressDialog(this);
+        progress.setTitle("Loading");
+        progress.setMessage("Wait while loading...");
+        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+        progress.show();
+        listSavedCards();
+    }
 }
