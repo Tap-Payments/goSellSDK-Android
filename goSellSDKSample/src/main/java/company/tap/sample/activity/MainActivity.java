@@ -34,6 +34,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import android.widget.Toast;
 
 import company.tap.gosellapi.GoSellSDK;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
@@ -272,8 +273,9 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
      */
     private void startSDKWithUI(){
         if(sdkSession!=null){
+           TransactionMode trx_mode =(settingsManager!=null)? settingsManager.getTransactionsMode("key_sdk_transaction_mode"): TransactionMode.PURCHASE;
             // set transaction mode [TransactionMode.PURCHASE - TransactionMode.AUTHORIZE_CAPTURE - TransactionMode.SAVE_CARD - TransactionMode.TOKENIZE_CARD ]
-            sdkSession.setTransactionMode(TransactionMode.PURCHASE);    //** Required **
+            sdkSession.setTransactionMode(trx_mode);    //** Required **
             // if you are not using tap button then start SDK using the following call
             //sdkSession.start(this);
         }
@@ -359,7 +361,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
      */
     private void listSavedCards(){
         if(sdkSession!=null)
-            sdkSession.listAllCards("cus_Kh1b4220191939i1KP2506448",this);
+            sdkSession.listAllCards("cus_s4H13120191115x0R12606480",this);
     }
 
 //    //////////////////////////////////////////////////////  Overridden section : Session Delegation ////////////////////////
@@ -501,6 +503,11 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         if(progress!=null)
             progress.dismiss();
 
+        if(cardsList!=null && cardsList.getCards()!=null && cardsList.getCards().size()==0 ) {
+            Toast.makeText(this,"No saved cards available for customer",Toast.LENGTH_LONG).show();
+            return;
+        }
+
         String[] cards = new String[cardsList.getCards().size()];
         for( int x = 0 ;x<cardsList.getCards().size(); x++){
             cards[x] = cardsList.getCards().get(x).getFirstSix() + "*******" +  cardsList.getCards().get(x).getLastFour();
@@ -540,8 +547,13 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
     }
 
     private Customer getCustomer() { // test customer id cus_Kh1b4220191939i1KP2506448
-        return new Customer.CustomerBuilder("cus_Kh1b4220191939i1KP2506448").email("abc@abc.com").firstName("firstname")
-                .lastName("lastname").metadata("").phone(new PhoneNumber("000","0000000"))
+
+        Customer customer = (settingsManager!=null)?settingsManager.getCustomer():null;
+
+        PhoneNumber   phoneNumber = customer!=null ? customer.getPhone(): new PhoneNumber("965","65562630");
+
+        return new Customer.CustomerBuilder("cus_s4H13120191115x0R12606480").email("abc@abc.com").firstName("firstname")
+                .lastName("lastname").metadata("").phone(new PhoneNumber(phoneNumber.getCountryCode(),phoneNumber.getNumber()))
                 .middleName("middlename").build();
     }
 
@@ -569,9 +581,6 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
                 statusText.setText((msg!=null&& msg.length()>30)?msg.substring(0,29):msg);
 
 
-                LinearLayout close_icon_ll = layout.findViewById(company.tap.gosellapi.R.id.close_icon_ll);
-                close_icon_ll.setOnClickListener(v -> {
-                });
 
                 popupWindow.showAtLocation(layout, Gravity.TOP, 0, 50);
                 popupWindow.getContentView().startAnimation(AnimationUtils.loadAnimation(this, R.anim.popup_show));
@@ -637,7 +646,6 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         progress = new ProgressDialog(this);
         progress.setTitle("Loading");
         progress.setMessage("Wait while loading...");
-        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
         progress.show();
         listSavedCards();
     }
