@@ -42,9 +42,9 @@ class RequestManager {
      *
      * @param delayedRequest the delayed request
      */
-    void request(DelayedRequest delayedRequest) {
+    void request(DelayedRequest delayedRequest,boolean checkInit) {
         delayedRequests.add(delayedRequest);
-        if (PaymentDataManager.getInstance().getSDKSettings() == null) {
+        if (PaymentDataManager.getInstance().getSDKSettings() == null && checkInit) {
             if (!initIsRunning) {
                 init();
             }

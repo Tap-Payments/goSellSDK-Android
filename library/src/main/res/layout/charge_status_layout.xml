@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:id="@+id/popup_element"
     android:background="@color/white"
-    android:layout_height="60dp">
+    android:layout_height="60dp"
+    android:padding="10dp"
+    >
 
 
   <ImageView
@@ -19,15 +21,17 @@
       android:layout_alignParentLeft="true" />
 
     <LinearLayout
-     android:layout_width="wrap_content"
+     android:layout_width="match_parent"
      android:layout_height="60dp"
      android:orientation="vertical"
      android:layout_centerHorizontal="true"
+        android:layout_toEndOf="@+id/status_icon"
+        android:layout_marginStart="@dimen/margin_basic_16dp"
      >
 
    <TextView
        android:text="TextView"
-       android:layout_width="wrap_content"
+       android:layout_width="match_parent"
        android:layout_height="0dp"
        android:layout_weight="1"
        android:id="@+id/status_text"
@@ -37,33 +41,13 @@
 
    <TextView
        android:text="TextView"
-       android:layout_width="wrap_content"
+       android:layout_width="match_parent"
        android:id="@+id/charge_id_txt"
        android:layout_height="0dp"
        android:layout_weight="1"
        />
  </LinearLayout>
 
-  <LinearLayout
-      android:layout_width="48dp"
-      android:layout_height="56dp"
-      android:layout_marginEnd="@dimen/margin_basic_16dp"
-      android:layout_marginRight="@dimen/margin_basic_16dp"
-      android:layout_alignParentEnd="true"
-      android:layout_alignParentRight="true"
-      android:id="@+id/close_icon_ll"
-      android:gravity="center_horizontal"
-      >
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/btn_close_normal"
-        android:id="@+id/close_icon"
-        android:layout_gravity="center_vertical|center_horizontal"
-        />
-
-  </LinearLayout>
 
 
 </RelativeLayout>

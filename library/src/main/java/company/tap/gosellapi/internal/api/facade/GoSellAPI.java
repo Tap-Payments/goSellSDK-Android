@@ -46,7 +46,7 @@ public final class GoSellAPI {
      * @param requestCallback the request callback
      */
     public void retrieveAuthorize(String identifier, APIRequestCallback<Authorize> requestCallback) {
-        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.retrieveAuthorize(identifier), requestCallback));
+        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.retrieveAuthorize(identifier), requestCallback),false);
     }
 
     private static class SingletonCreationAdmin {
@@ -70,7 +70,7 @@ public final class GoSellAPI {
      */
 //requests
     public void createCharge(final CreateChargeRequest createChargeRequest, final APIRequestCallback<Charge> requestCallback) {
-        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.createCharge(createChargeRequest), requestCallback));
+        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.createCharge(createChargeRequest), requestCallback),true);
     }
 
 
@@ -81,7 +81,7 @@ public final class GoSellAPI {
      * @param requestCallback       the request callback
      */
     public void createSaveCard(final CreateSaveCardRequest createSaveCardRequest, final APIRequestCallback<SaveCard> requestCallback) {
-        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.createSaveCard(createSaveCardRequest), requestCallback));
+        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.createSaveCard(createSaveCardRequest), requestCallback),true);
     }
 
 
@@ -92,7 +92,7 @@ public final class GoSellAPI {
      * @param requestCallback the request callback
      */
     public void retrieveCharge(final String chargeId, final APIRequestCallback<Charge> requestCallback) {
-        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.retrieveCharge(chargeId), requestCallback));
+        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.retrieveCharge(chargeId), requestCallback),false);
     }
 
     /**
@@ -103,7 +103,7 @@ public final class GoSellAPI {
      */
     public void retrieveSaveCard(final String saveCardId,final APIRequestCallback<SaveCard> requestCallback){
 //        System.out.println("#################### saveCardId :"+saveCardId);
-        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.retrieveSaveCard(saveCardId),requestCallback));
+        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.retrieveSaveCard(saveCardId),requestCallback),false);
     }
 
 
@@ -115,7 +115,7 @@ public final class GoSellAPI {
      */
     public void createAuthorize(final CreateAuthorizeRequest createAuthorizeRequest, final APIRequestCallback<Authorize> requestCallback) {
 
-        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.createAuthorize(createAuthorizeRequest), requestCallback));
+        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.createAuthorize(createAuthorizeRequest), requestCallback),true);
     }
 
     /**
@@ -126,7 +126,7 @@ public final class GoSellAPI {
      * @param requestCallback  the request callback
      */
     public void authenticate_charge_transaction(final String chargeIdentifier, final CreateOTPVerificationRequest createOTPRequest, final APIRequestCallback<Charge> requestCallback){
-        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.authenticate(chargeIdentifier,createOTPRequest),requestCallback));
+        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.authenticate(chargeIdentifier,createOTPRequest),requestCallback),true);
     }
 
     /**
@@ -138,7 +138,7 @@ public final class GoSellAPI {
      */
     public void authenticate_authorize_transaction(final String authorizeIdentifier, final CreateOTPVerificationRequest createOTPRequest,
                                                    final APIRequestCallback<Authorize> requestCallback){
-        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.authenticate_authorize_transaction(authorizeIdentifier,createOTPRequest),requestCallback));
+        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.authenticate_authorize_transaction(authorizeIdentifier,createOTPRequest),requestCallback),true);
     }
 
 
@@ -149,7 +149,7 @@ public final class GoSellAPI {
      * @param requestCallback  the request callback
      */
     public void request_authenticate_for_charge_transaction(final String chargeIdentifier,final APIRequestCallback<Charge> requestCallback){
-        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.request_authenticate(chargeIdentifier),requestCallback));
+        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.request_authenticate(chargeIdentifier),requestCallback),true);
     }
 
     /**
@@ -159,7 +159,7 @@ public final class GoSellAPI {
      * @param requestCallback     the request callback
      */
     public void request_authenticate_for_authorize_transaction(final String authorizeIdentifier,final APIRequestCallback<Authorize> requestCallback){
-        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.request_authenticate_authorization(authorizeIdentifier),requestCallback));
+        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.request_authenticate_authorization(authorizeIdentifier),requestCallback),true);
     }
 
     /**
@@ -169,7 +169,7 @@ public final class GoSellAPI {
      * @param requestCallback the request callback
      */
     public void updateCharge(final String chargeId, final APIRequestCallback<Charge> requestCallback) {
-        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.updateCharge(chargeId), requestCallback));
+        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.updateCharge(chargeId), requestCallback),true);
 
     }
 
@@ -180,7 +180,7 @@ public final class GoSellAPI {
      * @param requestCallback the request callback
      */
     public void retrieveBINLookupBINLookup(String binNumber, APIRequestCallback<BINLookupResponse> requestCallback) {
-        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.retrieveBINLookup(binNumber), requestCallback));
+        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.retrieveBINLookup(binNumber), requestCallback),false);
     }
 
     /**
@@ -189,7 +189,7 @@ public final class GoSellAPI {
      * @param requestCallback the request callback
      */
     public void retrieveAddressFormats(APIRequestCallback<AddressFormatsResponse> requestCallback) {
-        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.retrieveAddressFormats(), requestCallback));
+        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.retrieveAddressFormats(), requestCallback),false);
     }
 
     /**
@@ -200,7 +200,7 @@ public final class GoSellAPI {
      */
     public void createTokenWithEncryptedCard(CreateTokenWithCardDataRequest createTokenRequest, final APIRequestCallback<Token> requestCallback) {
 
-        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.createTokenWithEncryptedCard(createTokenRequest), requestCallback));
+        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.createTokenWithEncryptedCard(createTokenRequest), requestCallback),true);
     }
 
     /**
@@ -210,7 +210,7 @@ public final class GoSellAPI {
      * @param requestCallback                        the request callback
      */
     public void createTokenWithExistingCard(final CreateTokenWithExistingCardDataRequest createTokenWithExistingCardDataRequest, final APIRequestCallback<Token> requestCallback) {
-        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.createTokenWithExistingCard(createTokenWithExistingCardDataRequest), requestCallback));
+        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.createTokenWithExistingCard(createTokenWithExistingCardDataRequest), requestCallback),true);
     }
 
     /**
@@ -237,7 +237,7 @@ public final class GoSellAPI {
             public void onFailure(GoSellError errorDetails) {
                 requestCallback.onFailure(errorDetails);
             }
-        }));
+        }),true);
     }
 
     /**
@@ -247,11 +247,11 @@ public final class GoSellAPI {
      */
     public void deleteCard(String customerId, String cardId, final APIRequestCallback<DeleteCardResponse> requestCallback){
 //        Log.d("Delete Card :", "Customer Id: "+ customerId + " && Card Id : "+cardId);
-        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.deleteCard(customerId,cardId),requestCallback));
+        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.deleteCard(customerId,cardId),requestCallback),false);
     }
 
 
     public void listAllCards(String customer_id,final APIRequestCallback<ListCardsResponse> requestCallback){
-        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.listAllCards(customer_id),requestCallback));
+        requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.listAllCards(customer_id),requestCallback),false);
     }
 }

@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".activity.MainActivity">
+    tools:context=".activity.MainActivity"
+    android:id="@+id/samplelayout"
+    >
 
     <include layout="@layout/activity_toolbar"></include>
 
