@@ -94,7 +94,7 @@ To integrate goSellSDK into your project add it in your **root** `build.gradle` 
 Step 2. Add the dependency
 ```java
 	dependencies {
-	        implementation 'com.github.Tap-Payments:goSellSDK-Android:2.2.10'
+	        implementation 'com.github.Tap-Payments:goSellSDK-Android:2.2.11'
 	}
 ```
 
@@ -769,7 +769,7 @@ The following table describes its structure and specifies which fields are requi
                       void cardSaved(@NonNull Charge charge);
                       void cardSavingFailed(@NonNull Charge charge);
               
-                      void cardTokenizedSuccessfully(@NonNull String token);
+                      void cardTokenizedSuccessfully(@NonNull Token token);
               
                       void sdkError(@Nullable GoSellError goSellError);
               
@@ -1666,12 +1666,12 @@ Notifies the receiver that the card has successfully tokenized.
 *Android*
 
 ```java
-- void cardTokenizedSuccessfully(@NonNull String token);
+- void cardTokenizedSuccessfully(@NonNull Token token);
 ```
 
 #### Arguments
 
-**token**: card token string.
+**token**: card token object.
 
 <a name="saved_cards_list_callback"></a>
 ### Saved Cards List Callback

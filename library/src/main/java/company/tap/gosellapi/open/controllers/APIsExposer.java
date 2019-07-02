@@ -94,7 +94,7 @@ public class APIsExposer {
             @Override
             public void onSuccess(int responseCode, Token serializedResponse) {
                 if (serializedResponse != null) {
-                    sessionDelegate.cardTokenizedSuccessfully(serializedResponse.getId());
+                    sessionDelegate.cardTokenizedSuccessfully(serializedResponse);
                 } else {
                     sessionDelegate.backendUnknownError(" Tokenizing card response is null with response code :"+responseCode);
                 }

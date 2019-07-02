@@ -750,11 +750,17 @@ public final class PaymentDataManager {
 
     @Override
     public void didCardDeleted(DeleteCardResponse deleteCardResponse) {
-//      Log.d("PaymentDataManager"," PaymentDataManager: listener.getClass()>  " + listener);
+
        if(listener!=null && (listener instanceof GoSellPaymentActivity)) {
             Log.d("PaymentDataManager"," PaymentDataManager: call CardDeleteListener to delete card  ");
             listener.didCardDeleted(deleteCardResponse);
         }
+      }
+
+      @Override
+      public void didDeleteCardReceiveError(GoSellError errorDetails) {
+        if(listener!=null && (listener instanceof GoSellPaymentActivity))
+          listener.didDeleteCardReceiveError(errorDetails);
       }
 
   }

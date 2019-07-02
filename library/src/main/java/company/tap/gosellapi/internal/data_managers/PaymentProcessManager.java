@@ -590,14 +590,14 @@ final class PaymentProcessManager {
             new APIRequestCallback<DeleteCardResponse>() {
               @Override
               public void onSuccess(int responseCode, DeleteCardResponse serializedResponse) {
-//                Log.d("callDeleteCardCallback",serializedResponse.getId() +" >>> "+serializedResponse.isDeleted());
-                getCardDeletListener().didCardDeleted(serializedResponse);
+                if(getCardDeletListener()!=null)
+                  getCardDeletListener().didCardDeleted(serializedResponse);
               }
 
               @Override
               public void onFailure(GoSellError errorDetails) {
-//                Log.d("callDeleteCardCallback",errorDetails.getErrorBody());
-                 getProcessListener().didReceiveError(errorDetails);
+                if(getCardDeletListener()!=null)
+                  getCardDeletListener().didDeleteCardReceiveError(errorDetails);
               }
             });
 
