@@ -71,6 +71,25 @@ public class SavedCard implements Comparable<SavedCard>, CurrenciesSupport {
     @SerializedName("fingerprint")
     @NonNull private String fingerprint;
 
+    // added for mapping Expiry month and Date in case of get list card API
+
+    @SerializedName("exp_month")
+    @Expose
+    @Nullable private String exp_month;
+
+    @SerializedName("exp_year")
+    @Expose
+    @Nullable private String exp_year;
+
+
+    @SerializedName("funding")
+    @Expose
+    @Nullable private String funding;
+
+    @SerializedName("customer")
+    @Expose
+    @Nullable private String customer;
+
 
     /**
      * Gets fingerprint.
@@ -187,6 +206,43 @@ public class SavedCard implements Comparable<SavedCard>, CurrenciesSupport {
 
     @NonNull public int getOrderBy() {
         return orderBy;
+    }
+
+
+    /**
+     *
+     * @return expiration month as String
+     */
+    @Nullable
+    public String getExp_month() {
+        return exp_month;
+    }
+
+    /**
+     *
+     * @return expiration year as String
+     */
+
+    @Nullable
+    public String getExp_year() {
+        return exp_year;
+    }
+
+
+    /**
+     * @return funding as String
+     */
+    @Nullable
+    public String getFunding() {
+        return funding;
+    }
+
+    /**
+     * @return customer reference
+     */
+    @Nullable
+    public String getCustomer() {
+        return customer;
     }
 
     @Override

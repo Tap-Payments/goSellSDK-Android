@@ -107,5 +107,7 @@
     <string name="device_has_aproblem_in_connectivity_manager">يواجه الجهاز مشكلة في مدير الاتصال بالانترنت </string>
   <string name="internet_connection_is_not_available">اتصال الإنترنت غير متوفر</string>
   <string name="close">إغلاق</string>
+  <string name="error_deleting_card_title">عذراً</string>
+  <string name="error_deleting_card_msg">لا يمكن حذف البطاقة في الوقت الحالي. يرجى المحاولة لاحقا.</string>
 
 </resources>

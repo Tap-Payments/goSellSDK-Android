@@ -14,7 +14,7 @@ import company.tap.gosellapi.internal.api.responses.BaseResponse;
  * <br>
  * Model for Token object
  */
-@RestrictTo(RestrictTo.Scope.LIBRARY)
+//@RestrictTo(RestrictTo.Scope.LIBRARY)
 public final class Token implements BaseResponse {
     @SerializedName("id")
     @Expose

@@ -845,7 +845,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     @Override
     public void fireCardTokenizationProcessCompleted(Token token) {
         closePaymentActivity();
-        SDKSession.getListener().cardTokenizedSuccessfully(token.getId());
+        SDKSession.getListener().cardTokenizedSuccessfully(token);
     }
 
 
@@ -897,12 +897,21 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
     @Override
     public void didCardDeleted(DeleteCardResponse deleteCardResponse) {
-            Log.d("GoSellPaymentActivity","didCardDeleted: response >>> "+deleteCardResponse);
             LoadingScreenManager.getInstance().closeLoadingScreen();
-            dataSource.updateSavedCards(deleteCardResponse.getId());
+           if(dataSource!=null) dataSource.updateSavedCards(deleteCardResponse.getId());
     }
 
+    @Override
+    public void didDeleteCardReceiveError(GoSellError errorDetails) {
+        LoadingScreenManager.getInstance().closeLoadingScreen();
+        PaymentOptionsDataManager dataOptionsManager =  PaymentDataManager.getInstance().getPaymentOptionsDataManager(this);
+        if(dataOptionsManager!=null)dataOptionsManager.cancelItemClicked();
 
+        if(errorDetails!=null)
+            Log.d("GoSellPaymentActivity","didDeleteCardReceiveError: response >>> "+errorDetails.getErrorBody());
+
+        this.showDialog(getResources().getString(R.string.error_deleting_card_title),getResources().getString(R.string.error_deleting_card_msg),false);
+    }
 
 
     /**
@@ -912,18 +921,17 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
-//            Log.d("GoSellPaymentActivity"," on page started : " + url);
             super.onPageStarted(view, url, favicon);
         }
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            Log.d("GoSellPaymentActivity","shouldOverrideUrlLoading :" + url);
+//            Log.d("GoSellPaymentActivity","shouldOverrideUrlLoading :" + url);
             PaymentDataManager.WebPaymentURLDecision decision = PaymentDataManager.getInstance()
                     .decisionForWebPaymentURL(url);
 
             boolean shouldOverride = !decision.shouldLoad();
-            Log.d("GoSellPaymentActivity"," shouldOverrideUrlLoading : decision : " + shouldOverride);
+//            Log.d("GoSellPaymentActivity"," shouldOverrideUrlLoading : decision : " + shouldOverride);
             if (shouldOverride) { // if decision is true and response has TAP_ID
                 // call backend to get charge response >> based of charge object type [Authorize - Charge] call retrieveCharge / retrieveAuthorize
                 PaymentDataManager.getInstance().retrieveChargeOrAuthorizeOrSaveCardAPI(getChargeOrAuthorize());
@@ -941,7 +949,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
     @Override
     public void didReceiveAuthorize(Authorize authorize) {
-        Log.d("GoSellPaymentActivity"," Cards >> didReceiveAuthorize * * * " + authorize);
+        Log.d("GoSellPaymentActivity"," Cards >> didReceiveAuthorize * * * " );
         if (authorize == null) return;
         Log.d("GoSellPaymentActivity"," Cards >> didReceiveAuthorize * * * " + authorize.getStatus());
 
@@ -1123,13 +1131,13 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                 }
             }
             else
-                showDialog(getResources().getString(R.string.internet_connectivity_title),getResources().getString(R.string.internet_connectivity_message));
+                showDialog(getResources().getString(R.string.internet_connectivity_title),getResources().getString(R.string.internet_connectivity_message),true);
         }
         else
         System.out.println(" some error in connectivity manager...");
     }
 
-    private void showDialog(String title,String message){
+    private void showDialog(String title,String message, boolean showNegativeButton){
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         dialogBuilder.setTitle(title);
         dialogBuilder.setMessage(message);
@@ -1137,7 +1145,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
         dialogBuilder.setPositiveButton(getResources().getString(R.string.dismiss), (dialog, which) -> System.out.println(" user dismissed process....."));
 
-        dialogBuilder.setNegativeButton(getResources().getString(R.string.retry), (dialog, which) -> checkInternetConnectivity());
+       if(showNegativeButton) dialogBuilder.setNegativeButton(getResources().getString(R.string.retry), (dialog, which) -> checkInternetConnectivity());
 
         dialogBuilder.show();
 

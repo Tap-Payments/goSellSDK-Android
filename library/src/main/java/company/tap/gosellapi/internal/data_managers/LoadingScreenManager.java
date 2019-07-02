@@ -87,10 +87,10 @@ public class LoadingScreenManager {
     }
 
     private void removeLoadingView() {
-//        Log.d("LoadingScreenManager","removeLoadingView : "+loadingLayout +" >> loadingView = "+loadingView );
-        if (loadingLayout == null ) return;
+        if (loadingLayout == null || hostActivity == null) return;
 
         final ViewGroup insertPoint = hostActivity.findViewById(android.R.id.content);
+        if(insertPoint==null)return;
 
        if(loadingView!=null ) loadingView.setForceStop(true);
        else return;
@@ -116,19 +116,33 @@ public class LoadingScreenManager {
     }
 
     private void createLoadingScreen() {
+
+        if (hostActivity == null) return;
+
         LayoutInflater inflater = (LayoutInflater) hostActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (inflater == null) return;
+
         loadingLayout = inflater.inflate(loadingLayoutID, null);
+        if (loadingLayout == null) return;
+
         loadingLayout.setAlpha(0.0f);
+
         // Configure background
         ImageView loadingViewBackground = loadingLayout.findViewById(R.id.blurredBackground);
+        if (loadingViewBackground == null) return;
+
         ViewGroup insertPoint = hostActivity.findViewById(android.R.id.content);
+        if (insertPoint == null) return;
+
         Bitmap bitmap = createScreenshot(insertPoint);
+        if (bitmap == null) return;
+
         Blurry.with(hostActivity)
                 .radius(BLUR_RADIUS)
                 .color(Color.argb(220, 255, 255, 255))
                 .from(bitmap)
                 .into(loadingViewBackground);
+
         insertPoint.addView(loadingLayout, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         loadingLayout.bringToFront();
         // Configure appearance animation
@@ -142,6 +156,7 @@ public class LoadingScreenManager {
 
                         // Configure loading view
                         loadingView = loadingLayout.findViewById(R.id.loadingView);
+                        if(loadingView!=null)
                         loadingView.start();
                     }
                 });

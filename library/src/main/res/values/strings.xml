@@ -109,6 +109,8 @@
   <string name="internet_connection_is_not_available">Internet connection is not available</string>
   <string name="sdk_error">Error</string>
   <string name="close">Close</string>
+  <string name="error_deleting_card_title">Sorry</string>
+  <string name="error_deleting_card_msg">The card can not be deleted right now. Please try it later.</string>
 
 
 </resources>

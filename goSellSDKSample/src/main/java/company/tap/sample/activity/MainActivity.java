@@ -12,11 +12,15 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -42,6 +46,8 @@ import company.tap.gosellapi.internal.api.models.Authorize;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.models.PhoneNumber;
 import company.tap.gosellapi.internal.api.models.SaveCard;
+import company.tap.gosellapi.internal.api.models.SavedCard;
+import company.tap.gosellapi.internal.api.models.Token;
 import company.tap.gosellapi.open.buttons.PayButtonView;
 import company.tap.gosellapi.open.controllers.SDKSession;
 import company.tap.gosellapi.open.controllers.ThemeObject;
@@ -63,6 +69,17 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
     private PayButtonView payButtonView;
     private SettingsManager settingsManager;
     private ProgressDialog progress;
+
+
+
+
+    private static RecyclerView.Adapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
+    private static RecyclerView recyclerView;
+    private static ArrayList<SavedCard> data;
+    static View.OnClickListener myOnClickListener;
+    private static ArrayList<Integer> removedItems;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -427,9 +444,9 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
     }
 
     @Override
-    public void cardTokenizedSuccessfully(@NonNull String token) {
+    public void cardTokenizedSuccessfully(@NonNull Token token) {
         System.out.println("Card Tokenized Succeeded : ");
-        showDialog(token,"Token",company.tap.gosellapi.R.drawable.ic_checkmark_normal);
+        showDialog(token.getId(),"Token",company.tap.gosellapi.R.drawable.ic_checkmark_normal);
     }
 
     @Override
@@ -444,6 +461,8 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
     @Override
     public void sdkError(@Nullable GoSellError goSellError) {
+        if(progress!=null)
+            progress.dismiss();
         if(goSellError!=null) {
             System.out.println("SDK Process Error : " + goSellError.getErrorBody());
             System.out.println("SDK Process Error : " + goSellError.getErrorMessage());
@@ -492,7 +511,10 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
     @Override
     public void invalidCustomerID() {
+        if(progress!=null)
+            progress.dismiss();
         System.out.println("Invalid Customer ID .......");
+
     }
 
 
@@ -504,41 +526,24 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
             progress.dismiss();
 
         if(cardsList!=null && cardsList.getCards()!=null && cardsList.getCards().size()==0 ) {
-            Toast.makeText(this,"No saved cards available for customer",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"There is no card saved for this customer",Toast.LENGTH_LONG).show();
             return;
         }
 
-        String[] cards = new String[cardsList.getCards().size()];
-        for( int x = 0 ;x<cardsList.getCards().size(); x++){
-            cards[x] = cardsList.getCards().get(x).getFirstSix() + "*******" +  cardsList.getCards().get(x).getLastFour();
-        }
-        final Dialog dialog = new Dialog(this);
-        // dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(false);
-        dialog.setContentView(R.layout.saved_cards_listview);
+        recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+//        recyclerView.setHasFixedSize(true);
 
-        Button btndialog = (Button) dialog.findViewById(R.id.btndialog);
-        btndialog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-                dialog.dismiss();
-            }
-        });
+        data = new ArrayList<SavedCard>();
 
-        ListView listView = (ListView) dialog.findViewById(R.id.listview);
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this,R.layout.card_list_item, R.id.tv, cards);
-        listView.setAdapter(arrayAdapter);
+        removedItems = new ArrayList<Integer>();
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                textView.setText("You have clicked : "+cards[position]);
-                dialog.dismiss();
-            }
-        });
+        adapter = new CustomAdapter(cardsList.getCards());
+        recyclerView.setAdapter(adapter);
 
-        dialog.show();
 
     }
 
@@ -649,4 +654,61 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         progress.show();
         listSavedCards();
     }
+
+
+    public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
+
+        private ArrayList<SavedCard> dataSet;
+
+        public  class MyViewHolder extends RecyclerView.ViewHolder {
+
+            TextView textViewName;
+            TextView textViewVersion;
+            TextView textViewexp;
+            ImageView imageViewIcon;
+
+            public MyViewHolder(View itemView) {
+                super(itemView);
+                this.textViewName = (TextView) itemView.findViewById(R.id.textViewName);
+                this.textViewVersion = (TextView) itemView.findViewById(R.id.textViewVersion);
+                this.textViewexp = (TextView) itemView.findViewById(R.id.textViewexp);
+                this.imageViewIcon = (ImageView) itemView.findViewById(R.id.imageView);
+            }
+        }
+
+        public CustomAdapter(ArrayList<SavedCard> data) {
+            this.dataSet = data;
+        }
+
+        @Override
+        public MyViewHolder onCreateViewHolder(ViewGroup parent,
+                                               int viewType) {
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.cards_layout, parent, false);
+
+            // view.setOnClickListener(MainActivity.myOnClickListener);
+
+            MyViewHolder myViewHolder = new MyViewHolder(view);
+            return myViewHolder;
+        }
+
+        @Override
+        public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
+
+            TextView textViewName = holder.textViewName;
+            TextView textViewVersion = holder.textViewVersion;
+            TextView textViewexp = holder.textViewexp;
+            ImageView imageView = holder.imageViewIcon;
+
+            textViewName.setText(dataSet.get(listPosition).getFirstSix() + " ***** " + dataSet.get(listPosition).getLastFour());
+            textViewVersion.setText((dataSet.get(listPosition)).getExp_month() + " / "+ (dataSet.get(listPosition)).getExp_year());
+            imageView.setImageResource(R.drawable.cards1);
+        }
+
+        @Override
+        public int getItemCount() {
+            return dataSet.size();
+        }
+    }
+
 }
