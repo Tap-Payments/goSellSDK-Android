@@ -17,6 +17,7 @@ import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.enums.AuthenticationType;
 import company.tap.gosellapi.internal.api.enums.ExtraFeesStatus;
 import company.tap.gosellapi.internal.api.enums.PaymentType;
+import company.tap.gosellapi.internal.api.enums.Permission;
 import company.tap.gosellapi.internal.api.facade.GoSellAPI;
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 import company.tap.gosellapi.internal.api.models.Authorize;
@@ -419,6 +420,15 @@ final class PaymentProcessManager {
     private boolean getSaveCardStatus(CardCredentialsViewModel paymentOptionModel){
 
     if(PaymentDataManager.getInstance().getExternalDataSource() == null ) return false;
+
+    if(PaymentDataManager.getInstance().getSDKSettings() == null ) return false;
+
+    if(PaymentDataManager.getInstance().getSDKSettings().getData() == null) return false;
+
+    if(PaymentDataManager.getInstance().getSDKSettings().getData().getPermissions() == null) return  false;
+
+    if(!PaymentDataManager.getInstance().getSDKSettings().getData().getPermissions().contains(Permission.MERCHANT_CHECKOUT))  return false;
+
 
     if(PaymentDataManager.getInstance().getExternalDataSource().getTransactionMode() == TransactionMode.SAVE_CARD  ) return true; // always allow save card in case of trx_mode = TransactionMode.SAVE_CARD
 

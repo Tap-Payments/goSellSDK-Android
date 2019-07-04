@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.adapters.CardSystemsRecyclerViewAdapter;
 import company.tap.gosellapi.internal.api.enums.CardScheme;
+import company.tap.gosellapi.internal.api.enums.Permission;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.api.responses.BINLookupResponse;
 import company.tap.gosellapi.internal.custom_views.CvvEditText;
@@ -333,12 +334,21 @@ public class CardCredentialsViewHolder
 
         if(PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode() == TransactionMode.TOKENIZE_CARD
            ||
-         !PaymentDataManager.getInstance().getExternalDataSource().getAllowedToSaveCard()
+          (PaymentDataManager.getInstance().getExternalDataSource()!= null && !PaymentDataManager.getInstance().getExternalDataSource().getAllowedToSaveCard())
         )
         {
             saveCardSwitch.setVisibility(View.GONE);
             saveCardDescriptionTextView.setText("");
 
+        }else if(PaymentDataManager.getInstance().getSDKSettings() != null &&
+           PaymentDataManager.getInstance().getSDKSettings().getData() != null){
+           if(PaymentDataManager.getInstance().getSDKSettings().getData().getPermissions() == null){
+               saveCardSwitch.setVisibility(View.GONE);
+               saveCardDescriptionTextView.setText("");
+           }else if(!PaymentDataManager.getInstance().getSDKSettings().getData().getPermissions().contains(Permission.MERCHANT_CHECKOUT)){
+               saveCardSwitch.setVisibility(View.GONE);
+               saveCardDescriptionTextView.setText("");
+           }
         }
 
 /////////////////////////////////////////////////// SETUP CARD PAYMENT OPTIONS START ///////////////////////////////////////////////////////
