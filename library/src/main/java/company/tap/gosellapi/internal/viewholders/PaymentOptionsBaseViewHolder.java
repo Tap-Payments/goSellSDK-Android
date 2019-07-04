@@ -154,9 +154,10 @@ public abstract class PaymentOptionsBaseViewHolder<T, K extends PaymentOptionsBa
      */
     public final void attachToViewModel(Q viewModel, int position) {
 
+        if(viewModel==null)return;
+
         this.viewModel = viewModel;
 
-        //noinspection unchecked
         viewModel.registerHolder((K) this, position);
     }
 

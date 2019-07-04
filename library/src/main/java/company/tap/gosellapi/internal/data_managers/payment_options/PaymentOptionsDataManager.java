@@ -292,7 +292,8 @@ public class PaymentOptionsDataManager {
      * @return the item view type
      */
     public int getItemViewType(int position) {
-
+      if(getViewModel(position)== null) return 1; // return empty view model
+      if(getViewModel(position).getType()== null) return 1;// return empty view model
     return getViewModel(position).getType().getViewType();
   }
 
@@ -800,7 +801,8 @@ public class PaymentOptionsDataManager {
                 PaymentOptionsDataManager.this);
         viewModelsResult.add(emptyModel);
         CardCredentialsViewModel cardPaymentModel = generateCardPaymentModel(cardPaymentOptions);
-        viewModelsResult.add(cardPaymentModel);
+
+        if(cardPaymentModel!=null)viewModelsResult.add(cardPaymentModel);
       }
 
       viewModels = viewModelsResult;
@@ -989,11 +991,14 @@ public class PaymentOptionsDataManager {
 
         boolean displaysSaveCardSection=false;
 
-      if(PaymentDataManager.getInstance().getSDKSettings().getData()
-        .getPermissions()!=null)
+      if(PaymentDataManager.getInstance().getSDKSettings() == null ) return null;
+      if(PaymentDataManager.getInstance().getSDKSettings().getData() == null ) return null;
 
-       displaysSaveCardSection = PaymentDataManager.getInstance().getSDKSettings().getData()
-          .getPermissions().contains(Permission.MERCHANT_CHECKOUT);
+      if(PaymentDataManager.getInstance().getSDKSettings().getData()
+        .getPermissions()!=null){
+        displaysSaveCardSection = PaymentDataManager.getInstance().getSDKSettings().getData()
+                .getPermissions().contains(Permission.MERCHANT_CHECKOUT);
+      }
 
       CardCredentialsViewModelData data = new CardCredentialsViewModelData(paymentOptions,
           displaysSaveCardSection);
