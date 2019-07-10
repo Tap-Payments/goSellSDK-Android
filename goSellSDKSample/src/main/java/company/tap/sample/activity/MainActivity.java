@@ -142,7 +142,8 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
      * Configure SDK with your Secret API key and App Bundle name registered with tap company.
      */
     private void configureApp(){
-        GoSellSDK.init(this, "sk_test_kovrMB0mupFJXfNZWx6Etg5y","company.tap.goSellSDKExample");  // to be replaced by merchant
+//        GoSellSDK.init(this, "sk_test_kovrMB0mupFJXfNZWx6Etg5y","company.tap.goSellSDKExample");  // to be replaced by merchant
+        GoSellSDK.init(this, "sk_test_Fhp2RotD5JsHOwGzZNCcx4mn","com.jeebleyco.jeebley");  // to be replaced by merchant
     }
     /**
      * Configure SDK Theme
@@ -389,7 +390,6 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         System.out.println("Payment Succeeded : "+ charge.getStatus());
         System.out.println("Payment Succeeded : "+ charge.getDescription());
         System.out.println("Payment Succeeded : "+ charge.getResponse().getMessage());
-//        System.out.println("Payment Succeeded : "+ charge.getDestinations().getDestination().size());
         saveCustomerRefInSession(charge);
         configureSDKSession();
         showDialog(charge.getId(),charge.getResponse().getMessage(),company.tap.gosellapi.R.drawable.ic_checkmark_normal);
@@ -400,13 +400,14 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         System.out.println("Payment Failed : "+ charge.getStatus());
         System.out.println("Payment Failed : "+ charge.getDescription());
         System.out.println("Payment Failed : "+ charge.getResponse().getMessage());
+
+
         showDialog(charge.getId(),charge.getResponse().getMessage(),company.tap.gosellapi.R.drawable.icon_failed);
     }
 
     @Override
     public void authorizationSucceed(@NonNull Authorize authorize) {
         System.out.println("Authorize Succeeded : "+ authorize.getStatus());
-        System.out.println("Authorize Succeeded : "+ authorize.getDescription());
         System.out.println("Authorize Succeeded : "+ authorize.getResponse().getMessage());
         saveCustomerRefInSession(authorize);
         configureSDKSession();
@@ -446,7 +447,13 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
     @Override
     public void cardTokenizedSuccessfully(@NonNull Token token) {
         System.out.println("Card Tokenized Succeeded : ");
-        showDialog(token.getId(),"Token",company.tap.gosellapi.R.drawable.ic_checkmark_normal);
+        System.out.println("Token card : "+token.getCard().getFirstSix() + " **** "+ token.getCard().getLastFour() );
+        System.out.println("Token card : "+token.getCard().getFingerprint() +  " **** "+ token.getCard().getFunding() );
+        System.out.println("Token card : "+token.getCard().getId() +" ****** "+ token.getCard().getName());
+        System.out.println("Token card : "+token.getCard().getAddress() +" ****** "+ token.getCard().getObject());
+        System.out.println("Token card : "+token.getCard().getExpirationMonth() +" ****** "+ token.getCard().getExpirationYear());
+
+        showDialog(token. getId(),"Token",company.tap.gosellapi.R.drawable.ic_checkmark_normal);
     }
 
     @Override
@@ -557,7 +564,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
         PhoneNumber   phoneNumber = customer!=null ? customer.getPhone(): new PhoneNumber("965","65562630");
 
-        return new Customer.CustomerBuilder("cus_s4H13120191115x0R12606480").email("abc@abc.com").firstName("firstname")
+        return new Customer.CustomerBuilder("").email("abc@abc.com").firstName("firstname")
                 .lastName("lastname").metadata("").phone(new PhoneNumber(phoneNumber.getCountryCode(),phoneNumber.getNumber()))
                 .middleName("middlename").build();
     }

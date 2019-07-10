@@ -21,37 +21,47 @@ public final class TokenizedCard {
     @Expose
     private String object;
 
-    @SerializedName("last_four")
+    @SerializedName("address")
     @Expose
-    private String lastFour;
-
-    @SerializedName("exp_month")
-    private int expirationMonth;
-
-    @SerializedName("exp_year")
-    private int expirationYear;
-
-    @SerializedName("first_six")
-    private String firstSix;
-
-    @SerializedName("brand")
-    private CardBrand brand;
+    @Nullable private Address address;
 
     @SerializedName("funding")
+    @Expose
     private String funding;
-
-    @SerializedName("name")
-    private String name;
-
-    @SerializedName("customer")
-    @Nullable private String customer;
 
     @SerializedName("fingerprint")
     @Expose
     private String fingerprint;
 
-    @SerializedName("address")
-    @Nullable private Address address;
+    @SerializedName("brand")
+    private CardBrand brand;
+
+
+    @SerializedName("exp_month")
+    @Expose
+    private int expirationMonth;
+
+    @SerializedName("exp_year")
+    @Expose
+    private int expirationYear;
+
+    @SerializedName("last_four")
+    @Expose
+    private String lastFour;
+
+
+    @SerializedName("first_six")
+    @Expose
+    private String firstSix;
+
+
+    @SerializedName("name")
+    @Expose
+    private String name;
+
+
+
+
 
     /**
      * Gets first six.
@@ -70,5 +80,42 @@ public final class TokenizedCard {
     @NonNull
     public String getFingerprint() {
         return fingerprint;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getObject() {
+        return object;
+    }
+
+    public String getLastFour() {
+        return lastFour;
+    }
+
+    public int getExpirationMonth() {
+        return expirationMonth;
+    }
+
+    public int getExpirationYear() {
+        return expirationYear;
+    }
+
+
+
+    public String getFunding() {
+        return funding;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+
+
+    @Nullable
+    public Address getAddress() {
+        return address;
     }
 }
