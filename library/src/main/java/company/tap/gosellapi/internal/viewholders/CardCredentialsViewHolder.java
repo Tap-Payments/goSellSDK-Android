@@ -332,10 +332,13 @@ public class CardCredentialsViewHolder
             TextViewCompat.setTextAppearance(saveCardDescriptionTextView,R.style.SecurityText);
         }
 
-        if(PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode() == TransactionMode.TOKENIZE_CARD
-           ||
-          (PaymentDataManager.getInstance().getExternalDataSource()!= null && !PaymentDataManager.getInstance().getExternalDataSource().getAllowedToSaveCard())
-        )
+
+        /// stop hiding save card switch in case of TransactionMode.TOKENIZE_CARD.
+//        if(PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode() == TransactionMode.TOKENIZE_CARD
+//                ||
+//                (PaymentDataManager.getInstance().getExternalDataSource()!= null && !PaymentDataManager.getInstance().getExternalDataSource().getAllowedToSaveCard())
+//        )
+        if( (PaymentDataManager.getInstance().getExternalDataSource()!= null && !PaymentDataManager.getInstance().getExternalDataSource().getAllowedToSaveCard()) )
         {
             saveCardSwitch.setVisibility(View.GONE);
             saveCardDescriptionTextView.setText("");
