@@ -523,6 +523,11 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
     }
 
+    @Override
+    public void userEnabledSaveCardOption(boolean saveCardEnabled) {
+        System.out.println("userEnabledSaveCardOption :  "+saveCardEnabled);
+    }
+
 
 /////////////////////////////////////////////////////////  needed only for demo ////////////////////
 

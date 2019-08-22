@@ -1,6 +1,7 @@
 package company.tap.gosellapi.internal.utils;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.ArrayList;
 
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
@@ -121,7 +122,9 @@ public abstract class AmountCalculator {
                     case FIXED:
 
                         AmountedCurrency amountedCurrency = getAmountedCurrency(supportedCurrencies, fee.getCurrency());
-                        increase = currency.getAmount().multiply(fee.getValue()).divide(amountedCurrency.getAmount());
+//                      increase = currency.getAmount().multiply(fee.getValue()).divide(amountedCurrency.getAmount());
+                        increase = currency.getAmount().multiply(fee.getValue()).divide(amountedCurrency.getAmount(), MathContext.DECIMAL64); /// handling issue of  quotient has a non terminating decimal expansion
+
                         break;
 
                     case PERCENTAGE:
