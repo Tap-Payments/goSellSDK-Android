@@ -513,10 +513,6 @@ final class PaymentProcessManager {
 
       @Override
       public void onSuccess(int responseCode, Token serializedResponse) {
-//        Log.d("PaymentProcessManager","callCardTokenizationTokenAPI >> responseCode: " + responseCode);
-//        Log.d("PaymentProcessManager","callCardTokenizationTokenAPI >> serializedResponse: " + serializedResponse);
-//        Log.d("PaymentProcessManager","callCardTokenizationTokenAPI >> transaction mode: " +
-//          PaymentDataManager.getInstance().getPaymentOptionsRequest().getTransactionMode());
 
         fireCardTokenizationProcessCompleted(serializedResponse);
 

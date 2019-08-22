@@ -165,6 +165,10 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
             payButton.setEnabled(false);
             if(payButton.getLoadingView()!=null)payButton.getLoadingView().start();
 
+            // notify merchant with user decision about saving card
+
+            if(cardCredentialsViewModel!=null) SDKSession.getListener().userEnabledSaveCardOption(cardCredentialsViewModel.shouldSaveCard());
+
             if(keyboardVisible) {
                 startPaymentFlag=true;
               Utils.hideKeyboard(GoSellPaymentActivity.this);

@@ -39,4 +39,6 @@ public interface SessionDelegate {
         void invalidTransactionMode();
 
         void invalidCustomerID();
+
+        void userEnabledSaveCardOption(boolean saveCardEnabled);
 }

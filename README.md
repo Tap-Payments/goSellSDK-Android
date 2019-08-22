@@ -46,6 +46,7 @@ A library that fully covers payment/authorization/card saving process inside you
     14. [Session Has Started Callback](#session_has_started_callback)
     15. [Session Failed To Start Callback](#session_failed_to_start_callback)
     16. [Session Cancel Callback](#session_cancel_callback)
+    17. [User Enabled Save CARD](#user_enabled_save_card_option)
 6. [Documentation](#docs)
 
 
@@ -94,7 +95,7 @@ To integrate goSellSDK into your project add it in your **root** `build.gradle` 
 Step 2. Add the dependency
 ```java
 	dependencies {
-	        implementation 'com.github.Tap-Payments:goSellSDK-Android:2.3.0'
+	        implementation 'com.github.Tap-Payments:goSellSDK-Android:2.4.0'
 	}
 ```
 
@@ -783,6 +784,10 @@ The following table describes its structure and specifies which fields are requi
                       void backendUnknownError();
               
                       void invalidTransactionMode();
+
+                      void invalidCustomerID();
+
+                      void userEnabledSaveCardOption(boolean saveCardEnabled);
       }
  ```
  2. PaymentDataSource
@@ -1749,6 +1754,18 @@ Notifies the client that Transaction Mode not configured.
 -  void invalidTransactionMode();
 ```
 
+<a name="user_enabled_save_card_option"></a>
+### User Enabled Save Card call back
+
+Notifies the receiver (Merchant Activity) that the user wants to save his card.
+
+#### Declaration
+
+*Android:*
+
+```java
+- void userEnabledSaveCardOption(boolean saveCardEnabled);
+```
 
 <a name="session_is_starting_callback"></a>
 ### Session Is Starting Callback
