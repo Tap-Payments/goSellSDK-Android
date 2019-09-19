@@ -58,6 +58,7 @@ To use the SDK the following requirements must be met:
 1. **Android Studio 3.3** or newer
 2. **Android SDK Tools 26.1.1** or newer
 3. **Android Platform Version: API 28: Android 9.0 (Pie) revision 6** or later
+4. **Build gradle:3.5.0
 
 <a name="installation"></a>
 # Installation
@@ -95,7 +96,7 @@ To integrate goSellSDK into your project add it in your **root** `build.gradle` 
 Step 2. Add the dependency
 ```java
 	dependencies {
-	        implementation 'com.github.Tap-Payments:goSellSDK-Android:2.4.0'
+	        implementation 'com.github.Tap-Payments:goSellSDK-Android:2.4.1'
 	}
 ```
 
