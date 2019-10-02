@@ -24,17 +24,26 @@ public final class Source implements Serializable {
     @Expose
     private String id;
 
+//    @SerializedName("object")
+//    @Expose
+//    @Nullable private SourceObject object;
+
     @SerializedName("object")
     @Expose
-    @Nullable private SourceObject object;
+    @Nullable private String object;
 
     @SerializedName("type")
     @Expose
-    @Nullable private SourceType sourceType;
+    @Nullable private SourceType type;
+
+//    @SerializedName("payment_type")
+//    @Expose
+//    @Nullable private SourcePaymentType paymentType;
 
     @SerializedName("payment_type")
     @Expose
-    @Nullable private SourcePaymentType paymentType;
+    @Nullable private String paymentType;
+
 
     @SerializedName("payment_method")
     @Expose
@@ -43,6 +52,48 @@ public final class Source implements Serializable {
     @SerializedName("channel")
     @Expose
     @Nullable private SourceChannel channel;
+
+//    @Nullable
+//    public SourceObject getObject() {
+//        return object;
+//    }
+
+
+    @Nullable
+    public String getObject() {
+        return object;
+    }
+
+    @Nullable
+    public SourceType getType() {
+        return type;
+    }
+
+//    @Nullable
+//    public SourcePaymentType getPaymentType() {
+//        return paymentType;
+//    }
+
+    @Nullable
+    public String getPaymentType() {
+        return paymentType;
+    }
+
+
+    @Nullable
+    public CardBrand getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public String getPaymentMethodStringValue(){
+        if(paymentMethod ==null) return "";
+        return paymentMethod.getRawValue();
+    }
+
+    @Nullable
+    public SourceChannel getChannel() {
+        return channel;
+    }
 
     /**
      * Constructor with id field only (token id, card id etc.)

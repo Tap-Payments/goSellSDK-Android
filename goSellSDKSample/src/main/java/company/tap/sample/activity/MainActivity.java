@@ -386,12 +386,43 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
     @Override
     public void paymentSucceed(@NonNull Charge charge) {
 
-        System.out.println("Payment Succeeded : "+ charge.getStatus());
-        System.out.println("Payment Succeeded : "+ charge.getDescription());
-        System.out.println("Payment Succeeded : "+ charge.getResponse().getMessage());
+        System.out.println("Payment Succeeded : charge status : "+ charge.getStatus());
+        System.out.println("Payment Succeeded : description : "+ charge.getDescription());
+        System.out.println("Payment Succeeded : message : "+ charge.getResponse().getMessage());
+        System.out.println("##############################################################################");
+        if(charge.getCard()!=null){
+            System.out.println("Payment Succeeded : first six : "+ charge.getCard().getFirstSix());
+            System.out.println("Payment Succeeded : last four: "+ charge.getCard().getLast4());
+            System.out.println("Payment Succeeded : card object : "+ charge.getCard().getObject());
+        }
+
+        System.out.println("##############################################################################");
+        if(charge.getAcquirer()!=null){
+            System.out.println("Payment Succeeded : acquirer id : "+ charge.getAcquirer().getId());
+            System.out.println("Payment Succeeded : acquirer response code : "+ charge.getAcquirer().getResponse().getCode());
+            System.out.println("Payment Succeeded : acquirer response message: "+ charge.getAcquirer().getResponse().getMessage());
+        }
+        System.out.println("##############################################################################");
+        if(charge.getSource()!=null){
+            System.out.println("Payment Succeeded : source id: "+ charge.getSource().getId());
+            System.out.println("Payment Succeeded : source channel: "+ charge.getSource().getChannel());
+            System.out.println("Payment Succeeded : source object: "+ charge.getSource().getObject());
+            System.out.println("Payment Succeeded : source payment method: "+ charge.getSource().getPaymentMethodStringValue());
+            System.out.println("Payment Succeeded : source payment type: "+ charge.getSource().getPaymentType());
+            System.out.println("Payment Succeeded : source type: "+ charge.getSource().getType());
+        }
+
+        System.out.println("##############################################################################");
+        if(charge.getExpiry()!=null){
+            System.out.println("Payment Succeeded : expiry type :"+ charge.getExpiry().getType());
+            System.out.println("Payment Succeeded : expiry period :"+ charge.getExpiry().getPeriod());
+        }
+
         saveCustomerRefInSession(charge);
         configureSDKSession();
         showDialog(charge.getId(),charge.getResponse().getMessage(),company.tap.gosellapi.R.drawable.ic_checkmark_normal);
+
+
     }
 
     @Override
@@ -408,6 +439,36 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
     public void authorizationSucceed(@NonNull Authorize authorize) {
         System.out.println("Authorize Succeeded : "+ authorize.getStatus());
         System.out.println("Authorize Succeeded : "+ authorize.getResponse().getMessage());
+
+        if(authorize.getCard()!=null){
+            System.out.println("Payment Authorized Succeeded : first six : "+ authorize.getCard().getFirstSix());
+            System.out.println("Payment Authorized Succeeded : last four: "+ authorize.getCard().getLast4());
+            System.out.println("Payment Authorized Succeeded : card object : "+ authorize.getCard().getObject());
+        }
+
+        System.out.println("##############################################################################");
+        if(authorize.getAcquirer()!=null){
+            System.out.println("Payment Authorized Succeeded : acquirer id : "+ authorize.getAcquirer().getId());
+            System.out.println("Payment Authorized Succeeded : acquirer response code : "+ authorize.getAcquirer().getResponse().getCode());
+            System.out.println("Payment Authorized Succeeded : acquirer response message: "+ authorize.getAcquirer().getResponse().getMessage());
+        }
+        System.out.println("##############################################################################");
+        if(authorize.getSource()!=null){
+            System.out.println("Payment Authorized Succeeded : source id: "+ authorize.getSource().getId());
+            System.out.println("Payment Authorized Succeeded : source channel: "+ authorize.getSource().getChannel());
+            System.out.println("Payment Authorized Succeeded : source object: "+ authorize.getSource().getObject());
+            System.out.println("Payment Authorized Succeeded : source payment method: "+ authorize.getSource().getPaymentMethodStringValue());
+            System.out.println("Payment Authorized Succeeded : source payment type: "+ authorize.getSource().getPaymentType());
+            System.out.println("Payment Authorized Succeeded : source type: "+ authorize.getSource().getType());
+        }
+
+        System.out.println("##############################################################################");
+        if(authorize.getExpiry()!=null){
+            System.out.println("Payment Authorized Succeeded : expiry type :"+ authorize.getExpiry().getType());
+            System.out.println("Payment Authorized Succeeded : expiry period :"+ authorize.getExpiry().getPeriod());
+        }
+
+
         saveCustomerRefInSession(authorize);
         configureSDKSession();
         showDialog(authorize.getId(),authorize.getResponse().getMessage(),company.tap.gosellapi.R.drawable.ic_checkmark_normal);
