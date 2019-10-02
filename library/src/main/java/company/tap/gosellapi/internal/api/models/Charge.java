@@ -106,6 +106,36 @@ public class Charge implements BaseResponse, Serializable {
     @Expose
     @Nullable private Destinations destinations;
 
+
+    @SerializedName("card")
+    @Expose
+    @Nullable private Card card;
+
+    @SerializedName("acquirer")
+    @Expose
+    @Nullable private Acquirer acquirer;
+
+
+    @SerializedName("expiry")
+    @Expose
+    @Nullable private Expiry expiry;
+
+
+    @Nullable
+    public Card getCard() {
+        return card;
+    }
+
+    @Nullable
+    public Acquirer getAcquirer() {
+        return acquirer;
+    }
+
+    @Nullable
+    public Expiry getExpiry() {
+        return expiry;
+    }
+
     /**
      * Gets id.
      *

@@ -15,9 +15,9 @@ public final class SaveCard extends Charge{
     @Expose
     @NonNull private boolean save_card;
 
-    @SerializedName("card")
-    @Expose
-    @NonNull private Card card;
+//    @SerializedName("card")
+//    @Expose
+//    @NonNull private Card card;
 
     @SerializedName("risk")
     @Expose
@@ -45,15 +45,15 @@ public final class SaveCard extends Charge{
         return save_card;
     }
 
-    /**
-     * Gets card.
-     *
-     * @return the card
-     */
-    @NonNull
-    public Card getCard() {
-        return card;
-    }
+//    /**
+//     * Gets card.
+//     *
+//     * @return the card
+//     */
+//    @NonNull
+//    public Card getCard() {
+//        return card;
+//    }
 
     /**
      * Is risk boolean.
