@@ -89,6 +89,14 @@ public final class AmountedCurrency implements Serializable, Comparable<Amounted
         this.symbol = symbol;
     }
 
+    public void setCurrency(@NonNull String currency) {
+        this.currency = currency;
+    }
+
+    public void setAmount(@NonNull BigDecimal amount) {
+        this.amount = amount;
+    }
+
     @Override
     public int compareTo(@NonNull AmountedCurrency o) {
 

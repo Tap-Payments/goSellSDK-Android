@@ -88,8 +88,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         settingsManager = SettingsManager.getInstance();
         settingsManager.setPref(this);
 
-        // start tap goSellSDK
-        startSDK();
+       initializeSDK();
     }
 
     @Override
@@ -105,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
     /**
      * Integrating SDK.
      */
-    private void startSDK(){
+    private void initializeSDK(){
         /**
          * Required step.
          * Configure SDK with your Secret API key and App Bundle name registered with tap company.
@@ -134,6 +133,18 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
          * If you included Tap Pay Button then configure it first, if not then ignore this step.
          */
         initPayButton();
+
+
+        /**
+         *
+         */
+        if(sdkSession!=null){
+            sdkSession.getPaymentOptions();
+        }
+        else {
+            configureSDKSession();
+            sdkSession.getPaymentOptions();
+        }
 
     }
 
@@ -192,11 +203,8 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         // Instantiate SDK Session
         if(sdkSession==null) sdkSession = new SDKSession();   //** Required **
 
-        // pass your activity as a session delegate to listen to SDK internal payment process follow
+        // pass your activity as a session delegate to receive SDK internal payment result.
         sdkSession.addSessionDelegate(this);    //** Required **
-
-        // initiate PaymentDataSource
-        sdkSession.instantiatePaymentDataSource();    //** Required **
 
         // set transaction currency associated to your account
         sdkSession.setTransactionCurrency(new TapCurrency("KWD"));    //** Required **
@@ -204,17 +212,17 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         // Using static CustomerBuilder method available inside TAP Customer Class you can populate TAP Customer object and pass it to SDK
         sdkSession.setCustomer(getCustomer());    //** Required **
 
-        // Set Total Amount. The Total amount will be recalculated according to provided Taxes and Shipping
-        sdkSession.setAmount(new BigDecimal(40));  //** Required **
+//        // Set Total Amount. The Total amount will be recalculated according to provided Taxes and Shipping
+//        sdkSession.setAmount(new BigDecimal(40));  //** Required **
+//
+//        // Set Payment Items array list
+//        sdkSession.setPaymentItems(new ArrayList<>());// ** Optional ** you can pass empty array list
 
-        // Set Payment Items array list
-        sdkSession.setPaymentItems(new ArrayList<>());// ** Optional ** you can pass empty array list
-
-        // Set Taxes array list
-        sdkSession.setTaxes(new ArrayList<>());// ** Optional ** you can pass empty array list
-
-        // Set Shipping array list
-        sdkSession.setShipping(new ArrayList<>());// ** Optional ** you can pass empty array list
+//        // Set Taxes array list
+//        sdkSession.setTaxes(new ArrayList<>());// ** Optional ** you can pass empty array list
+//
+//        // Set Shipping array list
+//        sdkSession.setShipping(new ArrayList<>());// ** Optional ** you can pass empty array list
 
         // Post URL
         sdkSession.setPostURL(""); // ** Optional **
@@ -243,8 +251,10 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         // Set Authorize Action
         sdkSession.setAuthorizeAction(null); // ** Optional ** you can pass AuthorizeAction object or null
 
+        // Set Destination
         sdkSession.setDestination(null); // ** Optional ** you can pass Destinations object or null
 
+        // Set Merchant ID
         sdkSession.setMerchantID(null); // ** Optional ** you can pass merchant id or null
 
     }
@@ -364,10 +374,31 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
             }else{
                 configureSDKMode();
             }
+            payButtonView.setOnClickListener(new PayButtonClickListener());
             sdkSession.setButtonView(payButtonView, this, SDK_REQUEST_CODE);
         }
 
 
+    }
+
+    private class PayButtonClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+        // Set Total Amount. The Total amount will be recalculated according to provided Taxes and Shipping
+        sdkSession.setAmount(new BigDecimal(40));  //** Required **
+
+        // Set Payment Items array list
+        sdkSession.setPaymentItems(new ArrayList<>());// ** Optional ** you can pass empty array list
+
+        // Set Taxes array list
+        sdkSession.setTaxes(new ArrayList<>());// ** Optional ** you can pass empty array list
+
+        // Set Shipping array list
+        sdkSession.setShipping(new ArrayList<>());// ** Optional ** you can pass empty array list
+
+        sdkSession.startSDK(new BigDecimal(40),new ArrayList(),new ArrayList(),new ArrayList());
+        }
     }
 
 
