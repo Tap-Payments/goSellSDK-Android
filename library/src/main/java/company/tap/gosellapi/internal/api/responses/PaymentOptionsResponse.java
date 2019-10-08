@@ -103,6 +103,8 @@ public final class PaymentOptionsResponse implements BaseResponse {
      */
     @NonNull public ArrayList<AmountedCurrency> getSupportedCurrencies() { return supportedCurrencies; }
 
+
+
     /**
      * Gets cards.
      *
@@ -118,4 +120,29 @@ public final class PaymentOptionsResponse implements BaseResponse {
         return cards;
     }
     ////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    public void setOrderID(@NonNull String orderID) {
+        this.orderID = orderID;
+    }
+
+    public void setObject(@NonNull String object) {
+        this.object = object;
+    }
+
+    public void setPaymentOptions(@NonNull ArrayList<PaymentOption> paymentOptions) {
+        this.paymentOptions = paymentOptions;
+    }
+
+    public void setCurrency(@NonNull String currency) {
+        this.currency = currency;
+    }
+
+    public void setSupportedCurrencies(@NonNull ArrayList<AmountedCurrency> supportedCurrencies) {
+        this.supportedCurrencies = supportedCurrencies;
+    }
+
+    public void setCards(@Nullable ArrayList<SavedCard> cards) {
+        this.cards = cards;
+    }
 }

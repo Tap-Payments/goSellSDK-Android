@@ -13,12 +13,14 @@ import company.tap.gosellapi.internal.api.requests.CreateSaveCardRequest;
 import company.tap.gosellapi.internal.api.requests.CreateTokenWithCardDataRequest;
 import company.tap.gosellapi.internal.api.requests.CreateTokenWithExistingCardDataRequest;
 import company.tap.gosellapi.internal.api.requests.PaymentOptionsRequest;
+import company.tap.gosellapi.internal.api.requests.SupportedCurrunciesRequest;
 import company.tap.gosellapi.internal.api.responses.AddressFormatsResponse;
 import company.tap.gosellapi.internal.api.responses.BINLookupResponse;
 import company.tap.gosellapi.internal.api.responses.DeleteCardResponse;
 import company.tap.gosellapi.internal.api.responses.ListCardsResponse;
 import company.tap.gosellapi.internal.api.responses.PaymentOptionsResponse;
 import company.tap.gosellapi.internal.api.responses.SDKSettings;
+import company.tap.gosellapi.internal.api.responses.SupportedCurreciesResponse;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -194,6 +196,18 @@ public interface APIService {
      */
     @POST(API_Constants.PAYMENT_TYPES)
     Call<PaymentOptionsResponse> getPaymentOptions(@Body PaymentOptionsRequest paymentOptionsRequest);
+
+
+
+
+    /**
+     * Gets payment options.
+     *
+     * @param supportedCurrunciesRequest the supported currencies request
+     * @return the supported currencies
+     */
+    @POST(API_Constants.SUPPORTED_CURRENCIES)
+    Call<SupportedCurreciesResponse> getSupportedCurrencies(@Body SupportedCurrunciesRequest supportedCurrunciesRequest);
 
     /**
      * Update charge call.

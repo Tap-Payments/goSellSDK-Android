@@ -110,6 +110,12 @@ final class API_Constants {
     static final String PAYMENT_TYPES = "payment/types";
 
     /**
+     * The Payment types.
+     */
+    static final String SUPPORTED_CURRENCIES = "currency/exchange/v1/";
+
+
+    /**
      * Delete Card API
      */
     static final String DELETE_CARD = "card";
