@@ -56,13 +56,16 @@ public class SDKSession {
 
     private boolean sessionActive;
     private boolean paymentOtionsResponseReady;
+    private boolean isWaitingPaymentOtionsResponse;
+
+    private BigDecimal lastSDKAmount;
 
     /**
      * Instantiates a new Sdk session.
      */
     public SDKSession() {
         instantiatePaymentDataSource();
-        sessionActive=false;
+        sessionActive = false;
     }
 
 
@@ -91,8 +94,6 @@ public class SDKSession {
 
         if (buttonView instanceof PayButtonView) {
             this.payButtonView = (PayButtonView) buttonView;
-//      this.payButtonView.getPayButton().setOnClickListener(this);
-//      this.payButtonView.getSecurityIconView().setOnClickListener(this);
         }
         this.activityListener = activity;
     }
@@ -285,49 +286,6 @@ public class SDKSession {
             paymentDataSource.setMerchant(null);
     }
 
-
-//    /**
-//     * Handle pay button click event
-//     *
-//     * @param v
-//     */
-//    @Override
-//    public void onClick(View v) {
-//
-//        if (sessionActive) return;
-//
-//        if (getTransactionMode() == null) {
-//            sessionDelegate.invalidTransactionMode();
-//            return;
-//        }
-//
-//        int i = v.getId();
-//
-//        if (i == payButtonView.getLayoutId() || i == R.id.pay_button_id) {
-//            System.out.println(" sessionActive : " + sessionActive);
-//            sessionActive = true;
-////      getPaymentOptions();
-//            if (payButtonView != null)
-//                payButtonView.getLoadingView().start();
-//
-////      startSDK();
-//        }
-//    }
-
-    /**
-     * start goSellSDK without pay button
-     */
-    public void start(Activity context) {
-        System.out.println(" sessionActive : " + sessionActive);
-        if (sessionActive) return;
-
-        sessionActive = true;
-
-        this.context = context;
-        getPaymentOptions();
-    }
-
-
     public void listAllCards(@NonNull String customer_id, @NonNull SessionDelegate sessionDelegate) {
 
         if (sessionDelegate == null) return;
@@ -343,7 +301,7 @@ public class SDKSession {
      * call payment methods API
      */
     public void getPaymentOptions() {
-        System.out.println("getPaymentOptions : "+ isInternetConnectionAvailable());
+        System.out.println("getPaymentOptions : " + isInternetConnectionAvailable());
         switch (isInternetConnectionAvailable()) {
             case SDK_NOT_CONFIGURED_WITH_VALID_CONTEXT:
                 if (getSDKContext() != null)
@@ -370,10 +328,18 @@ public class SDKSession {
     }
 
     public void startPayment() {
-        paymentOtionsResponseReady=false;
+        paymentOtionsResponseReady = false;
         persistPaymentDataSource();
+
         System.out.println(" this.paymentDataSource.getTransactionMode() : " + this.paymentDataSource.getTransactionMode());
-        sessionActive = true;
+
+        // check trx_mode
+        if (this.paymentDataSource.getTransactionMode() == null) {
+            sessionDelegate.invalidTransactionMode();
+            return;
+        }
+
+        // create payment options request
         PaymentOptionsRequest request = new PaymentOptionsRequest(
                 this.paymentDataSource.getTransactionMode(),
                 this.paymentDataSource.getAmount(),
@@ -385,20 +351,21 @@ public class SDKSession {
                 (this.paymentDataSource.getMerchant() != null) ? this.paymentDataSource.getMerchant().getId() : null
         );
 
-
+        // retrieve payment options
         GoSellAPI.getInstance().getPaymentOptions(request,
                 new APIRequestCallback<PaymentOptionsResponse>() {
 
                     @Override
                     public void onSuccess(int responseCode, PaymentOptionsResponse serializedResponse) {
                         System.out.println(" payment options response: " + serializedResponse.getCurrency());
-                        sessionActive = false;
-                        paymentOtionsResponseReady=true;
+                        paymentOtionsResponseReady = true;
+                        if (isWaitingPaymentOtionsResponse)
+                            openSDK(lastSDKAmount);
                     }
 
                     @Override
                     public void onFailure(GoSellError errorDetails) {
-                        paymentOtionsResponseReady=false;
+                        paymentOtionsResponseReady = false;
 
                         if (ThemeObject.getInstance().isPayButtLoaderVisible()) {
 
@@ -414,29 +381,14 @@ public class SDKSession {
                 });
     }
 
-
+    /**
+     * check PaymentOptionsResponse then open sdk
+     *
+     * @param amount
+     */
     public void startSDK(BigDecimal amount) {
-
-        // start loader
-        if (ThemeObject.getInstance().isPayButtLoaderVisible()) {
-            if (payButtonView != null)
-                payButtonView.getLoadingView().start();
-        }
-
-        // check only one session is enabled
-        if (sessionActive)
-        {
-           stopPayButtonLoader();
-            return;
-        }
-
-        // check if payment options is available
-        if(!paymentOtionsResponseReady)
-        {
-            stopPayButtonLoader();
-            sessionDelegate.paymentOptionsNotReady();
-            return;
-        }
+        // check if no session is running
+        if (sessionActive) return;
 
         // check if transaction mode is null
         if (getTransactionMode() == null) {
@@ -450,59 +402,80 @@ public class SDKSession {
         // start session
         sessionActive = true;
 
+        // check if payment options is available
+        if (!paymentOtionsResponseReady) {
+            // store amount
+            lastSDKAmount = amount;
+            // wait till payment options is ready
+            isWaitingPaymentOtionsResponse = true;
+        } else {
+            isWaitingPaymentOtionsResponse = false;
+            openSDK(amount);
+        }
+    }
+
+    /**
+     * Now PaymentOptionsResponse response is ready, open SDK
+     *
+     * @param amount
+     */
+    private void openSDK(BigDecimal amount) {
+
+        if (lastSDKAmount == null) return;
+
         // check if amount changed
-        if(amount.compareTo(paymentDataSource.getAmount()) !=0 ) {
+        if (amount.compareTo(paymentDataSource.getAmount()) != 0) { // refresh supported currencies exchange rate with new amount
             // get exchange rates for new amount
             GoSellAPI.getInstance().getSupportedCurrencies(amount, new APIRequestCallback<SupportedCurreciesResponse>() {
                 @Override
                 public void onSuccess(int responseCode, SupportedCurreciesResponse serializedResponse) {
                     System.out.println(" supported currencies : " + serializedResponse.to.get(0));
-                        switch (getTransactionMode()) {
-                            case PURCHASE:
-                            case AUTHORIZE_CAPTURE:
-                            case SAVE_CARD:
-                            case TOKENIZE_CARD:
-                                if (payButtonView != null)
-                                    payButtonView.getLoadingView().setForceStop(true);
-                                startMainActivity();  // start SDK Main activity.
-                                break;
-                            case TOKENIZE_CARD_NO_UI:  // use SDK without UI (Card Form)
-                                if (cardInfo != null) {
-                                    APIsExposer.getInstance().startToknizingCard(
-                                            cardInfo.cardNumber,
-                                            cardInfo.expirationMonth,
-                                            cardInfo.expirationYear,
-                                            cardInfo.cvc,
-                                            cardInfo.cardholderName,
-                                            cardInfo.address,
-                                            sessionDelegate);
-                                    stopPayButtonLoader();
-                                    sessionActive = false;
-                                } else {
-                                    stopPayButtonLoader();
-                                    sessionActive = false;
-                                    sessionDelegate.invalidCardDetails();
-                                }
-                                break;
-                            case SAVE_CARD_NO_UI:
-                                if (cardInfo != null) {
-                                    APIsExposer.getInstance().startSavingCard(
-                                            cardInfo.cardNumber,
-                                            cardInfo.expirationMonth,
-                                            cardInfo.expirationYear,
-                                            cardInfo.cvc,
-                                            cardInfo.cardholderName,
-                                            cardInfo.address,
-                                            sessionDelegate);
-                                    stopPayButtonLoader();
-                                    sessionActive = false;
-                                } else {
-                                    stopPayButtonLoader();
-                                    sessionActive = false;
-                                    sessionDelegate.invalidCardDetails();
-                                }
-                                break;
-                        }
+                    switch (getTransactionMode()) {
+                        case PURCHASE:
+                        case AUTHORIZE_CAPTURE:
+                        case SAVE_CARD:
+                        case TOKENIZE_CARD:
+                            if (payButtonView != null)
+                                payButtonView.getLoadingView().setForceStop(true);
+                            startMainActivity();  // start SDK Main activity.
+                            break;
+                        case TOKENIZE_CARD_NO_UI:  // use SDK without UI (Card Form)
+                            if (cardInfo != null) {
+                                APIsExposer.getInstance().startToknizingCard(
+                                        cardInfo.cardNumber,
+                                        cardInfo.expirationMonth,
+                                        cardInfo.expirationYear,
+                                        cardInfo.cvc,
+                                        cardInfo.cardholderName,
+                                        cardInfo.address,
+                                        sessionDelegate);
+                                stopPayButtonLoader();
+                                sessionActive = false;
+                            } else {
+                                stopPayButtonLoader();
+                                sessionActive = false;
+                                sessionDelegate.invalidCardDetails();
+                            }
+                            break;
+                        case SAVE_CARD_NO_UI:
+                            if (cardInfo != null) {
+                                APIsExposer.getInstance().startSavingCard(
+                                        cardInfo.cardNumber,
+                                        cardInfo.expirationMonth,
+                                        cardInfo.expirationYear,
+                                        cardInfo.cvc,
+                                        cardInfo.cardholderName,
+                                        cardInfo.address,
+                                        sessionDelegate);
+                                stopPayButtonLoader();
+                                sessionActive = false;
+                            } else {
+                                stopPayButtonLoader();
+                                sessionActive = false;
+                                sessionDelegate.invalidCardDetails();
+                            }
+                            break;
+                    }
                 }
 
                 @Override
@@ -512,22 +485,21 @@ public class SDKSession {
                     );
                 }
             });
-        }else {
-          // start SDK directly
+        } else {  // if same amount passed then open SDK directly
+            // start SDK directly
             startMainActivity();
         }
     }
 
 
-
-    private void stopPayButtonLoader()
-    {
+    public void stopPayButtonLoader() {
         // stop loader
         if (ThemeObject.getInstance().isPayButtLoaderVisible()) {
             if (payButtonView != null)
                 payButtonView.getLoadingView().setForceStop(true);
         }
     }
+
     private ErrorTypes isInternetConnectionAvailable() {
         Context ctx = getSDKContext();
         if (ctx == null) return ErrorTypes.SDK_NOT_CONFIGURED_WITH_VALID_CONTEXT;
@@ -571,6 +543,13 @@ public class SDKSession {
     public void addSessionDelegate(SessionDelegate _sessionDelegate) {
         sessionDelegate = _sessionDelegate;
 
+    }
+
+    public void startPayButtonLoader() {
+        if (ThemeObject.getInstance().isPayButtLoaderVisible()) {
+            if (payButtonView != null)
+                payButtonView.getLoadingView().start();
+        }
     }
 
 
