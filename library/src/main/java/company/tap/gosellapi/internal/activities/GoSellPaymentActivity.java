@@ -63,6 +63,7 @@ import company.tap.gosellapi.internal.utils.ActivityDataExchanger;
 import company.tap.gosellapi.internal.utils.Utils;
 import company.tap.gosellapi.open.buttons.PayButtonView;
 import company.tap.gosellapi.open.controllers.SDKSession;
+import company.tap.gosellapi.open.controllers.SessionManager;
 import company.tap.gosellapi.open.controllers.ThemeObject;
 import company.tap.gosellapi.open.enums.AppearanceMode;
 import company.tap.gosellapi.open.enums.TransactionMode;
@@ -183,6 +184,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
     @Override
     public void onBackPressed() {
+        SessionManager.getInstance().setActiveSession(false);
         SDKSession.getListener().sessionCancelled();
         super.onBackPressed();
     }
@@ -713,6 +715,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
     private void closePaymentActivity() {
         clearPaymentProcessListeners();
+        SessionManager.getInstance().setActiveSession(false);
         finishActivity();
     }
 
