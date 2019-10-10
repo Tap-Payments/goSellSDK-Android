@@ -1,8 +1,5 @@
 package company.tap.gosellapi.internal.api.requests;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

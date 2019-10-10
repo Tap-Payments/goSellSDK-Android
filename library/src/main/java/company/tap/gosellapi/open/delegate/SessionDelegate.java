@@ -31,6 +31,7 @@ public interface SessionDelegate {
         void sessionHasStarted();
         void sessionCancelled();
         void sessionFailedToStart();
+        void paymentOptionsNotReady();
 
         void invalidCardDetails();
 

@@ -239,7 +239,10 @@ public final class GoSellAPI {
             @Override
             public void onSuccess(int responseCode, PaymentOptionsResponse serializedResponse) {
                 paymentOptionsResponse = serializedResponse;
-//                PaymentDataManager.getInstance().createPaymentOptionsDataManager(serializedResponse);
+
+                System.out.println("paymentOptionsResponse :::: "+paymentOptionsResponse.getSupportedCurrencies());
+
+                PaymentDataManager.getInstance().createPaymentOptionsDataManager(paymentOptionsResponse);
                 requestCallback.onSuccess(responseCode, serializedResponse);
             }
 
@@ -281,10 +284,20 @@ public final class GoSellAPI {
                         ArrayList<AmountedCurrency> newSupportedCurrList = new ArrayList<>();
                         ArrayList<AmountedCurrency> oldSupportedCurrList = paymentOptionsResponse.getSupportedCurrencies();
 // check if null
-                        int i = 0;
+
                         for (AmountedCurrency supportedCurr : oldSupportedCurrList) {
-                            System.out.println("*****************************************");
-                            for (; i< serializedResponse.getTo().size();i++) {
+                            System.out.println("******************supportedCurr = "+supportedCurr.getCurrency()+"***********************");
+
+                            // if source currency match trx_currency add it with same amount
+                            if(supportedCurr.getCurrency().equalsIgnoreCase(trxCurrency))
+                            {
+                                supportedCurr.setAmount(amount);
+                                newSupportedCurrList.add(supportedCurr);
+                                continue;
+                            }
+
+
+                            for (int i = 0; i< serializedResponse.getTo().size();i++) {
                                 System.out.println(serializedResponse.getTo().get(i).getCurrency() + " >>>> " + serializedResponse.getTo().get(i).getValue());
                                 System.out.println("supported : " + supportedCurr.getCurrency());
                                 if (serializedResponse.getTo().get(i).getCurrency().equalsIgnoreCase(supportedCurr.getCurrency()))
@@ -295,6 +308,7 @@ public final class GoSellAPI {
                                     }
                             }
                         }
+
                         System.out.println("=================================================");
                         for (AmountedCurrency mm : newSupportedCurrList) {
                             System.out.println("api curr:  " + mm.getAmount());

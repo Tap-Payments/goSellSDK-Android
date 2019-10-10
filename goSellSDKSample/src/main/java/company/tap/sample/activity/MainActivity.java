@@ -1,6 +1,5 @@
 package company.tap.sample.activity;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -22,14 +21,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -38,7 +33,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import android.widget.Toast;
 
 import company.tap.gosellapi.GoSellSDK;
 import company.tap.gosellapi.internal.api.callbacks.GoSellError;
@@ -70,41 +64,43 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
     private SettingsManager settingsManager;
     private ProgressDialog progress;
 
-
-
-
     private static RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private static RecyclerView recyclerView;
-    private static ArrayList<SavedCard> data;
-    static View.OnClickListener myOnClickListener;
-    private static ArrayList<Integer> removedItems;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        settingsManager = SettingsManager.getInstance();
-        settingsManager.setPref(this);
+        setupSettingsManager();
 
-       initializeSDK();
+        /**
+         * this step speeds up SDK loading.
+         * sdk initialization process will trigger it in background and make it ready when user clicks on pay button.
+         */
+        initializeSDK();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if(settingsManager==null)
-        {
-            settingsManager = SettingsManager.getInstance();
-            settingsManager.setPref(this);
-        }
+        if (settingsManager == null)
+            setupSettingsManager();
+    }
+
+    /**
+     * for demo purpose
+     */
+    private void setupSettingsManager() {
+        settingsManager = SettingsManager.getInstance();
+        settingsManager.setPref(this);
     }
 
     /**
      * Integrating SDK.
      */
-    private void initializeSDK(){
+    private void initializeSDK() {
         /**
          * Required step.
          * Configure SDK with your Secret API key and App Bundle name registered with tap company.
@@ -136,12 +132,12 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
 
         /**
-         *
+         * initialize SDK Session in background
+         * this opens SDK layout more fast.
          */
-        if(sdkSession!=null){
+        if (sdkSession != null) {
             sdkSession.getPaymentOptions();
-        }
-        else {
+        } else {
             configureSDKSession();
             sdkSession.getPaymentOptions();
         }
@@ -152,44 +148,45 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
      * Required step.
      * Configure SDK with your Secret API key and App Bundle name registered with tap company.
      */
-    private void configureApp(){
-        GoSellSDK.init(this, "sk_test_kovrMB0mupFJXfNZWx6Etg5y","company.tap.goSellSDKExample");  // to be replaced by merchant
+    private void configureApp() {
+        GoSellSDK.init(this, "sk_test_kovrMB0mupFJXfNZWx6Etg5y", "company.tap.goSellSDKExample");  // to be replaced by merchant
     }
+
     /**
      * Configure SDK Theme
      */
     private void configureSDKThemeObject() {
 
         ThemeObject.getInstance()
-        .setAppearanceMode(AppearanceMode.WINDOWED_MODE)
+                .setAppearanceMode(AppearanceMode.WINDOWED_MODE)
 
-        .setHeaderFont(Typeface.createFromAsset(getAssets(),"fonts/roboto_light.ttf"))
-        .setHeaderTextColor(getResources().getColor(R.color.black1))
-        .setHeaderTextSize(17)
-        .setHeaderBackgroundColor(getResources().getColor(R.color.french_gray_new))
-
-
-        .setCardInputFont(Typeface.createFromAsset(getAssets(),"fonts/roboto_light.ttf"))
-        .setCardInputTextColor(getResources().getColor(R.color.black))
-        .setCardInputInvalidTextColor(getResources().getColor(R.color.red))
-        .setCardInputPlaceholderTextColor(getResources().getColor(R.color.gray))
+                .setHeaderFont(Typeface.createFromAsset(getAssets(), "fonts/roboto_light.ttf"))
+                .setHeaderTextColor(getResources().getColor(R.color.black1))
+                .setHeaderTextSize(17)
+                .setHeaderBackgroundColor(getResources().getColor(R.color.french_gray_new))
 
 
-        .setSaveCardSwitchOffThumbTint(getResources().getColor(R.color.french_gray_new))
-        .setSaveCardSwitchOnThumbTint(getResources().getColor(R.color.vibrant_green))
-        .setSaveCardSwitchOffTrackTint(getResources().getColor(R.color.french_gray))
-        .setSaveCardSwitchOnTrackTint(getResources().getColor(R.color.vibrant_green_pressed))
+                .setCardInputFont(Typeface.createFromAsset(getAssets(), "fonts/roboto_light.ttf"))
+                .setCardInputTextColor(getResources().getColor(R.color.black))
+                .setCardInputInvalidTextColor(getResources().getColor(R.color.red))
+                .setCardInputPlaceholderTextColor(getResources().getColor(R.color.gray))
 
-        .setScanIconDrawable(getResources().getDrawable(R.drawable.btn_card_scanner_normal))
 
-        .setPayButtonResourceId(R.drawable.btn_pay_selector)  //btn_pay_merchant_selector
-        .setPayButtonFont(Typeface.createFromAsset(getAssets(),"fonts/roboto_light.ttf"))
+                .setSaveCardSwitchOffThumbTint(getResources().getColor(R.color.french_gray_new))
+                .setSaveCardSwitchOnThumbTint(getResources().getColor(R.color.vibrant_green))
+                .setSaveCardSwitchOffTrackTint(getResources().getColor(R.color.french_gray))
+                .setSaveCardSwitchOnTrackTint(getResources().getColor(R.color.vibrant_green_pressed))
 
-        .setPayButtonDisabledTitleColor(getResources().getColor(R.color.white))
-        .setPayButtonEnabledTitleColor(getResources().getColor(R.color.white))
-        .setPayButtonTextSize(14)
-        .setPayButtonLoaderVisible(true)
-        .setPayButtonSecurityIconVisible(true)
+                .setScanIconDrawable(getResources().getDrawable(R.drawable.btn_card_scanner_normal))
+
+                .setPayButtonResourceId(R.drawable.btn_pay_selector)  //btn_pay_merchant_selector
+                .setPayButtonFont(Typeface.createFromAsset(getAssets(), "fonts/roboto_light.ttf"))
+
+                .setPayButtonDisabledTitleColor(getResources().getColor(R.color.white))
+                .setPayButtonEnabledTitleColor(getResources().getColor(R.color.white))
+                .setPayButtonTextSize(14)
+                .setPayButtonLoaderVisible(true)
+                .setPayButtonSecurityIconVisible(true)
         ;
 
     }
@@ -201,10 +198,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
     private void configureSDKSession() {
 
         // Instantiate SDK Session
-        if(sdkSession==null) sdkSession = new SDKSession();   //** Required **
-
-        // pass your activity as a session delegate to receive SDK internal payment result.
-        sdkSession.addSessionDelegate(this);    //** Required **
+        if (sdkSession == null) sdkSession = new SDKSession();   //** Required **
 
         // set transaction currency associated to your account
         sdkSession.setTransactionCurrency(new TapCurrency("KWD"));    //** Required **
@@ -212,17 +206,18 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         // Using static CustomerBuilder method available inside TAP Customer Class you can populate TAP Customer object and pass it to SDK
         sdkSession.setCustomer(getCustomer());    //** Required **
 
-//        // Set Total Amount. The Total amount will be recalculated according to provided Taxes and Shipping
-//        sdkSession.setAmount(new BigDecimal(40));  //** Required **
+        // Set Total Amount. The Total amount will be recalculated according to provided Taxes and Shipping
+        // this is the initial amount, you can change it later inside PayButton onclick function
+        sdkSession.setAmount(new BigDecimal(40));  //** Required **
 //
-//        // Set Payment Items array list
-//        sdkSession.setPaymentItems(new ArrayList<>());// ** Optional ** you can pass empty array list
+        // Set Payment Items array list
+        sdkSession.setPaymentItems(new ArrayList<>());// ** Optional ** you can pass empty array list
 
-//        // Set Taxes array list
-//        sdkSession.setTaxes(new ArrayList<>());// ** Optional ** you can pass empty array list
-//
-//        // Set Shipping array list
-//        sdkSession.setShipping(new ArrayList<>());// ** Optional ** you can pass empty array list
+        // Set Taxes array list
+        sdkSession.setTaxes(new ArrayList<>());// ** Optional ** you can pass empty array list
+
+        // Set Shipping array list
+        sdkSession.setShipping(new ArrayList<>());// ** Optional ** you can pass empty array list
 
         // Post URL
         sdkSession.setPostURL(""); // ** Optional **
@@ -246,7 +241,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         sdkSession.isRequires3DSecure(true);
 
         //Set Receipt Settings [SMS - Email ]
-        sdkSession.setReceiptSettings(new Receipt(false,false)); // ** Optional ** you can pass Receipt object or null
+        sdkSession.setReceiptSettings(new Receipt(false, false)); // ** Optional ** you can pass Receipt object or null
 
         // Set Authorize Action
         sdkSession.setAuthorizeAction(null); // ** Optional ** you can pass AuthorizeAction object or null
@@ -263,16 +258,15 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
     /**
      * Configure SDK Theme
      */
-    private void configureSDKMode(){
+    private void configureSDKMode() {
 
         /**
-         * You have to choose only one Mode of the following modes:
-         * Note:-
-         *      - In case of using PayButton, then don't call sdkSession.start(this); because the SDK will start when user clicks the tap pay button.
-         */
-        //////////////////////////////////////////////////////    SDK with UI //////////////////////
-        /**
+         * You have to choose only one Mode of the following modes
+         *
+         //////////////////////////////////////////////////////    SDK with UI //////////////////////
+         /**
          * 1- Start using  SDK features through SDK main activity (With Tap CARD FORM)
+         *  Non PCI merchants are forced to collect card data through SDK UI.
          */
         startSDKWithUI();
 
@@ -280,7 +274,9 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         /**
          * 2- Start using  SDK to tokenize your card without using SDK main activity (Without Tap CARD FORM)
          * After the SDK finishes card tokenization, it will notify this activity with tokenization result in either
-         * cardTokenizedSuccessfully(@NonNull String token) or sdkError(@Nullable GoSellError goSellError)
+         *      cardTokenizedSuccessfully(@NonNull String token)
+         * or
+         *      sdkError(@Nullable GoSellError goSellError)
          */
 //          startSDKTokenizationWithoutUI();
 
@@ -288,7 +284,9 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         /**
          *  3- Start using  SDK to save your card without using SDK main activity ((Without Tap CARD FORM))
          *  After the SDK finishes card tokenization, it will notify this activity with save card result in either
-         *  cardSaved(@NonNull Charge charge) or sdkError(@Nullable GoSellError goSellError)
+         *      cardSaved(@NonNull Charge charge)
+         *   or
+         *      sdkError(@Nullable GoSellError goSellError)
          *
          */
 //         startSDKSavingCardWithoutUI();
@@ -298,13 +296,13 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
     /**
      * Start using  SDK features through SDK main activity
      */
-    private void startSDKWithUI(){
-        if(sdkSession!=null){
-           TransactionMode trx_mode =(settingsManager!=null)? settingsManager.getTransactionsMode("key_sdk_transaction_mode"): TransactionMode.PURCHASE;
+    private void startSDKWithUI() {
+        if (sdkSession != null) {
+            TransactionMode trx_mode = (settingsManager != null) ? settingsManager.getTransactionsMode("key_sdk_transaction_mode") : TransactionMode.PURCHASE;
             // set transaction mode [TransactionMode.PURCHASE - TransactionMode.AUTHORIZE_CAPTURE - TransactionMode.SAVE_CARD - TransactionMode.TOKENIZE_CARD ]
             sdkSession.setTransactionMode(trx_mode);    //** Required **
             // if you are not using tap button then start SDK using the following call
-            //sdkSession.start(this);
+            startSDK();
         }
     }
 
@@ -313,14 +311,14 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
      * Start using  SDK to tokenize your card without using SDK main activity
      */
 
-    private void startSDKTokenizationWithoutUI(){
-        if(sdkSession!=null){
+    private void startSDKTokenizationWithoutUI() {
+        if (sdkSession != null) {
             // set transaction mode [ TransactionMode.TOKENIZE_CARD_NO_UI ]
             sdkSession.setTransactionMode(TransactionMode.TOKENIZE_CARD_NO_UI);    //** Required **
             // pass card info to SDK
-            sdkSession.setCardInfo("5123450000000008","05","21","100","Haitham Elsheshtawy",null); //** Required **
+            sdkSession.setCardInfo("5123450000000008", "05", "21", "100", "Haitham Elsheshtawy", null); //** Required **
             // if you are not using tap button then start SDK using the following call
-           // sdkSession.start(this);
+            startSDK();
         }
     }
 
@@ -328,14 +326,14 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
     /**
      * Start using  SDK to save your card without using SDK main activity
      */
-    private void startSDKSavingCardWithoutUI(){
-        if(sdkSession!=null){
+    private void startSDKSavingCardWithoutUI() {
+        if (sdkSession != null) {
             // set transaction mode [ TransactionMode.SAVE_CARD_NO_UI ]
             sdkSession.setTransactionMode(TransactionMode.SAVE_CARD_NO_UI);    //** Required **
             // pass card info to SDK
-            sdkSession.setCardInfo("5123450000000008","05","21","100","Haitham Elsheshtawy",null); //** Required **
+            sdkSession.setCardInfo("5123450000000008", "05", "21", "100", "Haitham Elsheshtawy", null); //** Required **
             // if you are not using tap button then start SDK using the following call
-//            sdkSession.start(this);
+            startSDK();
         }
     }
 
@@ -354,204 +352,209 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 //
         payButtonView.getPayButton().setTextSize(ThemeObject.getInstance().getPayButtonTextSize());
 //
-        payButtonView.getSecurityIconView().setVisibility(ThemeObject.getInstance().isPayButtSecurityIconVisible()?View.VISIBLE:View.INVISIBLE);
+        payButtonView.getSecurityIconView().setVisibility(ThemeObject.getInstance().isPayButtSecurityIconVisible() ? View.VISIBLE : View.INVISIBLE);
 
         payButtonView.setBackgroundSelector(ThemeObject.getInstance().getPayButtonResourceId());
 
-        if(sdkSession!=null){
+        if (sdkSession != null) {
             TransactionMode trx_mode = sdkSession.getTransactionMode();
-            if(trx_mode!=null){
+            if (trx_mode != null) {
 
-                if (TransactionMode.SAVE_CARD == trx_mode  || TransactionMode.SAVE_CARD_NO_UI ==trx_mode) {
+                if (TransactionMode.SAVE_CARD == trx_mode || TransactionMode.SAVE_CARD_NO_UI == trx_mode) {
                     payButtonView.getPayButton().setText(getString(company.tap.gosellapi.R.string.save_card));
-                }
-                else if(TransactionMode.TOKENIZE_CARD == trx_mode || TransactionMode.TOKENIZE_CARD_NO_UI == trx_mode){
+                } else if (TransactionMode.TOKENIZE_CARD == trx_mode || TransactionMode.TOKENIZE_CARD_NO_UI == trx_mode) {
                     payButtonView.getPayButton().setText(getString(company.tap.gosellapi.R.string.tokenize));
-                }
-                else {
+                } else {
                     payButtonView.getPayButton().setText(getString(company.tap.gosellapi.R.string.pay));
                 }
-            }else{
+            } else {
                 configureSDKMode();
             }
+
+            // add onClickListener to the payButton to handle click
             payButtonView.setOnClickListener(new PayButtonClickListener());
+
             sdkSession.setButtonView(payButtonView, this, SDK_REQUEST_CODE);
+
         }
 
 
     }
 
+    /**
+     * pay button on click listener.
+     */
     private class PayButtonClickListener implements View.OnClickListener {
-
         @Override
         public void onClick(View v) {
-        // Set Total Amount. The Total amount will be recalculated according to provided Taxes and Shipping
-        sdkSession.setAmount(new BigDecimal(40));  //** Required **
-
-        // Set Payment Items array list
-        sdkSession.setPaymentItems(new ArrayList<>());// ** Optional ** you can pass empty array list
-
-        // Set Taxes array list
-        sdkSession.setTaxes(new ArrayList<>());// ** Optional ** you can pass empty array list
-
-        // Set Shipping array list
-        sdkSession.setShipping(new ArrayList<>());// ** Optional ** you can pass empty array list
-
-        sdkSession.startSDK(new BigDecimal(40),new ArrayList(),new ArrayList(),new ArrayList());
+            startSDK();
         }
     }
 
+    /**
+     * Pass amount to SDK
+     * SDK will compare this amount with initial amount passed in SDK initialization step
+     * if both amounts are equal then SDK will start immediately
+     * if last different than initial amount then SDK will update amount and all supported currencies amount
+     * then start.
+     */
+    private void startSDK() {
+        // pass your activity as a session delegate to receive SDK internal payment result.
+        sdkSession.addSessionDelegate(this);    //** Required **
+        sdkSession.startSDK(new BigDecimal(40));
+    }
 
     //    //////////////////////////////////////////////////////  List Saved Cards  ////////////////////////
 
     /**
      * retrieve list of saved cards from the backend.
      */
-    private void listSavedCards(){
-        if(sdkSession!=null)
-            sdkSession.listAllCards("cus_s4H13120191115x0R12606480",this);
+    private void listSavedCards() {
+        if (sdkSession != null)
+            sdkSession.listAllCards("cus_s4H13120191115x0R12606480", this);
     }
+
 
 //    //////////////////////////////////////////////////////  Overridden section : Session Delegation ////////////////////////
 
     @Override
     public void paymentSucceed(@NonNull Charge charge) {
 
-        System.out.println("Payment Succeeded : charge status : "+ charge.getStatus());
-        System.out.println("Payment Succeeded : description : "+ charge.getDescription());
-        System.out.println("Payment Succeeded : message : "+ charge.getResponse().getMessage());
+        System.out.println("Payment Succeeded : charge status : " + charge.getStatus());
+        System.out.println("Payment Succeeded : description : " + charge.getDescription());
+        System.out.println("Payment Succeeded : message : " + charge.getResponse().getMessage());
         System.out.println("##############################################################################");
-        if(charge.getCard()!=null){
-            System.out.println("Payment Succeeded : first six : "+ charge.getCard().getFirstSix());
-            System.out.println("Payment Succeeded : last four: "+ charge.getCard().getLast4());
-            System.out.println("Payment Succeeded : card object : "+ charge.getCard().getObject());
+        if (charge.getCard() != null) {
+            System.out.println("Payment Succeeded : first six : " + charge.getCard().getFirstSix());
+            System.out.println("Payment Succeeded : last four: " + charge.getCard().getLast4());
+            System.out.println("Payment Succeeded : card object : " + charge.getCard().getObject());
         }
 
         System.out.println("##############################################################################");
-        if(charge.getAcquirer()!=null){
-            System.out.println("Payment Succeeded : acquirer id : "+ charge.getAcquirer().getId());
-            System.out.println("Payment Succeeded : acquirer response code : "+ charge.getAcquirer().getResponse().getCode());
-            System.out.println("Payment Succeeded : acquirer response message: "+ charge.getAcquirer().getResponse().getMessage());
+        if (charge.getAcquirer() != null) {
+            System.out.println("Payment Succeeded : acquirer id : " + charge.getAcquirer().getId());
+            System.out.println("Payment Succeeded : acquirer response code : " + charge.getAcquirer().getResponse().getCode());
+            System.out.println("Payment Succeeded : acquirer response message: " + charge.getAcquirer().getResponse().getMessage());
         }
         System.out.println("##############################################################################");
-        if(charge.getSource()!=null){
-            System.out.println("Payment Succeeded : source id: "+ charge.getSource().getId());
-            System.out.println("Payment Succeeded : source channel: "+ charge.getSource().getChannel());
-            System.out.println("Payment Succeeded : source object: "+ charge.getSource().getObject());
-            System.out.println("Payment Succeeded : source payment method: "+ charge.getSource().getPaymentMethodStringValue());
-            System.out.println("Payment Succeeded : source payment type: "+ charge.getSource().getPaymentType());
-            System.out.println("Payment Succeeded : source type: "+ charge.getSource().getType());
+        if (charge.getSource() != null) {
+            System.out.println("Payment Succeeded : source id: " + charge.getSource().getId());
+            System.out.println("Payment Succeeded : source channel: " + charge.getSource().getChannel());
+            System.out.println("Payment Succeeded : source object: " + charge.getSource().getObject());
+            System.out.println("Payment Succeeded : source payment method: " + charge.getSource().getPaymentMethodStringValue());
+            System.out.println("Payment Succeeded : source payment type: " + charge.getSource().getPaymentType());
+            System.out.println("Payment Succeeded : source type: " + charge.getSource().getType());
         }
 
         System.out.println("##############################################################################");
-        if(charge.getExpiry()!=null){
-            System.out.println("Payment Succeeded : expiry type :"+ charge.getExpiry().getType());
-            System.out.println("Payment Succeeded : expiry period :"+ charge.getExpiry().getPeriod());
+        if (charge.getExpiry() != null) {
+            System.out.println("Payment Succeeded : expiry type :" + charge.getExpiry().getType());
+            System.out.println("Payment Succeeded : expiry period :" + charge.getExpiry().getPeriod());
         }
 
         saveCustomerRefInSession(charge);
         configureSDKSession();
-        showDialog(charge.getId(),charge.getResponse().getMessage(),company.tap.gosellapi.R.drawable.ic_checkmark_normal);
+        showDialog(charge.getId(), charge.getResponse().getMessage(), company.tap.gosellapi.R.drawable.ic_checkmark_normal);
 
 
     }
 
     @Override
     public void paymentFailed(@Nullable Charge charge) {
-        System.out.println("Payment Failed : "+ charge.getStatus());
-        System.out.println("Payment Failed : "+ charge.getDescription());
-        System.out.println("Payment Failed : "+ charge.getResponse().getMessage());
+        System.out.println("Payment Failed : " + charge.getStatus());
+        System.out.println("Payment Failed : " + charge.getDescription());
+        System.out.println("Payment Failed : " + charge.getResponse().getMessage());
 
 
-        showDialog(charge.getId(),charge.getResponse().getMessage(),company.tap.gosellapi.R.drawable.icon_failed);
+        showDialog(charge.getId(), charge.getResponse().getMessage(), company.tap.gosellapi.R.drawable.icon_failed);
     }
 
     @Override
     public void authorizationSucceed(@NonNull Authorize authorize) {
-        System.out.println("Authorize Succeeded : "+ authorize.getStatus());
-        System.out.println("Authorize Succeeded : "+ authorize.getResponse().getMessage());
+        System.out.println("Authorize Succeeded : " + authorize.getStatus());
+        System.out.println("Authorize Succeeded : " + authorize.getResponse().getMessage());
 
-        if(authorize.getCard()!=null){
-            System.out.println("Payment Authorized Succeeded : first six : "+ authorize.getCard().getFirstSix());
-            System.out.println("Payment Authorized Succeeded : last four: "+ authorize.getCard().getLast4());
-            System.out.println("Payment Authorized Succeeded : card object : "+ authorize.getCard().getObject());
+        if (authorize.getCard() != null) {
+            System.out.println("Payment Authorized Succeeded : first six : " + authorize.getCard().getFirstSix());
+            System.out.println("Payment Authorized Succeeded : last four: " + authorize.getCard().getLast4());
+            System.out.println("Payment Authorized Succeeded : card object : " + authorize.getCard().getObject());
         }
 
         System.out.println("##############################################################################");
-        if(authorize.getAcquirer()!=null){
-            System.out.println("Payment Authorized Succeeded : acquirer id : "+ authorize.getAcquirer().getId());
-            System.out.println("Payment Authorized Succeeded : acquirer response code : "+ authorize.getAcquirer().getResponse().getCode());
-            System.out.println("Payment Authorized Succeeded : acquirer response message: "+ authorize.getAcquirer().getResponse().getMessage());
+        if (authorize.getAcquirer() != null) {
+            System.out.println("Payment Authorized Succeeded : acquirer id : " + authorize.getAcquirer().getId());
+            System.out.println("Payment Authorized Succeeded : acquirer response code : " + authorize.getAcquirer().getResponse().getCode());
+            System.out.println("Payment Authorized Succeeded : acquirer response message: " + authorize.getAcquirer().getResponse().getMessage());
         }
         System.out.println("##############################################################################");
-        if(authorize.getSource()!=null){
-            System.out.println("Payment Authorized Succeeded : source id: "+ authorize.getSource().getId());
-            System.out.println("Payment Authorized Succeeded : source channel: "+ authorize.getSource().getChannel());
-            System.out.println("Payment Authorized Succeeded : source object: "+ authorize.getSource().getObject());
-            System.out.println("Payment Authorized Succeeded : source payment method: "+ authorize.getSource().getPaymentMethodStringValue());
-            System.out.println("Payment Authorized Succeeded : source payment type: "+ authorize.getSource().getPaymentType());
-            System.out.println("Payment Authorized Succeeded : source type: "+ authorize.getSource().getType());
+        if (authorize.getSource() != null) {
+            System.out.println("Payment Authorized Succeeded : source id: " + authorize.getSource().getId());
+            System.out.println("Payment Authorized Succeeded : source channel: " + authorize.getSource().getChannel());
+            System.out.println("Payment Authorized Succeeded : source object: " + authorize.getSource().getObject());
+            System.out.println("Payment Authorized Succeeded : source payment method: " + authorize.getSource().getPaymentMethodStringValue());
+            System.out.println("Payment Authorized Succeeded : source payment type: " + authorize.getSource().getPaymentType());
+            System.out.println("Payment Authorized Succeeded : source type: " + authorize.getSource().getType());
         }
 
         System.out.println("##############################################################################");
-        if(authorize.getExpiry()!=null){
-            System.out.println("Payment Authorized Succeeded : expiry type :"+ authorize.getExpiry().getType());
-            System.out.println("Payment Authorized Succeeded : expiry period :"+ authorize.getExpiry().getPeriod());
+        if (authorize.getExpiry() != null) {
+            System.out.println("Payment Authorized Succeeded : expiry type :" + authorize.getExpiry().getType());
+            System.out.println("Payment Authorized Succeeded : expiry period :" + authorize.getExpiry().getPeriod());
         }
 
 
         saveCustomerRefInSession(authorize);
         configureSDKSession();
-        showDialog(authorize.getId(),authorize.getResponse().getMessage(),company.tap.gosellapi.R.drawable.ic_checkmark_normal);
+        showDialog(authorize.getId(), authorize.getResponse().getMessage(), company.tap.gosellapi.R.drawable.ic_checkmark_normal);
     }
 
     @Override
     public void authorizationFailed(Authorize authorize) {
-        System.out.println("Authorize Failed : "+ authorize.getStatus());
-        System.out.println("Authorize Failed : "+ authorize.getDescription());
-        System.out.println("Authorize Failed : "+ authorize.getResponse().getMessage());
-        showDialog(authorize.getId(),authorize.getResponse().getMessage(),company.tap.gosellapi.R.drawable.icon_failed);
+        System.out.println("Authorize Failed : " + authorize.getStatus());
+        System.out.println("Authorize Failed : " + authorize.getDescription());
+        System.out.println("Authorize Failed : " + authorize.getResponse().getMessage());
+        showDialog(authorize.getId(), authorize.getResponse().getMessage(), company.tap.gosellapi.R.drawable.icon_failed);
     }
 
 
     @Override
     public void cardSaved(@NonNull Charge charge) {
         // Cast charge object to SaveCard first to get all the Card info.
-        if(charge instanceof SaveCard){
-            System.out.println("Card Saved Succeeded : first six digits : "+ ((SaveCard)charge).getCard().getFirstSix() + "  last four :"+ ((SaveCard)charge).getCard().getLast4());
+        if (charge instanceof SaveCard) {
+            System.out.println("Card Saved Succeeded : first six digits : " + ((SaveCard) charge).getCard().getFirstSix() + "  last four :" + ((SaveCard) charge).getCard().getLast4());
         }
-        System.out.println("Card Saved Succeeded : "+ charge.getStatus());
-        System.out.println("Card Saved Succeeded : "+ charge.getDescription());
-        System.out.println("Card Saved Succeeded : "+ charge.getResponse(). getMessage());
+        System.out.println("Card Saved Succeeded : " + charge.getStatus());
+        System.out.println("Card Saved Succeeded : " + charge.getDescription());
+        System.out.println("Card Saved Succeeded : " + charge.getResponse().getMessage());
         saveCustomerRefInSession(charge);
-        showDialog(charge.getId(),charge.getStatus().toString(),company.tap.gosellapi.R.drawable.ic_checkmark_normal);
+        showDialog(charge.getId(), charge.getStatus().toString(), company.tap.gosellapi.R.drawable.ic_checkmark_normal);
     }
 
     @Override
     public void cardSavingFailed(@NonNull Charge charge) {
-        System.out.println("Card Saved Failed : "+ charge.getStatus());
-        System.out.println("Card Saved Failed : "+ charge.getDescription());
-        System.out.println("Card Saved Failed : "+ charge.getResponse().getMessage());
-        showDialog(charge.getId(),charge.getStatus().toString(),company.tap.gosellapi.R.drawable.icon_failed);
+        System.out.println("Card Saved Failed : " + charge.getStatus());
+        System.out.println("Card Saved Failed : " + charge.getDescription());
+        System.out.println("Card Saved Failed : " + charge.getResponse().getMessage());
+        showDialog(charge.getId(), charge.getStatus().toString(), company.tap.gosellapi.R.drawable.icon_failed);
     }
 
     @Override
     public void cardTokenizedSuccessfully(@NonNull Token token) {
         System.out.println("Card Tokenized Succeeded : ");
-        System.out.println("Token card : "+token.getCard().getFirstSix() + " **** "+ token.getCard().getLastFour() );
-        System.out.println("Token card : "+token.getCard().getFingerprint() +  " **** "+ token.getCard().getFunding() );
-        System.out.println("Token card : "+token.getCard().getId() +" ****** "+ token.getCard().getName());
-        System.out.println("Token card : "+token.getCard().getAddress() +" ****** "+ token.getCard().getObject());
-        System.out.println("Token card : "+token.getCard().getExpirationMonth() +" ****** "+ token.getCard().getExpirationYear());
+        System.out.println("Token card : " + token.getCard().getFirstSix() + " **** " + token.getCard().getLastFour());
+        System.out.println("Token card : " + token.getCard().getFingerprint() + " **** " + token.getCard().getFunding());
+        System.out.println("Token card : " + token.getCard().getId() + " ****** " + token.getCard().getName());
+        System.out.println("Token card : " + token.getCard().getAddress() + " ****** " + token.getCard().getObject());
+        System.out.println("Token card : " + token.getCard().getExpirationMonth() + " ****** " + token.getCard().getExpirationYear());
 
-        showDialog(token. getId(),"Token",company.tap.gosellapi.R.drawable.ic_checkmark_normal);
+        showDialog(token.getId(), "Token", company.tap.gosellapi.R.drawable.ic_checkmark_normal);
     }
 
     @Override
     public void savedCardsList(@NonNull CardsList cardsList) {
-        System.out.println(" Card List Response Code : "+cardsList.getResponseCode());
-        System.out.println(" Card List Top 10 : "+cardsList.getCards().size());
-        System.out.println(" Card List Has More : "+cardsList.isHas_more());
+        System.out.println(" Card List Response Code : " + cardsList.getResponseCode());
+        System.out.println(" Card List Top 10 : " + cardsList.getCards().size());
+        System.out.println(" Card List Has More : " + cardsList.isHas_more());
 
         showSavedCardsDialog(cardsList);
     }
@@ -559,9 +562,9 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
     @Override
     public void sdkError(@Nullable GoSellError goSellError) {
-        if(progress!=null)
+        if (progress != null)
             progress.dismiss();
-        if(goSellError!=null) {
+        if (goSellError != null) {
             System.out.println("SDK Process Error : " + goSellError.getErrorBody());
             System.out.println("SDK Process Error : " + goSellError.getErrorMessage());
             System.out.println("SDK Process Error : " + goSellError.getErrorCode());
@@ -583,12 +586,12 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
     @Override
     public void sessionCancelled() {
-        Log.d("MainActivity","Session Cancelled.........");
+        Log.d("MainActivity", "Session Cancelled.........");
     }
 
     @Override
     public void sessionFailedToStart() {
-        Log.d("MainActivity","Session Failed to start.........");
+        Log.d("MainActivity", "Session Failed to start.........");
     }
 
 
@@ -599,7 +602,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
     @Override
     public void backendUnknownError(String message) {
-        System.out.println("Backend Un-Known error.... : "+ message);
+        System.out.println("Backend Un-Known error.... : " + message);
     }
 
     @Override
@@ -609,7 +612,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
     @Override
     public void invalidCustomerID() {
-        if(progress!=null)
+        if (progress != null)
             progress.dismiss();
         System.out.println("Invalid Customer ID .......");
 
@@ -617,19 +620,23 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
     @Override
     public void userEnabledSaveCardOption(boolean saveCardEnabled) {
-        System.out.println("userEnabledSaveCardOption :  "+saveCardEnabled);
+        System.out.println("userEnabledSaveCardOption :  " + saveCardEnabled);
     }
 
+    @Override
+    public void paymentOptionsNotReady(){
+        System.out.println("paymentOptionsNotReady ....");
+    }
 
 /////////////////////////////////////////////////////////  needed only for demo ////////////////////
 
 
-    public void showSavedCardsDialog(CardsList cardsList){
-        if(progress!=null)
+    public void showSavedCardsDialog(CardsList cardsList) {
+        if (progress != null)
             progress.dismiss();
 
-        if(cardsList!=null && cardsList.getCards()!=null && cardsList.getCards().size()==0 ) {
-            Toast.makeText(this,"There is no card saved for this customer",Toast.LENGTH_LONG).show();
+        if (cardsList != null && cardsList.getCards() != null && cardsList.getCards().size() == 0) {
+            Toast.makeText(this, "There is no card saved for this customer", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -640,9 +647,9 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        data = new ArrayList<SavedCard>();
+        ArrayList<SavedCard> data = new ArrayList<SavedCard>();
 
-        removedItems = new ArrayList<Integer>();
+        ArrayList<Integer> removedItems = new ArrayList<Integer>();
 
         adapter = new CustomAdapter(cardsList.getCards());
         recyclerView.setAdapter(adapter);
@@ -656,17 +663,16 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
     private Customer getCustomer() { // test customer id cus_Kh1b4220191939i1KP2506448
 
-        Customer customer = (settingsManager!=null)?settingsManager.getCustomer():null;
+        Customer customer = (settingsManager != null) ? settingsManager.getCustomer() : null;
 
-        PhoneNumber   phoneNumber = customer!=null ? customer.getPhone(): new PhoneNumber("965","65562630");
+        PhoneNumber phoneNumber = customer != null ? customer.getPhone() : new PhoneNumber("965", "65562630");
 
         return new Customer.CustomerBuilder("cus_s4H13120191115x0R12606480").email("abc@abc.com").firstName("firstname")
-                .lastName("lastname").metadata("").phone(new PhoneNumber(phoneNumber.getCountryCode(),phoneNumber.getNumber()))
+                .lastName("lastname").metadata("").phone(new PhoneNumber(phoneNumber.getCountryCode(), phoneNumber.getNumber()))
                 .middleName("middlename").build();
     }
 
-    private void showDialog(String chargeID, String msg,int icon)
-    {
+    private void showDialog(String chargeID, String msg, int icon) {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int width = displayMetrics.widthPixels;
@@ -686,8 +692,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
                 status_icon.setImageResource(icon);
 //                status_icon.setVisibility(View.INVISIBLE);
                 chargeText.setText(chargeID);
-                statusText.setText((msg!=null&& msg.length()>30)?msg.substring(0,29):msg);
-
+                statusText.setText((msg != null && msg.length() > 30) ? msg.substring(0, 29) : msg);
 
 
                 popupWindow.showAtLocation(layout, Gravity.TOP, 0, 50);
@@ -695,7 +700,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
                 setupTimer(popupWindow);
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -715,17 +720,18 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
     }
 
     private void saveCustomerRefInSession(Charge charge) {
-        SharedPreferences preferences =  PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         Gson gson = new Gson();
 
-        String response = preferences.getString("customer" , "");
+        String response = preferences.getString("customer", "");
 
 
         ArrayList<CustomerViewModel> customersList = gson.fromJson(response,
-                new TypeToken<List<CustomerViewModel>>(){}.getType());
+                new TypeToken<List<CustomerViewModel>>() {
+                }.getType());
 
-        if(customersList!=null) {
+        if (customersList != null) {
             customersList.clear();
             customersList.add(new CustomerViewModel(
                     charge.getCustomer().getIdentifier(),
@@ -743,9 +749,9 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
     }
 
 
-    private void writeCustomersToPreferences(String data, SharedPreferences preferences){
-        SharedPreferences.Editor editor =  preferences.edit();
-        editor.putString("customer",data);
+    private void writeCustomersToPreferences(String data, SharedPreferences preferences) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("customer", data);
         editor.commit();
     }
 
@@ -763,7 +769,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
         private ArrayList<SavedCard> dataSet;
 
-        public  class MyViewHolder extends RecyclerView.ViewHolder {
+        public class MyViewHolder extends RecyclerView.ViewHolder {
 
             TextView textViewName;
             TextView textViewVersion;
@@ -804,7 +810,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
             ImageView imageView = holder.imageViewIcon;
 
             textViewName.setText(dataSet.get(listPosition).getFirstSix() + " ***** " + dataSet.get(listPosition).getLastFour());
-            textViewVersion.setText((dataSet.get(listPosition)).getExp_month() + " / "+ (dataSet.get(listPosition)).getExp_year());
+            textViewVersion.setText((dataSet.get(listPosition)).getExp_month() + " / " + (dataSet.get(listPosition)).getExp_year());
             imageView.setImageResource(R.drawable.cards1);
         }
 
