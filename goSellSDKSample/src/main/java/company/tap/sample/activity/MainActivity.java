@@ -302,7 +302,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
             // set transaction mode [TransactionMode.PURCHASE - TransactionMode.AUTHORIZE_CAPTURE - TransactionMode.SAVE_CARD - TransactionMode.TOKENIZE_CARD ]
             sdkSession.setTransactionMode(trx_mode);    //** Required **
             // if you are not using tap button then start SDK using the following call
-            startSDK();
+//            startSDK();
         }
     }
 
@@ -399,6 +399,8 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
      * then start.
      */
     private void startSDK() {
+
+        sdkSession.startPayButtonLoader();
         // pass your activity as a session delegate to receive SDK internal payment result.
         sdkSession.addSessionDelegate(this);    //** Required **
         sdkSession.startSDK(new BigDecimal(40));
