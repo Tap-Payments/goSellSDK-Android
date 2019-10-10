@@ -81,10 +81,6 @@ public class APIsExposer {
         if (!validCardData(cardNumber, expirationMonth, expirationYear, cvc, cardholderName, address))
             sessionDelegate.invalidCardDetails();
 
-//    PaymentDataManager.getInstance().
-//            startCardTokenizationPaymentProcessWithoutCardPaymentModel(
-//            cardNumber,expirationMonth,expirationYear,cvc,cardholderName,address);
-
         CreateTokenCard card = createCard(cardNumber, expirationMonth, expirationYear, cvc, cardholderName, address);
 
         CreateTokenWithCardDataRequest request = new CreateTokenWithCardDataRequest(card);
@@ -94,14 +90,17 @@ public class APIsExposer {
             @Override
             public void onSuccess(int responseCode, Token serializedResponse) {
                 if (serializedResponse != null) {
+                    SessionManager.getInstance().setActiveSession(false);
                     sessionDelegate.cardTokenizedSuccessfully(serializedResponse);
                 } else {
+                    SessionManager.getInstance().setActiveSession(false);
                     sessionDelegate.backendUnknownError(" Tokenizing card response is null with response code :"+responseCode);
                 }
             }
 
             @Override
             public void onFailure(GoSellError errorDetails) {
+                SessionManager.getInstance().setActiveSession(false);
                 sessionDelegate.sdkError(errorDetails);
             }
         });
@@ -154,6 +153,7 @@ public class APIsExposer {
 
             @Override
             public void onFailure(GoSellError errorDetails) {
+                SessionManager.getInstance().setActiveSession(false);
                 sessionDelegate.sdkError(errorDetails);
             }
         });
@@ -169,6 +169,7 @@ public class APIsExposer {
     private void callSaveCardAPI(SourceRequest source, boolean b, SessionDelegate sessionDelegate) {
         IPaymentDataProvider provider = PaymentDataManager.getInstance().getPaymentDataProvider();
         if (provider == null) {
+            SessionManager.getInstance().setActiveSession(false);
             sessionDelegate.backendUnknownError(" callSaveCardAPI error : Payment Data Provider is null.");
             return;
         }
@@ -215,11 +216,13 @@ public class APIsExposer {
         GoSellAPI.getInstance().createSaveCard(saveCardRequest, new APIRequestCallback<SaveCard>() {
             @Override
             public void onSuccess(int responseCode, SaveCard serializedResponse) {
+                SessionManager.getInstance().setActiveSession(false);
                 sessionDelegate.cardSaved(serializedResponse);
             }
 
             @Override
             public void onFailure(GoSellError errorDetails) {
+                SessionManager.getInstance().setActiveSession(false);
                 sessionDelegate.sdkError(errorDetails);
             }
         });

@@ -54,7 +54,7 @@ public class SDKSession {
     private static SessionDelegate sessionDelegate;
     private Activity context;
 
-    private boolean sessionActive;
+
     private boolean paymentOtionsResponseReady;
     private boolean isWaitingPaymentOtionsResponse;
 
@@ -65,7 +65,7 @@ public class SDKSession {
      */
     public SDKSession() {
         instantiatePaymentDataSource();
-        sessionActive = false;
+        SessionManager.getInstance().setActiveSession(false);
     }
 
 
@@ -387,8 +387,14 @@ public class SDKSession {
      * @param amount
      */
     public void startSDK(BigDecimal amount) {
+        System.out.println("session ::: "+SessionManager.getInstance().isSessionEnabled());
         // check if no session is running
-        if (sessionActive) return;
+        if (SessionManager.getInstance().isSessionEnabled())
+        {
+            stopPayButtonLoader();
+            return;
+        }
+
 
         // check if transaction mode is null
         if (getTransactionMode() == null) {
@@ -400,7 +406,7 @@ public class SDKSession {
         }
 
         // start session
-        sessionActive = true;
+        SessionManager.getInstance().setActiveSession(true);
 
         // check if payment options is available
         if (!paymentOtionsResponseReady) {
@@ -421,7 +427,8 @@ public class SDKSession {
      */
     private void openSDK(BigDecimal amount) {
 
-        if (lastSDKAmount == null) return;
+        System.out.println(" session : "+ SessionManager.getInstance().isSessionEnabled() );
+
 
         // check if amount changed
         if (amount.compareTo(paymentDataSource.getAmount()) != 0) { // refresh supported currencies exchange rate with new amount
@@ -450,10 +457,9 @@ public class SDKSession {
                                         cardInfo.address,
                                         sessionDelegate);
                                 stopPayButtonLoader();
-                                sessionActive = false;
                             } else {
                                 stopPayButtonLoader();
-                                sessionActive = false;
+                                SessionManager.getInstance().setActiveSession(false);
                                 sessionDelegate.invalidCardDetails();
                             }
                             break;
@@ -468,10 +474,9 @@ public class SDKSession {
                                         cardInfo.address,
                                         sessionDelegate);
                                 stopPayButtonLoader();
-                                sessionActive = false;
                             } else {
                                 stopPayButtonLoader();
-                                sessionActive = false;
+                                SessionManager.getInstance().setActiveSession(false);
                                 sessionDelegate.invalidCardDetails();
                             }
                             break;
@@ -481,6 +486,7 @@ public class SDKSession {
                 @Override
                 public void onFailure(GoSellError errorDetails) {
                     stopPayButtonLoader();
+                    SessionManager.getInstance().setActiveSession(false);
                     sessionDelegate.sdkError(errorDetails
                     );
                 }
@@ -522,19 +528,17 @@ public class SDKSession {
 
         stopPayButtonLoader();
 
-        if (getListener() != null)
-            getListener().sessionIsStarting();
+        if (sessionDelegate != null)
+            sessionDelegate.sessionIsStarting();
 
         if (context != null) {
-            sessionActive = false;
             Intent intent = new Intent(context, GoSellPaymentActivity.class);
             context.startActivityForResult(intent, SDK_REQUEST_CODE);
         } else if (payButtonView != null && payButtonView.getContext() != null) {
-            sessionActive = false;
             Intent intent = new Intent(payButtonView.getContext(), GoSellPaymentActivity.class);
             activityListener.startActivityForResult(intent, SDK_REQUEST_CODE);
         } else if (getListener() != null) {
-            sessionActive = false;
+            SessionManager.getInstance().setActiveSession(false);
             getListener().sessionFailedToStart();
         }
 
