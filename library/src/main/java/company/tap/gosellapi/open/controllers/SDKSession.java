@@ -359,7 +359,7 @@ public class SDKSession {
 
                     @Override
                     public void onSuccess(int responseCode, PaymentOptionsResponse serializedResponse) {
-                        System.out.println(" payment options response: " + serializedResponse.getCurrency());
+
                         paymentOptionsResponseReady = true;
                         if (isWaitingPaymentOptionsResponse) {
                             switch (waitingAction) {
@@ -421,7 +421,7 @@ public class SDKSession {
         GoSellAPI.getInstance().getSupportedCurrencies(paymentDataSource.getAmount(), new APIRequestCallback<SupportedCurreciesResponse>() {
             @Override
             public void onSuccess(int responseCode, SupportedCurreciesResponse serializedResponse) {
-                System.out.println(" supported currencies : " + serializedResponse.to.get(0));
+
                 supportedCurrenciesAPIActive = false;
                 if (isWaitingSupportedCurrenciesResponse) openMainActivity();
             }
@@ -449,11 +449,11 @@ public class SDKSession {
 
         // start session
         SessionManager.getInstance().setActiveSession(true);
-        System.out.println(" >>> "+paymentOptionsResponseReady + " >>> "+ supportedCurrenciesAPIActive);
+
         // check if payment options is available
         if (!paymentOptionsResponseReady) {
             if (supportedCurrenciesAPIActive) {
-                System.out.println("waiting both payment options and supported.....");
+
                 isWaitingSupportedCurrenciesResponse = true;
             } else {
                 // wait till payment options is ready

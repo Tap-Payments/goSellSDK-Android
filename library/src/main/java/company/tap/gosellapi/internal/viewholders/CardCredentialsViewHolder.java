@@ -632,10 +632,10 @@ public class CardCredentialsViewHolder
      * @param cardBrand the card brand
      */
     public void updateCCVEditTextCardType(CardBrand cardBrand){
-//      System.out.println("updateCCVEditTextCardType : " + cardBrand);
+
       if (cardBrand == null) return;
 
-//      System.out.println("updateCCVEditTextCardType : " + cardBrand.getRawValue());
+
 
       if (cardBrand.getRawValue().contains("AMEX") || cardBrand.getRawValue().contains("AMERICAN_EXPRESS"))
         cvvField.setCardType(CardType.AMEX);
@@ -739,9 +739,9 @@ public class CardCredentialsViewHolder
      private String validateLength(String cardNumber) {
 
                 cardNumber = cardNumber.replace(" ", "");
-//                System.out.println("brand >>  card number : replaced card no = " + cardNumber);
+
                 DefinedCardBrand brand = CardValidator.validate(cardNumber);
-//                System.out.println("brand >>  card number :" + cardNumber + " brand:"+brand.getCardBrand());
+
 
                 String str = cardNumberField.getText().toString();
                 String newStr = str;
