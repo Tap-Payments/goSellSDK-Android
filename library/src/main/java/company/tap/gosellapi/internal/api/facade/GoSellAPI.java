@@ -111,7 +111,6 @@ public final class GoSellAPI {
      * @param requestCallback the request callback
      */
     public void retrieveSaveCard(final String saveCardId, final APIRequestCallback<SaveCard> requestCallback) {
-//        System.out.println("#################### saveCardId :"+saveCardId);
         requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.retrieveSaveCard(saveCardId), requestCallback), false);
     }
 
@@ -240,7 +239,6 @@ public final class GoSellAPI {
             public void onSuccess(int responseCode, PaymentOptionsResponse serializedResponse) {
                 paymentOptionsResponse = serializedResponse;
 
-                System.out.println("paymentOptionsResponse :::: "+paymentOptionsResponse.getSupportedCurrencies());
 
                 PaymentDataManager.getInstance().createPaymentOptionsDataManager(paymentOptionsResponse);
                 requestCallback.onSuccess(responseCode, serializedResponse);
@@ -286,34 +284,30 @@ public final class GoSellAPI {
 // check if null
 
                         for (AmountedCurrency supportedCurr : oldSupportedCurrList) {
-                            System.out.println("******************supportedCurr = "+supportedCurr.getCurrency()+"***********************");
+
 
                             // if source currency match trx_currency add it with same amount
-                            if(supportedCurr.getCurrency().equalsIgnoreCase(trxCurrency))
-                            {
+                            if (supportedCurr.getCurrency().equalsIgnoreCase(trxCurrency)) {
                                 supportedCurr.setAmount(amount);
                                 newSupportedCurrList.add(supportedCurr);
                                 continue;
                             }
 
 
-                            for (int i = 0; i< serializedResponse.getTo().size();i++) {
-                                System.out.println(serializedResponse.getTo().get(i).getCurrency() + " >>>> " + serializedResponse.getTo().get(i).getValue());
-                                System.out.println("supported : " + supportedCurr.getCurrency());
-                                if (serializedResponse.getTo().get(i).getCurrency().equalsIgnoreCase(supportedCurr.getCurrency()))
-                                    {
-                                        supportedCurr.setAmount(serializedResponse.getTo().get(i).getValue());
-                                        newSupportedCurrList.add(supportedCurr);
-                                        break;
-                                    }
+                            for (int i = 0; i < serializedResponse.getTo().size(); i++) {
+                                if (serializedResponse.getTo().get(i).getCurrency().equalsIgnoreCase(supportedCurr.getCurrency())) {
+                                    supportedCurr.setAmount(serializedResponse.getTo().get(i).getValue());
+                                    newSupportedCurrList.add(supportedCurr);
+                                    break;
+                                }
                             }
                         }
 
-                        System.out.println("=================================================");
-                        for (AmountedCurrency mm : newSupportedCurrList) {
-                            System.out.println("api curr:  " + mm.getAmount());
-                        }
-                        System.out.println("=================================================");
+
+//                        for (AmountedCurrency mm : newSupportedCurrList) {
+//                            System.out.println("api curr:  " + mm.getAmount());
+//                        }
+
                         paymentOptionsResponse.setSupportedCurrencies(newSupportedCurrList);
                         PaymentDataManager.getInstance().createPaymentOptionsDataManager(paymentOptionsResponse);
                         requestCallback.onSuccess(responseCode, serializedResponse);
