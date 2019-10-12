@@ -400,6 +400,7 @@ public class SDKSession {
      * @param amount
      */
     public void updateAmount(BigDecimal amount) {
+        supportedCurrenciesAPIActive = true;
         setAmount(amount);
         // check if payment options is available
         if (!paymentOptionsResponseReady) {
@@ -415,7 +416,7 @@ public class SDKSession {
     }
 
     private void updatePaymentOptionsAmountAndCurrencies() {
-        supportedCurrenciesAPIActive = true;
+
         // get exchange rates for new amount
         GoSellAPI.getInstance().getSupportedCurrencies(paymentDataSource.getAmount(), new APIRequestCallback<SupportedCurreciesResponse>() {
             @Override
@@ -448,13 +449,19 @@ public class SDKSession {
 
         // start session
         SessionManager.getInstance().setActiveSession(true);
-
+        System.out.println(" >>> "+paymentOptionsResponseReady + " >>> "+ supportedCurrenciesAPIActive);
         // check if payment options is available
         if (!paymentOptionsResponseReady) {
-            // wait till payment options is ready
-            isWaitingPaymentOptionsResponse = true;
-            // set waiting action
-            waitingAction = WaitingAction.OPEN;
+            if (supportedCurrenciesAPIActive) {
+                System.out.println("waiting both payment options and supported.....");
+                isWaitingSupportedCurrenciesResponse = true;
+            } else {
+                // wait till payment options is ready
+                isWaitingPaymentOptionsResponse = true;
+                // set waiting action
+                waitingAction = WaitingAction.OPEN;
+            }
+
         } else if (supportedCurrenciesAPIActive) {
             // wait till payment options is ready
             isWaitingSupportedCurrenciesResponse = true;
