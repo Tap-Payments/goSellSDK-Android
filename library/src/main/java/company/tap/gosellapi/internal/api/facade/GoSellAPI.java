@@ -230,9 +230,6 @@ public final class GoSellAPI {
      */
     public void getPaymentOptions(PaymentOptionsRequest paymentOptionsRequest, final APIRequestCallback<PaymentOptionsResponse> requestCallback) {
 
-        // check paymentOptions Request
-//        Log.d("#paymentOptionsRequest" , paymentOptionsRequest.getPaymentOptionRequestInfo());
-
         PaymentDataManager.getInstance().setPaymentOptionsRequest(paymentOptionsRequest);
         requestManager.request(new RequestManager.DelayedRequest<>(apiHelper.getPaymentOptions(paymentOptionsRequest), new APIRequestCallback<PaymentOptionsResponse>() {
             @Override
@@ -310,6 +307,7 @@ public final class GoSellAPI {
 
                         paymentOptionsResponse.setSupportedCurrencies(newSupportedCurrList);
                         PaymentDataManager.getInstance().createPaymentOptionsDataManager(paymentOptionsResponse);
+
                         requestCallback.onSuccess(responseCode, serializedResponse);
                     }
 

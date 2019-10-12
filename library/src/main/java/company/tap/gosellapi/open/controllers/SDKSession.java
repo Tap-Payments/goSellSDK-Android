@@ -62,6 +62,8 @@ public class SDKSession {
 
     private WaitingAction waitingAction;
 
+    private PaymentOptionsResponse paymentOptionsResponse;
+
     /**
      * Instantiates a new Sdk session.
      */
@@ -333,8 +335,6 @@ public class SDKSession {
         paymentOptionsResponseReady = false;
         persistPaymentDataSource();
 
-        System.out.println(" this.paymentDataSource.getTransactionMode() : " + this.paymentDataSource.getTransactionMode());
-
         // check trx_mode
         if (this.paymentDataSource.getTransactionMode() == null) {
             sessionDelegate.invalidTransactionMode();
@@ -359,7 +359,7 @@ public class SDKSession {
 
                     @Override
                     public void onSuccess(int responseCode, PaymentOptionsResponse serializedResponse) {
-
+                        paymentOptionsResponse = serializedResponse;
                         paymentOptionsResponseReady = true;
                         if (isWaitingPaymentOptionsResponse) {
                             switch (waitingAction) {
@@ -421,7 +421,6 @@ public class SDKSession {
         GoSellAPI.getInstance().getSupportedCurrencies(paymentDataSource.getAmount(), new APIRequestCallback<SupportedCurreciesResponse>() {
             @Override
             public void onSuccess(int responseCode, SupportedCurreciesResponse serializedResponse) {
-
                 supportedCurrenciesAPIActive = false;
                 if (isWaitingSupportedCurrenciesResponse) openMainActivity();
             }
@@ -468,6 +467,7 @@ public class SDKSession {
         } else {
             isWaitingPaymentOptionsResponse = false;
             isWaitingSupportedCurrenciesResponse = false;
+            PaymentDataManager.getInstance().createPaymentOptionsDataManager(paymentOptionsResponse);
             openMainActivity();
         }
     }
