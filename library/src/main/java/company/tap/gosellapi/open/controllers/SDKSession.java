@@ -55,10 +55,12 @@ public class SDKSession {
     private Activity context;
 
 
-    private boolean paymentOtionsResponseReady;
-    private boolean isWaitingPaymentOtionsResponse;
+    private boolean paymentOptionsResponseReady;
+    private boolean isWaitingPaymentOptionsResponse;
+    private boolean supportedCurrenciesAPIActive;
+    private boolean isWaitingSupportedCurrenciesResponse;
 
-    private BigDecimal lastSDKAmount;
+    private WaitingAction waitingAction;
 
     /**
      * Instantiates a new Sdk session.
@@ -328,7 +330,7 @@ public class SDKSession {
     }
 
     public void startPayment() {
-        paymentOtionsResponseReady = false;
+        paymentOptionsResponseReady = false;
         persistPaymentDataSource();
 
         System.out.println(" this.paymentDataSource.getTransactionMode() : " + this.paymentDataSource.getTransactionMode());
@@ -358,14 +360,23 @@ public class SDKSession {
                     @Override
                     public void onSuccess(int responseCode, PaymentOptionsResponse serializedResponse) {
                         System.out.println(" payment options response: " + serializedResponse.getCurrency());
-                        paymentOtionsResponseReady = true;
-                        if (isWaitingPaymentOtionsResponse)
-                            openSDK(lastSDKAmount);
+                        paymentOptionsResponseReady = true;
+                        if (isWaitingPaymentOptionsResponse) {
+                            switch (waitingAction) {
+                                case OPEN:
+                                    openMainActivity();
+                                    break;
+                                case UPDATE:
+                                    updatePaymentOptionsAmountAndCurrencies();
+                                    break;
+                            }
+                        }
+
                     }
 
                     @Override
                     public void onFailure(GoSellError errorDetails) {
-                        paymentOtionsResponseReady = false;
+                        paymentOptionsResponseReady = false;
 
                         if (ThemeObject.getInstance().isPayButtLoaderVisible()) {
 
@@ -382,119 +393,149 @@ public class SDKSession {
     }
 
     /**
-     * check PaymentOptionsResponse then open sdk
+     * update SDK amount
+     * call supported currencies API to retrieve list of conversion rates for all supported currencies
+     * update payment options response
      *
      * @param amount
      */
-    public void startSDK(BigDecimal amount) {
-        System.out.println("session ::: "+SessionManager.getInstance().isSessionEnabled());
+    public void updateAmount(BigDecimal amount) {
+        setAmount(amount);
+        // check if payment options is available
+        if (!paymentOptionsResponseReady) {
+            // wait till payment options is ready
+            isWaitingPaymentOptionsResponse = true;
+            // set waiting action
+            waitingAction = WaitingAction.UPDATE;
+        } else {
+            isWaitingPaymentOptionsResponse = false;
+            waitingAction = null;
+            updatePaymentOptionsAmountAndCurrencies();
+        }
+    }
+
+    private void updatePaymentOptionsAmountAndCurrencies() {
+        supportedCurrenciesAPIActive = true;
+        // get exchange rates for new amount
+        GoSellAPI.getInstance().getSupportedCurrencies(paymentDataSource.getAmount(), new APIRequestCallback<SupportedCurreciesResponse>() {
+            @Override
+            public void onSuccess(int responseCode, SupportedCurreciesResponse serializedResponse) {
+                System.out.println(" supported currencies : " + serializedResponse.to.get(0));
+                supportedCurrenciesAPIActive = false;
+                if (isWaitingSupportedCurrenciesResponse) openMainActivity();
+            }
+
+            @Override
+            public void onFailure(GoSellError errorDetails) {
+                supportedCurrenciesAPIActive = false;
+                sessionDelegate.sdkError(errorDetails);
+            }
+        });
+
+    }
+
+    /**
+     * check PaymentOptionsResponse then open sdk
+     */
+    public void startSDK() {
+        System.out.println("session ::: " + SessionManager.getInstance().isSessionEnabled());
+
         // check if no session is running
-        if (SessionManager.getInstance().isSessionEnabled())
-        {
+        if (SessionManager.getInstance().isSessionEnabled()) {
             stopPayButtonLoader();
             return;
-        }
-
-
-        // check if transaction mode is null
-        if (getTransactionMode() == null) {
-            sessionDelegate.invalidTransactionMode();
-            {
-                stopPayButtonLoader();
-                return;
-            }
         }
 
         // start session
         SessionManager.getInstance().setActiveSession(true);
 
         // check if payment options is available
-        if (!paymentOtionsResponseReady) {
-            // store amount
-            lastSDKAmount = amount;
+        if (!paymentOptionsResponseReady) {
             // wait till payment options is ready
-            isWaitingPaymentOtionsResponse = true;
+            isWaitingPaymentOptionsResponse = true;
+            // set waiting action
+            waitingAction = WaitingAction.OPEN;
+        } else if (supportedCurrenciesAPIActive) {
+            // wait till payment options is ready
+            isWaitingSupportedCurrenciesResponse = true;
         } else {
-            isWaitingPaymentOtionsResponse = false;
-            openSDK(amount);
+            isWaitingPaymentOptionsResponse = false;
+            isWaitingSupportedCurrenciesResponse = false;
+            openMainActivity();
         }
     }
 
     /**
-     * Now PaymentOptionsResponse response is ready, open SDK
-     *
-     * @param amount
+     * open main activity
      */
-    private void openSDK(BigDecimal amount) {
-
-        System.out.println(" session : "+ SessionManager.getInstance().isSessionEnabled() );
-
-
-        // check if amount changed
-        if (amount.compareTo(paymentDataSource.getAmount()) != 0) { // refresh supported currencies exchange rate with new amount
-            // get exchange rates for new amount
-            GoSellAPI.getInstance().getSupportedCurrencies(amount, new APIRequestCallback<SupportedCurreciesResponse>() {
-                @Override
-                public void onSuccess(int responseCode, SupportedCurreciesResponse serializedResponse) {
-                    System.out.println(" supported currencies : " + serializedResponse.to.get(0));
-                    switch (getTransactionMode()) {
-                        case PURCHASE:
-                        case AUTHORIZE_CAPTURE:
-                        case SAVE_CARD:
-                        case TOKENIZE_CARD:
-                            if (payButtonView != null)
-                                payButtonView.getLoadingView().setForceStop(true);
-                            startMainActivity();  // start SDK Main activity.
-                            break;
-                        case TOKENIZE_CARD_NO_UI:  // use SDK without UI (Card Form)
-                            if (cardInfo != null) {
-                                APIsExposer.getInstance().startToknizingCard(
-                                        cardInfo.cardNumber,
-                                        cardInfo.expirationMonth,
-                                        cardInfo.expirationYear,
-                                        cardInfo.cvc,
-                                        cardInfo.cardholderName,
-                                        cardInfo.address,
-                                        sessionDelegate);
-                                stopPayButtonLoader();
-                            } else {
-                                stopPayButtonLoader();
-                                SessionManager.getInstance().setActiveSession(false);
-                                sessionDelegate.invalidCardDetails();
-                            }
-                            break;
-                        case SAVE_CARD_NO_UI:
-                            if (cardInfo != null) {
-                                APIsExposer.getInstance().startSavingCard(
-                                        cardInfo.cardNumber,
-                                        cardInfo.expirationMonth,
-                                        cardInfo.expirationYear,
-                                        cardInfo.cvc,
-                                        cardInfo.cardholderName,
-                                        cardInfo.address,
-                                        sessionDelegate);
-                                stopPayButtonLoader();
-                            } else {
-                                stopPayButtonLoader();
-                                SessionManager.getInstance().setActiveSession(false);
-                                sessionDelegate.invalidCardDetails();
-                            }
-                            break;
-                    }
-                }
-
-                @Override
-                public void onFailure(GoSellError errorDetails) {
+    private void openMainActivity() {
+        switch (getTransactionMode()) {
+            case PURCHASE:
+            case AUTHORIZE_CAPTURE:
+            case SAVE_CARD:
+            case TOKENIZE_CARD:
+                if (payButtonView != null)
+                    payButtonView.getLoadingView().setForceStop(true);
+                startMainActivity();  // start SDK Main activity.
+                break;
+            case TOKENIZE_CARD_NO_UI:  // use SDK without UI (Card Form)
+                if (cardInfo != null) {
+                    APIsExposer.getInstance().startToknizingCard(
+                            cardInfo.cardNumber,
+                            cardInfo.expirationMonth,
+                            cardInfo.expirationYear,
+                            cardInfo.cvc,
+                            cardInfo.cardholderName,
+                            cardInfo.address,
+                            sessionDelegate);
+                    stopPayButtonLoader();
+                } else {
                     stopPayButtonLoader();
                     SessionManager.getInstance().setActiveSession(false);
-                    sessionDelegate.sdkError(errorDetails
-                    );
+                    sessionDelegate.invalidCardDetails();
                 }
-            });
-        } else {  // if same amount passed then open SDK directly
-            // start SDK directly
-            startMainActivity();
+                break;
+            case SAVE_CARD_NO_UI:
+                if (cardInfo != null) {
+                    APIsExposer.getInstance().startSavingCard(
+                            cardInfo.cardNumber,
+                            cardInfo.expirationMonth,
+                            cardInfo.expirationYear,
+                            cardInfo.cvc,
+                            cardInfo.cardholderName,
+                            cardInfo.address,
+                            sessionDelegate);
+                    stopPayButtonLoader();
+                } else {
+                    stopPayButtonLoader();
+                    SessionManager.getInstance().setActiveSession(false);
+                    sessionDelegate.invalidCardDetails();
+                }
+                break;
         }
+    }
+
+    /**
+     * launch goSellSDK activity
+     */
+    private void startMainActivity() {
+
+        stopPayButtonLoader();
+
+        if (sessionDelegate != null)
+            sessionDelegate.sessionIsStarting();
+
+        if (context != null) {
+            Intent intent = new Intent(context, GoSellPaymentActivity.class);
+            context.startActivityForResult(intent, SDK_REQUEST_CODE);
+        } else if (payButtonView != null && payButtonView.getContext() != null) {
+            Intent intent = new Intent(payButtonView.getContext(), GoSellPaymentActivity.class);
+            activityListener.startActivityForResult(intent, SDK_REQUEST_CODE);
+        } else if (getListener() != null) {
+            SessionManager.getInstance().setActiveSession(false);
+            getListener().sessionFailedToStart();
+        }
+
     }
 
 
@@ -521,28 +562,6 @@ public class SDKSession {
         return ErrorTypes.CONNECTIVITY_MANAGER_ERROR;
     }
 
-    /**
-     * launch goSellSDK activity
-     */
-    private void startMainActivity() {
-
-        stopPayButtonLoader();
-
-        if (sessionDelegate != null)
-            sessionDelegate.sessionIsStarting();
-
-        if (context != null) {
-            Intent intent = new Intent(context, GoSellPaymentActivity.class);
-            context.startActivityForResult(intent, SDK_REQUEST_CODE);
-        } else if (payButtonView != null && payButtonView.getContext() != null) {
-            Intent intent = new Intent(payButtonView.getContext(), GoSellPaymentActivity.class);
-            activityListener.startActivityForResult(intent, SDK_REQUEST_CODE);
-        } else if (getListener() != null) {
-            SessionManager.getInstance().setActiveSession(false);
-            getListener().sessionFailedToStart();
-        }
-
-    }
 
     public void addSessionDelegate(SessionDelegate _sessionDelegate) {
         sessionDelegate = _sessionDelegate;
@@ -624,4 +643,6 @@ public class SDKSession {
         }
 
     }
+
+    enum WaitingAction {OPEN, UPDATE}
 }
