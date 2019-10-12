@@ -68,6 +68,8 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
     private RecyclerView.LayoutManager layoutManager;
     private static RecyclerView recyclerView;
 
+    private BigDecimal orderAmount;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
          * this step speeds up SDK loading.
          * sdk initialization process will trigger it in background and make it ready when user clicks on pay button.
          */
+        orderAmount = new BigDecimal(40);
         initializeSDK();
     }
 
@@ -208,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
         // Set Total Amount. The Total amount will be recalculated according to provided Taxes and Shipping
         // this is the initial amount, you can change it later inside PayButton onclick function
-        sdkSession.setAmount(new BigDecimal(40));  //** Required **
+        sdkSession.setAmount(orderAmount);  //** Required **
 //
         // Set Payment Items array list
         sdkSession.setPaymentItems(new ArrayList<>());// ** Optional ** you can pass empty array list
@@ -252,6 +255,8 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         // Set Merchant ID
         sdkSession.setMerchantID(null); // ** Optional ** you can pass merchant id or null
 
+        // pass your activity as a session delegate to receive SDK internal payment result.
+        sdkSession.addSessionDelegate(this);    //** Required **
     }
 
 
@@ -382,6 +387,28 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
     }
 
     /**
+     * Update SDK with new amount
+     *
+     * @param view
+     */
+    public void increaseAmount(View view) {
+        updateSDKAmount(orderAmount.add(new BigDecimal(10)));
+    }
+
+    /**
+     * Update SDK with new amount
+     *
+     * @param view
+     */
+    public void decreaseAmount(View view) {
+        updateSDKAmount(orderAmount.subtract(new BigDecimal(10)));
+    }
+
+    private void updateSDKAmount(BigDecimal newAmount) {
+        sdkSession.updateAmount(newAmount);
+    }
+
+    /**
      * pay button on click listener.
      */
     private class PayButtonClickListener implements View.OnClickListener {
@@ -399,11 +426,8 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
      * then start.
      */
     private void startSDK() {
-
         sdkSession.startPayButtonLoader();
-        // pass your activity as a session delegate to receive SDK internal payment result.
-        sdkSession.addSessionDelegate(this);    //** Required **
-        sdkSession.startSDK(new BigDecimal(40));
+        sdkSession.startSDK();
     }
 
     //    //////////////////////////////////////////////////////  List Saved Cards  ////////////////////////
@@ -626,7 +650,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
     }
 
     @Override
-    public void paymentOptionsNotReady(){
+    public void paymentOptionsNotReady() {
         System.out.println("paymentOptionsNotReady ....");
     }
 

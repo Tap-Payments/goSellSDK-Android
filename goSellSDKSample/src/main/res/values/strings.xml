@@ -65,6 +65,7 @@
 
     <string name="pref_title_ringtone">Ringtone</string>
     <string name="pref_ringtone_silent">Silent</string>
+    <string name="action_settings">Settings</string>
 
     <string name="default_gallery_storage">My Videos</string>
     <string name="title_auto_upload">Auto upload</string>
