@@ -28,7 +28,9 @@
         android:theme="@style/GoSellSDKAppTheme"/>
     <activity
         android:name=".internal.activities.WebPaymentActivity"
-        android:theme="@style/GoSellSDKAppTheme"/>
+        android:theme="@style/GoSellSDKAppTheme"
+        android:screenOrientation="portrait"
+        />
     <activity
         android:name=".internal.activities.CountriesActivity"
         android:theme="@style/GoSellSDKAppTheme"/>

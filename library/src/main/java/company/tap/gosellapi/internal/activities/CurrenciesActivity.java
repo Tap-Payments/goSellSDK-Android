@@ -1,6 +1,7 @@
 package company.tap.gosellapi.internal.activities;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -53,11 +54,28 @@ public class CurrenciesActivity extends BaseActionBarActivity implements Currenc
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        /**
+         * Fix for web view
+         * Force it to portrait to fix resend request each time configurations change "Portrait to Landscape"
+         */
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         overridePendingTransition(R.anim.slide_in_left, android.R.anim.fade_out);
         setContentView(R.layout.gosellapi_activity_currencies);
         getData();
         initRecycler();
         setTitle();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        /**
+         * Fix for web view
+         * Force it to portrait to fix resend request each time configurations change "Portrait to Landscape"
+         */
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     private void getData() {

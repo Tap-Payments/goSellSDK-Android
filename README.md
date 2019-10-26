@@ -96,7 +96,7 @@ To integrate goSellSDK into your project add it in your **root** `build.gradle` 
 Step 2. Add the dependency
 ```java
 	dependencies {
-	        implementation 'com.github.Tap-Payments:goSellSDK-Android:2.4.2'
+	        implementation 'com.github.Tap-Payments:goSellSDK-Android:2.4.3'
 	}
 ```
 
@@ -121,6 +121,12 @@ Step 2. Add the dependency
     -dontwarn org.conscrypt.**
     -keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
 ```  
+
+# Note
+---
+Regarding to this Issue " Google throws this exception on Activity's onCreate method after v27, their meaning is if an Activity is translucent or floating, its orientation should be relied on parent(background) so, Activity can't make      decision on itself. Even if you remove android:screenOrientation="portrait" from the floating or translucent Activity In android Oreo (API 26) you can not change orientation for Activity that offer translucent.
+
+Your Activity that launches the SDK has to set orientation to Portrait, becuase our SDK is just a child to your actvity in case of translucent mode.
 
 
 <a name="setup"></a>
