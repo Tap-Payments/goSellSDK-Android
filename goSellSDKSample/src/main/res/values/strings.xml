@@ -229,5 +229,6 @@
 
     <string name="appearance_tap_button_security_icon_visible_key">appearance_tap_button_security_icon_visible_key</string>
     <string name="appearance_tap_button_security_icon_visible_title">Security Icon Visible</string>
+    <string name="action_settings">Settings</string>
 
 </resources>

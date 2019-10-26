@@ -2,6 +2,7 @@ package company.tap.gosellapi.internal.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -50,6 +51,13 @@ public class WebPaymentActivity extends BaseActionBarActivity implements IPaymen
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    /**
+     * Fix for web view
+     * Force it to portrait to fix resend request each time configurations change "Portrait to Landscape"
+     */
+    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
     /**
      * ActivityDataExchanger old way Replaced by Haitham >> I created a new way of getting PaymentOptionModel from ActivityDataExchanger
      */
@@ -85,6 +93,18 @@ public class WebPaymentActivity extends BaseActionBarActivity implements IPaymen
       }
     });
   }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    /**
+     * Fix for web view
+     * Force it to portrait to fix resend request each time configurations change "Portrait to Landscape"
+     */
+    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+  }
+
 
   private void getData() {
 
