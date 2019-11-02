@@ -394,6 +394,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
             System.out.println("Payment Succeeded : first six : "+ charge.getCard().getFirstSix());
             System.out.println("Payment Succeeded : last four: "+ charge.getCard().getLast4());
             System.out.println("Payment Succeeded : card object : "+ charge.getCard().getObject());
+            System.out.println("Payment Succeeded : brand : "+ charge.getCard().getBrand());
         }
 
         System.out.println("##############################################################################");
@@ -490,6 +491,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
             System.out.println("Card Saved Succeeded : first six digits : "+ ((SaveCard)charge).getCard().getFirstSix() + "  last four :"+ ((SaveCard)charge).getCard().getLast4());
         }
         System.out.println("Card Saved Succeeded : "+ charge.getStatus());
+        System.out.println("Card Saved Succeeded : "+ charge.getCard().getBrand());
         System.out.println("Card Saved Succeeded : "+ charge.getDescription());
         System.out.println("Card Saved Succeeded : "+ charge.getResponse(). getMessage());
         saveCustomerRefInSession(charge);
@@ -518,11 +520,19 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
     @Override
     public void savedCardsList(@NonNull CardsList cardsList) {
-        System.out.println(" Card List Response Code : "+cardsList.getResponseCode());
-        System.out.println(" Card List Top 10 : "+cardsList.getCards().size());
-        System.out.println(" Card List Has More : "+cardsList.isHas_more());
+        if(cardsList!=null && cardsList.getCards()!=null){
+            System.out.println(" Card List Response Code : "+cardsList.getResponseCode());
+            System.out.println(" Card List Top 10 : "+cardsList.getCards().size());
+            System.out.println(" Card List Has More : "+cardsList.isHas_more());
+            System.out.println("----------------------------------------------");
+            for(SavedCard sc: cardsList.getCards()){
+                System.out.println(sc.getBrandName());
+            }
+            System.out.println("----------------------------------------------");
 
-        showSavedCardsDialog(cardsList);
+            showSavedCardsDialog(cardsList);
+        }
+
     }
 
 
