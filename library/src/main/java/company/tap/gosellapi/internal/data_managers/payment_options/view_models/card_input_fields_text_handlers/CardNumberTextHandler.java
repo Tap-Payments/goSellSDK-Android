@@ -162,6 +162,7 @@ public class CardNumberTextHandler extends TextHandler {
       if(cardBrand.getValidationState()== CardValidationState.invalid){
         ((CardCredentialsViewModel) dataListener).setCardNumberColor(Color.RED);
       }else {
+        if(ThemeObject.getInstance().getCardInputTextColor()!=0)
         ((CardCredentialsViewModel) dataListener).setCardNumberColor(ThemeObject.getInstance().getCardInputTextColor());
       }
     }
