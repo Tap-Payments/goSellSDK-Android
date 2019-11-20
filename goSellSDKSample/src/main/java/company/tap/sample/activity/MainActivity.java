@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
          * Optional step
          * Here you can configure your app theme (Look and Feel).
          */
-        configureSDKThemeObject();
+       configureSDKThemeObject();
 
         /**
          * Required step.
@@ -336,17 +336,17 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
     private void initPayButton() {
 
         payButtonView = findViewById(R.id.payButtonId);
-
-        payButtonView.setupFontTypeFace(ThemeObject.getInstance().getPayButtonFont());
-
-        payButtonView.setupTextColor(ThemeObject.getInstance().getPayButtonEnabledTitleColor(),
+        if(ThemeObject.getInstance().getPayButtonFont()!=null)
+            payButtonView.setupFontTypeFace(ThemeObject.getInstance().getPayButtonFont());
+        if( ThemeObject.getInstance().getPayButtonDisabledTitleColor() !=0 && ThemeObject.getInstance().getPayButtonEnabledTitleColor() !=0 )
+            payButtonView.setupTextColor(ThemeObject.getInstance().getPayButtonEnabledTitleColor(),
                 ThemeObject.getInstance().getPayButtonDisabledTitleColor());
-//
-        payButtonView.getPayButton().setTextSize(ThemeObject.getInstance().getPayButtonTextSize());
-//
+        if( ThemeObject.getInstance().getPayButtonTextSize()!=0 )
+            payButtonView.getPayButton().setTextSize(ThemeObject.getInstance().getPayButtonTextSize());
+       if(ThemeObject.getInstance().isPayButtSecurityIconVisible())
         payButtonView.getSecurityIconView().setVisibility(ThemeObject.getInstance().isPayButtSecurityIconVisible()?View.VISIBLE:View.INVISIBLE);
-
-        payButtonView.setBackgroundSelector(ThemeObject.getInstance().getPayButtonResourceId());
+        if( ThemeObject.getInstance().getPayButtonResourceId()!=0)
+            payButtonView.setBackgroundSelector(ThemeObject.getInstance().getPayButtonResourceId());
 
         if(sdkSession!=null){
             TransactionMode trx_mode = sdkSession.getTransactionMode();

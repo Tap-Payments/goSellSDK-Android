@@ -103,6 +103,7 @@ public class SDKSession implements View.OnClickListener{
   }
 
   public void setPayButtonLoaderVisible() {
+    if(ThemeObject.getInstance().isPayButtLoaderVisible())
     payButtonView.getLoadingView().setVisibility(ThemeObject.getInstance().isPayButtLoaderVisible()?View.VISIBLE:View.INVISIBLE);
   }
 

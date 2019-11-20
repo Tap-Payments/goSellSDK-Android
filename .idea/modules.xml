@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/goSellSDK-Android.iml" filepath="$PROJECT_DIR$/goSellSDK-Android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/AndroidSDK.iml" filepath="$PROJECT_DIR$/AndroidSDK.iml" />
       <module fileurl="file://$PROJECT_DIR$/goSellSDKSample/goSellSDKSample.iml" filepath="$PROJECT_DIR$/goSellSDKSample/goSellSDKSample.iml" />
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
     </modules>

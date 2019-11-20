@@ -372,21 +372,28 @@ public class CardCredentialsViewHolder
             nameOnCardField.setTypeface(ThemeObject.getInstance().getCardInputFontTypeFace());
             saveCardDescriptionTextView.setTypeface(ThemeObject.getInstance().getCardInputFontTypeFace());
         }
-            cardNumberField.setTextColor(ThemeObject.getInstance().getCardInputTextColor());
-            expirationDateField.setTextColor(ThemeObject.getInstance().getCardInputTextColor());
-            cvvField.setTextColor(ThemeObject.getInstance().getCardInputTextColor());
-            nameOnCardField.setTextColor(ThemeObject.getInstance().getCardInputTextColor());
-            saveCardDescriptionTextView.setTextColor(ThemeObject.getInstance().getCardInputTextColor());
+            if(ThemeObject.getInstance().getCardInputTextColor()!=0) {
+                cardNumberField.setTextColor(ThemeObject.getInstance().getCardInputTextColor());
+                expirationDateField.setTextColor(ThemeObject.getInstance().getCardInputTextColor());
+                cvvField.setTextColor(ThemeObject.getInstance().getCardInputTextColor());
+                nameOnCardField.setTextColor(ThemeObject.getInstance().getCardInputTextColor());
+                saveCardDescriptionTextView.setTextColor(ThemeObject.getInstance().getCardInputTextColor());
+            }
+            if(ThemeObject.getInstance().getCardInputPlaceholderTextColor()!=0) {
+                setHintTextColor(cardNumberFieldTextInputLayout, ThemeObject.getInstance().getCardInputPlaceholderTextColor());
+                setHintTextColor(cvvFieldTextInputLayout, ThemeObject.getInstance().getCardInputPlaceholderTextColor());
+                setHintTextColor(expirationDateFieldTextInputLayout, ThemeObject.getInstance().getCardInputPlaceholderTextColor());
+                setHintTextColor(nameOnCardFieldTextInputLayout, ThemeObject.getInstance().getCardInputPlaceholderTextColor());
+            }
+            if(ThemeObject.getInstance().getSaveCardSwitchOffThumbTint()!=0 && ThemeObject.getInstance().getSaveCardSwitchOnThumbTint()!=0&&ThemeObject.getInstance().getSaveCardSwitchOffTrackTint()!=0&&
+                    ThemeObject.getInstance().getSaveCardSwitchOnTrackTint()!=0 ){
+                configureSaveCardSwitch();
 
-             setHintTextColor(cardNumberFieldTextInputLayout,ThemeObject.getInstance().getCardInputPlaceholderTextColor());
-             setHintTextColor(cvvFieldTextInputLayout,ThemeObject.getInstance().getCardInputPlaceholderTextColor());
-             setHintTextColor(expirationDateFieldTextInputLayout,ThemeObject.getInstance().getCardInputPlaceholderTextColor());
-             setHintTextColor(nameOnCardFieldTextInputLayout,ThemeObject.getInstance().getCardInputPlaceholderTextColor());
-
-            configureSaveCardSwitch();
+            }
 
             if(itemView!=null && itemView.getContext()!=null)
-            cardScannerButton.setImageDrawable(ThemeObject.getInstance().getScanIconDrawable(itemView.getContext()));
+                if(ThemeObject.getInstance().getScanIconDrawable(itemView.getContext())!=null)
+                    cardScannerButton.setImageDrawable(ThemeObject.getInstance().getScanIconDrawable(itemView.getContext()));
 
         }
 
@@ -611,7 +618,8 @@ public class CardCredentialsViewHolder
         if (brand.getValidationState().equals(CardValidationState.invalid)) {
             saveCardSwitch.setChecked(false);
             viewModel.saveCardSwitchClicked(false);
-            cardNumberField.setTextColor(ThemeObject.getInstance().getCardInputInvalidTextColor());
+            if(ThemeObject.getInstance().getCardInputInvalidTextColor()!=0){
+            cardNumberField.setTextColor(ThemeObject.getInstance().getCardInputInvalidTextColor());}
         } else {
             if (PaymentDataManager.getInstance().getExternalDataSource() != null
                 && PaymentDataManager.getInstance().getExternalDataSource().getAllowedToSaveCard()) {
@@ -621,7 +629,9 @@ public class CardCredentialsViewHolder
                 saveCardSwitch.setChecked(false);
                 viewModel.saveCardSwitchClicked(false);
             }
+            if(ThemeObject.getInstance().getCardInputTextColor()!=0){
             cardNumberField.setTextColor(ThemeObject.getInstance().getCardInputTextColor());
+            }
         }
         return brand;
     }
