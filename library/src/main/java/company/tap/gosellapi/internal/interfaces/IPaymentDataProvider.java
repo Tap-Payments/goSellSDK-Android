@@ -28,6 +28,14 @@ public interface IPaymentDataProvider {
     @NonNull    AmountedCurrency            getSelectedCurrency();
 
     /**
+     * Gets transaction currency.
+     *
+     * @return the transaction currency
+     */
+    @NonNull    AmountedCurrency            getTransactionCurrency();
+
+
+    /**
      * Gets supported currencies.
      *
      * @return the supported currencies

@@ -64,18 +64,20 @@ public class CurrencyViewHolder extends PaymentOptionsBaseViewHolder<CurrencyVie
         System.out.println(" Currency View Holders : Utils.getFormattedCurrency : " +  selectedCurrency.getSymbol()+ " " + selectedCurrency.getAmount() );// Utils.getFormattedCurrency(selectedCurrency));
 //        System.out.println(" Currency View Holders : CurrencyFormatter.format(selectedCurrency) : " + CurrencyFormatter.format(selectedCurrency));
         // replace CurrencyFormatter with Utils.getFormattedCurrency();
-        String selectedCurrencyText = selectedCurrency.getSymbol()+ " " + selectedCurrency.getAmount();// Utils.getFormattedCurrency(selectedCurrency);
+        if(selectedCurrency!=null && transactionCurrency!=null){
+            String selectedCurrencyText = selectedCurrency.getSymbol()+ " " + selectedCurrency.getAmount();// Utils.getFormattedCurrency(selectedCurrency);
 
-        if (transactionCurrency.getCurrency().equals(selectedCurrency.getCurrency())) {
-            currencySecondaryText.setVisibility(View.GONE);
-            currencySecondaryText.setText("");
+            if (transactionCurrency.getCurrency().equals(selectedCurrency.getCurrency())) {
+                currencySecondaryText.setVisibility(View.GONE);
+                currencySecondaryText.setText("");
+            }
+            else {
+                String transactionCurrencyText =   transactionCurrency.getSymbol() + " " + transactionCurrency.getAmount();  //  Utils.getFormattedCurrency(transactionCurrency);
+                currencySecondaryText.setVisibility(View.VISIBLE);
+                currencySecondaryText.setText(transactionCurrencyText);
+            }
+            currencyMainText.setText(selectedCurrencyText);
         }
-        else {
-            String transactionCurrencyText =   transactionCurrency.getSymbol() + " " + transactionCurrency.getAmount();  //  Utils.getFormattedCurrency(transactionCurrency);
-            currencySecondaryText.setVisibility(View.VISIBLE);
-            currencySecondaryText.setText(transactionCurrencyText);
-        }
-        currencyMainText.setText(selectedCurrencyText);
 
 
 

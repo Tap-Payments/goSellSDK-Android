@@ -267,6 +267,9 @@ public class PaymentOptionsDataManager {
       if (amountedCurrency.getCurrency().equals(currencyCode)) return amountedCurrency;
     }
 
+    if (paymentOptionsResponse.getSupportedCurrencies() != null && paymentOptionsResponse.getSupportedCurrencies().size() > 0)
+      return paymentOptionsResponse.getSupportedCurrencies().get(0);
+
     return null;
   }
 
@@ -1049,6 +1052,27 @@ public class PaymentOptionsDataManager {
         ArrayList<PaymentOption> list, PaymentType paymentType, String currency) {
 
       ArrayList<Utils.List.Filter<PaymentOption>> filters = new ArrayList<>();
+
+      /**
+       * if trx currency not included inside supported currencies <i.e Merchant pass transaction currency that he is not allowed for>
+       *     set currency to first supported currency
+       */
+      boolean trxCurrencySupported = false;
+
+      if (paymentOptionsResponse.getSupportedCurrencies() != null) {
+
+        for (AmountedCurrency amountedCurrency : paymentOptionsResponse.getSupportedCurrencies()) {
+
+          if (amountedCurrency.getCurrency().equals(currency)) {
+            trxCurrencySupported = true;
+            break;
+          }
+        }
+        if (!trxCurrencySupported && paymentOptionsResponse.getSupportedCurrencies().get(0)!=null)
+          currency = paymentOptionsResponse.getSupportedCurrencies().get(0).getCurrency();
+      }
+
+
       filters.add(this.<PaymentOption>getCurrenciesFilter(currency));
       filters.add(getPaymentOptionsFilter(paymentType));
       CompoundFilter<PaymentOption> filter = new CompoundFilter<>(filters);

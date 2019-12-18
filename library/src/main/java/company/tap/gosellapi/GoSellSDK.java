@@ -17,7 +17,6 @@ public class GoSellSDK {
      */
     public static void init(Context context, String authToken,String packageId) {
         AppInfo.setAuthToken(context, authToken,packageId);
-        GoSellSDK.setLocale(ThemeObject.getInstance().getSdkLanguage());
     }
 
     /**

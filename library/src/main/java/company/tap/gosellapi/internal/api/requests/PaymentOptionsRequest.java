@@ -53,6 +53,10 @@ public final class PaymentOptionsRequest {
     @SerializedName("merchant_id")
     @Expose
     @NonNull private String merchant_id;
+    @SerializedName("payment_type")
+    @Expose
+    @NonNull private String payment_type;
+
 
     /**
      * Instantiates a new Payment options request.
@@ -72,7 +76,8 @@ public final class PaymentOptionsRequest {
                                  @Nullable ArrayList<Tax> taxes,
                                  @Nullable String currency,
                                  @Nullable String customer,
-                                 @Nullable String merchant_id
+                                 @Nullable String merchant_id,
+                                 @NonNull  String payment_type
 
     ) {
 
@@ -82,6 +87,7 @@ public final class PaymentOptionsRequest {
         this.currency           = currency;
         this.customer           = customer;
         this.merchant_id        = merchant_id;
+        this.payment_type        = payment_type;
 
         if (items != null && items.size() > 0) {
 
@@ -120,7 +126,8 @@ public final class PaymentOptionsRequest {
             "currency : " + this.currency + " /n " +
             "customer : " + this.customer + " /n " +
             "total_amout : " + this.totalAmount + " /n " +
-            "merchant_id : " + this.merchant_id + " /n "
+            "merchant_id : " + this.merchant_id + " /n "+
+            "payment_type : " + this.payment_type + " /n "
         ;
     }
 }

@@ -13,7 +13,7 @@
   <string name="cancel">إلغاء</string>
 
   <string name="edittext_hint_card_number">رقم البطاقة</string>
-  <string name="edittext_hint_expiration_date">شهر/سنة</string>
+  <string name="edittext_hint_expiration_date">سنه/ شهر</string>
   <string name="edittext_hint_CVV">الرمز الأمني</string>
   <string name="edittext_hint_name_on_card">الاسم الموجود في البطاقة</string>
   <string name="edittext_hint_line1">Line 1</string>

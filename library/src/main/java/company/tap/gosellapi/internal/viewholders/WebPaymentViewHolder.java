@@ -51,5 +51,21 @@ public class WebPaymentViewHolder
 
         paymentSystemName.setText(data.getName());
         Glide.with(itemView.getContext()).load(data.getImage()).into(paymentSystemIcon);
+        if(viewModel!=null)
+            viewModel.setWebViewHolder(this);
     }
+    public void disableWebClick(){
+        System.out.println("WebviewHolder disabled");
+        itemView.setEnabled(false);
+        itemView.setFocusableInTouchMode(false);
+        itemView.setClickable(false);
+
+
+    }
+    public void enableWebClick(){
+        itemView.setEnabled(true);
+        itemView.setClickable(true);
+        itemView.setFocusableInTouchMode(true);
+    }
+
 }

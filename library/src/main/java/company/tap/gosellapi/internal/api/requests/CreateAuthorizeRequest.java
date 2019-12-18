@@ -33,6 +33,8 @@ public final class CreateAuthorizeRequest extends CreateChargeRequest {
      *
      * @param amount              the amount
      * @param currency            the currency
+     * @param selectedAmount      the user selected amount
+     * @param selectedCurrency    the user selected currency
      * @param customer            the customer
      * @param fee                 the fee
      * @param order               the order
@@ -53,6 +55,8 @@ public final class CreateAuthorizeRequest extends CreateChargeRequest {
                                   @NonNull  Merchant                merchant,
                                   @NonNull  BigDecimal              amount,
                                   @NonNull  String                  currency,
+                                  @NonNull  BigDecimal              selectedAmount,
+                                  @NonNull  String                  selectedCurrency,
                                   @NonNull  Customer                customer,
                                   @NonNull  BigDecimal              fee,
                                   @NonNull  Order                   order,
@@ -69,7 +73,7 @@ public final class CreateAuthorizeRequest extends CreateChargeRequest {
                                   @NonNull  AuthorizeAction         authorizeAction,
                                   @Nullable Destinations destinations) {
 
-        super(merchant,amount, currency, customer, fee, order, redirect, post, source, description, metadata, reference, saveCard, statementDescriptor, threeDSecure, receipt,destinations);
+        super(merchant,amount, currency,selectedAmount, selectedCurrency,customer, fee, order, redirect, post, source, description, metadata, reference, saveCard, statementDescriptor, threeDSecure, receipt,destinations);
 
         this.authorizeAction = authorizeAction;
     }
