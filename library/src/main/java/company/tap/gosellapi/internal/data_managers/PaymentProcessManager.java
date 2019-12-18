@@ -629,6 +629,7 @@ final class PaymentProcessManager {
     @Nullable TrackingURL post = postURL == null ? null : new TrackingURL(postURL);
 
     AmountedCurrency amountedCurrency = provider.getSelectedCurrency();
+    AmountedCurrency transactionCurrency = provider.getTransactionCurrency();
     Customer customer = provider.getCustomer();
 
     BigDecimal fee = BigDecimal.ZERO;
@@ -658,6 +659,8 @@ final class PaymentProcessManager {
 
         CreateChargeRequest chargeRequest = new CreateChargeRequest(
             merchant,
+            transactionCurrency.getAmount() ,
+            transactionCurrency.getCurrency(),
             amountedCurrency.getAmount(),
             amountedCurrency.getCurrency(),
             customer,
@@ -698,6 +701,8 @@ final class PaymentProcessManager {
 
         CreateAuthorizeRequest authorizeRequest = new CreateAuthorizeRequest(
             merchant,
+            transactionCurrency.getAmount() ,
+            transactionCurrency.getCurrency(),
             amountedCurrency.getAmount(),
             amountedCurrency.getCurrency(),
             customer,

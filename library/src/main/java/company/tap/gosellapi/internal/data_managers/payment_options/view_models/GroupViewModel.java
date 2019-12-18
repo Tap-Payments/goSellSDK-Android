@@ -8,7 +8,7 @@ import company.tap.gosellapi.internal.viewholders.PaymentOptionsBaseViewHolder;
  * The type Group view model.
  */
 public class GroupViewModel extends PaymentOptionViewModel<String, GroupViewHolder, GroupViewModel> {
-
+    private GroupViewHolder groupViewHolder;
     /**
      * Instantiates a new Group view model.
      *
@@ -26,5 +26,8 @@ public class GroupViewModel extends PaymentOptionViewModel<String, GroupViewHold
 
     public void cancelItemClicked(){
         parentDataManager.cancelItemClicked();
+    }
+    public void setGroupViewHolder(GroupViewHolder groupViewHolder){
+        this.groupViewHolder = groupViewHolder;
     }
 }

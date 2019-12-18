@@ -5,6 +5,7 @@ import android.widget.TextView;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.adapters.RecentPaymentsRecyclerViewAdapter;
+import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.GroupViewModel;
 
 /**
@@ -25,6 +26,7 @@ public class GroupViewHolder extends PaymentOptionsBaseViewHolder<String, GroupV
         this.cancelTextView =  view.findViewById(R.id.cancelTitleTextView);
         this.editTextView.setOnClickListener(v -> {
             editCard();
+            if(!PaymentDataManager.getInstance().isCardPaymentProcessStarted())editCard();
         });
 
         this.cancelTextView.setOnClickListener(v->{
@@ -48,6 +50,8 @@ public class GroupViewHolder extends PaymentOptionsBaseViewHolder<String, GroupV
             this.editTextView.setVisibility(View.VISIBLE);
             else
             this.editTextView.setVisibility(View.INVISIBLE);
+        if(viewModel!=null)
+            viewModel.setGroupViewHolder(this);
     }
 
     private TextView titleTextView;

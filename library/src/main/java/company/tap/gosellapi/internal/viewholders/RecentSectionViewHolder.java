@@ -90,6 +90,37 @@ public class RecentSectionViewHolder
 //        Log.d("RecentSectionViewHolder","stop shake all cards...");
         adapter.stopShakingAllCards();
     }
+    public void disableRecentView() {
+
+        if(recentPaymentsRecyclerView!=null) {
+            int childCount = recentPaymentsRecyclerView.getChildCount();
+            for (int i = 0; i < childCount; ++i) {
+                if (recentPaymentsRecyclerView.getChildAt(i) != null) {
+                    recentPaymentsRecyclerView.getChildAt(i).setClickable(false);
+                    recentPaymentsRecyclerView.getChildAt(i).setEnabled(false);
+                    recentPaymentsRecyclerView.getChildAt(i).setFocusable(false);
+                }
+            }
+
+           // Log.d("RecentSectionViewHolder", "disabled recyler...");
+        }
+
+    }
+    public void enableRecentView() {
+        if(recentPaymentsRecyclerView!=null) {
+            int childCount = recentPaymentsRecyclerView.getChildCount();
+            for (int i = 0; i < childCount; ++i) {
+                if (recentPaymentsRecyclerView.getChildAt(i) != null) {
+                    recentPaymentsRecyclerView.getChildAt(i).setClickable(true);
+                    recentPaymentsRecyclerView.getChildAt(i).setEnabled(true);
+                    recentPaymentsRecyclerView.getChildAt(i).setFocusable(true);
+                }
+            }
+
+
+        }
+    }
+
 
 
 }

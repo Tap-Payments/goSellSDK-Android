@@ -37,6 +37,14 @@ public class CreateChargeRequest {
     @Expose
     @NonNull private String currency;
 
+    @SerializedName("selected_amount")
+    @Expose
+    @NonNull private BigDecimal selectedAmount;
+
+    @SerializedName("selected_currency")
+    @Expose
+    @NonNull private String selectedCurrency;
+
     @SerializedName("customer")
     @Expose
     @NonNull private Customer customer;
@@ -117,6 +125,8 @@ public class CreateChargeRequest {
                                @Nullable    Merchant                merchant,
                                @NonNull     BigDecimal              amount,
                                @NonNull     String                  currency,
+                               @NonNull     BigDecimal              selectedAmount,
+                               @NonNull     String                  selectedCurrency,
                                @NonNull     Customer                customer,
                                @NonNull     BigDecimal              fee,
                                @NonNull     Order                   order,
@@ -135,6 +145,8 @@ public class CreateChargeRequest {
         this.merchant               = merchant;
         this.amount                 = amount;
         this.currency               = currency;
+        this.selectedAmount         = selectedAmount;
+        this.selectedCurrency       = selectedCurrency;
         this.customer               = customer;
         this.fee                    = fee;
         this.order                  = order;

@@ -790,4 +790,16 @@ public class CardCredentialsViewHolder
 
        }
     }
+    public void disableCardScanView() {
+        System.out.println("cardscaniscalled");
+        cardScannerButton.setEnabled(false);
+        cardScannerButton.setFocusableInTouchMode(false);
+        cardScannerButton.setClickable(false);
+    }
+    public void enableCardScanView() {
+        cardScannerButton.setEnabled(true);
+        cardScannerButton.setClickable(true);
+        cardScannerButton.setFocusableInTouchMode(true);
+    }
+
 }

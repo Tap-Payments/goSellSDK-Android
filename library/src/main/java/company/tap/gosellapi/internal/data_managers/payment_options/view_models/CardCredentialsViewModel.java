@@ -499,4 +499,13 @@ public class CardCredentialsViewModel
          */
         @NonNull public CardScheme getScheme(){return scheme;}
     }
+    public void disableCardScanView(){
+        if(this.cardCredentialsViewHolder!=null)
+            this.cardCredentialsViewHolder.disableCardScanView();
+    }
+    public void enableCardScanView(){
+        if(this.cardCredentialsViewHolder!=null)
+            this.cardCredentialsViewHolder.enableCardScanView();
+    }
+
 }

@@ -2,6 +2,8 @@ package company.tap.gosellapi.internal.api.api_service;
 
 import android.content.Context;
 import android.os.Build;
+import android.provider.Settings;
+import android.telephony.TelephonyManager;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -17,7 +19,8 @@ public class AppInfo {
     private static String authToken;
     private static LinkedHashMap<Object, Object> applicationInfo;
     private static String localeString = "en";
-
+    private static TelephonyManager manager;
+    private static String deviceName;
     /**
      * Sets auth token.
      *
@@ -28,6 +31,13 @@ public class AppInfo {
         AppInfo.authToken = authToken;
         //System.out.println("appId : "+appId);
         initApplicationInfo(appId);
+        manager = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+        //deviceName =  Settings.System.getString(context.getContentResolver(), "device_name");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            deviceName =  Settings.Global.getString(context.getContentResolver(), Settings.Global.DEVICE_NAME);
+        } else{
+            deviceName =  Settings.System.getString(context.getContentResolver(), "device_name");
+        }
 
         lo.init(context);
     }
@@ -61,6 +71,14 @@ public class AppInfo {
         applicationInfo.put("requirer_os", "Android");
         applicationInfo.put("requirer_os_version", Build.VERSION.RELEASE);
         applicationInfo.put("app_locale", SupportedLocales.findByString(localeString).language);
+        applicationInfo.put("requirer_device_name",deviceName);
+        applicationInfo.put("requirer_device_type",Build.BRAND);
+        applicationInfo.put("requirer_device_model",Build.MODEL);
+        if(manager!=null) {
+            applicationInfo.put("requirer_sim_network_name", manager.getSimOperatorName());
+            applicationInfo.put("requirer_sim_country_iso", manager.getSimCountryIso());
+        }
+
     }
 
     /**
@@ -95,7 +113,7 @@ public class AppInfo {
         /**
          * En supported locales.
          */
-        EN("en");
+        EN("en"), AR("ar");
 
         private String language;
 

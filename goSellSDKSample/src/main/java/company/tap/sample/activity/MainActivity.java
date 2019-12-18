@@ -143,6 +143,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
      */
     private void configureApp(){
         GoSellSDK.init(this, "sk_test_kovrMB0mupFJXfNZWx6Etg5y","company.tap.goSellSDKExample");  // to be replaced by merchant
+        GoSellSDK.setLocale("en");//  language to be set by merchant
     }
     /**
      * Configure SDK Theme
@@ -151,6 +152,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
         ThemeObject.getInstance()
         .setAppearanceMode(AppearanceMode.WINDOWED_MODE)
+        .setSdkLanguage("en")
 
         .setHeaderFont(Typeface.createFromAsset(getAssets(),"fonts/roboto_light.ttf"))
         .setHeaderTextColor(getResources().getColor(R.color.black1))
@@ -209,6 +211,8 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
         // Set Payment Items array list
         sdkSession.setPaymentItems(new ArrayList<>());// ** Optional ** you can pass empty array list
+
+        //   sdkSession.setPaymentType("WEB");   //** Merchant can pass paymentType
 
         // Set Taxes array list
         sdkSession.setTaxes(new ArrayList<>());// ** Optional ** you can pass empty array list
@@ -639,7 +643,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
         PhoneNumber   phoneNumber = customer!=null ? customer.getPhone(): new PhoneNumber("965","65562630");
 
-        return new Customer.CustomerBuilder("cus_s4H13120191115x0R12606480").email("abc@abc.com").firstName("firstname")
+        return new Customer.CustomerBuilder("").email("abc@abc.com").firstName("firstname")
                 .lastName("lastname").metadata("").phone(new PhoneNumber(phoneNumber.getCountryCode(),phoneNumber.getNumber()))
                 .middleName("middlename").build();
     }

@@ -96,7 +96,7 @@ To integrate goSellSDK into your project add it in your **root** `build.gradle` 
 Step 2. Add the dependency
 ```java
 	dependencies {
-	        implementation 'com.github.Tap-Payments:goSellSDK-Android:2.4.7'
+	        implementation 'com.github.Tap-Payments:goSellSDK-Android:2.4.8'
 	}
 ```
 
@@ -238,6 +238,7 @@ Android
          */
         private void configureApp(){
             GoSellSDK.init(this, "sk_test_kovrMB0mupFJXfNZWx6Etg5y","company.tap.goSellSDKExample");  // to be replaced by merchant
+            GoSellSDK.setLocale("ar");//  if you dont pass locale then default locale EN will be used
         }
 ```
 1. **`authToken`** - to authorize your requests.// Secret key (format: "sk_XXXXXXXXXXXXXXXXXXXXXXXX")
@@ -262,6 +263,8 @@ Don't forget to import the class at the beginning of the file:
 
           // set Appearance mode [Full Screen Mode - Windowed Mode]
           .setAppearanceMode(AppearanceMode.WINDOWED_MODE) // **Required**
+
+           .setSdkLanguage("ar") //if you dont pass locale then default locale EN will be used
 
           // Setup header font type face **Make sure that you already have asset folder with required fonts**
           .setHeaderFont(Typeface.createFromAsset(getAssets(),"fonts/roboto_light.ttf"))//**Optional**
@@ -522,6 +525,9 @@ Don't forget to import the class at the beginning of the file:
             sdkSession.setDestination(null); // ** Optional ** you can pass Destinations object or null
             
             sdkSession.setMerchantID(null); // ** Optional ** you can pass merchant id or null
+
+             sdkSession.setPaymentType("WEB");   //** Merchant can customize payment options [WEB/CARD] for each transaction or it will show all payment options granted to him.
+
     
             /**
              * Use this method where ever you want to show TAP SDK Main Screen.

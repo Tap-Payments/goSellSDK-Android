@@ -115,4 +115,7 @@ public interface PaymentDataSource {
 
     @Nullable
     Merchant     getMerchant();
+    @Nullable
+    String getPaymentDataType();
+
 }
