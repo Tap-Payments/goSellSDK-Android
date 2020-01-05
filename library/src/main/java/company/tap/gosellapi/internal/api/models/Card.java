@@ -3,12 +3,14 @@ package company.tap.gosellapi.internal.api.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by eugene.goltsev on 27.04.2018.
  * <br>
  * Model for Customer object
  */
-public final class Card {
+public final class Card implements Serializable {
     @SerializedName("id")
     @Expose
     private String id;

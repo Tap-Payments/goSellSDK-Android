@@ -5,13 +5,15 @@ import android.support.annotation.RestrictTo;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by eugene.goltsev on 14.02.2018.
  * <br>
  * Model for Source object
  */
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-public final class CardRawData {
+public final class CardRawData implements Serializable {
     @SerializedName("number")
     @Expose
     private String number;

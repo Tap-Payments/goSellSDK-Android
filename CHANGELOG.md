@@ -1,4 +1,13 @@
 # CHANGELOG
+## [2.4.9] - 2020-01-05
+### Version release to fix minor Bugs:
+- SDK serialization handling
+
+### Impact on existing integrations:
+- The new update will not affect current integration.
+
+### Required changes for existing integrations before updating:
+- Not required
 ## [2.4.8] - 2019-12-18
 ### Version release to fix minor Bugs:
 - Allow hosting app to pass language to SDK through setting up SDK Session.

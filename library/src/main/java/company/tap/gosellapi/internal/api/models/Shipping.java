@@ -5,12 +5,13 @@ import android.support.annotation.Nullable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
  * The type Shipping.
  */
-public final class Shipping {
+public final class Shipping implements Serializable {
 
     @SerializedName("name")
     @Expose

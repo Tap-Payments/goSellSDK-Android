@@ -6,6 +6,8 @@ import android.support.annotation.RestrictTo;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 import company.tap.gosellapi.internal.api.enums.TokenType;
 import company.tap.gosellapi.internal.api.responses.BaseResponse;
 
@@ -15,7 +17,7 @@ import company.tap.gosellapi.internal.api.responses.BaseResponse;
  * Model for Token object
  */
 //@RestrictTo(RestrictTo.Scope.LIBRARY)
-public final class Token implements BaseResponse {
+public final class Token implements BaseResponse , Serializable {
     @SerializedName("id")
     @Expose
     private String id;

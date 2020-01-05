@@ -6,12 +6,14 @@ import android.support.annotation.Nullable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 import company.tap.tapcardvalidator_android.CardBrand;
 
 /**
  * The type Tokenized card.
  */
-public final class TokenizedCard {
+public final class TokenizedCard implements Serializable {
 
     @SerializedName("id")
     @Expose

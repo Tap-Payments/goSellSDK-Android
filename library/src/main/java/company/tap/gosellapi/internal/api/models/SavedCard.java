@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import company.tap.gosellapi.internal.api.enums.CardScheme;
@@ -15,7 +16,7 @@ import company.tap.tapcardvalidator_android.CardBrand;
 /**
  * The type Saved card.
  */
-public class SavedCard implements Comparable<SavedCard>, CurrenciesSupport {
+public class SavedCard implements Comparable<SavedCard>, CurrenciesSupport , Serializable {
 
     @SerializedName("id")
     @Expose

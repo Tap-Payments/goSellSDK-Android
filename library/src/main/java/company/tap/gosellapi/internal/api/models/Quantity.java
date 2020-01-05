@@ -3,6 +3,7 @@ package company.tap.gosellapi.internal.api.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import company.tap.gosellapi.internal.api.enums.measurements.Measurement;
@@ -11,7 +12,7 @@ import company.tap.gosellapi.internal.api.enums.measurements.MeasurementUnit;
 /**
  * The type Quantity.
  */
-public final class Quantity {
+public final class Quantity implements Serializable {
     @SerializedName("measurement_group")
     @Expose
     private Measurement measurementGroup;

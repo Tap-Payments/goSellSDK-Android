@@ -5,10 +5,12 @@ import android.support.annotation.NonNull;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * The type Source request.
  */
-public class SourceRequest {
+public class SourceRequest implements Serializable {
 
     @SerializedName("id")
     @Expose
