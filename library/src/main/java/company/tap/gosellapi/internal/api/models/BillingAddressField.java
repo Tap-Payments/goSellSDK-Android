@@ -3,10 +3,12 @@ package company.tap.gosellapi.internal.api.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * The type Billing address field.
  */
-public class BillingAddressField {
+public class BillingAddressField implements Serializable {
 
     /**
      * The Name.

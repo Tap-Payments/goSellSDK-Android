@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import company.tap.gosellapi.internal.api.enums.PaymentType;
@@ -16,7 +17,7 @@ import company.tap.tapcardvalidator_android.CardBrand;
  * <br>
  * Model for Customer object
  */
-public final class PaymentOption implements Comparable<PaymentOption>, CurrenciesSupport {
+public final class PaymentOption implements Comparable<PaymentOption>, CurrenciesSupport, Serializable {
     @SerializedName("id")
     @Expose
     private String id;

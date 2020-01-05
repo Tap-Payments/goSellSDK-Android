@@ -3,10 +3,12 @@ package company.tap.gosellapi.internal.api.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * The type Create token saved card.
  */
-public final class CreateTokenSavedCard {
+public final class CreateTokenSavedCard implements Serializable {
 
     @SerializedName("card_id")
     @Expose

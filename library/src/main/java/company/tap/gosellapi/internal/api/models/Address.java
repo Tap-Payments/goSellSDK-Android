@@ -3,13 +3,15 @@ package company.tap.gosellapi.internal.api.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 import company.tap.gosellapi.internal.api.enums.AddressFormat;
 import company.tap.gosellapi.internal.api.enums.AddressType;
 
 /**
  * The type Address.
  */
-public final class Address {
+public final class Address implements Serializable {
 
     @SerializedName("format")
     @Expose

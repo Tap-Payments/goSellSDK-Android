@@ -3,12 +3,14 @@ package company.tap.gosellapi.internal.api.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 import company.tap.gosellapi.internal.api.enums.AddressFieldInputType;
 
 /**
  * The type Address field.
  */
-public final class AddressField {
+public final class AddressField implements Serializable {
 
     @SerializedName("name")
     @Expose

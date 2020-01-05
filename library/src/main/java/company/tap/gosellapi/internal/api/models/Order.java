@@ -5,10 +5,12 @@ import android.support.annotation.Nullable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * The type Order.
  */
-public final class Order {
+public final class Order implements Serializable {
 
     @SerializedName("id")
     @Expose

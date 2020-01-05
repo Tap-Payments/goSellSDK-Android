@@ -7,6 +7,8 @@ import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 import company.tap.gosellapi.internal.api.crypto.CryptoUtil;
 import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 import company.tap.gosellapi.internal.interfaces.SecureSerializable;
@@ -14,7 +16,7 @@ import company.tap.gosellapi.internal.interfaces.SecureSerializable;
 /**
  * The type Create token card.
  */
-public final class CreateTokenCard {
+public final class CreateTokenCard implements Serializable {
 
   @SerializedName("crypted_data")
   @Expose

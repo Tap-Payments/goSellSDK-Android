@@ -3,12 +3,14 @@ package company.tap.gosellapi.internal.api.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 import company.tap.gosellapi.internal.api.enums.AuthorizeActionType;
 
 /**
  * The type Authorize action.
  */
-public final class AuthorizeAction {
+public final class AuthorizeAction implements Serializable {
 
     @SerializedName("type")
     @Expose
