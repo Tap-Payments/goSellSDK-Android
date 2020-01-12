@@ -477,7 +477,8 @@ public class CardCredentialsViewHolder
         }
 
         if (!viewModel.getExpirationMonth().isEmpty() && !viewModel.getExpirationYear().isEmpty()) {
-            String expirationDate = viewModel.getExpirationMonth() + "/" + String.format("%02d", Integer.valueOf(viewModel.getExpirationYear()) % 100);
+          //  String expirationDate = viewModel.getExpirationMonth() + "/" + String.format("%02d", Integer.valueOf(viewModel.getExpirationYear()) % 100);
+            String expirationDate = viewModel.getExpirationMonth() + String.format("%02d", Integer.valueOf(viewModel.getExpirationYear()) % 100);
             expirationDateField.setText(expirationDate);
         }
 
