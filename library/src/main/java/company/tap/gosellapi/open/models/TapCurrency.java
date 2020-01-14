@@ -20,13 +20,16 @@ public class TapCurrency {
      * @throws CurrencyException the currency exception
      */
     public TapCurrency(@NonNull String isoCode) throws CurrencyException {
-    String code = isoCode.toLowerCase();
-    if(!LocaleCurrencies.checkUserCurrency(code)) {
-      throw CurrencyException.getUnknown(code);
+      if (isoCode == null || isoCode.isEmpty()) {
+        this.isoCode = isoCode;
+      } else {
+        String code = isoCode.toLowerCase();
+        if (!LocaleCurrencies.checkUserCurrency(code)) {
+          throw CurrencyException.getUnknown(code);
+        }
+        this.isoCode = code;
+      }
     }
-    this.isoCode = code;
-  }
-
 
     /**
      * Gets iso code.
