@@ -1,4 +1,13 @@
 # CHANGELOG
+## [2.4.11] - 2020-01-14
+### Version release to fix minor Bugs:
+- Fix for currency code
+
+### Impact on existing integrations:
+- The new update will not affect current integration.
+
+### Required changes for existing integrations before updating:
+- Not req
 ## [2.4.10] - 2020-01-12
 ### Version release to fix minor Bugs:
 - Fix for date field formatting

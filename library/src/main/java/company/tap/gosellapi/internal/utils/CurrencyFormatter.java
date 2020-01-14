@@ -90,12 +90,15 @@ public final class CurrencyFormatter {
      * @return the localized currency symbol
      */
     @NonNull public static String getLocalizedCurrencySymbol(String currencyCode, Locale locale) {
+        if (currencyCode == null||currencyCode.isEmpty()) {
+            return currencyCode;
+        }else {
+            Currency currency = Currency.getInstance(currencyCode);
+            String symbol = currency.getSymbol(locale);
+            symbol = optionallyHardcodedCurrencySymbol(symbol);
 
-        Currency currency = Currency.getInstance(currencyCode);
-        String symbol = currency.getSymbol(locale);
-        symbol = optionallyHardcodedCurrencySymbol(symbol);
-
-        return symbol;
+            return symbol;
+        }
     }
 
     /**
