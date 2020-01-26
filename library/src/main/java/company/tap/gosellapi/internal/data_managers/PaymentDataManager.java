@@ -399,6 +399,7 @@ public final class PaymentDataManager {
      * @param listener the listener
      */
     public void initiatePayment(PaymentOptionViewModel model, IPaymentProcessListener listener) {
+      clearPaymentProcessListeners();
     getProcessListener().addListener(listener);
     getPaymentProcessManager().startPaymentProcess(model);
   }
@@ -407,6 +408,7 @@ public final class PaymentDataManager {
    * Init card tokenization
    */
   public void initCardTokenizationPayment(PaymentOptionViewModel model, IPaymentProcessListener listener){
+    clearPaymentProcessListeners();
       getProcessListener().addListener(listener);
       getPaymentProcessManager().startCardTokenization(model);
   }
@@ -420,6 +422,7 @@ public final class PaymentDataManager {
     public void initiateSavedCardPayment(SavedCard savedCard,
                                        RecentSectionViewModel recentSectionViewModel,
                                        IPaymentProcessListener listener) {
+      clearPaymentProcessListeners();
     getProcessListener().addListener(listener);
     getPaymentProcessManager().startSavedCardPaymentProcess(savedCard, recentSectionViewModel);
   }
@@ -432,6 +435,7 @@ public final class PaymentDataManager {
    */
   public void deleteCard(@NonNull String customerID,@NonNull String cardId,
                          company.tap.gosellapi.internal.interfaces.ICardDeleteListener listener){
+       clearPaymentProcessListeners();
       getCardDeleteListener().addListener(listener);
       getPaymentProcessManager().deleteCard(customerID,cardId);
   }
