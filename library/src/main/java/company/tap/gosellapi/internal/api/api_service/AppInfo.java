@@ -1,6 +1,8 @@
 package company.tap.gosellapi.internal.api.api_service;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
@@ -21,6 +23,7 @@ public class AppInfo {
     private static String localeString = "en";
     private static TelephonyManager manager;
     private static String deviceName;
+
     /**
      * Sets auth token.
      *
@@ -38,7 +41,6 @@ public class AppInfo {
         } else{
             deviceName =  Settings.System.getString(context.getContentResolver(), "device_name");
         }
-
         lo.init(context);
     }
 
@@ -62,6 +64,7 @@ public class AppInfo {
     }
 
     private static void initApplicationInfo(String applicationId) {
+
         applicationInfo = new LinkedHashMap<>();
 
         applicationInfo.put("app_id", applicationId); // updated based on Kalai resp.
@@ -74,6 +77,7 @@ public class AppInfo {
         applicationInfo.put("requirer_device_name",deviceName);
         applicationInfo.put("requirer_device_type",Build.BRAND);
         applicationInfo.put("requirer_device_model",Build.MODEL);
+        applicationInfo.put("sdk_version","2.4.13");
         if(manager!=null) {
             applicationInfo.put("requirer_sim_network_name", manager.getSimOperatorName());
             applicationInfo.put("requirer_sim_country_iso", manager.getSimCountryIso());
