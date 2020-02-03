@@ -117,7 +117,7 @@ public class AppInfo {
         /**
          * En supported locales.
          */
-        EN("en"), AR("ar");
+        EN("en"), AR("ar"),DE("de"),TR("tr");
 
         private String language;
 

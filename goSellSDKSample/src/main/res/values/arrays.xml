@@ -19,11 +19,15 @@
     <string-array name="pref_array_sdk_language_entries">
         <item>@string/english</item>
         <item>@string/arabic</item>
+        <item>@string/german</item>
+        <item>@string/turkish</item>
     </string-array>
 
     <string-array name="pref_array_sdk_language_values">
         <item>en</item>
         <item>ar</item>
+        <item>de</item>
+        <item>tr</item>
     </string-array>
 
 
