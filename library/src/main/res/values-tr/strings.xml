@@ -1,0 +1,116 @@
+<resources>
+  <string name="app_name">GoSellAPI</string>
+  <string name="pay">Öde</string>
+  <string name="tokenize">Öde</string>
+
+  <string name="actionbar_title_address_on_card">Kart üzerindeki adres</string>
+
+
+  <string name="otp_cancel_payment_title">Ödemeyi İptal Et</string>
+  <string name="otp_cancel_payment_message">Ödemeyi iptal etmek istiyor musunuz</string>
+  <string name="otp_confirm_dialog">Onayla</string>
+  <string name="otp_cancel_dialog">Hayır</string>
+  <string name="cancel">İptal</string>
+  <string name="dismiss">Sonlandır</string>
+
+  <string name="edittext_hint_card_number">Kart numarası</string>
+  <string name="edittext_hint_expiration_date">AA/YY</string>
+  <string name="edittext_hint_CVV">CVV</string>
+  <string name="edittext_hint_name_on_card">Kart üzerindeki isim</string>
+  <string name="edittext_hint_line1">Satır 1</string>
+  <string name="edittext_hint_line2">Satır 2</string>
+  <string name="edittext_hint_city">Şehir</string>
+  <string name="edittext_hint_state">Bölge</string>
+  <string name="edittext_hint_zip_code">Posta kodu</string>
+  <string name="edittext_hint_name">İsim</string>
+  <string name="edittext_hint_phone_number">Telefon numarası</string>
+  <string name="edittext_hint_email">Eposta</string>
+  <string name="edittext_hint_address_on_card">Kart Üzerindeki Adres</string>
+  <string name="business_icon_description">İşletme simgesi</string>
+  <string name="textview_title_address_on_card">Kart Üzerindeki Adres</string>
+  <string name="textview_title_country">Ülke</string>
+  <string name="textview_title_recent">En son</string>
+  <string name="textview_title_recent_edit">DÜZENLE</string>
+  <string name="textview_title_recent_cancel">İPTAL</string>
+  <string name="textview_title_others">Diğerleri</string>
+  <string name="textview_title_resend_again">Şifreyi yeniden gönder</string>
+  <string name="textview_title_save_for_merchant">%s Ödemeleri için Kaydet</string>
+  <string name="textview_title_save_for_gopay">goPay Ödemeleri için Kaydet</string>
+  <string name="textview_title_personal_info">Kişisel Bilgileriniz</string>
+
+  <string name="textview_disclaimer_save_card">Daha hızlı ödeme için kartınızı kayıt edin</string>
+  <string name="textview_disclaimer_save_card_info">Kart kaydetme sadece onayınızla yapılmaktadır, istediğiniz zaman kaydı silebilirsiniz.</string>
+
+  <string name="textview_disclaimer_otp_sent_number">Lütfen gönderdiğimiz tek kullanımlık şifreyi giriniz </string>
+  <string name="textview_disclaimer_go_pay_checkouts">goPay\'i etkinleştirdiğinizde, birden fazla uygulamada ve web sitesinde daha hızlı ve daha güvenli alışveriş yapabilmeniz için kart bilgileriniz Tap Payments tarafından kaydedilecektir</string>
+
+  <string name="textview_placeholder_last_four_digits">••••%s</string>
+
+  <string name="btn_title_confirm">Onayla</string>
+  <string name="btn_title_save">Kaydet</string>
+  <string name="search">Ara</string>
+  <string name="payment_status_alert_successful">Başarılı</string>
+  <string name="payment_status_alert_failed">Başarısız</string>
+  <string name="payment_status_alert_invalid">Geçersiz</string>
+  <string name="payment_status_alert_declined">Red</string>
+  <string name="payment_status_alert_timedout">ZAMAN AŞIMI</string>
+  <string name="payment_status_alert_unknown">BİLİNMEYEN</string>
+
+  <string name="bt_month">Ay</string>
+  <string name="bt_year">Yıl</string>
+  <string name="bt_expiration_required">Son kullanma tarihi gereklidir</string>
+  <string name="bt_expiration_invalid">Son kullanma tarihi geçersizdir</string>
+  <string name="bt_form_hint_expiration">Son Kullanma Tarihi</string>
+
+  <string name="bt_cvv_required">%s gereklidir</string>
+  <string name="bt_cvv_invalid">%s geçersizdir</string>
+  <string name="bt_form_hint_cvv">@string/bt_cvv</string>
+  <string name="bt_cvv">CVV</string>
+  <string name="bt_cvc">CVC</string>
+  <string name="bt_cid">CID</string>
+  <string name="bt_cvn">CVN</string>
+
+  <!-- TODO: Remove or change this placeholder text -->
+  <string name="hello_blank_fragment">Boş fragment\'tan merhaba</string>
+
+  <string name="select_currency_title">Para Birimini Seçiniz</string>
+
+
+
+  <string name="key_sdkLanguage">key_sdkLanguage</string>
+  <string name="key_sdk_transaction_mode">key_sdk_transaction_mode</string>
+  <string name="key_sdk_transaction_currency">key_sdk_transaction_currency</string>
+  <string name="key_sdk_appearance_mode">key_sdk_appearance_mode</string>
+  <string name="save_card">Kartı Kaydediniz</string>
+  <string name="card_saved_before">Kartınız daha önce kaydedildi, iki kez kaydedemezsiniz!</string>
+  <string name="textview_disclaimer_save_card_header_title">Kart Bilgilerini Giriniz</string>
+
+
+
+  <string name="delete_saved_card_title">Kartı Sil</string>
+  <string name="delete_saved_card_button_Delete">Sil</string>
+  <string name="delete_saved_card_button_Cancel">İptal</string>
+  <string name="delete_saved_card_msg">Kartı silmek istediğinize emin misiniz </string>
+
+
+
+  <string name="extra_fees_alert_confirm_message_title">Ekstra ücretleri onayla</string>
+  <string name="extra_fees_alert_message">Bu ödeme türü için toplam %s tutarında ek bir %s tutarında ödeme alınacaktır </string>
+  <string name="extra_fees_alert_confirm_message_confirm">Onay</string>
+  <string name="extra_fees_alert_confirm_message_cancel">İptal</string>
+
+  <string name="internet_connectivity_title">Bağlantı Hatası</string>
+  <string name="internet_connectivity_message">İnternet bağlantısı yok</string>
+  <string name="retry">Tekrar Dene</string>
+
+
+  <string name="sdk_not_configure_correctly">SDK Doğru Yapılandırılmadı</string>
+  <string name="device_has_aproblem_in_connectivity_manager">Cihazın bağlantı yöneticisinde sorun var</string>
+  <string name="internet_connection_is_not_available">İnternet bağlantısı yok</string>
+  <string name="sdk_error">Hata</string>
+  <string name="close">Kapat</string>
+  <string name="error_deleting_card_title">Üzgünüz</string>
+  <string name="error_deleting_card_msg">Kart şu anda silinemiyor. Lütfen tekrar deneyiniz.</string>
+
+
+</resources>

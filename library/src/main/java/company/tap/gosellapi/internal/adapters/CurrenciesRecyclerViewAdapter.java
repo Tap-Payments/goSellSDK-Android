@@ -171,7 +171,7 @@ public class CurrenciesRecyclerViewAdapter extends RecyclerView.Adapter<Currenci
         }
 
         private void bind(String currencyCode) {
-            System.out.println("getCurrencySelectionString(currencyCode) :   "+ getCurrencySelectionString(currencyCode));
+            //System.out.println("getCurrencySelectionString(currencyCode) :   "+ getCurrencySelectionString(currencyCode));
             tvCurrencyName.setText(getCurrencySelectionString(currencyCode));
 
             if (currencyCode.equals(selectedCurrency)) {

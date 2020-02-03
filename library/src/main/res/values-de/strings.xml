@@ -1,0 +1,116 @@
+<resources>
+  <string name="app_name">GoSellAPI</string>
+  <string name="pay">Bezahle</string>
+  <string name="tokenize">Bezahle</string>
+
+  <string name="actionbar_title_address_on_card">Adresse auf der Karte</string>
+
+
+  <string name="otp_cancel_payment_title">Bezahlung abbrechen</string>
+  <string name="otp_cancel_payment_message">Möchten Sie die Bezahlung abbrechen</string>
+  <string name="otp_confirm_dialog">Bestätigen</string>
+  <string name="otp_cancel_dialog">Nein</string>
+  <string name="cancel">Abbrechen</string>
+  <string name="dismiss">Aufgeben</string>
+
+  <string name="edittext_hint_card_number">Kartennummer</string>
+  <string name="edittext_hint_expiration_date">MM/JJ</string>
+  <string name="edittext_hint_CVV">CVV</string>
+  <string name="edittext_hint_name_on_card">Name auf der Karte</string>
+  <string name="edittext_hint_line1">Zeile 1</string>
+  <string name="edittext_hint_line2">Zeile 2</string>
+  <string name="edittext_hint_city">Stadt</string>
+  <string name="edittext_hint_state">Bundesland</string>
+  <string name="edittext_hint_zip_code">Postleitzahl</string>
+  <string name="edittext_hint_name">Name</string>
+  <string name="edittext_hint_phone_number">Rufnummer</string>
+  <string name="edittext_hint_email">Email</string>
+  <string name="edittext_hint_address_on_card">Adresse auf der Karte</string>
+  <string name="business_icon_description">Betriebszeichen</string>
+  <string name="textview_title_address_on_card">Adresse auf der Karte</string>
+  <string name="textview_title_country">Land</string>
+  <string name="textview_title_recent">Zuletzt</string>
+  <string name="textview_title_recent_edit">BEARRBEITEN</string>
+  <string name="textview_title_recent_cancel">ABBRECHEN</string>
+  <string name="textview_title_others">Andere</string>
+  <string name="textview_title_resend_again">Passwort nochmal senden </string>
+  <string name="textview_title_save_for_merchant">Speichern für %s Zahlungen</string>
+  <string name="textview_title_save_for_gopay">Speichern für goPay Zahlungen</string>
+  <string name="textview_title_personal_info">Ihre persönliche Information</string>
+
+  <string name="textview_disclaimer_save_card">Speichern Sie Ihre Karte für schnellere und sicherere Bezahlung</string>
+  <string name="textview_disclaimer_save_card_info">Gespeicherte Karten werden nur mit Ihrer Zustimmung verwendet. Sie können sie jederzeit entfernen.</string>
+
+  <string name="textview_disclaimer_otp_sent_number">Bitte geben Sie das Passwort ein, das an Sie versendet wurde </string>
+  <string name="textview_disclaimer_go_pay_checkouts">Wenn Sie goPay aktivieren, werden Ihre Kartendaten mit Tap Payments gespeichert, damit Sie in mehreren Apps und Websites schneller und sicherer auschecken können</string>
+
+  <string name="textview_placeholder_last_four_digits">••••%s</string>
+
+  <string name="btn_title_confirm">Bestätigen</string>
+  <string name="btn_title_save">Speichern</string>
+  <string name="search">Suchen</string>
+  <string name="payment_status_alert_successful">Erfolgreich</string>
+  <string name="payment_status_alert_failed">Fehlgeschlagen</string>
+  <string name="payment_status_alert_invalid">Ungültig</string>
+  <string name="payment_status_alert_declined">Abgelehnt</string>
+  <string name="payment_status_alert_timedout">ZEITÜBERSCHREITUNG</string>
+  <string name="payment_status_alert_unknown">UNBEKANNT</string>
+
+  <string name="bt_month">Monat</string>
+  <string name="bt_year">Jahr</string>
+  <string name="bt_expiration_required">Ablaufdatum ist erforderlich</string>
+  <string name="bt_expiration_invalid">Ablaufdatum ist ungültig</string>
+  <string name="bt_form_hint_expiration">Ablaufdatum</string>
+
+  <string name="bt_cvv_required">%s ist erforderlich</string>
+  <string name="bt_cvv_invalid">%s ist ungültig</string>
+  <string name="bt_form_hint_cvv">@string/bt_cvv</string>
+  <string name="bt_cvv">CVV</string>
+  <string name="bt_cvc">CVC</string>
+  <string name="bt_cid">CID</string>
+  <string name="bt_cvn">CVN</string>
+
+  <!-- TODO: Remove or change this placeholder text -->
+  <string name="hello_blank_fragment">Hallo leer Fragment</string>
+
+  <string name="select_currency_title">Währung wählen</string>
+
+
+
+  <string name="key_sdkLanguage">key_sdkLanguage</string>
+  <string name="key_sdk_transaction_mode">key_sdk_transaction_mode</string>
+  <string name="key_sdk_transaction_currency">key_sdk_transaction_currency</string>
+  <string name="key_sdk_appearance_mode">key_sdk_appearance_mode</string>
+  <string name="save_card">Karte speichern</string>
+  <string name="card_saved_before">Ihre Karte wurde bereits gespeichert, Sie können sie nicht zweimal speichern!</string>
+  <string name="textview_disclaimer_save_card_header_title">Kartendetails eingeben</string>
+
+
+
+  <string name="delete_saved_card_title">Karte löschen</string>
+  <string name="delete_saved_card_button_Delete">Löschen</string>
+  <string name="delete_saved_card_button_Cancel">Abbrechen</string>
+  <string name="delete_saved_card_msg">Möchten Sie die Karte wirklich löschen? </string>
+
+
+
+  <string name="extra_fees_alert_confirm_message_title">Zusätzliche Gebühren bestätigen</string>
+  <string name="extra_fees_alert_message">Für diese Zahlungsart wird eine zusätzliche Gebühr in Höhe von %s erhoben, die sich auf einen Gesamtbetrag von %s beläuft </string>
+  <string name="extra_fees_alert_confirm_message_confirm">Bestätigen</string>
+  <string name="extra_fees_alert_confirm_message_cancel">Abbrechen</string>
+
+  <string name="internet_connectivity_title">Netzwerkfehler</string>
+  <string name="internet_connectivity_message">Internetverbindung nicht verfügbar</string>
+  <string name="retry">Wiederholen</string>
+
+
+  <string name="sdk_not_configure_correctly">SDK Nicht Richtig Konfiguriert</string>
+  <string name="device_has_aproblem_in_connectivity_manager">Gerät hat ein Problem im Konnektivitätsmanager</string>
+  <string name="internet_connection_is_not_available">Internetverbindung nicht verfügbar</string>
+  <string name="sdk_error">Fehler</string>
+  <string name="close">Schließen</string>
+  <string name="error_deleting_card_title">Verzeihung</string>
+  <string name="error_deleting_card_msg">Die Karte kann momentan nicht gelöscht werden. Bitte versuchen Sie es später noch einmal.</string>
+
+
+</resources>

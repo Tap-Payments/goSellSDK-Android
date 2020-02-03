@@ -7,6 +7,8 @@
     <string name="key_sdkLanguage">key_sdkLanguage</string>
     <string name="english">English</string>
     <string name="arabic">العربية</string>
+    <string name="german">Deutsch</string>
+    <string name="turkish">Türkçe</string>
 
 
     <string name="title_sdkMode">Operation Mode</string>

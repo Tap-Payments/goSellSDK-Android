@@ -96,7 +96,7 @@ To integrate goSellSDK into your project add it in your **root** `build.gradle` 
 Step 2. Add the dependency
 ```java
 	dependencies {
-	         implementation 'com.github.Tap-Payments:goSellSDK-Android:2.4.13'
+	         implementation 'com.github.Tap-Payments:goSellSDK-Android:2.5.0'
 	}
 ```
 
@@ -226,9 +226,11 @@ Make sure it consists only from 2 lowercased letters and is presented in the lis
 Below is the list of properties in goSellSDK class you can manipulate. Make sure you do the setup before any usage of the SDK.
 
 <a name="setup_gosellsdk_class_properties_secret_key"></a>
-### Configure SDK Secret Key and Application ID
+### Configure SDK Secret Key and Application ID and SDK Language
 
 To set it up, add the following line of code somewhere in your project and make sure it will be called before any usage of `goSellSDK`, otherwise an exception will be thrown. **Required**.
+
+If you wish to localize the sdk following languages are available **English, Arabic , German,Turkish** and this has to be passed as below ,if locale not passed then default locale **EN** will be used.
 
 Android
 ```java
