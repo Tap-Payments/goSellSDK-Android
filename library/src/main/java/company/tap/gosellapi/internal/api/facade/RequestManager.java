@@ -65,8 +65,17 @@ class RequestManager {
                     public void onSuccess(int responseCode, SDKSettings serializedResponse) {
                         initIsRunning = false;
                         PaymentDataManager.getInstance().setSDKSettings(serializedResponse);
-                        runDelayedRequests();
+                        /**
+                         * Checking added based on the param @Verified_application to check if application
+                         * package id is registered or not
+                         * @returns boolean value.
+                         */
+                        if(PaymentDataManager.getInstance().getSDKSettings()!=null){
+                            if(PaymentDataManager.getInstance().getSDKSettings().getData().isVerified_application())
+                                runDelayedRequests();
+                        }
                     }
+
 
                     @Override
                     public void onFailure(GoSellError errorDetails) {

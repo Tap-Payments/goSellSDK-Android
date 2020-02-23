@@ -1,8 +1,11 @@
 package company.tap.gosellapi.internal.viewholders;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -24,6 +27,7 @@ import android.text.TextWatcher;
 import android.text.style.ReplacementSpan;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -48,6 +52,7 @@ import company.tap.gosellapi.internal.data_managers.payment_options.view_models_
 import company.tap.gosellapi.internal.utils.ActivityDataExchanger;
 import company.tap.gosellapi.internal.utils.CardType;
 import company.tap.gosellapi.open.controllers.ThemeObject;
+import company.tap.gosellapi.open.data_manager.PaymentDataSource;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.tapcardvalidator_android.CardBrand;
 import company.tap.tapcardvalidator_android.CardValidationState;
@@ -616,24 +621,38 @@ public class CardCredentialsViewHolder
        BINLookupResponse binLookupResponse =  PaymentDataManager.getInstance().getBinLookupResponse();
        updateCardSystemsRecyclerView(brand.getCardBrand(),binLookupResponse==null?null:binLookupResponse.getScheme());
 
-        if (brand.getValidationState().equals(CardValidationState.invalid)) {
-            saveCardSwitch.setChecked(false);
-            viewModel.saveCardSwitchClicked(false);
-            if(ThemeObject.getInstance().getCardInputInvalidTextColor()!=0){
-            cardNumberField.setTextColor(ThemeObject.getInstance().getCardInputInvalidTextColor());}
-        } else {
-            if (PaymentDataManager.getInstance().getExternalDataSource() != null
-                && PaymentDataManager.getInstance().getExternalDataSource().getAllowedToSaveCard()) {
-                saveCardSwitch.setChecked(true);
-                viewModel.saveCardSwitchClicked(true);
-            } else {
-                saveCardSwitch.setChecked(false);
-                viewModel.saveCardSwitchClicked(false);
+        if (binLookupResponse != null && PaymentDataSource.getInstance().getCardType() != null)
+            if (!PaymentDataSource.getInstance().getCardType().toString().equals(binLookupResponse.getCardType())) {
+                if (ThemeObject.getInstance().getCardInputInvalidTextColor() != 0) {
+                    cardNumberField.setTextColor(ThemeObject.getInstance().getCardInputInvalidTextColor());
+                }
+
+                showDialog(itemView.getResources().getString(R.string.alert_un_supported_card_title), itemView.getResources().getString(R.string.alert_un_supported_card_message));
+
+
+            }else {
+
+                if (brand.getValidationState().equals(CardValidationState.invalid)) {
+                    saveCardSwitch.setChecked(false);
+                    viewModel.saveCardSwitchClicked(false);
+                    if (ThemeObject.getInstance().getCardInputInvalidTextColor() != 0) {
+                        cardNumberField.setTextColor(ThemeObject.getInstance().getCardInputInvalidTextColor());
+                    }
+                } else {
+                    if (PaymentDataManager.getInstance().getExternalDataSource() != null
+                            && PaymentDataManager.getInstance().getExternalDataSource().getAllowedToSaveCard()) {
+                        saveCardSwitch.setChecked(true);
+                        viewModel.saveCardSwitchClicked(true);
+                    } else {
+                        saveCardSwitch.setChecked(false);
+                        viewModel.saveCardSwitchClicked(false);
+                    }
+                    if (ThemeObject.getInstance().getCardInputTextColor() != 0) {
+                        cardNumberField.setTextColor(ThemeObject.getInstance().getCardInputTextColor());
+                    }
+                }
             }
-            if(ThemeObject.getInstance().getCardInputTextColor()!=0){
-            cardNumberField.setTextColor(ThemeObject.getInstance().getCardInputTextColor());
-            }
-        }
+
         return brand;
     }
 
@@ -802,5 +821,61 @@ public class CardCredentialsViewHolder
         cardScannerButton.setClickable(true);
         cardScannerButton.setFocusableInTouchMode(true);
     }
+
+    private void showDialog(String title,String message){
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(itemView.getContext());
+        dialogBuilder.setTitle(title);
+        dialogBuilder.setMessage(message);
+        dialogBuilder.setCancelable(false);
+
+
+        dialogBuilder.setPositiveButton(itemView.getContext().getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                PaymentDataManager.getInstance().setBinLookupResponse(null);
+                cardNumberField.setText(null);
+                if (SDK_INT >= Build.VERSION_CODES.M) {
+                    cardNumberField.setTextColor(itemView.getContext().getColor(R.color.greyish_brown));
+                }
+                dialog.dismiss();
+
+            }
+
+        });
+
+        PaymentDataManager.getInstance().setBinLookupResponse(null);
+        cardNumberField.setText(null);
+        AlertDialog dialog = dialogBuilder.create();
+
+        // Finally, display the alert dialog
+        dialog.show();
+
+        // Get the alert dialog buttons reference
+        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        if(positiveButton!=null){
+            if(ThemeObject.getInstance().getDialogbuttonColor()!=0)
+                positiveButton.setBackgroundColor(ThemeObject.getInstance().getDialogbuttonColor()); // change button color
+            if(ThemeObject.getInstance().getDialogTextColor()!=0)
+                positiveButton.setTextColor(ThemeObject.getInstance().getDialogTextColor());
+            if(ThemeObject.getInstance().getDialogTextSize()!=0)
+                positiveButton.setTextSize(ThemeObject.getInstance().getDialogTextSize());
+            try {
+                Resources resources = dialog.getContext().getResources();
+                int alertTitleId = resources.getIdentifier("alertTitle", "id", "android");
+                TextView alertTitle = (TextView) dialog.getWindow().getDecorView().findViewById(alertTitleId);
+                if(ThemeObject.getInstance().getDialogTextColor()!=0)
+                    alertTitle.setTextColor(ThemeObject.getInstance().getDialogTextColor()); // change title text color
+                TextView alertMessage = (TextView) dialog.getWindow().getDecorView().findViewById(android.R.id.message);
+                if(ThemeObject.getInstance().getDialogTextColor()!=0)
+                    alertMessage.setTextColor(ThemeObject.getInstance().getDialogTextColor()); // change title text color
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
+
+    }
+
 
 }

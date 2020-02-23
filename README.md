@@ -96,7 +96,7 @@ To integrate goSellSDK into your project add it in your **root** `build.gradle` 
 Step 2. Add the dependency
 ```java
 	dependencies {
-	         implementation 'com.github.Tap-Payments:goSellSDK-Android:2.5.0'
+	         implementation 'com.github.Tap-Payments:goSellSDK-Android:2.6.0'
 	}
 ```
 
@@ -327,6 +327,10 @@ Don't forget to import the class at the beginning of the file:
 
           // show/hide pay button security icon
           .setPayButtonSecurityIconVisible(true) // **Optional**
+
+          // setup dialog textcolor and textsize
+           .setDialogTextColor(getResources().getColor(R.color.black1))     // **Optional**
+           .setDialogTextSize(17)                // **Optional**
       ;
 
           }
@@ -945,6 +949,21 @@ The following table describes its structure and specifies which fields are requi
             @SerializedName("SAVE_CARD_NO_UI")                      SAVE_CARD_NO_UI,
     }
  ```
+ 3. Card Type
+ ```java
+       public enum CardType {
+
+           /**
+            * Credit card type.
+            */
+           @SerializedName("CREDIT")  CREDIT,
+           /**
+            * Debit card type.
+            */
+           @SerializedName("DEBIT")  DEBIT
+       }
+ ```
+
  <a name="sdk_open_models"></a>
  ## SDK Open Models
   SDK open Models available for implementation through Merchant Project: 
