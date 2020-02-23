@@ -39,6 +39,7 @@ import company.tap.gosellapi.internal.utils.AmountCalculator;
 import company.tap.gosellapi.open.buttons.PayButtonView;
 import company.tap.gosellapi.open.data_manager.PaymentDataSource;
 import company.tap.gosellapi.open.delegate.SessionDelegate;
+import company.tap.gosellapi.open.enums.CardType;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.gosellapi.open.models.AuthorizeAction;
 import company.tap.gosellapi.open.models.Customer;
@@ -296,6 +297,13 @@ public class SDKSession implements View.OnClickListener{
     else
       paymentDataSource.setMerchant(null);
   }
+  /**
+   * set setCardType
+   */
+  public void setCardType(CardType cardType){
+    System.out.println("cardType ... "+cardType);
+    paymentDataSource.setcardType(cardType);
+  }
 
 
   /**
@@ -392,7 +400,7 @@ public class SDKSession implements View.OnClickListener{
             (this.paymentDataSource.getCurrency()!=null)?this.paymentDataSource.getCurrency().getIsoCode():"KWD",
             ( this.paymentDataSource.getCustomer()!=null)?this.paymentDataSource.getCustomer().getIdentifier():null,
             (this.paymentDataSource.getMerchant()!=null)?this.paymentDataSource.getMerchant().getId():null,
-            this.paymentDataSource.getPaymentDataType()
+            (this.paymentDataSource.getPaymentDataType()!=null)?this.paymentDataSource.getPaymentDataType():"ALL"
 
     );
 

@@ -1,4 +1,15 @@
 # CHANGELOG
+## [2.6.0] - 2020-02-23
+### Version release  with new feature:
+- Merchant can now set cardType[CREDIT/DEBIT] and pass through the sdk session.
+- sdk allows theming of dialog alert.
+- extra fees check as min fees and max fees.
+- payment Type added in request.
+- check for application_verified.
+### Impact on existing integrations:
+- The new update will not affect current integration.
+### Required changes for existing integrations before updating:
+- If the merchant wants to use the latest feature then update to the above version.
 ## [2.5.0] - 2020-02-03
 ### Version release for supporting additional languages:
 - Sdk release to support new languages German and Turkish

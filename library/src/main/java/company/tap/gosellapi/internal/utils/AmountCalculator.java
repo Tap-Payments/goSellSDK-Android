@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 import company.tap.gosellapi.internal.api.models.ExtraFee;
+import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 import company.tap.gosellapi.open.models.PaymentItem;
 import company.tap.gosellapi.open.models.Shipping;
 import company.tap.gosellapi.open.models.Tax;
@@ -122,14 +123,56 @@ public abstract class AmountCalculator {
                     case FIXED:
 
                         AmountedCurrency amountedCurrency = getAmountedCurrency(supportedCurrencies, fee.getCurrency());
-//                      increase = currency.getAmount().multiply(fee.getValue()).divide(amountedCurrency.getAmount());
-                        increase = currency.getAmount().multiply(fee.getValue()).divide(amountedCurrency.getAmount(), MathContext.DECIMAL64); /// handling issue of  quotient has a non terminating decimal expansion
+/***
+ * Based on JS Lib added check for Settlement currency equals the amounted currency.
+ */
+                        if(PaymentDataManager.getInstance().getPaymentOptionsDataManager().getPaymentOptionsResponse().getSettlement_currency()!=null)
+                            if (PaymentDataManager.getInstance().getPaymentOptionsDataManager().getPaymentOptionsResponse().getSettlement_currency().equals(currency.getCurrency())) {
+                                return fee.getValue();
+                            } else {
+                                /***
+                                 * Based on JS Lib Condition for extra fees calculation changed.
+                                 *  var rate =  settlement_currency.amount / current_currency.amount
+                                 *    extra_fee = fee.value * rate;
+                                 *
+                                 */
+
+
+                                /***
+                                Commented by Ahlaam
+                                 **/
+                                // increase = currency.getAmount().multiply(fee.getValue()).divide(amountedCurrency.getAmount(), MathContext.DECIMAL64); /// handling issue of  quotient has a non terminating decimal expansion
+                                BigDecimal rate = amountedCurrency.getAmount().divide(currency.getAmount(),MathContext.DECIMAL64);
+                                increase= fee.getValue().multiply(rate);
+                            }
 
                         break;
 
                     case PERCENTAGE:
 
-                        increase = currency.getAmount().multiply(fee.getNormalizedValue());
+                       /**
+                        * Commented to replace with JS*/
+                        // increase = currency.getAmount().multiply(fee.getNormalizedValue());
+
+                        /***
+                         * Increase i.e change in currency changed as per JS Lib FORMULA: extra_fee =  {amount} / (1 - fee.value / 100) - {amount};
+                         */
+                        increase = (currency.getAmount().divide(BigDecimal.valueOf(1).subtract((fee.getValue().divide(BigDecimal.valueOf(100)))),MathContext.DECIMAL64)).subtract(currency.getAmount());
+                      //  System.out.println("increase = " + increase );
+                        /**
+                         *  Applying Min and Max values based on the calculated extra fees.
+                         */
+                        if((fee.getMinimum_fee()!=null && fee.getMinimum_fee()!=0)|| (fee.getMaximum_fee()!= null && fee.getMaximum_fee()!=0)){
+                            if(Double.valueOf(String.valueOf(increase))>fee.getMinimum_fee() && Double.valueOf(String.valueOf(increase)) < fee.getMaximum_fee()){
+                                increase= increase;
+                            }else if(Double.valueOf(String.valueOf(increase)) < fee.getMinimum_fee()){
+                                increase = BigDecimal.valueOf(fee.getMinimum_fee());
+                            }else if(Double.valueOf(String.valueOf(increase))> fee.getMaximum_fee()){
+                                increase = BigDecimal.valueOf(fee.getMaximum_fee());
+                            }
+
+                        }
+
                         break;
                 }
 

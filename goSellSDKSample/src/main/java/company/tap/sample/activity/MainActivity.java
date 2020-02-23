@@ -53,6 +53,7 @@ import company.tap.gosellapi.open.controllers.SDKSession;
 import company.tap.gosellapi.open.controllers.ThemeObject;
 import company.tap.gosellapi.open.delegate.SessionDelegate;
 import company.tap.gosellapi.open.enums.AppearanceMode;
+import company.tap.gosellapi.open.enums.CardType;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.gosellapi.open.models.CardsList;
 import company.tap.gosellapi.open.models.Customer;
@@ -181,6 +182,11 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         .setPayButtonTextSize(14)
         .setPayButtonLoaderVisible(true)
         .setPayButtonSecurityIconVisible(true)
+
+     // setup dialog textcolor and textsize
+        .setDialogTextColor(getResources().getColor(R.color.black1))     // **Optional**
+        .setDialogTextSize(17)                // **Optional**
+
         ;
 
     }
@@ -250,6 +256,9 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         sdkSession.setDestination(null); // ** Optional ** you can pass Destinations object or null
 
         sdkSession.setMerchantID(null); // ** Optional ** you can pass merchant id or null
+
+        sdkSession.setCardType(CardType.CREDIT); // ** Optional ** you can pass which cardType[CREDIT/DEBIT] you want.By default it loads all available cards for Merchant.
+
 
     }
 

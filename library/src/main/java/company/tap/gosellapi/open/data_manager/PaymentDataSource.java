@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import company.tap.gosellapi.internal.api.models.Merchant;
+import company.tap.gosellapi.open.enums.CardType;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.gosellapi.open.models.AuthorizeAction;
 import company.tap.gosellapi.open.models.Customer;
@@ -68,6 +69,8 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
     Destinations destination;
     private @Nullable
     Merchant merchant;
+    private @Nullable
+    CardType cardType;
 
     private @NonNull
     Context context;
@@ -237,6 +240,13 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
      this.requires3DSecure = requires3DSecure;
    }
 
+    /**
+     * choose cardType
+     * @param cardType
+     */
+    public void setcardType(CardType cardType){
+        this.cardType = cardType;
+    }
 
 
     /**
@@ -383,6 +393,11 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
     @Override
     public String getPaymentDataType() {
         return paymentType;
+    }
+    @Override
+    @Nullable
+    public CardType getCardType() {
+        return cardType;
     }
 
 

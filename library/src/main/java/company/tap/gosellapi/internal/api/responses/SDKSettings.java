@@ -44,6 +44,10 @@ public final class SDKSettings implements BaseResponse {
         @Expose
         private InternalSDKSettings internalSDKSettings;
 
+        @SerializedName("verified_application")
+        @Expose
+        private boolean verified_application;
+
         /////////////////////////////////////////////////////////////////////////////////////////////////////
 
         /**
@@ -90,6 +94,17 @@ public final class SDKSettings implements BaseResponse {
         public InternalSDKSettings getInternalSDKSettings() {
             return internalSDKSettings;
         }
+
+
+        /**
+         * Gets verified_application.
+         *
+         * @return the verified_application
+         */
+        public boolean isVerified_application() {
+            return verified_application;
+        }
+
         //////////////////////////////////////////////////////////////////////////////////////////////////////
 
         /**

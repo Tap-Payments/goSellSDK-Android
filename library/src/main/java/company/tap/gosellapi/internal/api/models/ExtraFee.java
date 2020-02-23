@@ -17,6 +17,13 @@ public final class ExtraFee extends AmountModificator {
     @SerializedName("currency")
     @Expose
     private String currency;
+    @SerializedName("minimum_fee")
+    @Expose
+    private Double minimum_fee;
+    @SerializedName("maximum_fee")
+    @Expose
+    private Double maximum_fee;
+
 
     /**
      * Gets currency.
@@ -26,6 +33,23 @@ public final class ExtraFee extends AmountModificator {
     public String getCurrency() {
         return currency;
     }
+    /**
+     * Gets minimum_fee.
+     *
+     * @return the minimum_fee
+     */
+    public Double getMinimum_fee() {
+        return minimum_fee;
+    }
+    /**
+     * Gets maximum_fee.
+     *
+     * @return the maximum_fee
+     */
+    public Double getMaximum_fee() {
+        return maximum_fee;
+    }
+
 
     /**
      * Instantiates a new Extra fee.

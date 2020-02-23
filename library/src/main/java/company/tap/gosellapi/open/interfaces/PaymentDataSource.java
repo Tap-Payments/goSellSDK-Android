@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import company.tap.gosellapi.internal.api.models.Merchant;
+import company.tap.gosellapi.open.enums.CardType;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.gosellapi.open.models.AuthorizeAction;
 import company.tap.gosellapi.open.models.Customer;
@@ -117,5 +118,11 @@ public interface PaymentDataSource {
     Merchant     getMerchant();
     @Nullable
     String getPaymentDataType();
+
+    /**
+     *  Defines if user wants all cards or specific card types.
+     */
+    @Nullable
+    CardType getCardType();
 
 }
