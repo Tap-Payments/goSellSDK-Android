@@ -36,6 +36,10 @@ public final class Reference implements Serializable {
     @Expose
     @Nullable private String order;
 
+    @SerializedName("gosell_id")
+    @Expose
+    @Nullable private String gosell_id;
+
     /**
      * Gets acquirer.
      *
@@ -80,6 +84,16 @@ public final class Reference implements Serializable {
     @Nullable public String getTransaction() {
         return transaction;
     }
+    /**
+     * Gets gosell_id.
+     *
+     * @return the gosell_id
+     */
+    @Nullable
+    public String getGosell_id() {
+        return gosell_id;
+    }
+
 
     /**
      * Gets order.
