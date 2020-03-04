@@ -1,4 +1,11 @@
 # CHANGELOG
+## [2.7.0] - 2020-03-04
+### Version release additional feature:
+- Listing CardTypes based on Merchant choice.
+### Impact on existing integrations:
+- The new update will not affect current integration.
+### Required changes for existing integrations before updating:
+- If the Merchant wishes to use the above feature can take the above version.
 ## [2.6.1] - 2020-03-04
 ### Version release additional feature:
 - 3DS handling on the SDK
