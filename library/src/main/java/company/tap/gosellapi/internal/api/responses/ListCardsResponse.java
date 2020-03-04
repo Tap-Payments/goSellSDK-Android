@@ -10,6 +10,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 
 import company.tap.gosellapi.internal.api.models.SavedCard;
+import company.tap.gosellapi.open.data_manager.PaymentDataSource;
 
 /**
  * Created by haitham elsheshtawy on 25.06.2019.
@@ -56,6 +57,14 @@ public class ListCardsResponse implements BaseResponse {
         if ( data == null ) {
 
             data = new ArrayList<>();
+        }
+        /**
+         * Added to filter the cardType based on Merchant preference CREDIT/DEBIT
+         * */
+        for(int i=0;  i<data.size();i++){
+            if ((data != null && PaymentDataSource.getInstance().getCardType() != null) && !PaymentDataSource.getInstance().getCardType().toString().equals(data.get(i).getFunding())) {
+                data.remove(i);
+            }
         }
 
         return data;

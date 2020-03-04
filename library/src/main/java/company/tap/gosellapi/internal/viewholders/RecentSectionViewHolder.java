@@ -12,6 +12,7 @@ import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.adapters.RecentPaymentsRecyclerViewAdapter;
 import company.tap.gosellapi.internal.api.models.SavedCard;
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models.RecentSectionViewModel;
+import company.tap.gosellapi.open.data_manager.PaymentDataSource;
 
 /**
  * The type Recent section view holder.
@@ -41,6 +42,11 @@ public class RecentSectionViewHolder
         recentPaymentsRecyclerView = itemView.findViewById(R.id.recentPaymentsRecyclerView);
         linearLayoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
         recentPaymentsRecyclerView.setLayoutManager(linearLayoutManager);
+        for(int i=0;  i<data.size();i++){
+            if ((data != null && PaymentDataSource.getInstance().getCardType() != null) && !PaymentDataSource.getInstance().getCardType().toString().equals(data.get(i).getFunding())) {
+                data.remove(i);
+            }
+        }
         adapter = new RecentPaymentsRecyclerViewAdapter(data, this);
         recentPaymentsRecyclerView.setAdapter(adapter);
         if(viewModel!=null)
