@@ -621,8 +621,9 @@ public class CardCredentialsViewHolder
        BINLookupResponse binLookupResponse =  PaymentDataManager.getInstance().getBinLookupResponse();
        updateCardSystemsRecyclerView(brand.getCardBrand(),binLookupResponse==null?null:binLookupResponse.getScheme());
 
-        if (binLookupResponse != null && PaymentDataSource.getInstance().getCardType() != null)
-            if (!PaymentDataSource.getInstance().getCardType().toString().equals(binLookupResponse.getCardType())) {
+     //   if (binLookupResponse != null && PaymentDataSource.getInstance().getCardType() != null)
+           // if (!PaymentDataSource.getInstance().getCardType().toString().equals(binLookupResponse.getCardType())) {
+                if (binLookupResponse != null && PaymentDataSource.getInstance().getCardType() != null?!PaymentDataSource.getInstance().getCardType().toString().equals(binLookupResponse.getCardType()):false) {
                 if (ThemeObject.getInstance().getCardInputInvalidTextColor() != 0) {
                     cardNumberField.setTextColor(ThemeObject.getInstance().getCardInputInvalidTextColor());
                 }
