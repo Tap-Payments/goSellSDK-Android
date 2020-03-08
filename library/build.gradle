@@ -23,6 +23,7 @@ android {
         versionCode 2
        // versionName "2.0"
         versionName getVersionName()
+        consumerProguardFiles 'proguard-rules.pro'
     }
     buildTypes {
         release {
