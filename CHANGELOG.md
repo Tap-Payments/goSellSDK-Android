@@ -1,4 +1,11 @@
 # CHANGELOG
+## [2.7.3] - 2020-04-06
+### Hot Fix:
+- Upgraded TapGLkit.
+### Impact on existing integrations:
+- The new update will not affect current integration.
+### Required changes for existing integrations before updating:
+- If the Merchant faces issue in release apk then they can use the above version.
 ## [2.7.2] - 2020-03-08
 ### Hot Fix:
 - Bug Fix with proguardRules.
