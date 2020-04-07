@@ -909,7 +909,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
     @Override
     public void didCardSavedBefore() {
-        Log.d("GoSellPaymentActivity", " card already saved before ....");
+       // Log.d("GoSellPaymentActivity", " card already saved before ....");
         stopPayButtonLoadingView();
 
     }
@@ -918,6 +918,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     public void fireCardTokenizationProcessCompleted(Token token) {
         closePaymentActivity();
         SDKSession.getListener().cardTokenizedSuccessfully(token);
+        startPaymentFlag= false;
     }
 
 
@@ -1021,7 +1022,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
     @Override
     public void didReceiveAuthorize(Authorize authorize) {
-        Log.d("GoSellPaymentActivity", " Cards >> didReceiveAuthorize * * * ");
+      //  Log.d("GoSellPaymentActivity", " Cards >> didReceiveAuthorize * * * ");
         if (authorize == null) return;
         Log.d("GoSellPaymentActivity", " Cards >> didReceiveAuthorize * * * " + authorize.getStatus());
 
@@ -1185,6 +1186,8 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                                 @Override
                                 public void onFinish() {
                                     startPaymentProcess();
+                                    /** flag reset to avoid reload of page on touch screen of webview on 07-04-2020**/
+                                    startPaymentFlag = false;
                                 }
                             }.start();
 
