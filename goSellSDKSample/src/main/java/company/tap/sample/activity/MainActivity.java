@@ -257,7 +257,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
         sdkSession.setMerchantID(null); // ** Optional ** you can pass merchant id or null
 
-        sdkSession.setCardType(CardType.CREDIT); // ** Optional ** you can pass which cardType[CREDIT/DEBIT] you want.By default it loads all available cards for Merchant.
+      //  sdkSession.setCardType(CardType.CREDIT); // ** Optional ** you can pass which cardType[CREDIT/DEBIT] you want.By default it loads all available cards for Merchant.
 
 
     }
@@ -279,22 +279,6 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
          */
         startSDKWithUI();
 
-        //////////////////////////////////////////////////////    SDK Tokenization without UI //////////////////////
-        /**
-         * 2- Start using  SDK to tokenize your card without using SDK main activity (Without Tap CARD FORM)
-         * After the SDK finishes card tokenization, it will notify this activity with tokenization result in either
-         * cardTokenizedSuccessfully(@NonNull String token) or sdkError(@Nullable GoSellError goSellError)
-         */
-//          startSDKTokenizationWithoutUI();
-
-        //////////////////////////////////////////////////////    SDK Saving card without UI //////////////////////
-        /**
-         *  3- Start using  SDK to save your card without using SDK main activity ((Without Tap CARD FORM))
-         *  After the SDK finishes card tokenization, it will notify this activity with save card result in either
-         *  cardSaved(@NonNull Charge charge) or sdkError(@Nullable GoSellError goSellError)
-         *
-         */
-//         startSDKSavingCardWithoutUI();
     }
 
 
@@ -311,36 +295,6 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         }
     }
 
-
-    /**
-     * Start using  SDK to tokenize your card without using SDK main activity
-     */
-
-    private void startSDKTokenizationWithoutUI(){
-        if(sdkSession!=null){
-            // set transaction mode [ TransactionMode.TOKENIZE_CARD_NO_UI ]
-            sdkSession.setTransactionMode(TransactionMode.TOKENIZE_CARD_NO_UI);    //** Required **
-            // pass card info to SDK
-            sdkSession.setCardInfo("5123450000000008","05","21","100","Haitham Elsheshtawy",null); //** Required **
-            // if you are not using tap button then start SDK using the following call
-           // sdkSession.start(this);
-        }
-    }
-
-
-    /**
-     * Start using  SDK to save your card without using SDK main activity
-     */
-    private void startSDKSavingCardWithoutUI(){
-        if(sdkSession!=null){
-            // set transaction mode [ TransactionMode.SAVE_CARD_NO_UI ]
-            sdkSession.setTransactionMode(TransactionMode.SAVE_CARD_NO_UI);    //** Required **
-            // pass card info to SDK
-            sdkSession.setCardInfo("5123450000000008","05","21","100","Haitham Elsheshtawy",null); //** Required **
-            // if you are not using tap button then start SDK using the following call
-//            sdkSession.start(this);
-        }
-    }
 
 
     /**
