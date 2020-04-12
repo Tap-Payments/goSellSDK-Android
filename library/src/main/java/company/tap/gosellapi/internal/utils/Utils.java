@@ -133,7 +133,7 @@ public class Utils {
      *
      * @param activity the activity
      */
-    public static void hideKeyboard(Activity activity) {
+    public static boolean hideKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         //Find the currently focused view, so we can grab the correct window token from it.
         View view = activity.getCurrentFocus();
@@ -141,7 +141,7 @@ public class Utils {
         if (view == null) {
             view = new View(activity);
         }
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+      return  imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
 
