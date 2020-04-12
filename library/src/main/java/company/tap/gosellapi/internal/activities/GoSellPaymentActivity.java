@@ -103,7 +103,9 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     private boolean keyboardVisible = false;
     private boolean startPaymentFlag = false;
     private GroupViewModel groupViewModel;
+
     private static final String TAG = "GoSellPaymentActivity";
+
     private  boolean selectedCurrencyAsynchronous = false;
 
     private ScrollView main_windowed_scrollview;
@@ -1236,6 +1238,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         dialogBuilder.show();
 
     }
+
     private void startPaymentWithTimer() {
         new CountDownTimer(1000, 1000) {
             @Override
@@ -1253,6 +1256,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
             }
         }.start();
     }
+
 
     private void openAsyncActivity(){
         payButton.setEnabled(false);

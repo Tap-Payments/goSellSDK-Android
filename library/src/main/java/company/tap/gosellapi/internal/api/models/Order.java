@@ -15,6 +15,13 @@ public final class Order implements Serializable {
     @SerializedName("id")
     @Expose
     @Nullable private String id;
+    @SerializedName("reference")
+    @Expose
+    @Nullable private String reference;
+    @SerializedName("store_url")
+    @Expose
+    @Nullable private String store_url;
+
 
     /**
      * Instantiates a new Order.
@@ -33,4 +40,24 @@ public final class Order implements Serializable {
     public String getId() {
         return id;
     }
+    /**
+     * Gets reference.
+     *
+     * @return the reference
+     */
+    @Nullable
+    public String getReference() {
+        return reference;
+    }
+    /**
+     * Gets store_url.
+     *
+     * @return the store_url
+     */
+    @Nullable
+    public String getStore_url() {
+        return store_url;
+    }
+
+
 }

@@ -1,4 +1,12 @@
 # CHANGELOG
+## [2.7.5] - 2020-04-12
+### Version release HotFixes:
+- Reloading of 3D securepage stopped
+- Keyboard Listener Issue resolved
+- Asynchronous missing as in X added
+- Update Readme and ChangeLog
+### Impact on existing integrations:
+- Always good to update to latest release
 ## [2.7.4] - 2020-04-07
 ### Version release HotFixes:
 - Reloading of 3D securepage stopped
