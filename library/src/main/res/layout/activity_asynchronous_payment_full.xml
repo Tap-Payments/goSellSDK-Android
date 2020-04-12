@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/basicLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical"
+
+    >
+
+    <include layout="@layout/gosellapi_toolbar_main"
+        android:id="@+id/toolbar"/>
+
+
+    <!-- TOP SEPARATOR -->
+    <View
+        android:id="@+id/topSeparator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/mercury"
+
+
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="363dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_paymentprogress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:padding="@dimen/margin_basic_20dp"
+            android:text="@string/payment_in_progress"
+            android:textColor="@color/graymedium"
+            android:fontFamily="@font/roboto_regular"
+            android:textAlignment="center"
+            android:textSize="22sp"
+            android:layout_centerHorizontal="true"
+
+
+            />
+
+        <TextView
+            android:id="@+id/tv_email_phone_sent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingLeft="@dimen/margin_basic_10dp"
+            android:paddingTop="@dimen/margin_basic_10dp"
+            android:paddingRight="@dimen/margin_basic_10dp"
+            android:textAlignment="center"
+            android:text=""
+            android:textColor="@color/graymedium"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/tv_emailaddress_phonenumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:textAlignment="center"
+            android:text=""
+            android:textColor="@color/graymedium"
+            android:textSize="19sp"
+
+
+            />
+
+        <TextView
+            android:id="@+id/tv_fawry_payreference"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:paddingBottom="@dimen/margin_basic_10dp"
+            android:textColor="@color/graymedium"
+            android:text="@string/with_your_fawry_pay_reference"
+            android:textSize="17sp"
+            android:layout_centerHorizontal="true"
+
+            />
+
+        <TextView
+            android:id="@+id/tv_ordercode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingLeft="@dimen/margin_basic_10dp"
+            android:paddingTop="@dimen/margin_basic_10dp"
+            android:paddingRight="@dimen/margin_basic_10dp"
+            android:text="@string/order_code"
+            android:textAlignment="center"
+            android:textColor="@color/graymedium"
+            android:textSize="17sp"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/roboto_medium"
+
+            />
+
+        <TextView
+            android:id="@+id/tv_ordernumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="5dp"
+            android:textColor="@color/graymedium"
+            android:textAlignment="center"
+            android:text=""
+            android:textSize="45sp"
+            android:fontFamily="@font/roboto_regular"
+
+            />
+
+        <TextView
+            android:id="@+id/tv_codeexp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingLeft="@dimen/margin_basic_10dp"
+            android:paddingTop="@dimen/margin_basic_10dp"
+            android:paddingRight="@dimen/margin_basic_10dp"
+            android:text="@string/code_expires_on"
+            android:textColor="@color/graymedium"
+            android:textAlignment="center"
+            android:textSize="17sp"
+            android:fontFamily="@font/roboto_medium"
+
+            />
+
+        <TextView
+            android:id="@+id/tv_codeexp_datetime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:paddingBottom="@dimen/margin_basic_10dp"
+            android:textColor="@color/graymedium"
+            android:text=""
+            android:textAlignment="center"
+            android:textSize="17sp"
+            android:fontFamily="@font/roboto_medium"
+            />
+
+        <TextView
+            android:id="@+id/tv_fawrytext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingLeft="@dimen/margin_basic_20dp"
+            android:paddingTop="@dimen/margin_basic_10dp"
+            android:paddingRight="@dimen/margin_basic_20dp"
+            android:textColor="@color/graymedium"
+            android:textAlignment="center"
+            android:text="@string/fawry_cash_location"
+            android:textSize="17sp"
+
+
+            />
+
+        <TextView
+            android:id="@+id/tv_storelink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:autoLink="web"
+            android:text=""
+            android:textSize="17sp"
+
+            />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/close_btn"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginHorizontal="@dimen/margin_basic_20dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/btn_confirm_selector"
+        android:text="@string/close"
+        android:textColor="@color/white"
+        />
+
+</LinearLayout>

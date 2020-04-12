@@ -34,6 +34,9 @@
     <activity
         android:name=".internal.activities.CountriesActivity"
         android:theme="@style/GoSellSDKAppTheme"/>
+    <activity
+        android:name=".internal.activities.AsynchronousPaymentActivity"
+        android:theme="@style/TransparentCompat"/>
 
   </application>
 

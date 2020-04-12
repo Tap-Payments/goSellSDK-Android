@@ -44,5 +44,8 @@
     <color name="transparent_red">#0DCC0000</color>
     
     <color name="security_text_color">#C9C9C9</color>
+    <color name="graymedium">#585858</color>
+
+
 
 </resources>

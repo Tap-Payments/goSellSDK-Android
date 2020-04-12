@@ -114,6 +114,14 @@
   <string name="ok" translatable="false">OK</string>
   <string name="alert_un_supported_card_title" translatable="false">Attention</string>
   <string name="alert_un_supported_card_message" translatable="false">This card is not supported</string>
+  <string name="payment_in_progress" translatable="false">Payment in Progress</string>
+  <string name="with_your_fawry_pay_reference" translatable="false">with your Fawry Pay Reference.</string>
+  <string name="order_code" translatable="false">Order Code</string>
+  <string name="email_sent"  translatable="false">An email has been sent to</string>
+  <string name="sms_sent"  translatable="false">An sms has been sent to</string>
+  <string name="email_sms__sent" translatable="false">An SMS and email has been sent " </string>
+  <string name="fawry_cash_location" translatable="false">Please visit a Fawry Cash Location \n using the link below to complete your payment</string>
+  <string name="code_expires_on" translatable="false">Code Expires on</string>
 
 
 </resources>

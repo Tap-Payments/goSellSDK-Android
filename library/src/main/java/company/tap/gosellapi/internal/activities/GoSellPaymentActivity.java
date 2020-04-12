@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,6 +17,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.animation.TranslateAnimation;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -23,6 +25,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -78,6 +81,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     private static final int SCAN_REQUEST_CODE = 123;
     private static final int CURRENCIES_REQUEST_CODE = 124;
     private static final int WEB_PAYMENT_REQUEST_CODE = 125;
+    private static final int ASYNCHRONOUS_REQUEST_CODE = 126;
 
     private PaymentOptionsDataManager dataSource;
     private FragmentManager fragmentManager;
@@ -100,6 +104,9 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     private boolean startPaymentFlag = false;
     private GroupViewModel groupViewModel;
     private static final String TAG = "GoSellPaymentActivity";
+    private  boolean selectedCurrencyAsynchronous = false;
+
+    private ScrollView main_windowed_scrollview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +119,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
         if (apperanceMode == AppearanceMode.WINDOWED_MODE) {
             setContentView(R.layout.gosellapi_activity_main_windowed);
+            main_windowed_scrollview = findViewById(R.id.main_windowed_scrollview);
         } else {
             setContentView(R.layout.gosellapi_activity_main);
         }
@@ -346,15 +354,31 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
     @Override
     public void startWebPayment(WebPaymentViewModel model) {
+        if (model == null)return;
+
         this.webPaymentViewModel = model;
+        if(model.getData()!=null)
+            selectedCurrencyAsynchronous = model.getData().isAsynchronous();
         PaymentDataManager.getInstance().checkWebPaymentExtraFees(model, this);
     }
 
     private void startWebPaymentProcess() {
-        Intent intent = new Intent(this, WebPaymentActivity.class);
-        ActivityDataExchanger.getInstance().setWebPaymentViewModel(webPaymentViewModel);
-        startActivityForResult(intent, WEB_PAYMENT_REQUEST_CODE);
+        if (selectedCurrencyAsynchronous) {
+            // ActivityDataExchanger.getInstance().setWebPaymentViewModel(webPaymentViewModel);
+            PaymentDataManager.getInstance().initiatePayment(webPaymentViewModel, this);
+            payButton.setEnabled(true);
+            payButton.getLoadingView().start();
+
+        } else {
+            Intent intent = new Intent(this, WebPaymentActivity.class);
+            ActivityDataExchanger.getInstance().setWebPaymentViewModel(webPaymentViewModel);
+            startActivityForResult(intent, WEB_PAYMENT_REQUEST_CODE);
+        }
+        if (webPaymentViewModel != null) webPaymentViewModel.disableWebView();
+
     }
+
+
 
     @Override
     public void startScanCard() {
@@ -728,6 +752,20 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                     }
                 }
                 break;
+            case ASYNCHRONOUS_REQUEST_CODE:
+                stopPayButtonLoadingView();
+                payButton.setEnabled(false);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        // selectedCurrencyAsynchronous=false;
+                        finish();
+
+                    }
+                }, 1000);
+
+                break;
+
 
         }
     }
@@ -838,6 +876,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
             case RESTRICTED:
             case UNKNOWN:
             case TIMEDOUT:
+            case VOID:
                 try {
                     closePaymentActivity();
                     SDKSession.getListener().paymentFailed(charge);
@@ -846,6 +885,24 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                     closePaymentActivity();
                 }
                 break;
+            case IN_PROGRESS:
+                if(charge.getTransaction() !=null && charge.getTransaction().isAsynchronous())
+                    if (main_windowed_scrollview != null) {
+                        RelativeLayout.LayoutParams layoutParams =
+                                new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                        main_windowed_scrollview.setLayoutParams(layoutParams);
+                        TranslateAnimation animate = new TranslateAnimation(0, 0, main_windowed_scrollview.getHeight(), 0);
+                        animate.setDuration(500);
+                        main_windowed_scrollview.startAnimation(animate);
+
+                    }
+                PaymentDataManager.getInstance().setChargeOrAuthorize(charge);
+                clearPaymentProcessListeners();
+                selectedCurrencyAsynchronous=false;
+                if(webPaymentViewModel !=null)webPaymentViewModel.enableWebView();
+                new Handler().postDelayed(() -> openAsyncActivity(), 800);
+                break;
+
         }
         obtainPaymentURLFromChargeOrAuthorizeOrSaveCard(charge);
 
@@ -1054,6 +1111,9 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
             case CANCELLED:
             case DECLINED:
             case RESTRICTED:
+            case UNKNOWN:
+            case VOID:
+            case TIMEDOUT:
                 try {
                     closePaymentActivity();
                     SDKSession.getListener().authorizationFailed(authorize);
@@ -1194,6 +1254,13 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         }.start();
     }
 
+    private void openAsyncActivity(){
+        payButton.setEnabled(false);
+        stopPayButtonLoadingView();
+        Intent intent= new Intent(this, AsynchronousPaymentActivity.class);
+        startActivityForResult(intent,ASYNCHRONOUS_REQUEST_CODE);
+        overridePendingTransition(R.anim.slide_in_top,0);
+    }
 
 }
 
