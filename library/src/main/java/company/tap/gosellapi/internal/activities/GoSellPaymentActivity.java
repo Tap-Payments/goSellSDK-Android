@@ -99,6 +99,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     private boolean keyboardVisible = false;
     private boolean startPaymentFlag = false;
     private GroupViewModel groupViewModel;
+    private static final String TAG = "GoSellPaymentActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,7 +145,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         SDKSession.getListener().sessionHasStarted();
 
         saveCardChecked = false;
-        setKeyboardVisibilityListener();
+
         if(recentSectionViewModel!=null)recentSectionViewModel.EnableRecentView();
         if(webPaymentViewModel!=null)webPaymentViewModel.enableWebView();
         PaymentDataManager.getInstance().setCardPaymentProcessStatus(false);
@@ -176,12 +177,8 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
             if (cardCredentialsViewModel != null)
                 SDKSession.getListener().userEnabledSaveCardOption(cardCredentialsViewModel.shouldSaveCard());
 
-            if (keyboardVisible) {
-                startPaymentFlag = true;
-                Utils.hideKeyboard(GoSellPaymentActivity.this);
-            } else {
-                startPaymentProcess();
-            }
+            boolean keyBoardHidden =  Utils.hideKeyboard(GoSellPaymentActivity.this);
+            startPaymentWithTimer();
         });
 
         setupPayButton();
@@ -1144,61 +1141,6 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-    public void setKeyboardVisibilityListener() {
-
-        final View contentView = findViewById(android.R.id.content);
-        contentView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            private int mPreviousHeight;
-
-            @Override
-            public void onGlobalLayout() {
-                int newHeight = contentView.getHeight();
-
-                if (newHeight == mPreviousHeight)
-                    return;
-
-                mPreviousHeight = newHeight;
-
-                if (getResources().getConfiguration().orientation != currentOrientation) {
-                    currentOrientation = getResources().getConfiguration().orientation;
-                    mAppHeight = 0;
-                }
-
-                if (newHeight >= mAppHeight) {
-                    mAppHeight = newHeight;
-                }
-
-                if (newHeight != 0) {
-                    if (mAppHeight > newHeight) {
-                        // Height decreased: keyboard was shown
-                        keyboardVisible = true;
-                    } else {
-                        // Height increased: keyboard was hidden
-                        keyboardVisible = false;
-                        if (startPaymentFlag) {
-
-                            new CountDownTimer(1, 1000) {
-                                @Override
-                                public void onTick(long millisUntilFinished) {
-                                }
-
-                                @Override
-                                public void onFinish() {
-                                    startPaymentProcess();
-                                    /** flag reset to avoid reload of page on touch screen of webview on 07-04-2020**/
-                                    startPaymentFlag = false;
-                                }
-                            }.start();
-
-
-                        }
-                    }
-                }
-            }
-        });
-    }
-
     private void startPaymentProcess() {
         checkInternetConnectivity();
     }
@@ -1234,6 +1176,24 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         dialogBuilder.show();
 
     }
+    private void startPaymentWithTimer() {
+        new CountDownTimer(1000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+            }
+
+            @Override
+            public void onFinish() {
+                Log.e(TAG, "startPaymentFlag on finish:" + String.valueOf(startPaymentFlag));
+                startPaymentProcess();
+                /**reset flag added to avoid reloading on 07apr2020 **/
+                startPaymentFlag = false;
+
+
+            }
+        }.start();
+    }
+
 
 }
 
