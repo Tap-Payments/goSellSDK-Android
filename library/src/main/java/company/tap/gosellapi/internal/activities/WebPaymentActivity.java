@@ -190,6 +190,7 @@ public class WebPaymentActivity extends BaseActionBarActivity implements IPaymen
         case RESTRICTED:
         case UNKNOWN:
         case TIMEDOUT:
+        case VOID:
           finishActivityWithResultCodeOK(charge);
         break;
       }

@@ -93,7 +93,7 @@
 
 
     <dimen name="cancel_payment_width">48dp</dimen>
-
+    <dimen name="font_size_15sp">15sp</dimen>
 
 </resources>
 
