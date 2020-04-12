@@ -1,4 +1,9 @@
 # CHANGELOG
+## [2.7.6] - 2020-04-12
+### Version release Enhancement:
+- Updated Expiry object in Card Object
+- Add getter for lastfour
+- Update Readme and ChangeLog
 ## [2.7.5] - 2020-04-12
 ### Version release HotFixes:
 - Reloading of 3D securepage stopped

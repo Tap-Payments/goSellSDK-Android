@@ -1,5 +1,8 @@
 package company.tap.gosellapi.internal.api.models;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -46,6 +49,10 @@ public final class Card implements Serializable {
     @SerializedName("bin")
     @Expose
     private String bin;
+
+    @SerializedName("expiry")
+    @Expose
+    @Nullable private ExpirationDate expiry;
 
     /**
      * Gets id.
@@ -128,4 +135,25 @@ public final class Card implements Serializable {
     public String getBin() {
         return bin;
     }
+
+    /**
+     * Gets last four.
+     *
+     * @return Last 4 digits of the card.
+     */
+    @NonNull
+    public String getLastFour() {
+        return lastFour;
+    }
+
+    /**
+     * Gets expiry.
+     *
+     * @return Expiration date.
+     */
+    @Nullable
+    public ExpirationDate getExpiry() {
+        return expiry;
+    }
+
 }
