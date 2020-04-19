@@ -840,6 +840,8 @@ public class CardCredentialsViewHolder
                 if (SDK_INT >= Build.VERSION_CODES.M) {
                     cardNumberField.setTextColor(itemView.getContext().getColor(R.color.greyish_brown));
                 }
+                cardNumberField.setText("");
+                cardNumberField.setText(null);
                 dialog.dismiss();
 
             }
@@ -847,7 +849,7 @@ public class CardCredentialsViewHolder
         });
 
         PaymentDataManager.getInstance().setBinLookupResponse(null);
-        cardNumberField.setText(null);
+       // cardNumberField.setText(null);
         AlertDialog dialog = dialogBuilder.create();
 
         // Finally, display the alert dialog
