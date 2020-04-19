@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.os.Build;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TextInputLayout;
@@ -478,7 +479,8 @@ public class CardCredentialsViewHolder
         });
 
         if (!viewModel.getCardNumber().isEmpty()) {
-            cardNumberField.setText(viewModel.getCardNumber());
+            handleScanbinLookupResponse();
+           // cardNumberField.setText(viewModel.getCardNumber());
         }
 
         if (!viewModel.getExpirationMonth().isEmpty() && !viewModel.getExpirationYear().isEmpty()) {
@@ -877,6 +879,30 @@ public class CardCredentialsViewHolder
 
 
     }
+    private void handleScanbinLookupResponse(){
+        DefinedCardBrand brand = validateCardNumber(viewModel.getCardNumber());
+        CardBrand cardBrand = brand.getCardBrand();
+        if(viewModel.getCardNumber().length()> BIN_NUMBER_LENGTH){
+            viewModel.binNumberEntered(viewModel.getCardNumber().substring(0,6));
+        }
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // do something after 1s = 1000 miliseconds since set response takes time
+                BINLookupResponse binLookupResponse  =  PaymentDataManager.getInstance().getBinLookupResponse();
+                viewModel.setPaymentOption(cardBrand, binLookupResponse ==null?null: binLookupResponse.getScheme());
+                System.out.println("card = " + viewModel.getCardNumber() +"binlookup "+ PaymentDataManager.getInstance().getBinLookupResponse().getCardType());
+                if (binLookupResponse!=null && PaymentDataSource.getInstance().getCardType() != null?!PaymentDataSource.getInstance().getCardType().toString().equals(binLookupResponse.getCardType()):false) {
+                    if (ThemeObject.getInstance().getCardInputInvalidTextColor() != 0)
+                        cardNumberField.setTextColor(ThemeObject.getInstance().getCardInputInvalidTextColor());
+                    showDialog(itemView.getResources().getString(R.string.alert_un_supported_card_title), itemView.getResources().getString(R.string.alert_un_supported_card_message));
+                }else{
+                    cardNumberField.setText(viewModel.getCardNumber());
+                }
+            }
+        }, 1000); //Time in mis
 
+
+    }
 
 }

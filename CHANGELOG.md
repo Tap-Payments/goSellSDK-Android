@@ -1,4 +1,8 @@
 # CHANGELOG
+## [2.7.7] - 2020-04-19
+### Version release HotFix:
+- CardType validation on Scanning
+- Update Readme and ChangeLog.
 ## [2.7.6] - 2020-04-12
 ### Version release Enhancement:
 - Updated Expiry object in Card Object
