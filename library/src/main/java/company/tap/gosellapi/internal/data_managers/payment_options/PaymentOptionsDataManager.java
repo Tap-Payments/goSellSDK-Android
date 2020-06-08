@@ -32,6 +32,7 @@ import company.tap.gosellapi.internal.utils.ActivityDataExchanger;
 import company.tap.gosellapi.internal.utils.CompoundFilter;
 import company.tap.gosellapi.internal.utils.Utils;
 import company.tap.gosellapi.internal.viewholders.GroupViewHolder;
+import company.tap.gosellapi.open.data_manager.PaymentDataSource;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import io.card.payment.CreditCard;
 
@@ -621,12 +622,15 @@ public class PaymentOptionsDataManager {
     }
 
     String cardholderName = card.cardholderName;
-    if (cardholderName != null && !cardholderName.isEmpty()) {
+      if (cardholderName != null && !cardholderName.isEmpty()) {
+        cardCredentialsViewModel.setNameOnCard(card.cardholderName);
+      } else if(PaymentDataSource.getInstance().getDefaultCardHolderName()!=null){
+        if (!PaymentDataSource.getInstance().getDefaultCardHolderName().isEmpty())
+          cardCredentialsViewModel.setNameOnCard(PaymentDataSource.getInstance().getDefaultCardHolderName());
+      }
 
-      cardCredentialsViewModel.setNameOnCard(card.cardholderName);
-    }
 
-    cardCredentialsViewModel.updateData();
+      cardCredentialsViewModel.updateData();
   }
 
 

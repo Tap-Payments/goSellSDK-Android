@@ -305,6 +305,16 @@ public class SDKSession implements View.OnClickListener{
     paymentDataSource.setcardType(cardType);
   }
 
+  /**
+   * set default cardholderName
+   *
+   * @param defaultCardHolderName the default cardholderName
+   */
+  public void setDefaultCardHolderName(String defaultCardHolderName){
+    paymentDataSource.setDefaultCardHolderName(defaultCardHolderName);
+  }
+
+
 
   /**
    * Handle pay button click event

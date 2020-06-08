@@ -1,4 +1,8 @@
 # CHANGELOG
+## [2.8.0] - 2020-06-08
+### Version release with New Feature:
+- Merchant can now set defaultCardHolderName (Optional) and pass through the sdk session.This allows him from typing the name repeatedly.
+- Update Readme and ChangeLog.
 ## [2.7.8] - 2020-04-19
 ### Version release HotFix:
 - CardType validation on Scanning clear on cancel

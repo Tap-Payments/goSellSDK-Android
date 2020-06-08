@@ -124,5 +124,9 @@ public interface PaymentDataSource {
      */
     @Nullable
     CardType getCardType();
+    /**
+     * Defines the default cardHolderName. Optional. @return the default CardHolderName
+     */
+    @Nullable    String                  getDefaultCardHolderName();
 
 }
