@@ -96,7 +96,7 @@ To integrate goSellSDK into your project add it in your **root** `build.gradle` 
 Step 2. Add the dependency
 ```java
 	dependencies {
-	         implementation 'com.github.Tap-Payments:goSellSDK-Android:2.7.8'
+	         implementation 'com.github.Tap-Payments:goSellSDK-Android:2.8.0'
 	}
 ```
 
@@ -440,6 +440,10 @@ Don't forget to import the class at the beginning of the file:
   	 <td> setButtonView </td>
   	 <td> If you included TAP PayButton in your activity then you need to configure it and then pass it to SDKSession through this method.</td>
     </tr>
+    <tr>
+     <td> setDefaultCardHolderName </td>
+     <td> Sets default CardHoldername in the field, without the user need to re-type.(OPTIONAL) </td>
+     </tr>
 </table>
 
 
@@ -512,7 +516,8 @@ Don't forget to import the class at the beginning of the file:
 
              sdkSession.setPaymentType("WEB");   //** Merchant can customize payment options [WEB/CARD] for each transaction or it will show all payment options granted to him.
 
-    
+            sdkSession.setDefaultCardHolderName("TEST TAP"); // ** Optional ** you can pass default CardHolderName of the user .So you don't need to type it.
+
             /**
              * Use this method where ever you want to show TAP SDK Main Screen.
              * This method must be called after you configured SDK as above

@@ -491,6 +491,9 @@ public class CardCredentialsViewHolder
 
         if (!viewModel.getNameOnCard().isEmpty()) {
             nameOnCardField.setText(viewModel.getNameOnCard());
+        } else if(PaymentDataSource.getInstance().getDefaultCardHolderName()!=null){
+            if(!PaymentDataSource.getInstance().getDefaultCardHolderName().isEmpty())
+                nameOnCardField.setText(PaymentDataSource.getInstance().getDefaultCardHolderName());
         }
 
 

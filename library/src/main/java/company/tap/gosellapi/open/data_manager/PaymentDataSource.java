@@ -79,6 +79,8 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
     String trx_curr = "kwd";
     private @NonNull
     String trx_mode = "fullscreen";
+    private @Nullable
+    String defaultCardHolderName;
 
     //////////////////////// Instantiation Using Singleton  ///////////////////////////////////////
 
@@ -281,7 +283,17 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
      */
     public void setMerchant(Merchant merchant){this.merchant=merchant;}
 
-/////////////////   Getter's Area  /////////////////////////////////////////////////////////////////
+    /**
+     * Set default CardholderName.
+     *
+     * @param defaultCardHolderName the  default CardholderName
+     */
+    public void setDefaultCardHolderName(@Nullable String defaultCardHolderName){
+        this.defaultCardHolderName = defaultCardHolderName;
+    }
+
+
+    /////////////////   Getter's Area  /////////////////////////////////////////////////////////////////
     @Override
     public @NonNull
     TapCurrency getCurrency() {
@@ -398,6 +410,11 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
     @Nullable
     public CardType getCardType() {
         return cardType;
+    }
+    @Nullable
+    @Override
+    public String getDefaultCardHolderName() {
+        return defaultCardHolderName;
     }
 
 

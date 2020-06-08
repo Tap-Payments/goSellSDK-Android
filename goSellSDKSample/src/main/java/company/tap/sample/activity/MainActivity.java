@@ -259,6 +259,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
         sdkSession.setCardType(CardType.CREDIT); // ** Optional ** you can pass which cardType[CREDIT/DEBIT] you want.By default it loads all available cards for Merchant.
 
+        sdkSession.setDefaultCardHolderName("TEST TAP"); // ** Optional ** you can pass default CardHolderName of the user .So you don't need to type it.
 
     }
 
