@@ -128,5 +128,11 @@ public interface PaymentDataSource {
      * Defines the default cardHolderName. Optional. @return the default CardHolderName
      */
     @Nullable    String                  getDefaultCardHolderName();
+    /**
+     * Defines if user allowed to edit the cardHolderName. @return the enableEditCardHolderName
+     * @return
+     */
+    @NonNull    boolean                 getEnableEditCardHolderName();
+
 
 }

@@ -314,6 +314,14 @@ public class SDKSession implements View.OnClickListener{
     paymentDataSource.setDefaultCardHolderName(defaultCardHolderName);
   }
 
+  /**
+   * enable or disable edit cardholdername.
+   * @param enableCardHolderName
+   */
+  public void isUserAllowedToEnableCardHolderName(boolean  enableCardHolderName){
+    System.out.println("isUserAllowedToEnableCardHolderName >>> "+enableCardHolderName);
+    paymentDataSource.isUserAllowedToEditCardHolderName(enableCardHolderName);
+  }
 
 
   /**

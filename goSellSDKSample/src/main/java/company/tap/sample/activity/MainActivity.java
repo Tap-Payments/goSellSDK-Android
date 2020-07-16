@@ -261,6 +261,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
         sdkSession.setDefaultCardHolderName("TEST TAP"); // ** Optional ** you can pass default CardHolderName of the user .So you don't need to type it.
 
+        sdkSession.isUserAllowedToEnableCardHolderName(false); // ** Optional ** you can enable/ disable  default CardHolderName .
     }
 
 
