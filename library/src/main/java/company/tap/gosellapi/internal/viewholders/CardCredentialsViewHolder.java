@@ -496,8 +496,19 @@ public class CardCredentialsViewHolder
                 nameOnCardField.setText(PaymentDataSource.getInstance().getDefaultCardHolderName());
         }
 
+        if(PaymentDataSource.getInstance()!=null && PaymentDataSource.getInstance().getEnableEditCardHolderName()== true ){
+            nameOnCardField.setEnabled(true);
+        }else if(PaymentDataSource.getInstance().getDefaultCardHolderName()==null){
+            nameOnCardField.setEnabled(true);
+        }else if(PaymentDataSource.getInstance().getDefaultCardHolderName()!=null &&PaymentDataSource.getInstance().getDefaultCardHolderName().isEmpty() ){
+            nameOnCardField.setEnabled(true);
+        }else {
+            nameOnCardField.setEnabled(false);
+        }
 
-      saveCardSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+
+        saveCardSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
           viewModel.saveCardSwitchClicked(isChecked);
