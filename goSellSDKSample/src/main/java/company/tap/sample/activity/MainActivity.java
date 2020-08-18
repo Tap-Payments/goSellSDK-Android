@@ -708,6 +708,10 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         listSavedCards();
     }
 
+    public void cancelSession(View view) {
+        sdkSession.cancelSession(this);
+    }
+
 
     public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
 

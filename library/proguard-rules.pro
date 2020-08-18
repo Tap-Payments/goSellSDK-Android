@@ -39,8 +39,19 @@
 -dontwarn javax.annotation.**
 -dontwarn org.conscrypt.**
 -keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
--dontobfuscate
+#-dontobfuscate
 -optimizations !code/allocation/variable
 #-keep public class gotap.com.tapglkitandroid.** { *; }
+
 -keep class company.tap.gosellapi.** { *; }
 -keep public class gotap.com.tapglkitandroid.** { *; }
+# GSON.
+-keepnames class com.google.gson.** {*;}
+-keepnames enum com.google.gson.** {*;}
+-keepnames interface com.google.gson.** {*;}
+-keep class com.google.gson.** { *; }
+-keepnames class org.** {*;}
+-keepnames enum org.** {*;}
+-keepnames interface org.** {*;}
+-keep class org.** { *; }
+-keepclassmembers enum * { *; }

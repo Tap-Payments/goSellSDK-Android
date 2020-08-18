@@ -24,5 +24,18 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_alignParentBottom="true"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_above="@+id/my_recycler_view"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+
+        android:layout_marginStart="143dp"
+        android:layout_marginEnd="148dp"
+        android:layout_marginBottom="-257dp"
+        android:onClick="cancelSession"
+        android:text="Stop Session" />
+
 
 </RelativeLayout>
