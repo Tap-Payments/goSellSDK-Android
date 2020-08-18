@@ -51,6 +51,8 @@ import company.tap.gosellapi.open.models.Shipping;
 import company.tap.gosellapi.open.models.TapCurrency;
 import company.tap.gosellapi.open.models.Tax;
 
+import static android.app.Activity.RESULT_CANCELED;
+
 /**
  * The type Sdk session.
  */
@@ -66,6 +68,7 @@ public class SDKSession implements View.OnClickListener{
   private Activity context;
 
   private boolean sessionActive;
+  private boolean cancelFlag;
 
   /**
    * Instantiates a new Sdk session.
@@ -535,18 +538,22 @@ public class SDKSession implements View.OnClickListener{
 
     if(getListener()!=null)
       getListener().sessionIsStarting();
+    if(cancelFlag && !sessionActive) {return;}
 
     if(context!=null) {
       Intent intent = new Intent(context, GoSellPaymentActivity.class);
       context.startActivityForResult(intent, SDK_REQUEST_CODE);
       sessionActive = false;
+      cancelFlag = false;
     }else if(payButtonView!=null && payButtonView.getContext()!=null) {
       Intent intent = new Intent(payButtonView.getContext(), GoSellPaymentActivity.class);
       activityListener.startActivityForResult(intent,SDK_REQUEST_CODE );
       sessionActive = false;
+      cancelFlag = false;
     }else if (getListener()!=null){
       getListener().sessionFailedToStart();
       sessionActive = false;
+      cancelFlag = false;
     }
 
   }
@@ -624,4 +631,25 @@ public class SDKSession implements View.OnClickListener{
     }
 
   }
+
+  public void cancelSession(Activity activity) {
+    sessionActive = false;
+    if (PaymentDataManager.getInstance() != null){
+      PaymentDataManager.getInstance().clearPaymentProcessListeners();
+      PaymentDataManager.getInstance().setCardPaymentProcessStatus(false);
+
+    }
+    if (ThemeObject.getInstance().isPayButtLoaderVisible())
+      payButtonView.getLoadingView().setForceStop(true);
+    if(getListener()!=null){
+      SDKSession.getListener().sessionCancelled();
+
+    }
+    cancelFlag = true;
+    activity.finishActivity(RESULT_CANCELED);
+
+
+
+  }
+
 }

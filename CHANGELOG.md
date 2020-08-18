@@ -1,4 +1,8 @@
 # CHANGELOG
+## [2.10.0] - 2020-08-18
+### Version release with New Feature:
+- Merchant can now cancel the session and stop all process initiating the SDK.
+- Update Readme and ChangeLog.
 ## [2.9.0] - 2020-07-16
 ### Version release with New Feature:
 - Merchant can now enable or disable defaultCardHolderName (Optional) and pass through the sdk session.This allows him from editing the name .
