@@ -182,6 +182,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         .setPayButtonTextSize(14)
         .setPayButtonLoaderVisible(true)
         .setPayButtonSecurityIconVisible(true)
+        .setPayButtonText("PAY BTN CAN BE VERY VERY VERY  LONGGGG LONGGGGG") // **Optional**
 
      // setup dialog textcolor and textsize
         .setDialogTextColor(getResources().getColor(R.color.black1))     // **Optional**

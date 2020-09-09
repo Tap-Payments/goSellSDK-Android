@@ -1,4 +1,8 @@
 # CHANGELOG
+## [2.11.0] - 2020-09-09
+### Version release with New Feature:
+- Merchant can now customize the text on pay button for the checkout sdk launched.
+- Update Readme and ChangeLog.
 ## [2.10.0] - 2020-08-18
 ### Version release with New Feature:
 - Merchant can now cancel the session and stop all process initiating the SDK.
