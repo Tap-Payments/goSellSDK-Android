@@ -293,11 +293,19 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
             payButton.getPayButton().setTypeface(ThemeObject.getInstance().getPayButtonFont());
         if (ThemeObject.getInstance().getPayButtonDisabledTitleColor() != 0)
         payButton.getPayButton().setTextColor(ThemeObject.getInstance().getPayButtonDisabledTitleColor());
-        if( dataSource.getSelectedCurrency()!=null)
-        payButton.getPayButton().setText(String
-                .format("%s %s %s", getResources().getString(R.string.pay),
-                        dataSource.getSelectedCurrency().getSymbol(),
-                        dataSource.getSelectedCurrency().getAmount()));
+        if( dataSource.getSelectedCurrency()!=null){
+            if(ThemeObject.getInstance().getPayButtonText()!=null){
+                payButton.getPayButton().setText(String
+                        .format("%s %s %s", getResources().getString(R.string.pay),
+                                dataSource.getSelectedCurrency().getSymbol(),
+                                dataSource.getSelectedCurrency().getAmount()));
+            }else
+                payButton.getPayButton().setText(String
+                        .format("%s %s %s", ThemeObject.getInstance().getPayButtonText(),
+                                dataSource.getSelectedCurrency().getSymbol(),
+                                dataSource.getSelectedCurrency().getAmount()));
+        }
+
     }
 
     private void setupSaveCardMode() {
@@ -310,10 +318,22 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
         if (ThemeObject.getInstance().getPayButtonDisabledTitleColor() != 0)
             payButton.getPayButton().setTextColor(ThemeObject.getInstance().getPayButtonDisabledTitleColor());
-        if(isTransactionModeSaveCard())
-        payButton.getPayButton().setText(getResources().getString(R.string.save_card));
-        if(isTransactionModeTokenizeCard())
-            payButton.getPayButton().setText(getResources().getString(R.string.tokenize));
+        if(isTransactionModeSaveCard()){
+            if(ThemeObject.getInstance().getPayButtonText()!=null){
+                payButton.getPayButton().setText(ThemeObject.getInstance().getPayButtonText());
+            }else{
+                payButton.getPayButton().setText(getResources().getString(R.string.save_card));
+            }
+        }
+
+        if(isTransactionModeTokenizeCard()){
+            if(ThemeObject.getInstance().getPayButtonText()!=null){
+                payButton.getPayButton().setText(ThemeObject.getInstance().getPayButtonText());
+            }else{
+                payButton.getPayButton().setText(getResources().getString(R.string.tokenize));
+            }
+        }
+
 
     }
 
@@ -509,6 +529,12 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 //        Log.d("GoSellPaymentActivity"," update pay button with : fees : " + feesAmount);
 
         if (isTransactionModeSaveCard()|| isTransactionModeTokenizeCard()) return;
+        if(ThemeObject.getInstance().getPayButtonText()!=null){
+            payButton.getPayButton().setText(
+                    String.format("%s %s", ThemeObject.getInstance().getPayButtonText(),
+                            PaymentDataManager.getInstance()
+                                    .calculateTotalAmount(feesAmount)));
+        }else
             payButton.getPayButton().setText(
                     String.format("%s %s", getResources().getString(R.string.pay),
                             PaymentDataManager.getInstance()
@@ -719,9 +745,14 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                         .getSerializableExtra(CurrenciesActivity.CURRENCIES_ACTIVITY_USER_CHOICE_CURRENCY);
                 if (userChoiceCurrency != null) {
                     stopPayButtonLoadingView();
+                    if(ThemeObject.getInstance().getPayButtonText()!=null){
+                        payButton.getPayButton().setText(
+                                String.format("%s %s%s", ThemeObject.getInstance().getPayButtonText(), userChoiceCurrency
+                                        .getSymbol(), userChoiceCurrency.getAmount()));
+                    }else{
                     payButton.getPayButton().setText(
                             String.format("%s %s%s", getResources().getString(R.string.pay), userChoiceCurrency
-                                    .getSymbol(), userChoiceCurrency.getAmount()));
+                                    .getSymbol(), userChoiceCurrency.getAmount()));}
                     updateDisplayedCards(userChoiceCurrency);
                 }
                 break;
