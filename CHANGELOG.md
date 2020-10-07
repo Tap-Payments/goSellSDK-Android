@@ -1,4 +1,8 @@
 # CHANGELOG
+## [2.11.1] - 2020-10-07
+### Version release with Hot fix
+- Hot fix for setting language of the sdk .
+- Update Readme and ChangeLog.
 ## [2.11.0] - 2020-09-09
 ### Version release with New Feature:
 - Merchant can now customize the text on pay button for the checkout sdk launched.
