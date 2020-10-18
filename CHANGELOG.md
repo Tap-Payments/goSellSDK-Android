@@ -1,4 +1,10 @@
 # CHANGELOG
+## [2.11.2] - 2020-10-18
+### Version release with Hot fix
+- Hot fix for card form layout issue .
+- Hot fix for cardholder name to be optional.
+- Hot fix for pay button text localization.
+- Update Readme and ChangeLog.
 ## [2.11.1] - 2020-10-07
 ### Version release with Hot fix
 - Hot fix for setting language of the sdk .
