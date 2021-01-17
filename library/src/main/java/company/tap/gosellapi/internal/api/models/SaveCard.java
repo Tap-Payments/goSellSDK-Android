@@ -35,6 +35,10 @@ public final class SaveCard extends Charge{
     @Expose
     @Nullable private boolean loyalty;
 
+    @SerializedName("card_issuer")
+    @Expose
+    @Nullable private CardIssuer  card_issuer;
+
 
     /**
      * Is save card boolean.
@@ -90,4 +94,14 @@ public final class SaveCard extends Charge{
     public boolean isLoyalty() {
         return loyalty;
     }
+
+    /**
+     *CardIssuer object returned.
+     *
+     * @return the card_issuer
+     */
+    public CardIssuer getCardIssuer() {
+        return card_issuer;
+    }
+
 }

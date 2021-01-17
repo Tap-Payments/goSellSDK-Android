@@ -184,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         .setPayButtonTextSize(14)
         .setPayButtonLoaderVisible(true)
         .setPayButtonSecurityIconVisible(true)
-        .setPayButtonText("PAY BTN CAN BE VERY VERY VERY  LONGGGG LONGGGGG") // **Optional**
+        .setPayButtonText("PAY BTN CAN BE  VERY  LONGGGG LONGGGGG") // **Optional**
 
      // setup dialog textcolor and textsize
         .setDialogTextColor(getResources().getColor(R.color.black1))     // **Optional**
@@ -468,6 +468,8 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         System.out.println("Card Saved Succeeded : "+ charge.getCard().getBrand());
         System.out.println("Card Saved Succeeded : "+ charge.getDescription());
         System.out.println("Card Saved Succeeded : "+ charge.getResponse(). getMessage());
+        System.out.println("Card Saved Succeeded : " +  ((SaveCard) charge).getCardIssuer().getName());
+        System.out.println("Card Saved Succeeded : " +  ((SaveCard) charge).getCardIssuer().getId());
         saveCustomerRefInSession(charge);
         showDialog(charge.getId(),charge.getStatus().toString(),company.tap.gosellapi.R.drawable.ic_checkmark_normal);
     }
