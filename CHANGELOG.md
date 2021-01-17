@@ -1,4 +1,8 @@
 # CHANGELOG
+## [2.12.0] - 2021-01-17
+### Version release with New Feature:
+- Merchant can now get CardIssuer object and its details.
+- Update Readme and ChangeLog.
 ## [2.11.2] - 2020-10-18
 ### Version release with Hot fix
 - Hot fix for card form layout issue .

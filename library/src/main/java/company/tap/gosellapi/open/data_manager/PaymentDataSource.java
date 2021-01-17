@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import company.tap.gosellapi.internal.api.models.CardIssuer;
 import company.tap.gosellapi.internal.api.models.Merchant;
 import company.tap.gosellapi.open.enums.CardType;
 import company.tap.gosellapi.open.enums.TransactionMode;
@@ -83,6 +84,8 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
     String defaultCardHolderName;
     private @NonNull
     boolean enableEditCardHolderName;
+    private @Nullable
+    CardIssuer cardIssuer;
 
     //////////////////////// Instantiation Using Singleton  ///////////////////////////////////////
 
@@ -431,6 +434,11 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
     @Override
     public boolean getEnableEditCardHolderName() {
         return enableEditCardHolderName;
+    }
+    @Nullable
+    @Override
+    public CardIssuer getCardIssuer() {
+        return cardIssuer;
     }
 
 }

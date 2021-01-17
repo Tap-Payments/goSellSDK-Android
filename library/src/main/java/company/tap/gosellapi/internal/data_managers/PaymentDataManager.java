@@ -15,6 +15,7 @@ import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.enums.PaymentType;
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
 import company.tap.gosellapi.internal.api.models.Authorize;
+import company.tap.gosellapi.internal.api.models.CardIssuer;
 import company.tap.gosellapi.internal.api.models.Charge;
 import company.tap.gosellapi.internal.api.models.Merchant;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
@@ -640,6 +641,13 @@ public final class PaymentDataManager {
       Merchant merchant = getExternalDataSource().getMerchant();
       return merchant;
     }
+    @Nullable
+    @Override
+    public CardIssuer getCardIssuer() {
+      CardIssuer cardIssuer = getExternalDataSource().getCardIssuer();
+      return cardIssuer;
+    }
+
   }
 
   private class PaymentProcessListener implements IPaymentProcessListener {

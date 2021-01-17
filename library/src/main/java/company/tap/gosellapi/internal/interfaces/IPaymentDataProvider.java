@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
+import company.tap.gosellapi.internal.api.models.CardIssuer;
 import company.tap.gosellapi.internal.api.models.Merchant;
 import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.gosellapi.open.models.AuthorizeAction;
@@ -125,7 +126,11 @@ public interface IPaymentDataProvider {
     @Nullable    Destinations               getDestination();
 
     /**
-     *
+     *get Merchant
      */
     @Nullable    Merchant                   getMerchant();
+    /**
+     * get CardIssuer object
+     */
+    @Nullable CardIssuer                    getCardIssuer();
 }
