@@ -13,6 +13,7 @@ import company.tap.gosellapi.internal.api.callbacks.GoSellError;
 import company.tap.gosellapi.internal.api.facade.GoSellAPI;
 import company.tap.gosellapi.internal.api.models.Address;
 import company.tap.gosellapi.internal.api.models.AmountedCurrency;
+import company.tap.gosellapi.internal.api.models.CardIssuer;
 import company.tap.gosellapi.internal.api.models.CreateTokenCard;
 import company.tap.gosellapi.internal.api.models.Order;
 import company.tap.gosellapi.internal.api.models.SaveCard;
@@ -179,6 +180,7 @@ public class APIsExposer {
 
         AmountedCurrency amountedCurrency = provider.getSelectedCurrency();
         Customer customer = provider.getCustomer();
+        CardIssuer cardIssuer = provider.getCardIssuer();
 
 
         Order order = new Order(orderID);
@@ -209,7 +211,8 @@ public class APIsExposer {
                 true,
                 true,
                 true,
-                true
+                true,
+                cardIssuer
         );
 
         GoSellAPI.getInstance().createSaveCard(saveCardRequest, new APIRequestCallback<SaveCard>() {

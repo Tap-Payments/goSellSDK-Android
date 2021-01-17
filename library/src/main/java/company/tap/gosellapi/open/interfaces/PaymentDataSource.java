@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import company.tap.gosellapi.internal.api.models.CardIssuer;
 import company.tap.gosellapi.internal.api.models.Merchant;
 import company.tap.gosellapi.open.enums.CardType;
 import company.tap.gosellapi.open.enums.TransactionMode;
@@ -134,5 +135,9 @@ public interface PaymentDataSource {
      */
     @NonNull    boolean                 getEnableEditCardHolderName();
 
+    /**
+     * Defines the cardIssuer details. Optional. @return the default CardIssuer
+     */
+    @Nullable CardIssuer                   getCardIssuer();
 
 }
