@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.util.Base64;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -72,7 +73,7 @@ public class AppInfo {
     }
 
     private static void initApplicationInfo(String applicationId) {
-
+        String encodeddevice=null;
         applicationInfo = new LinkedHashMap<>();
 
         applicationInfo.put("app_id", applicationId); // updated based on Kalai resp.
@@ -88,8 +89,16 @@ public class AppInfo {
             applicationInfo.put("app_locale", SupportedLocales.findByString(localeString).language);
 
         }
+        if(deviceName!=null){
+            encodeddevice= Base64.encodeToString(deviceName.getBytes(),Base64.NO_WRAP);
+            applicationInfo.put("requirer_device_name",encodeddevice);
 
-        applicationInfo.put("requirer_device_name",deviceName);
+        }else{
+            applicationInfo.put("requirer_device_name","deviceName");
+        }
+
+
+       // applicationInfo.put("requirer_device_name",deviceName);
         applicationInfo.put("requirer_device_type",Build.BRAND);
         applicationInfo.put("requirer_device_model",Build.MODEL);
         applicationInfo.put("sdk_version",BuildConfig.VERSION_NAME);
