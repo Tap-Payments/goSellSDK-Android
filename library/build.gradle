@@ -71,6 +71,8 @@ dependencies {
     implementation 'com.android.support:support-v4:28.0.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
     implementation 'org.jetbrains:annotations:15.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.2.2'
+    implementation 'com.squareup.okhttp3:okhttp:4.2.2'
 }
 
 task sourcesJar(type: Jar) {

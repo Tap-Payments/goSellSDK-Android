@@ -97,6 +97,7 @@ public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSys
   private boolean isCardSupportSelectedCurrency(PaymentOption paymentOption, @NonNull
       PaymentOptionsDataManager paymentOptionsDataManager) {
     for (String s : paymentOption.getSupportedCurrencies()) {
+      if(paymentOptionsDataManager.getSelectedCurrency().getCurrency()!=null)
       if (s.equalsIgnoreCase(paymentOptionsDataManager.getSelectedCurrency().getCurrency())) {
         return true;
       }
