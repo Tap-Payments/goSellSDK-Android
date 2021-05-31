@@ -14,7 +14,11 @@ public enum CardType {
     /**
      * Debit card type.
      */
-    @SerializedName("DEBIT")  DEBIT
+    @SerializedName("DEBIT")  DEBIT,
+    /**
+     * All card type.
+     */
+    @SerializedName("ALL")  ALL
 
 
 
