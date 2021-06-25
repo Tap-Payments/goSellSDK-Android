@@ -58,6 +58,7 @@ import company.tap.gosellapi.open.models.Customer;
 import company.tap.gosellapi.open.models.Destinations;
 import company.tap.gosellapi.open.models.Receipt;
 import company.tap.gosellapi.open.models.Reference;
+import company.tap.gosellapi.open.models.TopUp;
 
 /**
  * The type Payment process manager.
@@ -632,7 +633,7 @@ final class PaymentProcessManager {
     AmountedCurrency amountedCurrency = provider.getSelectedCurrency();
     AmountedCurrency transactionCurrency = provider.getTransactionCurrency();
     Customer customer = provider.getCustomer();
-
+    @Nullable TopUp topUp = provider.getTopUp();
     BigDecimal fee = BigDecimal.ZERO;
 
     if(paymentOption!=null)
@@ -692,7 +693,8 @@ final class PaymentProcessManager {
             statementDescriptor,
             require3DSecure,
             receipt,
-            destinations
+            destinations,
+                topUp
         );
 
         GoSellAPI.getInstance().createCharge(chargeRequest, new APIRequestCallback<Charge>() {
@@ -735,7 +737,8 @@ final class PaymentProcessManager {
             require3DSecure,
             receipt,
             authorizeAction,
-            destinations
+            destinations,
+         topUp
         );
         GoSellAPI.getInstance()
             .createAuthorize(authorizeRequest, new APIRequestCallback<Authorize>() {

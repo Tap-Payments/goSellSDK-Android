@@ -18,6 +18,7 @@ import company.tap.gosellapi.open.models.Customer;
 import company.tap.gosellapi.open.models.Destinations;
 import company.tap.gosellapi.open.models.Receipt;
 import company.tap.gosellapi.open.models.Reference;
+import company.tap.gosellapi.open.models.TopUp;
 
 /**
  * The type Create authorize request.
@@ -71,9 +72,10 @@ public final class CreateAuthorizeRequest extends CreateChargeRequest {
                                   @Nullable boolean                 threeDSecure,
                                   @Nullable Receipt                 receipt,
                                   @NonNull  AuthorizeAction         authorizeAction,
-                                  @Nullable Destinations destinations) {
+                                  @Nullable Destinations destinations,
+                                  @Nullable TopUp topUp) {
 
-        super(merchant,amount, currency,selectedAmount, selectedCurrency,customer, fee, order, redirect, post, source, description, metadata, reference, saveCard, statementDescriptor, threeDSecure, receipt,destinations);
+        super(merchant,amount, currency,selectedAmount, selectedCurrency,customer, fee, order, redirect, post, source, description, metadata, reference, saveCard, statementDescriptor, threeDSecure, receipt,destinations,topUp);
 
         this.authorizeAction = authorizeAction;
     }

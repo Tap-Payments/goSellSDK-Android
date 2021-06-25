@@ -15,6 +15,7 @@ import company.tap.gosellapi.open.enums.TransactionMode;
 import company.tap.gosellapi.open.models.PaymentItem;
 import company.tap.gosellapi.open.models.Shipping;
 import company.tap.gosellapi.open.models.Tax;
+import company.tap.gosellapi.open.models.TopUp;
 
 /**
  * The type Payment options request.
@@ -57,6 +58,10 @@ public final class PaymentOptionsRequest {
     @Expose
     @NonNull private String payment_type;
 
+    @SerializedName("topup")
+    @Expose
+    @Nullable private TopUp topup;
+
 
     /**
      * Instantiates a new Payment options request.
@@ -68,6 +73,7 @@ public final class PaymentOptionsRequest {
      * @param taxes           the taxes
      * @param currency        the currency
      * @param customer        the customer
+     * @param topUp        the topup
      */
     public PaymentOptionsRequest(@Nullable TransactionMode transactionMode,
                                  @Nullable BigDecimal amount,
@@ -77,7 +83,8 @@ public final class PaymentOptionsRequest {
                                  @Nullable String currency,
                                  @Nullable String customer,
                                  @Nullable String merchant_id,
-                                 @NonNull  String payment_type
+                                 @NonNull  String payment_type,
+                                 @Nullable TopUp topUp
 
     ) {
 
@@ -88,6 +95,7 @@ public final class PaymentOptionsRequest {
         this.customer           = customer;
         this.merchant_id        = merchant_id;
         this.payment_type        = payment_type;
+        this.topup               = topUp;
 
         if (items != null && items.size() > 0) {
 

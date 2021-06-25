@@ -15,6 +15,7 @@ import company.tap.gosellapi.open.models.Customer;
 import company.tap.gosellapi.open.models.Destinations;
 import company.tap.gosellapi.open.models.Receipt;
 import company.tap.gosellapi.open.models.Reference;
+import company.tap.gosellapi.open.models.TopUp;
 
 /**
  * The interface Payment data provider.
@@ -133,4 +134,9 @@ public interface IPaymentDataProvider {
      * get CardIssuer object
      */
     @Nullable CardIssuer                    getCardIssuer();
+    /**
+     * get TopUp object
+     */
+    @Nullable
+    TopUp getTopUp();
 }
