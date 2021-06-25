@@ -1,4 +1,8 @@
 # CHANGELOG
+## [2.13.0] - 2021-06-25
+###  Version release with New Feature:
+- New Feature added to support Topup object inside the sdk
+- Update Readme and ChangeLog.
 ## [2.12.2] - 2021-05-31
 ###  Version release with Hot fix:
 - Hot fix to add cardType ALL to enum

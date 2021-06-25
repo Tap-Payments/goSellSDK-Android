@@ -41,6 +41,7 @@ import company.tap.gosellapi.open.models.Customer;
 import company.tap.gosellapi.open.models.Destinations;
 import company.tap.gosellapi.open.models.Receipt;
 import company.tap.gosellapi.open.models.Reference;
+import company.tap.gosellapi.open.models.TopUp;
 import company.tap.tapcardvalidator_android.CardBrand;
 
 /**
@@ -647,6 +648,14 @@ public final class PaymentDataManager {
       CardIssuer cardIssuer = getExternalDataSource().getCardIssuer();
       return cardIssuer;
     }
+
+    @Nullable
+    @Override
+    public TopUp getTopUp() {
+      TopUp topUp = getExternalDataSource().getTopUp();
+      return topUp;
+    }
+
 
   }
 

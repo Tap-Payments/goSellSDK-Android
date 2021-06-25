@@ -21,6 +21,7 @@ import company.tap.gosellapi.open.models.Reference;
 import company.tap.gosellapi.open.models.Shipping;
 import company.tap.gosellapi.open.models.TapCurrency;
 import company.tap.gosellapi.open.models.Tax;
+import company.tap.gosellapi.open.models.TopUp;
 
 /**
  * The interface Payment data source.
@@ -139,5 +140,11 @@ public interface PaymentDataSource {
      * Defines the cardIssuer details. Optional. @return the default CardIssuer
      */
     @Nullable CardIssuer                   getCardIssuer();
+
+    /**
+     * Defines the TopUp details. Optional. @return the default TopUp
+     */
+    @Nullable
+    TopUp getTopUp();
 
 }

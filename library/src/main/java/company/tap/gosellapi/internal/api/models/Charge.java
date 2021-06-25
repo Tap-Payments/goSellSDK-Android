@@ -14,6 +14,7 @@ import company.tap.gosellapi.open.models.Customer;
 import company.tap.gosellapi.open.models.Destinations;
 import company.tap.gosellapi.open.models.Receipt;
 import company.tap.gosellapi.open.models.Reference;
+import company.tap.gosellapi.open.models.TopUp;
 
 /**
  * Created by eugene.goltsev on 14.02.2018.
@@ -128,6 +129,9 @@ public class Charge implements BaseResponse, Serializable {
     @Expose
     @Nullable private Expiry expiry;
 
+    @SerializedName("topup")
+    @Expose
+    @Nullable private TopUp topup;
 
     @Nullable
     public Card getCard() {
@@ -350,4 +354,14 @@ public class Charge implements BaseResponse, Serializable {
     public Destinations getDestinations() {
         return destinations;
     }
+
+    /**
+     * Gets topup
+     * @return
+     */
+    @Nullable
+    public TopUp getTopup() {
+        return topup;
+    }
+
 }

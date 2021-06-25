@@ -25,6 +25,7 @@ import company.tap.gosellapi.open.models.Reference;
 import company.tap.gosellapi.open.models.Shipping;
 import company.tap.gosellapi.open.models.TapCurrency;
 import company.tap.gosellapi.open.models.Tax;
+import company.tap.gosellapi.open.models.TopUp;
 
 /**
  * The type Payment data source.
@@ -86,6 +87,9 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
     boolean enableEditCardHolderName;
     private @Nullable
     CardIssuer cardIssuer;
+
+    private @Nullable
+    TopUp topUp;
 
     //////////////////////// Instantiation Using Singleton  ///////////////////////////////////////
 
@@ -305,6 +309,15 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
         this.enableEditCardHolderName = enableEditCardHolderName;
     }
 
+    /**
+     * Set default TopUp.
+     *
+     * @param topUp the  default TopUp
+     */
+
+    public void setTopUp(@Nullable TopUp topUp) {
+        this.topUp = topUp;
+    }
 
 
     /////////////////   Getter's Area  /////////////////////////////////////////////////////////////////
@@ -439,6 +452,12 @@ public class PaymentDataSource implements company.tap.gosellapi.open.interfaces.
     @Override
     public CardIssuer getCardIssuer() {
         return cardIssuer;
+    }
+
+    @Nullable
+    @Override
+    public TopUp getTopUp() {
+        return topUp;
     }
 
 }

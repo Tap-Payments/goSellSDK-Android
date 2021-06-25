@@ -61,6 +61,8 @@ import company.tap.gosellapi.open.models.CardsList;
 import company.tap.gosellapi.open.models.Customer;
 import company.tap.gosellapi.open.models.Receipt;
 import company.tap.gosellapi.open.models.TapCurrency;
+import company.tap.gosellapi.open.models.TopUp;
+import company.tap.gosellapi.open.models.TopUpApplication;
 import company.tap.sample.R;
 import company.tap.sample.managers.SettingsManager;
 import company.tap.sample.viewmodels.CustomerViewModel;
@@ -145,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
      * Configure SDK with your Secret API key and App Bundle name registered with tap company.
      */
     private void configureApp(){
-         GoSellSDK.init(this, "sk_test_kovrMB0mupFJXfNZWx6Etg5y","company.tap.goSellSDKExample");  // to be replaced by merchant
+       GoSellSDK.init(this, "sk_test_kovrMB0mupFJXfNZWx6Etg5y","company.tap.goSellSDKExample");  // to be replaced by merchant
         GoSellSDK.setLocale("en");//  language to be set by merchant
     }
     /**
@@ -224,28 +226,28 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         //   sdkSession.setPaymentType("WEB");   //** Merchant can pass paymentType
 
         // Set Taxes array list
-        sdkSession.setTaxes(new ArrayList<>());// ** Optional ** you can pass empty array list
+        sdkSession.setTaxes(new ArrayList<>());//** Optional ** you can pass empty array list
 
         // Set Shipping array list
-        sdkSession.setShipping(new ArrayList<>());// ** Optional ** you can pass empty array list
+        sdkSession.setShipping(new ArrayList<>());//** Optional ** you can pass empty array list
 
         // Post URL
-        sdkSession.setPostURL(""); // ** Optional **
+        sdkSession.setPostURL(""); //** Optional **
 
         // Payment Description
         sdkSession.setPaymentDescription(""); //** Optional **
 
         // Payment Extra Info
-        sdkSession.setPaymentMetadata(new HashMap<>());// ** Optional ** you can pass empty array hash map
+        sdkSession.setPaymentMetadata(new HashMap<>());//** Optional ** you can pass empty array hash map
 
         // Payment Reference
-        sdkSession.setPaymentReference(null); // ** Optional ** you can pass null
+        sdkSession.setPaymentReference(null); //** Optional ** you can pass null
 
         // Payment Statement Descriptor
-        sdkSession.setPaymentStatementDescriptor(""); // ** Optional **
+        sdkSession.setPaymentStatementDescriptor(""); //** Optional **
 
         // Enable or Disable Saving Card
-        sdkSession.isUserAllowedToSaveCard(true); //  ** Required ** you can pass boolean
+        sdkSession.isUserAllowedToSaveCard(true); //** Required ** you can pass boolean
 
         // Enable or Disable 3DSecure
         sdkSession.isRequires3DSecure(true);
@@ -261,6 +263,8 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         sdkSession.setMerchantID(null); // ** Optional ** you can pass merchant id or null
 
         sdkSession.setCardType(CardType.CREDIT); // ** Optional ** you can pass which cardType[CREDIT/DEBIT] you want.By default it loads all available cards for Merchant.
+
+         sdkSession.setTopUp(getTopUp()); // ** Optional ** you can pass TopUp object for Merchant.
 
        // sdkSession.setDefaultCardHolderName("TEST TAP"); // ** Optional ** you can pass default CardHolderName of the user .So you don't need to type it.
 
@@ -367,9 +371,16 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
             System.out.println("Payment Succeeded : last four: "+ charge.getCard().getLastFour());
             System.out.println("Payment Succeeded : card object : "+ charge.getCard().getObject());
             System.out.println("Payment Succeeded : brand : "+ charge.getCard().getBrand());
-            System.out.println("Payment Succeeded : exp mnth : "+ charge.getCard().getExpiry().getMonth());
-            System.out.println("Payment Succeeded : exp year : "+ charge.getCard().getExpiry().getYear());
+         //   System.out.println("Payment Succeeded : exp mnth : "+ charge.getCard().getExpiry().getMonth());
+         //   System.out.println("Payment Succeeded : exp year : "+ charge.getCard().getExpiry().getYear());
         }
+        System.out.println("##############################################################################");
+        if (charge.getTopup() != null) {
+            System.out.println("Payment Succeeded : topupWalletId : " + charge.getTopup().getWalletId());
+            System.out.println("Payment Succeeded : Id : " + charge.getTopup().getId());
+            System.out.println("Payment Succeeded : TopUpApp : " + charge.getTopup().getApplication().getAmount());
+        }
+
 
         System.out.println("##############################################################################");
         if(charge.getAcquirer()!=null){
@@ -615,7 +626,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
         PhoneNumber   phoneNumber = customer!=null ? customer.getPhone(): new PhoneNumber("965","65562630");
 
-        return new Customer.CustomerBuilder("").email("abc@abc.com").firstName("firstname")
+        return new Customer.CustomerBuilder("cus_TS060420211633j3KO1606527").email("abc@abc.com").firstName("firstname")
                 .lastName("lastname").metadata("").phone(new PhoneNumber(phoneNumber.getCountryCode(),phoneNumber.getNumber()))
                 .middleName("middlename").build();
     }
@@ -772,5 +783,19 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
             return dataSet.size();
         }
     }
+    //Set topup object
+    private TopUp getTopUp() {
+        TopUp topUp = new TopUp(
+                null,
+                "wal_xXTwK5211326gmgS16SV53834",
+                null,
+                BigDecimal.valueOf(0),
+                "kwd",
+                null,null,null,new TopUpApplication(5,"kwd"),null);
+        return topUp;
+
+
+    }
+
 
 }

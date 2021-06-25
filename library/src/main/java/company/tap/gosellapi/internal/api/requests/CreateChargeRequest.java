@@ -18,6 +18,7 @@ import company.tap.gosellapi.open.models.Customer;
 import company.tap.gosellapi.open.models.Destinations;
 import company.tap.gosellapi.open.models.Receipt;
 import company.tap.gosellapi.open.models.Reference;
+import company.tap.gosellapi.open.models.TopUp;
 
 /**
  * The type Create charge request.
@@ -101,6 +102,11 @@ public class CreateChargeRequest {
     @Expose
     @Nullable private Destinations destinations;
 
+    @SerializedName("topup")
+    @Expose
+    @Nullable private TopUp topup;
+
+
     /**
      * Instantiates a new Create charge request.
      * @param merchant            the merchant
@@ -120,6 +126,7 @@ public class CreateChargeRequest {
      * @param threeDSecure        the three d secure
      * @param receipt             the receipt
      * @param destinations        the destinations
+     * @param topUp               the topUp
      */
     public CreateChargeRequest(
                                @Nullable    Merchant                merchant,
@@ -140,7 +147,8 @@ public class CreateChargeRequest {
                                @Nullable    String                  statementDescriptor,
                                @Nullable    boolean                 threeDSecure,
                                @Nullable    Receipt                 receipt,
-                               @Nullable    Destinations destinations) {
+                               @Nullable    Destinations destinations,
+                               @Nullable    TopUp                 topUp) {
 
         this.merchant               = merchant;
         this.amount                 = amount;
@@ -161,5 +169,6 @@ public class CreateChargeRequest {
         this.threeDSecure           = threeDSecure;
         this.receipt                = receipt;
         this.destinations           = destinations;
+        this.topup                  = topUp;
     }
 }
