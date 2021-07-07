@@ -1922,8 +1922,9 @@ The following table describes its structure and specifies which fields are requi
             }
            ``` 
             ```  
-                  8.TopUp
-                  ```java
+        8.TopUp
+                 
+		 ```java
                  public final class TopUp implements Serializable {
                      @SerializedName("id")
                      @Expose
