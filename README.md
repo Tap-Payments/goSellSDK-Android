@@ -96,7 +96,7 @@ To integrate goSellSDK into your project add it in your **root** `build.gradle` 
 Step 2. Add the dependency
 ```java
 	dependencies {
-	         implementation 'com.github.Tap-Payments:goSellSDK-Android:2.13.0'
+	         implementation 'com.github.Tap-Payments:goSellSDK-Android:2.13.1'
 	}
 ```
 
@@ -1927,13 +1927,16 @@ The following table describes its structure and specifies which fields are requi
                  public final class TopUp implements Serializable {
                      @SerializedName("id")
                      @Expose
-                      String Id;
+                     String Id;
                      @SerializedName("wallet_id")
                      @Expose
-                      String walletId;
+                     String walletId;
                      @SerializedName("created")
                      @Expose
                      @Nullable  Long created;
+                     @SerializedName("status")
+                     @Expose
+                     @Nullable String status;
                      @SerializedName("amount")
                      @Expose
                      @Nullable  BigDecimal amount;
@@ -1945,13 +1948,20 @@ The following table describes its structure and specifies which fields are requi
                      @Nullable  TopchargeModel charge;
                      @SerializedName("customer")
                      @Expose
-                    @Nullable  TopCustomerModel customer;
+                     @Nullable  TopCustomerModel customer;
                      @SerializedName("reference")
                      @Expose
-                      TopUpReference topUpReference;
+                     TopUpReference topUpReference;
                      @SerializedName("application")
                      @Expose
-                      TopUpApplication application;
+                     TopUpApplication application;
+                     @SerializedName("response")
+                     @Expose
+                     @Nullable
+                     Response response;
+                     @SerializedName("post")
+                     @Expose
+                     @Nullable TopupPost post;
                  
                      public String getId() {
                          return Id;
@@ -1998,28 +2008,39 @@ The following table describes its structure and specifies which fields are requi
                          return metadata;
                      }
                  
+                     public Response getResponse() {
+                         return response;
+                     }
+                     @Nullable
+                     public TopupPost getPost() {
+                         return post;
+                     }
+                 
                      @SerializedName("metadata")
                      @Expose
                      MetaData metadata;
                  
                  
                      //  Constructor is private to prevent access from client app, it must be through inner Builder class only
-                     public TopUp(@Nullable String Id , String walletId, @Nullable Long created, BigDecimal amount , String currency,@Nullable TopchargeModel charge ,@Nullable TopCustomerModel customer, @Nullable TopUpReference topUpReference, TopUpApplication topUpApplication,@Nullable MetaData metaData
+                     public TopUp(@Nullable String Id , String walletId, @Nullable Long created,@Nullable String status,@Nullable  BigDecimal amount , String currency, @Nullable TopchargeModel charge , @Nullable TopCustomerModel customer, @Nullable TopUpReference topUpReference, TopUpApplication topUpApplication, @Nullable Response response, @Nullable TopupPost post,@Nullable MetaData metaData
                      ) {
                  
                          this.Id = Id;
                          this.walletId = walletId;
                          this.created = created;
+                         this.status = status;
                          this.amount = amount;
                          this.currency = currency;
                          this.charge = charge;
                          this.customer = customer;
                          this.topUpReference = topUpReference;
                          this.application = topUpApplication;
+                         this.response = response;
+                         this.post = post;
                          this.metadata = metaData;
                      }
                  }
-               ```
+                 ```
        
 <a name="sdk_delegate"></a>
 ## SDKSession Delegate

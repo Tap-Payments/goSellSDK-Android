@@ -13,4 +13,12 @@ public class TopchargeModel {
     @SerializedName("id")
     @Expose
     private String id;
+
+    public TopchargeModel(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
 }

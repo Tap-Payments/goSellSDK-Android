@@ -3,6 +3,8 @@ package company.tap.gosellapi.open.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.math.BigDecimal;
+
 /**
  * Created by AhlaamK on 6/25/21.
  * <p>
@@ -12,9 +14,9 @@ import com.google.gson.annotations.SerializedName;
 public class TopUpApplication {
     @SerializedName("amount")
     @Expose
-    private Integer amount;
+    private BigDecimal amount;
 
-    public Integer getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
@@ -26,7 +28,7 @@ public class TopUpApplication {
     @Expose
     private String currency;
 
-    public TopUpApplication(Integer amount , String currency){
+    public TopUpApplication(BigDecimal amount , String currency){
         this.amount = amount;
         this.currency = currency;
     }

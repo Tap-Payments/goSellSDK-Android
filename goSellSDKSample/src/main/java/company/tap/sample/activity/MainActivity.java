@@ -61,8 +61,10 @@ import company.tap.gosellapi.open.models.CardsList;
 import company.tap.gosellapi.open.models.Customer;
 import company.tap.gosellapi.open.models.Receipt;
 import company.tap.gosellapi.open.models.TapCurrency;
+import company.tap.gosellapi.open.models.TopCustomerModel;
 import company.tap.gosellapi.open.models.TopUp;
 import company.tap.gosellapi.open.models.TopUpApplication;
+import company.tap.gosellapi.open.models.TopupPost;
 import company.tap.sample.R;
 import company.tap.sample.managers.SettingsManager;
 import company.tap.sample.viewmodels.CustomerViewModel;
@@ -186,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         .setPayButtonTextSize(14)
         .setPayButtonLoaderVisible(true)
         .setPayButtonSecurityIconVisible(true)
-        .setPayButtonText("PAY BTN CAN BE  VERY LONGGGGG") // **Optional**
+        .setPayButtonText("PAY BTN ") // **Optional**
 
      // setup dialog textcolor and textsize
         .setDialogTextColor(getResources().getColor(R.color.black1))     // **Optional**
@@ -218,12 +220,12 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         sdkSession.setCustomer(getCustomer());    //** Required **
 
         // Set Total Amount. The Total amount will be recalculated according to provided Taxes and Shipping
-        sdkSession.setAmount(new BigDecimal(40));  //** Required **
+        sdkSession.setAmount(new BigDecimal(20));  //** Required **
 
         // Set Payment Items array list
         sdkSession.setPaymentItems(new ArrayList<>());// ** Optional ** you can pass empty array list
 
-        //   sdkSession.setPaymentType("WEB");   //** Merchant can pass paymentType
+           sdkSession.setPaymentType("CARD");   //** Merchant can pass paymentType
 
         // Set Taxes array list
         sdkSession.setTaxes(new ArrayList<>());//** Optional ** you can pass empty array list
@@ -264,7 +266,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
         sdkSession.setCardType(CardType.CREDIT); // ** Optional ** you can pass which cardType[CREDIT/DEBIT] you want.By default it loads all available cards for Merchant.
 
-         sdkSession.setTopUp(getTopUp()); // ** Optional ** you can pass TopUp object for Merchant.
+        // sdkSession.setTopUp(getTopUp()); // ** Optional ** you can pass TopUp object for Merchant.
 
        // sdkSession.setDefaultCardHolderName("TEST TAP"); // ** Optional ** you can pass default CardHolderName of the user .So you don't need to type it.
 
@@ -379,6 +381,9 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
             System.out.println("Payment Succeeded : topupWalletId : " + charge.getTopup().getWalletId());
             System.out.println("Payment Succeeded : Id : " + charge.getTopup().getId());
             System.out.println("Payment Succeeded : TopUpApp : " + charge.getTopup().getApplication().getAmount());
+            System.out.println("Payment Succeeded : status : " + charge.getTopup().getStatus());
+            System.out.println("Payment Succeeded : post : " + charge.getTopup().getPost().getUrl());
+            System.out.println("Payment Succeeded : amount : " + charge.getTopup().getAmount());
         }
 
 
@@ -789,9 +794,10 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
                 null,
                 "wal_xXTwK5211326gmgS16SV53834",
                 null,
-                BigDecimal.valueOf(0),
+                null,
+                BigDecimal.valueOf(20),
                 "kwd",
-                null,null,null,new TopUpApplication(5,"kwd"),null);
+                null,null,null,new TopUpApplication((BigDecimal.valueOf(30)),"kwd"),null,new TopupPost("wwww.google.com"),null);
         return topUp;
 
 
