@@ -13,4 +13,12 @@ public class TopCustomerModel {
     @SerializedName("id")
     @Expose
     private String id;
+
+    public TopCustomerModel(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
 }
