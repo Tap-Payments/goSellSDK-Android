@@ -3,6 +3,7 @@ package company.tap.gosellapi.open.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
@@ -11,7 +12,7 @@ import java.math.BigDecimal;
  * Copyright (c) 2021    Tap Payments.
  * All rights reserved.
  **/
-public class TopUpApplication {
+public class TopUpApplication implements Serializable {
     @SerializedName("amount")
     @Expose
     private BigDecimal amount;
