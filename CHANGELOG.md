@@ -1,4 +1,8 @@
 # CHANGELOG
+## [2.13.3] - 2021-09-15
+###  Version release with Hot Fix:
+- Fix issue for NPE with 3DS
+- Update Readme and ChangeLog.
 ## [2.13.2] - 2021-07-28
 ###  Version release with Hot Fix:
 - Fix issue for Serializable

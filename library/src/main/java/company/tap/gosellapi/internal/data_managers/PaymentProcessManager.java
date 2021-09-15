@@ -660,16 +660,18 @@ final class PaymentProcessManager {
      * Condition added for 3Ds for merchant
      * */
 
-    if(paymentOption.getThreeDS()!=null){
-      if(paymentOption.getThreeDS().equals("N")){
-        require3DSecure=false;
-      }else if(paymentOption.getThreeDS().equals("Y")){
-        require3DSecure = true;
-      }else if(paymentOption.getThreeDS().equals("U")){
-        require3DSecure = provider.getRequires3DSecure();
-      }
+   if(paymentOption!=null) {
+     if (paymentOption.getThreeDS() != null) {
+       if (paymentOption.getThreeDS().equals("N")) {
+         require3DSecure = false;
+       } else if (paymentOption.getThreeDS().equals("Y")) {
+         require3DSecure = true;
+       } else if (paymentOption.getThreeDS().equals("U")) {
+         require3DSecure = provider.getRequires3DSecure();
+       }
 
-    }
+     }
+   }
     switch (transactionMode) {
 
       case PURCHASE:
