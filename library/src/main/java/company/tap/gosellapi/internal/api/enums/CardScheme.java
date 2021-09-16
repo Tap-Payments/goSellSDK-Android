@@ -48,7 +48,9 @@ public enum CardScheme {
     /**
      * Oman net card scheme.
      */
-    @SerializedName("OMAN_NET")         OMAN_NET;
+    @SerializedName("OMAN_NET")         OMAN_NET,
+
+    @SerializedName("MEEZA")         MEEZA;
 
     /**
      * Gets card brand.
@@ -69,6 +71,7 @@ public enum CardScheme {
             case FAWRY:             return CardBrand.fawry;
             case NAPS:              return CardBrand.naps;
             case OMAN_NET:          return CardBrand.omanNet;
+            case MEEZA:          return CardBrand.meeza;
 
             default:                return CardBrand.unknown;
         }

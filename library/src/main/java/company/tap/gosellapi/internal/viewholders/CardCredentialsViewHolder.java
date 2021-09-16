@@ -621,7 +621,7 @@ public class CardCredentialsViewHolder
         RecyclerView cardSystemsRecyclerView = itemView.findViewById(R.id.cardSystemsRecyclerView);
         cardSystemsRecyclerView.invalidate();
         CardSystemsRecyclerViewAdapter adapter = (CardSystemsRecyclerViewAdapter) cardSystemsRecyclerView.getAdapter();
-        adapter.updateForCardBrand(brand,cardScheme);
+        adapter.updateForCardBrand(brand,cardScheme,this);
     }
 
     private DefinedCardBrand validateCardNumber(String cardNumber) {
@@ -861,7 +861,7 @@ public class CardCredentialsViewHolder
         cardScannerButton.setFocusableInTouchMode(true);
     }
 
-    private void showDialog(String title,String message){
+    public void showDialog(String title,String message){
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(itemView.getContext());
         dialogBuilder.setTitle(title);
         dialogBuilder.setMessage(message);
