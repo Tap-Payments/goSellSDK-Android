@@ -18,6 +18,7 @@ import company.tap.gosellapi.internal.api.enums.PaymentType;
 import company.tap.gosellapi.internal.api.models.PaymentOption;
 import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
 import company.tap.gosellapi.internal.data_managers.payment_options.PaymentOptionsDataManager;
+import company.tap.gosellapi.internal.viewholders.CardCredentialsViewHolder;
 import company.tap.tapcardvalidator_android.CardBrand;
 
 
@@ -40,8 +41,9 @@ public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSys
 ////      System.out.println(" filter based on  currency inside card view holder : " + option
 ////          .getPaymentType() + " >> " + option.getName());
 //    }
+      filterPaymentOptions();
     this.initialData = new ArrayList<>(filter(_data));
-    filterPaymentOptions();
+
   }
 
   private ArrayList<PaymentOption> filter(ArrayList<PaymentOption> _data) {
@@ -110,9 +112,10 @@ public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSys
      *
      * @param brand      the brand
      * @param cardScheme the card scheme
+     * @param cardCredentialsViewHolder
      */
-    public void updateForCardBrand(CardBrand brand, CardScheme cardScheme) {
-
+    public void updateForCardBrand(CardBrand brand, CardScheme cardScheme, CardCredentialsViewHolder cardCredentialsViewHolder) {
+      ArrayList<CardBrand> cardBrands = null;
     if (brand == null) {
       data = new ArrayList<>(initialData);
       notifyDataSetChanged();
@@ -123,7 +126,7 @@ public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSys
 
     for (PaymentOption option : initialData) {
 
-      ArrayList<CardBrand> cardBrands = option.getSupportedCardBrands();
+      cardBrands = option.getSupportedCardBrands();
 //      System.out.println("brand :" + brand + " >>> scheme :" + cardScheme);
 
       if (cardScheme != null) {
@@ -140,7 +143,13 @@ public class CardSystemsRecyclerViewAdapter extends RecyclerView.Adapter<CardSys
 
     }
 
-    if (data.size() == 0)
+      if(data.isEmpty() && !cardBrands.contains(brand)) {
+        cardCredentialsViewHolder.showDialog(cardCredentialsViewHolder.itemView.getResources().getString(R.string.alert_un_supported_card_title), cardCredentialsViewHolder.itemView.getResources().getString(R.string.alert_un_supported_card_message));
+
+      }
+
+
+      if (data.size() == 0)
       data = new ArrayList<>(initialData);
 
     notifyDataSetChanged();
