@@ -220,7 +220,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         sdkSession.setCustomer(getCustomer());    //** Required **
 
         // Set Total Amount. The Total amount will be recalculated according to provided Taxes and Shipping
-        sdkSession.setAmount(new BigDecimal(20));  //** Required **
+        sdkSession.setAmount(new BigDecimal(10));  //** Required **
 
         // Set Payment Items array list
         sdkSession.setPaymentItems(new ArrayList<>());// ** Optional ** you can pass empty array list
@@ -234,7 +234,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         sdkSession.setShipping(new ArrayList<>());//** Optional ** you can pass empty array list
 
         // Post URL
-        sdkSession.setPostURL(""); //** Optional **
+        sdkSession.setPostURL(null); //** Optional **
 
         // Payment Description
         sdkSession.setPaymentDescription(""); //** Optional **
@@ -264,7 +264,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
         sdkSession.setMerchantID(null); // ** Optional ** you can pass merchant id or null
 
-        sdkSession.setCardType(CardType.CREDIT); // ** Optional ** you can pass which cardType[CREDIT/DEBIT] you want.By default it loads all available cards for Merchant.
+        sdkSession.setCardType(CardType.ALL); // ** Optional ** you can pass which cardType[CREDIT/DEBIT] you want.By default it loads all available cards for Merchant.
 
         // sdkSession.setTopUp(getTopUp()); // ** Optional ** you can pass TopUp object for Merchant.
 
@@ -626,12 +626,13 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
     }
 
     private Customer getCustomer() { // test customer id cus_Kh1b4220191939i1KP2506448
+       // cus_TS060420211633j3KO1606527
 
         Customer customer = (settingsManager!=null)?settingsManager.getCustomer():null;
 
         PhoneNumber   phoneNumber = customer!=null ? customer.getPhone(): new PhoneNumber("965","65562630");
 
-        return new Customer.CustomerBuilder("cus_TS060420211633j3KO1606527").email("abc@abc.com").firstName("firstname")
+        return new Customer.CustomerBuilder(null).email("abc@abc.com").firstName("firstname")
                 .lastName("lastname").metadata("").phone(new PhoneNumber(phoneNumber.getCountryCode(),phoneNumber.getNumber()))
                 .middleName("middlename").build();
     }
@@ -792,12 +793,12 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
     private TopUp getTopUp() {
         TopUp topUp = new TopUp(
                 null,
-                "wal_xXTwK5211326gmgS16SV53834",
+                "wal_uTTwK36216466dBs27TP61227",
                 null,
                 null,
-                BigDecimal.valueOf(20),
+                BigDecimal.valueOf(510),
                 "kwd",
-                null,null,null,new TopUpApplication((BigDecimal.valueOf(30)),"kwd"),null,new TopupPost("wwww.google.com"),null);
+                null,null,null,new TopUpApplication((BigDecimal.valueOf(10)),"kwd"),null,new TopupPost("wwww.google.com"),null);
         return topUp;
 
 
