@@ -51,7 +51,7 @@ import company.tap.gosellapi.internal.api.models.SavedCard;
 import company.tap.gosellapi.internal.api.models.Token;
 import company.tap.gosellapi.internal.api.responses.BINLookupResponse;
 import company.tap.gosellapi.internal.api.responses.DeleteCardResponse;
-import company.tap.gosellapi.internal.custom_views.DatePicker;
+//import company.tap.gosellapi.internal.custom_views.DatePicker;
 import company.tap.gosellapi.internal.custom_views.OTPFullScreenDialog;
 import company.tap.gosellapi.internal.data_managers.LoadingScreenManager;
 import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
@@ -578,8 +578,8 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
             selectedYear = modelExpirationYear;
         }
 
-        DatePicker.showInContext(this, selectedMonth, selectedYear,
-                (month, year) -> dataSource.cardExpirationDateSelected(month, year));
+       /* DatePicker.showInContext(this, selectedMonth, selectedYear,
+                (month, year) -> dataSource.cardExpirationDateSelected(month, year));*/
     }
 
 

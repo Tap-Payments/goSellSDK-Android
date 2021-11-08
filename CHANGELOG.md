@@ -1,4 +1,8 @@
 # CHANGELOG
+## [2.13.8] - 2021-11-08
+###  Version release with Hot Fix:
+- Fix issue for react-native plugin.
+- Update Readme and ChangeLog.
 ## [2.13.7] - 2021-09-19
 ###  Version release with Hot Fix:
 - Fix issue for cardbrand type alert

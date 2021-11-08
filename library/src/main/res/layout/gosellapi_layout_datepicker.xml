@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:layout_marginTop="10dp">
 
-    <LinearLayout
+   <!-- <LinearLayout
         android:layout_height="wrap_content"
         android:layout_width="0dp"
         android:orientation="vertical"
@@ -75,5 +75,5 @@
             app:wheel_item_space="20dp"
             android:layout_gravity="bottom"
             tools:ignore="PxUsage"/>
-    </LinearLayout>
+    </LinearLayout>-->
 </LinearLayout>

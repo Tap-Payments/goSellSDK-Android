@@ -1,3 +1,4 @@
+/*
 package company.tap.gosellapi.internal.custom_views;
 
 import android.content.Context;
@@ -9,7 +10,7 @@ import android.view.View;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.GravityEnum;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.aigestudio.wheelpicker.WheelPicker;
+//import com.aigestudio.wheelpicker.WheelPicker;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -17,37 +18,47 @@ import java.util.List;
 
 import company.tap.gosellapi.R;
 
+*/
 /**
  * The type Date picker.
- */
+ *//*
+
 public class DatePicker {
 
-    /**
+    */
+/**
      * The interface Date picker listener.
-     */
+     *//*
+
     public interface DatePickerListener {
-        /**
+        */
+/**
          * Date selected.
          *
          * @param month the month
          * @param year  the year
-         */
+         *//*
+
         void dateSelected(String month, String year);
     }
 
-    /**
+    */
+/**
      * The constant expirationData.
-     */
+     *//*
+
     public static String expirationData = null;
 
-    /**
+    */
+/**
      * Show in context.
      *
      * @param context       the context
      * @param selectedMonth the selected month
      * @param selectedYear  the selected year
      * @param listener      the listener
-     */
+     *//*
+
     public static void showInContext(Context context, @Nullable String selectedMonth, @Nullable String selectedYear, final DatePickerListener listener){
         //init custom view
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -134,3 +145,4 @@ public class DatePicker {
     private static int MONTHS_COUNT = 12;
     private static int YEARS_COUNT  = 50;
 }
+*/
