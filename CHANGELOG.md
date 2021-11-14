@@ -1,5 +1,5 @@
 # CHANGELOG
-## [2.13.9] - 2021-11-14
+## [2.13.10] - 2021-11-14
 ###  Version release with Hot Fix:
 - Fix issue for react-native plugin invalid card number color.
 - Update Readme and ChangeLog.
