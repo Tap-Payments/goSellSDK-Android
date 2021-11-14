@@ -646,7 +646,7 @@ public class CardCredentialsViewHolder
                     viewModel.saveCardSwitchClicked(false);
                     if (ThemeObject.getInstance().getCardInputInvalidTextColor() != 0) {
                         cardNumberField.setTextColor(ThemeObject.getInstance().getCardInputInvalidTextColor());
-                    }
+                    }else{ cardNumberField.setTextColor(itemView.getResources().getColor(R.color.red));}
                 } else {
                     if (PaymentDataManager.getInstance().getExternalDataSource() != null
                             && PaymentDataManager.getInstance().getExternalDataSource().getAllowedToSaveCard()) {
@@ -658,13 +658,13 @@ public class CardCredentialsViewHolder
                     }
                     if (ThemeObject.getInstance().getCardInputTextColor() != 0) {
                         cardNumberField.setTextColor(ThemeObject.getInstance().getCardInputTextColor());
-                    }
+                    }else{ cardNumberField.setTextColor(itemView.getResources().getColor(R.color.black));}
                 }
         }else
                 if (binLookupResponse != null && PaymentDataSource.getInstance().getCardType() != null?!PaymentDataSource.getInstance().getCardType().toString().equals(binLookupResponse.getCardType()):false) {
                 if (ThemeObject.getInstance().getCardInputInvalidTextColor() != 0) {
                     cardNumberField.setTextColor(ThemeObject.getInstance().getCardInputInvalidTextColor());
-                }
+                } else{ cardNumberField.setTextColor(itemView.getResources().getColor(R.color.red));}
 
                 showDialog(itemView.getResources().getString(R.string.alert_un_supported_card_title), itemView.getResources().getString(R.string.alert_un_supported_card_message));
 
@@ -676,7 +676,7 @@ public class CardCredentialsViewHolder
                     viewModel.saveCardSwitchClicked(false);
                     if (ThemeObject.getInstance().getCardInputInvalidTextColor() != 0) {
                         cardNumberField.setTextColor(ThemeObject.getInstance().getCardInputInvalidTextColor());
-                    }
+                    }else {cardNumberField.setTextColor(itemView.getResources().getColor(R.color.red));}
                 } else {
                     if (PaymentDataManager.getInstance().getExternalDataSource() != null
                             && PaymentDataManager.getInstance().getExternalDataSource().getAllowedToSaveCard()) {
@@ -688,7 +688,7 @@ public class CardCredentialsViewHolder
                     }
                     if (ThemeObject.getInstance().getCardInputTextColor() != 0) {
                         cardNumberField.setTextColor(ThemeObject.getInstance().getCardInputTextColor());
-                    }
+                    }else{ cardNumberField.setTextColor(itemView.getResources().getColor(R.color.black));}
                 }
             }
 
@@ -931,8 +931,10 @@ public class CardCredentialsViewHolder
                 viewModel.setPaymentOption(cardBrand, binLookupResponse ==null?null: binLookupResponse.getScheme());
                 System.out.println("card = " + viewModel.getCardNumber() +"binlookup "+ PaymentDataManager.getInstance().getBinLookupResponse().getCardType());
                 if (binLookupResponse!=null && PaymentDataSource.getInstance().getCardType() != null?!PaymentDataSource.getInstance().getCardType().toString().equals(binLookupResponse.getCardType()):false) {
-                    if (ThemeObject.getInstance().getCardInputInvalidTextColor() != 0)
+                    if (ThemeObject.getInstance().getCardInputInvalidTextColor() != 0){
                         cardNumberField.setTextColor(ThemeObject.getInstance().getCardInputInvalidTextColor());
+
+                    }else {cardNumberField.setTextColor(itemView.getResources().getColor(R.color.red));}
                     showDialog(itemView.getResources().getString(R.string.alert_un_supported_card_title), itemView.getResources().getString(R.string.alert_un_supported_card_message));
                 }else{
                     cardNumberField.setText(viewModel.getCardNumber());
