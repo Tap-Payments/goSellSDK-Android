@@ -8,7 +8,8 @@ import com.google.gson.annotations.SerializedName;
  * The enum Measurement.
  */
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-public enum Measurement {
+public enum Measurement implements MeasurementUnit {
+
 
     /**
      * Area measurement.
@@ -49,5 +50,10 @@ public enum Measurement {
     /**
      * Units measurement.
      */
-    @SerializedName("units")            UNITS
+    @SerializedName("units")            UNITS;
+
+    @Override
+    public Measurement getMeasurementGroup() {
+        return UNITS;
+    }
 }

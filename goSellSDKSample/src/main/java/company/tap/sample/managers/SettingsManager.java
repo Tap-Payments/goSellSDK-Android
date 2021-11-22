@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import company.tap.gosellapi.internal.api.enums.AuthorizeActionType;
+import company.tap.gosellapi.internal.api.enums.measurements.Measurement;
 import company.tap.gosellapi.internal.api.models.AmountModificator;
 import company.tap.gosellapi.internal.api.models.PhoneNumber;
 import company.tap.gosellapi.internal.api.models.Quantity;
@@ -177,7 +178,7 @@ public class SettingsManager {
         ArrayList<PaymentItem> items = new ArrayList<>();
 
         items.add(
-                new PaymentItem.PaymentItemBuilder("", new Quantity(KILOGRAMS, BigDecimal.ONE), BigDecimal.ONE)
+                new PaymentItem.PaymentItemBuilder("", new Quantity(Measurement.MASS,KILOGRAMS, BigDecimal.ONE), BigDecimal.ONE)
                         .description("Description for test item #1")
                         .discount(new AmountModificator(FIXED, BigDecimal.ZERO))
                         .taxes(null)
