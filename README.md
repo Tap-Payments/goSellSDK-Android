@@ -96,7 +96,7 @@ To integrate goSellSDK into your project add it in your **root** `build.gradle` 
 Step 2. Add the dependency
 ```java
 	dependencies {
-	         implementation 'com.github.Tap-Payments:goSellSDK-Android:2.13.11'
+	         implementation 'com.github.Tap-Payments:goSellSDK-Android:2.14.0'
 	}
 ```
 
@@ -800,11 +800,10 @@ Don't forget to import the class at the beginning of the file:
                * Note:-
                *      - In case of using PayButton, then don't call sdkSession.start(this); because the SDK will start when user clicks the tap pay button.
                */
-              //////////////////////////////////////////////////////    SDK with UI //////////////////////
               /**
-               * 1- Start using  SDK features through SDK main activity (With Tap CARD FORM)
+               *  Start using  SDK features through SDK main activity (With Tap CARD FORM)
                */
-              startSDKWithUI();
+              startSDKUI();
 
           }
  ```
@@ -820,11 +819,10 @@ Don't forget to import the class at the beginning of the file:
                * Note:-
                *      - In case of using PayButton, then don't call sdkSession.start(this)  because the SDK will start when user clicks the tap pay button.
                */
-              //////////////////////////////////////////////////////    SDK with UI //////////////////////
               /**
-               * 1- Start using  SDK features through SDK main activity (With Tap CARD FORM)
+               * Start using  SDK features through SDK main activity (With Tap CARD FORM)
                */
-              startSDKWithUI()
+              startSDKUI()
 
           }
  ```
@@ -858,10 +856,10 @@ Don't forget to import the class at the beginning of the file:
                  TransactionMode trx_mode = sdkSession.getTransactionMode();
                  if(trx_mode!=null){
      
-                     if (TransactionMode.SAVE_CARD == trx_mode  || TransactionMode.SAVE_CARD_NO_UI ==trx_mode) {
+                     if (TransactionMode.SAVE_CARD == trx_mode  ) {
                          payButtonView.getPayButton().setText(getString(company.tap.gosellapi.R.string.save_card));
                      }
-                     else if(TransactionMode.TOKENIZE_CARD == trx_mode || TransactionMode.TOKENIZE_CARD_NO_UI == trx_mode){
+                     else if(TransactionMode.TOKENIZE_CARD == trx_mode ){
                          payButtonView.getPayButton().setText(getString(company.tap.gosellapi.R.string.tokenize));
                      }
                      else {
@@ -901,10 +899,10 @@ Don't forget to import the class at the beginning of the file:
                TransactionMode trx_mode = sdkSession.getTransactionMode();
                if(trx_mode!=null){
    
-                   if (TransactionMode.SAVE_CARD == trx_mode  || TransactionMode.SAVE_CARD_NO_UI ==trx_mode) {
+                   if (TransactionMode.SAVE_CARD == trx_mode ) {
                        payButtonView.payButton.text(getString(company.tap.gosellapi.R.string.save_card))
                    }
-                   else if(TransactionMode.TOKENIZE_CARD == trx_mode || TransactionMode.TOKENIZE_CARD_NO_UI == trx_mode){
+                   else if(TransactionMode.TOKENIZE_CARD == trx_mode ){
                        payButtonView.payButton.text(getString(company.tap.gosellapi.R.string.tokenize))
                    }
                    else {
@@ -1115,6 +1113,9 @@ The following table describes its structure and specifies which fields are requi
                       void invalidCustomerID();
 
                       void userEnabledSaveCardOption(boolean saveCardEnabled);
+
+                     void cardTokenizedSuccessfully(@NonNull Token token,boolean saveCardEnabled);
+
       }
  ```
  2. PaymentDataSource
@@ -1266,16 +1267,7 @@ The following table describes its structure and specifies which fields are requi
              */
             @SerializedName("TOKENIZE_CARD")                       TOKENIZE_CARD,
         
-        /////////////////////////////////////  APIs exposer without UI ////////////////////////////
-            /**
-             * Tokenize card mode no UI.
-             */
-            @SerializedName("TOKENIZE_CARD_NO_UI")                 TOKENIZE_CARD_NO_UI,
-        
-            /**
-             * Save card transaction mode no UI.
-             */
-            @SerializedName("SAVE_CARD_NO_UI")                      SAVE_CARD_NO_UI,
+      
     }
  ```
  3. Card Type
@@ -2201,6 +2193,28 @@ Notifies the receiver that the card has successfully tokenized.
 #### Arguments
 
 **token**: card token object.
+
+Notifies the receiver that the card has successfully tokenized and user enabled / disabled save card.
+
+#### Declaration
+
+*Java:*
+
+```java
+- void cardTokenizedSuccessfully(@NonNull Token token,boolean saveCardEnabled);
+```
+*Kotlin:*
+
+```kotlin
+- fun cardTokenizedSuccessfully( token:Token, saveCardEnabled:Boolean)
+```
+
+#### Arguments
+
+**token**: card token object.
+
+**saveCardEnabled**: boolean for user enabled/disabled save card.
+
 
 <a name="saved_cards_list_callback"></a>
 ### Saved Cards List Callback

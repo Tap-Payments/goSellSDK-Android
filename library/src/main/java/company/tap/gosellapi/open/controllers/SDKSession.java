@@ -484,40 +484,6 @@ public class SDKSession implements View.OnClickListener{
         case TOKENIZE_CARD:
           startMainActivity();  // start SDK Main activity.
           break;
-        case TOKENIZE_CARD_NO_UI:  // use SDK without UI (Card Form)
-          if(this.cardInfo!=null){
-            APIsExposer.getInstance().startToknizingCard(
-                    this.cardInfo.cardNumber,
-                    this.cardInfo.expirationMonth,
-                    this.cardInfo.expirationYear,
-                    this.cardInfo.cvc,
-                    this.cardInfo.cardholderName,
-                    this.cardInfo.address,
-                    sessionDelegate);
-            sessionActive = false;
-          }
-          else {
-            sessionActive = false;
-            sessionDelegate.invalidCardDetails();
-          }
-          break;
-        case SAVE_CARD_NO_UI:
-          if(this.cardInfo!=null){
-            APIsExposer.getInstance().startSavingCard(
-                    this.cardInfo.cardNumber,
-                    this.cardInfo.expirationMonth,
-                    this.cardInfo.expirationYear,
-                    this.cardInfo.cvc,
-                    this.cardInfo.cardholderName,
-                    this.cardInfo.address,
-                    sessionDelegate);
-            sessionActive = false;
-          }
-          else {
-            sessionActive = false;
-            sessionDelegate.invalidCardDetails();
-          }
-          break;
       }
     }else {
       sessionActive = false;

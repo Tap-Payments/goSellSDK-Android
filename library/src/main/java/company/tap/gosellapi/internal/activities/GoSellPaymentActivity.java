@@ -1011,6 +1011,9 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         closePaymentActivity();
         SDKSession.getListener().cardTokenizedSuccessfully(token);
         startPaymentFlag= false;
+        if(cardCredentialsViewModel!=null)
+            SDKSession.getListener().cardTokenizedSuccessfully(token,cardCredentialsViewModel.shouldSaveCard());
+
     }
 
 

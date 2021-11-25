@@ -41,4 +41,7 @@ public interface SessionDelegate {
         void invalidCustomerID();
 
         void userEnabledSaveCardOption(boolean saveCardEnabled);
+
+        void cardTokenizedSuccessfully(@NonNull Token token,boolean saveCardEnabled);
+
 }

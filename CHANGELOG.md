@@ -1,4 +1,8 @@
 # CHANGELOG
+## [2.14.0] - 2021-11-25
+###  Version release with New Enhancement:
+- New Enhancement added for Merchant to know tokenized card save enabled or not.
+- Update Readme and ChangeLog.
 ## [2.13.11] - 2021-11-22
 ###  Version release with Hot Fix:
 - Fix issue for null safety kotlin versions.
