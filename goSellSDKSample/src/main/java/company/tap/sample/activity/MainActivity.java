@@ -284,11 +284,10 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
          * Note:-
          *      - In case of using PayButton, then don't call sdkSession.start(this); because the SDK will start when user clicks the tap pay button.
          */
-        //////////////////////////////////////////////////////    SDK with UI //////////////////////
         /**
-         * 1- Start using  SDK features through SDK main activity (With Tap CARD FORM)
+         * Start using  SDK features through SDK main activity (With Tap CARD FORM)
          */
-        startSDKWithUI();
+        startSDKUI();
 
     }
 
@@ -296,7 +295,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
     /**
      * Start using  SDK features through SDK main activity
      */
-    private void startSDKWithUI(){
+    private void startSDKUI(){
         if(sdkSession!=null){
            TransactionMode trx_mode =(settingsManager!=null)? settingsManager.getTransactionsMode("key_sdk_transaction_mode"): TransactionMode.PURCHASE;
             // set transaction mode [TransactionMode.PURCHASE - TransactionMode.AUTHORIZE_CAPTURE - TransactionMode.SAVE_CARD - TransactionMode.TOKENIZE_CARD ]
@@ -330,10 +329,10 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
             TransactionMode trx_mode = sdkSession.getTransactionMode();
             if(trx_mode!=null){
 
-                if (TransactionMode.SAVE_CARD == trx_mode  || TransactionMode.SAVE_CARD_NO_UI ==trx_mode) {
+                if (TransactionMode.SAVE_CARD == trx_mode ) {
                     payButtonView.getPayButton().setText(getString(company.tap.gosellapi.R.string.save_card));
                 }
-                else if(TransactionMode.TOKENIZE_CARD == trx_mode || TransactionMode.TOKENIZE_CARD_NO_UI == trx_mode){
+                else if(TransactionMode.TOKENIZE_CARD == trx_mode){
                     payButtonView.getPayButton().setText(getString(company.tap.gosellapi.R.string.tokenize));
                 }
                 else {
@@ -589,6 +588,19 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
     @Override
     public void userEnabledSaveCardOption(boolean saveCardEnabled) {
         System.out.println("userEnabledSaveCardOption :  "+saveCardEnabled);
+    }
+
+    @Override
+    public void cardTokenizedSuccessfully(@NonNull Token token, boolean saveCardEnabled) {
+        System.out.println("userEnabledSaveCardOption :  " + saveCardEnabled);
+        System.out.println("cardTokenizedSuccessfully Succeeded : ");
+        System.out.println("Token card : " + token.getCard().getFirstSix() + " **** " + token.getCard().getLastFour());
+        System.out.println("Token card : " + token.getCard().getFingerprint() + " **** " + token.getCard().getFunding());
+        System.out.println("Token card : " + token.getCard().getId() + " ****** " + token.getCard().getName());
+        System.out.println("Token card : " + token.getCard().getAddress() + " ****** " + token.getCard().getObject());
+        System.out.println("Token card : " + token.getCard().getExpirationMonth() + " ****** " + token.getCard().getExpirationYear());
+
+        showDialog(token.getId(), "Token", company.tap.gosellapi.R.drawable.ic_checkmark_normal);
     }
 
 

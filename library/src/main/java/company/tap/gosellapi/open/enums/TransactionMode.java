@@ -24,18 +24,5 @@ public enum TransactionMode {
      */
     @SerializedName("TOKENIZE_CARD")                TOKENIZE_CARD,
 
-/////////////////////////////////////  APIs exposer without UI ////////////////////////////
-    /**
-     * Tokenize card mode no UI.
-     */
-    @SerializedName("TOKENIZE_CARD_NO_UI")                TOKENIZE_CARD_NO_UI,
-
-    /**
-     * Save card transaction mode no UI.
-     */
-    @SerializedName("SAVE_CARD_NO_UI")                    SAVE_CARD_NO_UI,
-
-
-
 
 }
