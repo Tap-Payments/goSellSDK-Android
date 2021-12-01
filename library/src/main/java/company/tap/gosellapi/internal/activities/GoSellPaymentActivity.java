@@ -273,10 +273,21 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         if(ThemeObject.getInstance().getPayButtonTextSize()!=0)
         payButton.getPayButton().setTextSize(ThemeObject.getInstance().getPayButtonTextSize());
 
-        if(ThemeObject.getInstance().isPayButtSecurityIconVisible())
-            payButton.getSecurityIconView().setVisibility(ThemeObject.getInstance().isPayButtSecurityIconVisible() ? View.VISIBLE : View.INVISIBLE);
-        if(ThemeObject.getInstance().isPayButtLoaderVisible())
-        payButton.getLoadingView().setVisibility(ThemeObject.getInstance().isPayButtLoaderVisible() ? View.VISIBLE : View.INVISIBLE);
+        if(ThemeObject.getInstance().isPayButtSecurityIconVisible()==false){
+            payButton.getSecurityIconView().setVisibility(View.INVISIBLE);
+
+        }else{
+            payButton.getSecurityIconView().setVisibility(View.VISIBLE);
+
+        }
+
+        if(ThemeObject.getInstance().isPayButtLoaderVisible()==false){
+            payButton.getLoadingView().setVisibility(View.INVISIBLE);
+
+        }else {
+            payButton.getLoadingView().setVisibility(View.VISIBLE);
+
+        }
 
         if (isTransactionModeSaveCard() || isTransactionModeTokenizeCard()) {
             setupSaveCardMode();

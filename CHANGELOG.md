@@ -1,4 +1,11 @@
 # CHANGELOG
+## [2.14.1] - 2021-12-01
+### Minor version release for Hot Fix:
+- Hot fix in button themeing
+### Impact on existing integrations:
+- The update does not impact existing integrations.
+### Recommended changes for existing integrations before updating:
+- None.
 ## [2.14.0] - 2021-11-25
 ###  Version release with New Enhancement:
 - New Enhancement added for Merchant to know tokenized card save enabled or not.
