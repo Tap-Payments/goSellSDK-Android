@@ -217,8 +217,8 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         ImageView businessIcon = findViewById(R.id.businessIcon);
         TextView businessName = findViewById(R.id.businessName);
         String header_title = "";
-
-        if (isTransactionModeSaveCard() || isTransactionModeTokenizeCard()) {
+//|| isTransactionModeTokenizeCard() --Removed Tokenized card check
+        if (isTransactionModeSaveCard() ) {
             header_title = getString(R.string.textview_disclaimer_save_card_header_title);
 
             LinearLayout businessIconNameContainer = findViewById(R.id.businessIconNameContainer);
@@ -244,16 +244,16 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
         } else {
             String logoPath = "";
-            if (    PaymentDataManager.getInstance().getSDKSettings() != null &&
-                    PaymentDataManager.getInstance().getSDKSettings().getData() != null &&
-                    PaymentDataManager.getInstance().getSDKSettings().getData().getMerchant() != null
+            if (    PaymentDataManager.getInstance().getPaymentOptionsDataManager().getPaymentOptionsResponse() != null &&
+                    PaymentDataManager.getInstance().getPaymentOptionsDataManager().getPaymentOptionsResponse().getMerchant() != null &&
+                    PaymentDataManager.getInstance().getPaymentOptionsDataManager().getPaymentOptionsResponse().getMerchant().getLogo() != null
             ) {
 
-                logoPath = PaymentDataManager.getInstance().getSDKSettings().getData().getMerchant().getLogo();
+                logoPath = PaymentDataManager.getInstance().getPaymentOptionsDataManager().getPaymentOptionsResponse().getMerchant().getLogo();
 
                 if(!logoPath.equalsIgnoreCase("") && logoPath!=null)  Glide.with(this).load(logoPath).apply(RequestOptions.circleCropTransform()).into(businessIcon);
 
-                header_title = PaymentDataManager.getInstance().getSDKSettings().getData().getMerchant().getName();
+                header_title = PaymentDataManager.getInstance().getPaymentOptionsDataManager().getPaymentOptionsResponse().getMerchant().getName();
             }
         }
         businessName.setText(header_title);

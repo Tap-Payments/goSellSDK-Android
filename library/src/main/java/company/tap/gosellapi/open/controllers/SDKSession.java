@@ -617,7 +617,7 @@ public class SDKSession implements View.OnClickListener{
       PaymentDataManager.getInstance().setCardPaymentProcessStatus(false);
 
     }
-    if (ThemeObject.getInstance().isPayButtLoaderVisible())
+    if (ThemeObject.getInstance().isPayButtLoaderVisible() && payButtonView!=null)
       payButtonView.getLoadingView().setForceStop(true);
     if(getListener()!=null){
       SDKSession.getListener().sessionCancelled();

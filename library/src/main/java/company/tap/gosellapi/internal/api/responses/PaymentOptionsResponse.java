@@ -52,6 +52,14 @@ public final class PaymentOptionsResponse implements BaseResponse {
     @SerializedName("settlement_currency")
     @Expose
     @Nullable private String settlement_currency;
+
+    @SerializedName("api_version")
+    @Expose
+    @Nullable private String api_version;
+
+    @SerializedName("merchant")
+    @Expose
+    @Nullable private Merchant merchant;
     /**
      * Gets id.
      *
@@ -130,5 +138,110 @@ public final class PaymentOptionsResponse implements BaseResponse {
         return settlement_currency;
     }
 
+    /**
+     * Gets api_version.
+     *
+     * @return the api_version
+     */
+    @Nullable
+    public String getApi_version() {
+        return api_version;
+    }
+    /**
+     * Gets merchant.
+     *
+     * @return the merchant
+     */
+    @Nullable
+    public Merchant getMerchant() {
+        return merchant;
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    /**
+     * The type Merchant.
+     */
+    public static final class Merchant {
+
+        @SerializedName("name")
+        @Expose
+        private String name;
+
+
+        @SerializedName("live_mode")
+        @Expose
+        private Boolean live_mode;
+
+        @SerializedName("logo")
+        @Expose
+        private String logo;
+
+        @SerializedName("object")
+        @Expose
+        private String object;
+
+        @SerializedName("country_code")
+        @Expose
+        private String country_code;
+
+        @SerializedName("contact")
+        @Expose
+        private Object contact;
+
+        /**
+         * Gets name.
+         *
+         * @return the name
+         */
+        public String getName() {
+            return name;
+        }
+
+        /**
+         * Gets logo.
+         *
+         * @return the logo
+         */
+        public String getLogo() {
+            return logo;
+        }
+
+        /**
+         * Gets live_mode.
+         *
+         * @return the live_mode
+         */
+        public Boolean getLive_mode() {
+            return live_mode;
+        }
+
+        /**
+         * Gets object.
+         *
+         * @return the object
+         */
+        public String getObject() {
+            return object;
+        }
+
+        /**
+         * Gets country_code.
+         *
+         * @return the country_code
+         */
+        public String getCountry_code() {
+            return country_code;
+        }
+
+        /**
+         * Gets contact.
+         *
+         * @return the contact
+         */
+        public Object getContact() {
+            return contact;
+        }
+    }
 }
