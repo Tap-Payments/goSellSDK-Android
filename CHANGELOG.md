@@ -1,4 +1,11 @@
 # CHANGELOG
+## [2.15.0] - 2022-02-22
+### New Feature Release:
+- Merchants can now pay using Careem Pay
+### Impact on existing integrations:
+- The update does not impact existing integrations.
+### Recommended changes for existing integrations before updating:
+- If Merchants wants to use Careem Pay will require to update sdk.
 ## [2.14.3] - 2022-02-10
 ### Minor version release for Hot Fix:
 - Hot fix in NPE in cancel session

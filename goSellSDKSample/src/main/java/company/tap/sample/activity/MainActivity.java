@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         // Set Payment Items array list
         sdkSession.setPaymentItems(new ArrayList<>());// ** Optional ** you can pass empty array list
 
-           sdkSession.setPaymentType("CARD");   //** Merchant can pass paymentType
+           sdkSession.setPaymentType("ALL");   //** Merchant can pass paymentType
 
         // Set Taxes array list
         sdkSession.setTaxes(new ArrayList<>());//** Optional ** you can pass empty array list
@@ -262,7 +262,7 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
         sdkSession.setDestination(null); // ** Optional ** you can pass Destinations object or null
 
-        sdkSession.setMerchantID(null); // ** Optional ** you can pass merchant id or null
+        sdkSession.setMerchantID("1124340"); // ** Optional ** you can pass merchant id or null
 
         sdkSession.setCardType(CardType.ALL); // ** Optional ** you can pass which cardType[CREDIT/DEBIT] you want.By default it loads all available cards for Merchant.
 
