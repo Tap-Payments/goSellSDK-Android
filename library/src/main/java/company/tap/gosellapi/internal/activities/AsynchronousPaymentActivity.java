@@ -150,15 +150,21 @@ public class AsynchronousPaymentActivity extends BaseActivity implements View.On
         businessName.setLayoutParams(ll);
         businessIconNameContainer.addView(businessIcon);
         businessIconNameContainer.addView(businessName);
-        if (PaymentDataManager.getInstance().getChargeOrAuthorize().getTransaction().isAsynchronous())
-            System.out.println("paymnet array" + PaymentDataManager.getInstance().getPaymentOptionsDataManager().getPaymentOptionsResponse().getPaymentOptions().size());
-        payymentName = PaymentDataManager.getInstance().getPaymentOptionsDataManager().getPaymentOptionsResponse().getPaymentOptions().get(3).getName();
-        imageURL = PaymentDataManager.getInstance().getPaymentOptionsDataManager().getPaymentOptionsResponse().getPaymentOptions().get(3).getImage();
+if(PaymentDataManager.getInstance().getPaymentOptionsDataManager().getPaymentOptionsResponse()!=null && PaymentDataManager.getInstance().getPaymentOptionsDataManager().getPaymentOptionsResponse().getPaymentOptions()!=null)
+            for (int i = 0; i < PaymentDataManager.getInstance().getPaymentOptionsDataManager().getPaymentOptionsResponse().getPaymentOptions().size() ; i++) {
+                if (PaymentDataManager.getInstance().getPaymentOptionsDataManager().getPaymentOptionsResponse().getPaymentOptions().get(i).isAsynchronous()){
+                    payymentName = PaymentDataManager.getInstance().getPaymentOptionsDataManager().getPaymentOptionsResponse().getPaymentOptions().get(i).getName();
+                    imageURL = PaymentDataManager.getInstance().getPaymentOptionsDataManager().getPaymentOptionsResponse().getPaymentOptions().get(i).getImage();
+                }
+
+            }
+
+
 
 
         businessName.setTextSize(17);
         businessName.setTextColor(getResources().getColor(R.color.black1));
-        businessName.setText("Fawry");
+        businessName.setText(payymentName);
         businessName.setPadding(35, 0, 0, 15);
         businessName.setGravity(Gravity.CENTER_HORIZONTAL);
         Glide.with(this).load(imageURL).apply(RequestOptions.circleCropTransform()).into(businessIcon);
