@@ -1,4 +1,11 @@
 # CHANGELOG
+## [2.15.1] - 2022-03-03
+### Minor version release for Hot Fix:
+- Hot fix in Asynchronous payment read dynamically name
+### Impact on existing integrations:
+- The update does not impact existing integrations.
+### Recommended changes for existing integrations before updating:
+- None.
 ## [2.15.0] - 2022-02-22
 ### New Feature Release:
 - Merchants can now pay using Careem Pay
