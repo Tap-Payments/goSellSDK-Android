@@ -366,6 +366,7 @@ public final class PaymentDataManager {
      */
     public void checkWebPaymentExtraFees(WebPaymentViewModel model,
                                        PaymentOptionsDataManager.PaymentOptionsDataListener paymentOptionsDataListener) {
+      if(model!=null && model.getPaymentOption()!=null)
     getPaymentProcessManager()
         .checkPaymentExtraFees(model.getPaymentOption(), paymentOptionsDataListener,
             PaymentType.WEB);
