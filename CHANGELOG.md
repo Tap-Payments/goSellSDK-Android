@@ -1,4 +1,11 @@
 # CHANGELOG
+## [2.15.3] - 2022-03-10
+### Minor version release for Hot Fix:
+- Hot fix crash / NPE
+### Impact on existing integrations:
+- The update does not impact existing integrations.
+### Recommended changes for existing integrations before updating:
+- None.
 ## [2.15.2] - 2022-03-06
 ### Minor version release for Hot Fix:
 - Hot fix crash

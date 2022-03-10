@@ -405,6 +405,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
             // ActivityDataExchanger.getInstance().setWebPaymentViewModel(webPaymentViewModel);
             PaymentDataManager.getInstance().initiatePayment(webPaymentViewModel, this);
             payButton.setEnabled(true);
+            payButton.setClickable(false);
             payButton.getLoadingView().start();
 
         } else {
