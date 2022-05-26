@@ -1,4 +1,7 @@
 # CHANGELOG
+## [2.15.4] - 2022-05-26
+### Minor version release for Hot Fix:
+- Hot fix crash / NPE
 ## [2.15.3] - 2022-03-10
 ### Minor version release for Hot Fix:
 - Hot fix crash / NPE
