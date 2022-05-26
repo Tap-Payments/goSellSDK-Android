@@ -929,7 +929,7 @@ public class CardCredentialsViewHolder
                 // do something after 1s = 1000 miliseconds since set response takes time
                 BINLookupResponse binLookupResponse  =  PaymentDataManager.getInstance().getBinLookupResponse();
                 viewModel.setPaymentOption(cardBrand, binLookupResponse ==null?null: binLookupResponse.getScheme());
-                System.out.println("card = " + viewModel.getCardNumber() +"binlookup "+ PaymentDataManager.getInstance().getBinLookupResponse().getCardType());
+              //  System.out.println("card = " + viewModel.getCardNumber() +"binlookup "+ PaymentDataManager.getInstance().getBinLookupResponse().getCardType());
                 if (binLookupResponse!=null && PaymentDataSource.getInstance().getCardType() != null?!PaymentDataSource.getInstance().getCardType().toString().equals(binLookupResponse.getCardType()):false) {
                     if (ThemeObject.getInstance().getCardInputInvalidTextColor() != 0){
                         cardNumberField.setTextColor(ThemeObject.getInstance().getCardInputInvalidTextColor());
