@@ -27,7 +27,9 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.style.ReplacementSpan;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -52,6 +54,7 @@ import company.tap.gosellapi.internal.data_managers.payment_options.view_models.
 import company.tap.gosellapi.internal.data_managers.payment_options.view_models_data.CardCredentialsViewModelData;
 import company.tap.gosellapi.internal.utils.ActivityDataExchanger;
 import company.tap.gosellapi.internal.utils.CardType;
+import company.tap.gosellapi.internal.utils.Utils;
 import company.tap.gosellapi.open.controllers.ThemeObject;
 import company.tap.gosellapi.open.data_manager.PaymentDataSource;
 import company.tap.gosellapi.open.enums.TransactionMode;
@@ -509,12 +512,26 @@ public class CardCredentialsViewHolder
 
 
 
-        saveCardSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-          viewModel.saveCardSwitchClicked(isChecked);
-        }
-      });
+        // Added hide keyboard for disabled card name
+        saveCardSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            viewModel.saveCardSwitchClicked(isChecked);
+            if(buttonView!=null &&  !PaymentDataSource.getInstance().getEnableEditCardHolderName()){
+                Utils.hideKeyboardFrom(itemView.getContext(),buttonView);
+
+            } else {
+                nameOnCardField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                        if (actionId == EditorInfo.IME_ACTION_DONE) {
+                            // hide virtual keyboard
+                            Utils.hideKeyboardFrom(itemView.getContext(),buttonView);
+                            return true;
+                        }
+                        return false;
+                    }
+                });
+            }
+
+        });
 
 
         nameOnCardField.addTextChangedListener(cardCredentialsTextWatcher);
@@ -642,7 +659,7 @@ public class CardCredentialsViewHolder
            // if (!PaymentDataSource.getInstance().getCardType().toString().equals(binLookupResponse.getCardType())) {
         if(binLookupResponse != null && PaymentDataSource.getInstance().getCardType()!=null && PaymentDataSource.getInstance().getCardType() == ALL) {
              if (brand.getValidationState().equals(CardValidationState.invalid)) {
-                    saveCardSwitch.setChecked(false);
+                 //   saveCardSwitch.setChecked(false);
                     viewModel.saveCardSwitchClicked(false);
                     if (ThemeObject.getInstance().getCardInputInvalidTextColor() != 0) {
                         cardNumberField.setTextColor(ThemeObject.getInstance().getCardInputInvalidTextColor());
@@ -650,10 +667,10 @@ public class CardCredentialsViewHolder
                 } else {
                     if (PaymentDataManager.getInstance().getExternalDataSource() != null
                             && PaymentDataManager.getInstance().getExternalDataSource().getAllowedToSaveCard()) {
-                        saveCardSwitch.setChecked(true);
+                      //  saveCardSwitch.setChecked(true);
                         viewModel.saveCardSwitchClicked(true);
                     } else {
-                        saveCardSwitch.setChecked(false);
+                     //   saveCardSwitch.setChecked(false);
                         viewModel.saveCardSwitchClicked(false);
                     }
                     if (ThemeObject.getInstance().getCardInputTextColor() != 0) {
@@ -672,7 +689,7 @@ public class CardCredentialsViewHolder
             }else {
 
                 if (brand.getValidationState().equals(CardValidationState.invalid)) {
-                    saveCardSwitch.setChecked(false);
+                  //  saveCardSwitch.setChecked(false);
                     viewModel.saveCardSwitchClicked(false);
                     if (ThemeObject.getInstance().getCardInputInvalidTextColor() != 0) {
                         cardNumberField.setTextColor(ThemeObject.getInstance().getCardInputInvalidTextColor());
@@ -680,10 +697,10 @@ public class CardCredentialsViewHolder
                 } else {
                     if (PaymentDataManager.getInstance().getExternalDataSource() != null
                             && PaymentDataManager.getInstance().getExternalDataSource().getAllowedToSaveCard()) {
-                        saveCardSwitch.setChecked(true);
+                     //   saveCardSwitch.setChecked(true);
                         viewModel.saveCardSwitchClicked(true);
                     } else {
-                        saveCardSwitch.setChecked(false);
+                    //    saveCardSwitch.setChecked(false);
                         viewModel.saveCardSwitchClicked(false);
                     }
                     if (ThemeObject.getInstance().getCardInputTextColor() != 0) {
@@ -930,14 +947,20 @@ public class CardCredentialsViewHolder
                 BINLookupResponse binLookupResponse  =  PaymentDataManager.getInstance().getBinLookupResponse();
                 viewModel.setPaymentOption(cardBrand, binLookupResponse ==null?null: binLookupResponse.getScheme());
               //  System.out.println("card = " + viewModel.getCardNumber() +"binlookup "+ PaymentDataManager.getInstance().getBinLookupResponse().getCardType());
-                if (binLookupResponse!=null && PaymentDataSource.getInstance().getCardType() != null?!PaymentDataSource.getInstance().getCardType().toString().equals(binLookupResponse.getCardType()):false) {
-                    if (ThemeObject.getInstance().getCardInputInvalidTextColor() != 0){
-                        cardNumberField.setTextColor(ThemeObject.getInstance().getCardInputInvalidTextColor());
+                if(binLookupResponse!=null){
+                    if(PaymentDataSource.getInstance().getCardType() != null && !PaymentDataSource.getInstance().getCardType().equals(company.tap.gosellapi.open.enums.CardType.ALL)){
 
-                    }else {cardNumberField.setTextColor(itemView.getResources().getColor(R.color.red));}
-                    showDialog(itemView.getResources().getString(R.string.alert_un_supported_card_title), itemView.getResources().getString(R.string.alert_un_supported_card_message));
-                }else{
-                    cardNumberField.setText(viewModel.getCardNumber());
+                        if ( !PaymentDataSource.getInstance().getCardType().toString().equals(binLookupResponse.getCardType()))
+                        {
+                            if (ThemeObject.getInstance().getCardInputInvalidTextColor() != 0){
+                                cardNumberField.setTextColor(ThemeObject.getInstance().getCardInputInvalidTextColor());
+
+                            }else {
+                                cardNumberField.setTextColor(itemView.getResources().getColor(R.color.red));}
+                            showDialog(itemView.getResources().getString(R.string.alert_un_supported_card_title), itemView.getResources().getString(R.string.alert_un_supported_card_message));
+                        }
+                    }
+
                 }
             }
         }, 1000); //Time in mis

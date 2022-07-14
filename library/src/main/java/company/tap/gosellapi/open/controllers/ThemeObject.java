@@ -590,7 +590,7 @@ public class ThemeObject {
                 if(payButtonText!=null)
                         return this.payButtonText;
 
-                return "PAY";
+                return payButtonText;
         }
 
         /**

@@ -13,7 +13,7 @@
   <string name="cancel">إلغاء</string>
 
   <string name="edittext_hint_card_number">رقم البطاقة</string>
-  <string name="edittext_hint_expiration_date">سنه/ شهر</string>
+  <string name="edittext_hint_expiration_date">شش/سس</string>
   <string name="edittext_hint_CVV">الرمز الأمني</string>
   <string name="edittext_hint_name_on_card">الاسم الموجود في البطاقة</string>
   <string name="edittext_hint_line1">Line 1</string>
@@ -82,7 +82,7 @@
   <string name="key_sdk_appearance_mode">key_sdk_appearance_mode</string>
   <string name="save_card">حفظ البطاقة</string>
   <string name="card_saved_before">تم حفظ بطاقتك من قبل ، لا يمكنك حفظها مرتين!</string>
-    <string name="textview_disclaimer_save_card_header_title">ادفع</string>
+    <string name="textview_disclaimer_save_card_header_title">أدخل تفاصيل البطاقة</string>
 
 
 
