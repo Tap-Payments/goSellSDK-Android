@@ -241,7 +241,7 @@
         tools:ignore="RtlSymmetry"
         android:textDirection="locale"
         android:digits="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "
-
+        android:singleLine="true"
         />
 
   </android.support.design.widget.TextInputLayout>
