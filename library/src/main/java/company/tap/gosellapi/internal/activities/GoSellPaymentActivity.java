@@ -3,6 +3,7 @@ package company.tap.gosellapi.internal.activities;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -24,6 +25,7 @@ import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -116,6 +118,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         super.onCreate(savedInstanceState);
 
         overridePendingTransition(R.anim.slide_in_top, android.R.anim.fade_out);
+        setupScreenMode();
 
         apperanceMode = ThemeObject.getInstance().getAppearanceMode();
 
@@ -289,7 +292,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
         }
 
-        if (isTransactionModeSaveCard() || isTransactionModeTokenizeCard()) {
+        if (isTransactionModeSaveCard()) {
             setupSaveCardMode();
         } else {
             setupChargeOrAuthorizeMode();
@@ -337,13 +340,13 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
             }
         }
 
-        if(isTransactionModeTokenizeCard()){
+      /*  if(isTransactionModeTokenizeCard()){
             if(ThemeObject.getInstance().getPayButtonText()!=null){
                 payButton.getPayButton().setText(ThemeObject.getInstance().getPayButtonText());
             }else{
                 payButton.getPayButton().setText(getResources().getString(R.string.tokenize));
             }
-        }
+        }*/
 
 
     }
@@ -540,7 +543,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
 
 //        Log.d("GoSellPaymentActivity"," update pay button with : fees : " + feesAmount);
 
-        if (isTransactionModeSaveCard()|| isTransactionModeTokenizeCard()) return;
+        if (isTransactionModeSaveCard()) return;
         if(ThemeObject.getInstance().getPayButtonText()!=null){
             payButton.getPayButton().setText(
                     String.format("%s %s", ThemeObject.getInstance().getPayButtonText(),
@@ -1315,6 +1318,12 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         Intent intent= new Intent(this, AsynchronousPaymentActivity.class);
         startActivityForResult(intent,ASYNCHRONOUS_REQUEST_CODE);
         overridePendingTransition(R.anim.slide_in_top,0);
+    }
+
+    private void setupScreenMode() {
+        if(isTransactionModeTokenizeCard()|| isTransactionModeSaveCard()) {
+            ThemeObject.getInstance().setAppearanceMode(AppearanceMode.WINDOWED_MODE);
+        }
     }
 
 }

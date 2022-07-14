@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="library/src/main/res/layout/gosellapi_activity_web_payment.xml" value="0.3112033195020747" />
+        <entry key="library/src/main/res/layout/gosellsdk_viewholder_card_payment_option.xml" value="0.1328125" />
+        <entry key="library/src/main/res/layout/gosellsdk_viewholder_web_payment_option.xml" value="0.1" />
+        <entry key="library/src/main/res/layout/payment_card_web_view.xml" value="0.1" />
+      </map>
+    </option>
+  </component>
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" value="$PROJECT_DIR$/docs" />
     <option name="OPTION_SCOPE" value="private" />

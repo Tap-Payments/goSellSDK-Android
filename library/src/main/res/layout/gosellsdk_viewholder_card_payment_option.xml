@@ -6,6 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
+    android:textDirection="locale"
+    tools:targetApi="jelly_bean_mr1"
     >
 
   <!-- TOP SEPARATOR -->
@@ -98,7 +100,8 @@
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toTopOf="parent"
           app:backgroundTint="@color/separator"
-
+          android:paddingRight="4dp"
+          android:paddingEnd="4dp"
           android:paddingStart="4dp"
           android:paddingLeft="4dp" />
 
@@ -147,6 +150,8 @@
         android:gravity="start"
         android:paddingStart="3dp"
         android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:paddingEnd="3dp"
         >
 
 
@@ -234,6 +239,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="RtlSymmetry"
+        android:textDirection="locale"
+        android:digits="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "
+
         />
 
   </android.support.design.widget.TextInputLayout>
