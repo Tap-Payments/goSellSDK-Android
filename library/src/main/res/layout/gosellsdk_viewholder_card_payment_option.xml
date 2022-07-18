@@ -103,7 +103,8 @@
           android:paddingRight="4dp"
           android:paddingEnd="4dp"
           android:paddingStart="4dp"
-          android:paddingLeft="4dp" />
+          android:paddingLeft="4dp"
+          android:imeOptions="actionNext"/>
 
     </android.support.design.widget.TextInputLayout>
 
@@ -242,6 +243,7 @@
         android:textDirection="locale"
         android:digits="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "
         android:singleLine="true"
+        android:imeOptions="actionDone"
         />
 
   </android.support.design.widget.TextInputLayout>
