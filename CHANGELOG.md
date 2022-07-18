@@ -1,4 +1,11 @@
 # CHANGELOG
+## [2.15.8] - 2022-07-18
+### Minor version release for Hot Fix:
+- Hot fixes for react native sdk
+### Impact on existing integrations:
+- The update does not impact existing integrations.
+### Recommended changes for existing integrations before updating:
+- None.
 ## [2.15.7] - 2022-07-14
 ### Minor version release for Hot Fix:
 - Hot fixes for react native sdk
