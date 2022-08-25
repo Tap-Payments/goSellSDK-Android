@@ -602,6 +602,13 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
 
         showDialog(token.getId(), "Token", company.tap.gosellapi.R.drawable.ic_checkmark_normal);
     }
+    @Override
+    public void asyncPaymentStarted(@NonNull Charge charge) {
+        System.out.println("asyncPaymentStarted :  ");
+        System.out.println("Charge id:"+ charge.getId());
+        System.out.println("Fawry reference:"+charge.getTransaction().getOrder().getReference());
+    }
+
 
 
 /////////////////////////////////////////////////////////  needed only for demo ////////////////////
