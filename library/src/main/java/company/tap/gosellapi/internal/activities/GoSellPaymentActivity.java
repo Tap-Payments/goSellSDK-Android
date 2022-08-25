@@ -953,7 +953,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                 clearPaymentProcessListeners();
                 selectedCurrencyAsynchronous=false;
                 if(webPaymentViewModel !=null)webPaymentViewModel.enableWebView();
-                new Handler().postDelayed(() -> openAsyncActivity(), 800);
+                new Handler().postDelayed(() -> openAsyncActivity(charge), 800);
                 break;
 
         }
@@ -1312,7 +1312,8 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
     }
 
 
-    private void openAsyncActivity(){
+    private void openAsyncActivity(Charge charge){
+        SDKSession.getListener().asyncPaymentStarted(charge);
         payButton.setEnabled(false);
         stopPayButtonLoadingView();
         Intent intent= new Intent(this, AsynchronousPaymentActivity.class);
