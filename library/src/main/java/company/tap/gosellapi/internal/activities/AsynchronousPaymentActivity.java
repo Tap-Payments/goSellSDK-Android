@@ -22,6 +22,7 @@ import java.util.Date;
 
 import company.tap.gosellapi.R;
 import company.tap.gosellapi.internal.data_managers.PaymentDataManager;
+import company.tap.gosellapi.open.controllers.SDKSession;
 import company.tap.gosellapi.open.controllers.ThemeObject;
 import company.tap.gosellapi.open.enums.AppearanceMode;
 
@@ -122,6 +123,9 @@ public class AsynchronousPaymentActivity extends BaseActivity implements View.On
             finish();
             PaymentDataManager.getInstance().clearPaymentProcessListeners();
             overridePendingTransition(android.R.anim.fade_in, R.anim.slide_out_bottom);
+            if (PaymentDataManager.getInstance().getChargeOrAuthorize() != null) {
+                SDKSession.getListener().paymentSucceed(PaymentDataManager.getInstance().getChargeOrAuthorize());
+            }
         }
     }
    /**
