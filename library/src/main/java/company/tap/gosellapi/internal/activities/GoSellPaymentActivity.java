@@ -1317,8 +1317,10 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
         payButton.setEnabled(false);
         stopPayButtonLoadingView();
         Intent intent= new Intent(this, AsynchronousPaymentActivity.class);
+        finish();
         startActivityForResult(intent,ASYNCHRONOUS_REQUEST_CODE);
         overridePendingTransition(R.anim.slide_in_top,0);
+
     }
 
     private void setupScreenMode() {

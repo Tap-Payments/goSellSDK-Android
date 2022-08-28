@@ -1,4 +1,11 @@
 # CHANGELOG
+[2.15.11] - 2022-08-28
+### Hot Fix:
+- Minor Hot fix for callback added
+### Impact on existing integrations:
+- The update does not impact existing integrations.
+### Recommended changes for existing integrations before updating:
+- None.
 [2.15.10] - 2022-08-25
 ### Minor version release for Feature update:
 - Added new callback for Asynchronous Payment
