@@ -425,9 +425,12 @@ public class CardCredentialsViewModel
       }else {
           if(cardBrand!=null){
               for(PaymentOption paymentOption:  data.getPaymentOptions()){
-                  if(paymentOption.getBrand()!=null && paymentOption.getBrand().compareTo(cardBrand)==0){
-                      this.selectedCardPaymentOption = paymentOption;
-                      updatePayButtonWithExtraFees(paymentOption);
+                  if(paymentOption.getBrand()!=null ){
+                      if(paymentOption.getName().compareTo(String.valueOf(cardBrand))==0){
+                          this.selectedCardPaymentOption = paymentOption;
+                          updatePayButtonWithExtraFees(paymentOption);
+                      }
+
                   }
               }
           }else
