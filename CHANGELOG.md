@@ -1,4 +1,11 @@
 # CHANGELOG
+[3.15.12] - 2022-10-06
+### Hot Fix:
+- Minor Hot fix for dynamic card brand name
+### Impact on existing integrations:
+- The update does not impact existing integrations.
+### Recommended changes for existing integrations before updating:
+- None.
 [2.15.11] - 2022-08-28
 ### Hot Fix:
 - Minor Hot fix for callback added
