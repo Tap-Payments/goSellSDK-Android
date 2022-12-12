@@ -43,10 +43,14 @@ public class RecentSectionViewHolder
         linearLayoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
         recentPaymentsRecyclerView.setLayoutManager(linearLayoutManager);
         for(int i=0;  i<data.size();i++){
-            if ((data != null && PaymentDataSource.getInstance().getCardType() != null) && !PaymentDataSource.getInstance().getCardType().toString().equals(data.get(i).getFunding())) {
-                data.remove(i);
+            if ((data != null && PaymentDataSource.getInstance().getCardType() != null &&  !PaymentDataSource.getInstance().getCardType().toString().equals("ALL"))){
+                if( !PaymentDataSource.getInstance().getCardType().toString().equals(data.get(i).getFunding())) {
+                    data.remove(i);
+                }
             }
         }
+
+
         adapter = new RecentPaymentsRecyclerViewAdapter(data, this);
         recentPaymentsRecyclerView.setAdapter(adapter);
         if(viewModel!=null)
