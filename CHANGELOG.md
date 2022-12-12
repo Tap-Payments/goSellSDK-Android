@@ -1,5 +1,12 @@
 # CHANGELOG
-[3.15.12] - 2022-10-06
+[2.15.17] - 2022-12-08
+### Hot Fix:
+- Updated React-Native sdk
+### Impact on existing integrations:
+- The update does not impact existing integrations.
+### Recommended changes for existing integrations before updating:
+- None.
+[2.15.12] - 2022-10-06
 ### Hot Fix:
 - Minor Hot fix for dynamic card brand name
 ### Impact on existing integrations:
