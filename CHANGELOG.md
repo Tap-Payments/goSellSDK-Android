@@ -1,4 +1,11 @@
 # CHANGELOG
+[2.15.18] - 2022-12-29
+### Hot Fix:
+- Hot fix issues for cardbrand
+### Impact on existing integrations:
+- The update does not impact existing integrations.
+### Recommended changes for existing integrations before updating:
+- None.
 [2.15.17] - 2022-12-08
 ### Hot Fix:
 - Updated React-Native sdk

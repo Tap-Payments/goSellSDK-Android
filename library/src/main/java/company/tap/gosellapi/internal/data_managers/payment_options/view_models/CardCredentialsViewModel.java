@@ -426,7 +426,8 @@ public class CardCredentialsViewModel
           if(cardBrand!=null){
               for(PaymentOption paymentOption:  data.getPaymentOptions()){
                   if(paymentOption.getBrand()!=null ){
-                      if(paymentOption.getName().compareTo(String.valueOf(cardBrand))==0){
+                      //Fix added for cases where cardscheme is empty (toLowecase() added)
+                      if(paymentOption.getName().toLowerCase().compareTo(String.valueOf(cardBrand))==0){
                           this.selectedCardPaymentOption = paymentOption;
                           updatePayButtonWithExtraFees(paymentOption);
                       }
