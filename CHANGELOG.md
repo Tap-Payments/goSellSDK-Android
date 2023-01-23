@@ -1,5 +1,5 @@
 # CHANGELOG
-[2.16.0] - 2023-01-23
+[2.16.1] - 2023-01-23
 ### Enhancement Feature:
 - New Callback added to get when a charge is initiated
 ### Impact on existing integrations:
