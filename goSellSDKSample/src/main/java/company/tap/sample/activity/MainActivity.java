@@ -609,6 +609,12 @@ public class MainActivity extends AppCompatActivity implements SessionDelegate {
         System.out.println("Fawry reference:"+charge.getTransaction().getOrder().getReference());
     }
 
+    @Override
+    public void paymentInitiated(@Nullable Charge charge) {
+        System.out.println("paymentInitiated CallBack :  ");
+        System.out.println("Charge id:"+ charge.getId());
+        System.out.println("charge status:"+charge.getStatus());
+    }
 
 
 /////////////////////////////////////////////////////////  needed only for demo ////////////////////
