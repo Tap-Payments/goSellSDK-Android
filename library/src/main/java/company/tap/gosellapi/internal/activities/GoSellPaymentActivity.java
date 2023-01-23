@@ -910,6 +910,7 @@ public class GoSellPaymentActivity extends BaseActivity implements PaymentOption
                             openOTPScreen(charge);
                             break;
                     }
+                    SDKSession.getListener().paymentInitiated(charge);
                 }
                 break;
             case CAPTURED:

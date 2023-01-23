@@ -1,4 +1,11 @@
 # CHANGELOG
+[2.16.0] - 2023-01-23
+### Enhancement Feature:
+- New Callback added to get when a charge is initiated
+### Impact on existing integrations:
+- The update does not impact existing integrations.
+### Recommended changes for existing integrations before updating:
+- None.
 [2.15.18] - 2022-12-29
 ### Hot Fix:
 - Hot fix issues for cardbrand
