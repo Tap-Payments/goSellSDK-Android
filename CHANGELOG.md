@@ -1,4 +1,12 @@
 # CHANGELOG
+[2.16.3] - 2023-05-14
+### Hot Fix:
+- Bug fix for UI
+### Impact on existing integrations:
+- The update does not impact existing integrations.
+### Recommended changes for existing integrations before updating:
+- None.
+
 [2.16.1] - 2023-01-23
 ### Enhancement Feature:
 - New Callback added to get when a charge is initiated
