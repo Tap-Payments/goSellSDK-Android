@@ -262,7 +262,7 @@ public class PaymentOptionsDataManager {
   private AmountedCurrency getTransactionCurrency() {
 
     String currencyCode = paymentOptionsResponse.getCurrency();
-
+    if(paymentOptionsResponse!=null && paymentOptionsResponse.getSupportedCurrencies()!=null)
     for (AmountedCurrency amountedCurrency : paymentOptionsResponse.getSupportedCurrencies()) {
 
       if (amountedCurrency.getCurrency().equals(currencyCode)) return amountedCurrency;
