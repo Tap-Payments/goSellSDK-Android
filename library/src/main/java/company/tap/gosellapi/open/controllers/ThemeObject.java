@@ -48,7 +48,7 @@ public class ThemeObject {
         private int                     saveCardSwitchOffTrackTint;
         private int                     saveCardSwitchOnTrackTint;
         private Drawable                scanIconDrawable;
-
+        private boolean                 cardScannerIconVisible=true;
 
         /**
          *  Tap Button
@@ -67,6 +67,7 @@ public class ThemeObject {
         private boolean                 payButtLoaderVisible=true;
         private int                     payButtonTextSize;
         private String                  payButtonText;
+        private boolean                  payButtonShowAmount;
 
         /**
          * Dialog Appearance
@@ -356,6 +357,15 @@ public class ThemeObject {
         }
 
         /**
+         * pay button view or hide scanner
+         * @param cardScannerIconVisible
+         */
+        public ThemeObject setCardScannerIconVisible(boolean cardScannerIconVisible) {
+                this.cardScannerIconVisible = cardScannerIconVisible;
+                return this;
+        }
+
+        /**
          * pay button text size
          * @param payButtonTextSize
          */
@@ -372,6 +382,16 @@ public class ThemeObject {
                 this.payButtonText = payButtonText;
                 return this;
         }
+
+        /**
+         * show amount on Button
+         * @param payButtonShowAmount
+         */
+        public ThemeObject setShowAmountOnButton(boolean payButtonShowAmount) {
+                this.payButtonShowAmount = payButtonShowAmount;
+                return this;
+        }
+
 
 
         ////////////////////////////////////////////////////////////////////////////////////////////
@@ -564,12 +584,25 @@ public class ThemeObject {
         }
 
         /**
+         * @return pay button security icon visible
+         */
+        public boolean isSetCardScannerIconVisible() {
+                return this.cardScannerIconVisible;
+        }
+
+
+        /**
          *
          * @return
          */
         public boolean isPayButtLoaderVisible() {
                 return this.payButtLoaderVisible;
         }
+
+        public boolean getShowAmountOnButton() {
+                return this.payButtonShowAmount;
+        }
+
 
         /**
          *

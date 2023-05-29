@@ -358,6 +358,9 @@ Don't forget to import the class at the beginning of the file:
 
           // change scan icon
           .setScanIconDrawable(getResources().getDrawable(R.drawable.btn_card_scanner_normal)) // **Optional**
+       
+         //Show or hide the scanner
+        .setCardScannerIconVisible(true) // **Optional**
 
           // setup pay button selector [ background - round corner ]
           .setPayButtonResourceId(R.drawable.btn_pay_selector)
