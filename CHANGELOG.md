@@ -1,4 +1,11 @@
 # CHANGELOG
+[2.17.0] - 2023-05-29
+### Enhancement Feature:
+- The merchant can now configure the scanner to be shown or hide
+### Impact on existing integrations:
+- The update does not impact existing integrations.
+### Recommended changes for existing integrations before updating:
+- None.
 [2.16.3] - 2023-05-14
 ### Hot Fix:
 - Bug fix for UI

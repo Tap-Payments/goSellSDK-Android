@@ -266,6 +266,9 @@ public class CardCredentialsViewHolder
 
           cardScannerButton = itemView.findViewById(R.id.cardScannerButton);
 
+        if(ThemeObject.getInstance().isSetCardScannerIconVisible()) cardScannerButton.setVisibility(View.VISIBLE);
+        else cardScannerButton.setVisibility(View.GONE);
+
 /////////////////////////////////////////////////// CARD EXPIRATION_DATE START ///////////////////////////////////////////////////////
         expirationDateField = itemView.findViewById(R.id.expirationDateField);
         // enable Expiration date dialog
