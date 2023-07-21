@@ -2,9 +2,15 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/AndroidSDK.iml" filepath="$PROJECT_DIR$/AndroidSDK.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/goSellSDKSample/AndroidSDK.goSellSDKSample.iml" filepath="$PROJECT_DIR$/.idea/modules/goSellSDKSample/AndroidSDK.goSellSDKSample.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/library/AndroidSDK.library.iml" filepath="$PROJECT_DIR$/.idea/modules/library/AndroidSDK.library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/goSellSDK-Android.iml" filepath="$PROJECT_DIR$/.idea/modules/goSellSDK-Android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/goSellSDKSample/goSellSDK-Android.goSellSDKSample.iml" filepath="$PROJECT_DIR$/.idea/modules/goSellSDKSample/goSellSDK-Android.goSellSDKSample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/goSellSDKSample/goSellSDK-Android.goSellSDKSample.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/goSellSDKSample/goSellSDK-Android.goSellSDKSample.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/goSellSDKSample/goSellSDK-Android.goSellSDKSample.main.iml" filepath="$PROJECT_DIR$/.idea/modules/goSellSDKSample/goSellSDK-Android.goSellSDKSample.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/goSellSDKSample/goSellSDK-Android.goSellSDKSample.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/goSellSDKSample/goSellSDK-Android.goSellSDKSample.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/library/goSellSDK-Android.library.iml" filepath="$PROJECT_DIR$/.idea/modules/library/goSellSDK-Android.library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/library/goSellSDK-Android.library.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/library/goSellSDK-Android.library.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/library/goSellSDK-Android.library.main.iml" filepath="$PROJECT_DIR$/.idea/modules/library/goSellSDK-Android.library.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/library/goSellSDK-Android.library.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/library/goSellSDK-Android.library.unitTest.iml" />
     </modules>
   </component>
 </project>

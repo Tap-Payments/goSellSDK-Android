@@ -150,7 +150,7 @@
         <item name="android:textColorHint">@color/bt_light_gray</item>
         <item name="android:textCursorDrawable" tools:ignore="NewApi">@null</item>
         <item name="android:textAlignment" tools:ignore="NewApi">viewStart</item>
-        <item name="android:textDirection" tools:targetApi="jelly_bean_mr1">locale</item>
+        <item name="android:textDirection" tools:targetApi="jelly_bean_mr1">ltr</item>
     </style>
     <style name="EditText">
         <item name="android:textCursorDrawable">@null</item>
@@ -159,7 +159,7 @@
         <item name="android:fontFamily" tools:targetApi="jelly_bean">sans-serif-light</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textAlignment" tools:targetApi="jelly_bean_mr1">viewStart</item>
-        <item name="android:textDirection" tools:targetApi="jelly_bean_mr1">locale</item>
+        <item name="android:textDirection" tools:targetApi="jelly_bean_mr1">ltr</item>
         <item name="android:imeOptions">actionNext</item>
     </style>
 
