@@ -59,10 +59,7 @@ public final class Token implements BaseResponse , Serializable {
     private String name;
 
 
-    @SerializedName("issuer")
-    @Nullable
-    @Expose
-    private Issuer Issuer;
+
 
     /**
      * Gets id.
