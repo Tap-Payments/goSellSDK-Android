@@ -61,6 +61,11 @@ public final class TokenizedCard implements Serializable {
     @Expose
     private String name;
 
+    @SerializedName("issuer")
+    @Nullable
+    @Expose
+    private Issuer Issuer;
+
 
 
 
@@ -119,5 +124,10 @@ public final class TokenizedCard implements Serializable {
     @Nullable
     public Address getAddress() {
         return address;
+    }
+
+    @Nullable
+    public Issuer getIssuer() {
+        return Issuer;
     }
 }
