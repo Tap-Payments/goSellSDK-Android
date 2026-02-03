@@ -13,7 +13,7 @@ public class SampleApp extends Application{
     public void onCreate() {
         super.onCreate();
 
-          GoSellSDK.init(this, "YOUR_SANDBOX_SECRET_KEY","company.tap.goSellSDKExample");                 // to be replaced by merchant
+          GoSellSDK.init(this, "sk_XXXXXXXXXXXXXXXXXXXXXXXX","company.tap.goSellSDKExample");                 // to be replaced by merchant
           GoSellSDK.setLocale("en");
     }
 }
