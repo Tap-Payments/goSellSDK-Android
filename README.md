@@ -231,7 +231,7 @@ Android
          * Configure SDK with your Secret API key and App Bundle name registered with tap company.
          */
         private void configureApp(){
-            GoSellSDK.init(this, "YOUR_SANDBOX_SECRET_KEY","company.tap.goSellSDKExample");  // to be replaced by merchant
+            GoSellSDK.init(this, "sk_XXXXXXXXXXXXXXXXXXXXXXXX","company.tap.goSellSDKExample");  // to be replaced by merchant
         }
 ```
 1. **`authToken`** - to authorize your requests.// Secret key (format: "sk_XXXXXXXXXXXXXXXXXXXXXXXX")
